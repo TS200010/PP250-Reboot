@@ -1,6 +1,6 @@
 # PP250 Reboot
 
-PP250 Reboot is a historical reconstruction and preservation project. It provides a careful home for locating, describing, and organizing source material related to the PP250, while keeping clear distinctions between original evidence, working transcriptions, and later research.
+PP250 Reboot is a historical reconstruction and preservation project. It provides a home for locating, describing, and organising material related to the Plessey PP250.
 
 The project is at an archival and research stage. It is not yet an emulator-development project. Material in this repository should be added with enough context to make its origin, condition, and use understandable to future contributors.
 
