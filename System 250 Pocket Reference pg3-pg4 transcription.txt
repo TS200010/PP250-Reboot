@@ -1,0 +1,123 @@
+SYSTEM 250 POCKET REFERENCE BOOK
+TRANSCRIPTION OF PAGES 3-4
+
+Source: System 250 Pocket Reference pg3-pg4.pdf
+Status: Visual transcription of a scanned source. Verify against the scan
+        before treating an ambiguous character as definitive.
+
+
+                              INSTRUCTION CODES
+
+                                      Octal codes
+                                      (if valid)
+Name                    Assembly    Store       Direct      Register  Indicators   Overflow
+                        Command     Mode        Mode        Field     Changed      can be
+                                                                     (LT & EQ)    set to 1
+-----------------------------------------------------------------------------------------------
+Add                     ADD         06          46          YES       YES          YES
+And                     AND         02          42          YES       YES          NO
+Arithmetic Shift        ASH         24          64          YES       YES          NOTE 1
+Call                    CALL        10          -           NO        NO           NO
+Change Process          CHP         11          51          NO        NOTE 2       [blank]
+Compare                 CMP         05          45          YES       YES          YES
+Correlate               COR         15          55          YES       YES          NO
+Cyclic Shift            CSH         26          66          YES       YES          NO
+Divide                  DIV         16          56          YES       YES          YES
+Exclusive Or            EOR         00          40          YES       YES          NO
+Unconditional Jump      JMP         36          76          7         NO           NO
+Jump if Equal           JEQ         36          76          0         NO           NO
+Jump if Greater than    JGT         36          76          2         NO           NO
+Jump if Greater or Equal JGE        36          76          4         NO           NO
+Jump if Less than       JLT         36          76          3         NO           NO
+Jump if Less or Equal   JLE         36          76          5         NO           NO
+Jump if not Equal       JNE         36          76          1         NO           NO
+Jump if Overflow        JNOT        36          76          6         NO           NOTE 3
+Load Capability         LC          30          70          YES       NO           NO
+Load Data               LD          03          43          YES       YES          NO
+Load Data Masked        LDM         23          63          YES       YES          NO
+Load Negative           LDN         04          44          YES       YES          YES
+Load Pointer            LDP         31          71          YES       YES          NO
+Logical Shift           LSH         22          62          YES       YES          NO
+Move                    MOVE        -           74          NO        YES          YES
+Multiply                MPY         17          57          YES       YES          YES
+Or                      OR          01          41          YES       YES          NO
+Return                  RET         -           75          NO        NO           NO
+Store Capability        SC          34          -           YES       NO           NO
+Store Data              SD          13          -           YES       YES          NO
+Store Data Masked       SDM         33          -           YES       YES          NO
+Subtract                SUB         07          47          YES       YES          YES
+Swap                    SWP         12          -           YES       YES          NO
+Swap Masked             SWPM        32          -           YES       YES          NO
+
+NOTE 1     Indicators Preserved
+NOTE 2     YES if left shift otherwise NO
+NOTE 3     Cleared
+
+                                                                      PAGE 3
+
+
+                         INSTRUCTION CODES (Cont'd)
+
+SHIFT:          +VE VALUES SHIFT LEFT
+                -VE VALUES SHIFT RIGHT
+
+CORRELATE:      SCANS FROM LEFT TO RIGHT
+
+                RESULT = 0   IF BIT 23 SET
+                       = 1   IF BIT 22 SET
+                       ETC.
+                       = 32  IF NO BITS SET
+
+MULTIPLY:       DOUBLE LENGTH RESULT
+
+                LS HALF IN D REGISTER
+                MS HALF IN D + 1 REGISTER
+
+DIVIDE:         DOUBLE LENGTH DIVIDEND
+
+                LS HALF IN D REGISTER (23 BITS)
+                MS HALF IN D + 1 REGISTER (24 BITS)
+
+                RESULT IN D REGISTER
+                REMAINDER IN D + 1 REGISTER
+                INDICATORS SET ON RESULT
+
+MOVE:           E.G. MOVE D2 @ D5
+
+                SOURCE C2
+                SOURCE OFFSET D2
+                DESTINATION C3
+                DESTINATION OFFSET D3
+                SUMCHECK D5
+                COUNT D0
+
+                OVERFLOW TO BE RESET BEFORE MOVE
+                ON EXIT, OVERFLOW SET BY 'STATUS' WIRE
+                INDICATOR SET ON COUNT
+                IF COUNT NON-ZERO, DEVICE IS 'BUSY'
+
+
+          23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+        +-----------------------------------------------------------------------------------+
+        |                                                                                   |
+        +-----------------------------------------------------------------------------------+
+
+                         STORE MODE INSTRUCTION
+        +----------------------+--------+--------+--------+-------------------------------+
+        | FUNCTION             | REG    | MOD    | CAP    | ADDRESS                       |
+        +----------------------+--------+--------+--------+-------------------------------+
+
+                         DIRECT MODE INSTRUCTION
+        +----------------------+--------+--------+----------------------------------------+
+        | FUNCTION             | REG    | MOD    | SIGNED LITERAL                         |
+        +----------------------+--------+--------+----------------------------------------+
+
+      COS       +---+---+---+---+---+---+---+---+---+       CAPABILITY POINTER
+                | 1 | 1 | E | W | R | E | W | R | 0 |
+                +---+---+---+---+---+---+---+---+---+
+
+      POS       +---+---+---+---+---+---+---+---+---+       ACCESS CODES
+                | 0 | 1 | D | E | C | C | C | D | R |
+                +---+---+---+---+---+---+---+---+---+
+
+                                                                      PAGE 4
