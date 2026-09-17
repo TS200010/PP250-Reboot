@@ -1,0 +1,168 @@
+SYSTEM 250 POCKET REFERENCE BOOK
+TRANSCRIPTION OF PAGES 5-7
+
+Source: System 250 Pocket Reference pg5-pg7.pdf
+Status: Visual transcription of a scanned source. Verify against the scan
+        before treating an ambiguous character as definitive.
+
+
+                     [UNNUMBERED CROP / DUPLICATE DETAIL]
+
+                         PROCESS BASE                 DUMP STACK
+
+                         +----------+                 +----------+
+                         |          |                 |          |
+                     3   | 666      |  ------------>  | 760      |  ---->
+                         +----------+                 +----------+
+
+
+                       ROS/PDOS PROCESS STRUCTURE
+
+                 EC  --->  PROCESS BASE
+                           +----------+
+                           |          |
+                       3   | 666      |  ------------>  DUMP STACK
+                           +----------+                 +----------+
+                                                        |          |
+                                                        | 760      |  ---->
+                                                        +----------+
+
+
+              ROS/PDOS STATE AND INTERNAL PRIORITY WORD
+
+ Bit number:
+  23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+ +-----------------------------------------------------------------------------------+
+ | 0| 1| 0| x| q| q| q| q| q| p| p| p| p| p| c| c| c| r| w| f| s| b| b|   |
+ +-----------------------------------------------------------------------------------+
+
+ x = 0       Process currently running on a CPU
+   = 1       Process not running
+
+ cccc        CPU No. (0 - n) if r = 0
+
+ ppppp       (23 - Current Priority)
+
+ qqqqq       (23 - Standard Priority)
+
+ x = 1       If process is on the Ready List
+
+ s = 1       If suspended on WAITFOR
+
+ f = 1       If process has faulted
+
+ bb = 00     Double unblocked
+    = 01     Unblocked
+    = 10     Blocked
+    = 11     Double blocked
+
+ w           May be 0 or 1
+
+                                                                  PAGE 5
+
+
+                         PROCESS DUMP STACK FORMAT
+
+ +------------+----------+----------+------------------+------------------+
+ | OFFSET     | COS      | POS      | ROS              | PDOS             |
+ | (OCTAL)    |          |          |                  |                  |
+ +------------+----------+----------+------------------+------------------+
+ | 0          | C0       |          |                  |                  |
+ | 1          | C1       |          |                  |                  |
+ | 2          | C2       |          | CAPABILITY       |                  |
+ | 3          | C3       |          | REGISTERS        |                  |
+ | 4          | C4       |          |                  |                  |
+ | 5          | C5       |          |                  |                  |
+ +------------+----------+----------+------------------+------------------+
+ | 6          | D0       |          |                  |                  |
+ | 7          | D1       |          |                  |                  |
+ | 10         | D2       |          | DATA REGISTERS   |                  |
+ | 11         | D3       |          |                  |                  |
+ | 12         | D4       |          |                  |                  |
+ | 13         | D5       |          |                  |                  |
+ | 14         | D6       |          |                  |                  |
+ | 15         | D7       |          |                  |                  |
+ +------------+----------+----------+------------------+------------------+
+ | 16         | PUSHDOWN POINTER FOR CALL STACK                         |
+ | 17         | WATCHDOG TIMER REGISTER                                  |
+ | 20         | MIP (PRIMARY INDICATOR REGISTER)                         |
+ +------------+----------+----------+------------------+------------------+
+ | 21         | C6 Initial | C6 Initial | MIF             | MIF             |
+ | 22         | C7 Code    | C7 Code    | LOCK WORD       | LOCK Word       |
+ | 23         | IAR Block  | IAR Block  | Error Control   | 3 words for     |
+ | 24         | C6 1st     | C6 1st     | Process Base    | Ptrmigan        |
+ | 25         | C7 Subrou- | C7 Subrou- | SIP             | Error Control   |
+ | 26         | IAR tine   | IAR tine   | C6 Initial      | Process Base    |
+ | 27         | C6 2nd     | C6 2nd     | C7 Code         | SIP             |
+ | 30         | C7 Subrou- | C7 Subrou- | IAR Block       | C6 Initial      |
+ | 31         | IAR tine   | IAR tine   | C6 1st          | C7 Code         |
+ | 32         |            |            | C7 Subrou-      | IAR Block       |
+ | 33         | C6 2nd     |            | IAR tine        | C6 1st          |
+ | 34         | C7 Subrou- |            |                 | C7 Subrou-      |
+ | 35         | IAR tine   |            |                 | IAR tine        |
+ | 36         |            |            |                 |                 |
+ +------------+------------+------------+-----------------+-----------------+
+
+ MIF  = Copy of CPU Fault Indicator Register
+ LOCK = Used by privileged system facilities
+ Error Control = Process Error Control Parameter from Process Template
+ SIP  = State and Internal Priority Word
+
+                                                                  PAGE 6
+
+
+                      SPECIAL PURPOSE CPU REGISTERS
+
+ +------+----------------------------------------------+
+ | D10  | ABSOLUTE D/S PUSHDOWN POINTER                |
+ | D11  | WATCHDOG TIMER                                |
+ | D12  | FIRST FAULT MIF COPY                          |
+ | D13  |                                              |
+ | D14  |                                              |
+ | D15  | INTERRUPT ACCEPT REGISTER                     |
+ | D16  |                                              |
+ | D17  | INSTRUCTION ADDRESS REGISTER (IAR)            |
+ +------+----------------------------------------------+
+ | C10  | C(D) DUMPSTACK                                |
+ | C11  | C(I) INTERVAL TIMER                            |
+ | C12  | C(C) SCT                                      |
+ | C13  | C(N) NORMAL INTERRUPT BLOCK                   |
+ | C14  |                                              |
+ | C15  |                                              |
+ | C16  |                                              |
+ | C17  |                                              |
+ +------+----------------------------------------------+
+ |  -   | C(S) FAULT START-UP BLOCK                     |
+ +------+----------------------------------------------+
+
+
+                         INTERNAL MODE ADDRESSING
+
+                                  BIT NUMBER
+                    11 10  9  8  7  6  5  4  3  2  1  0
+                  +---------------------------------------+
+                  |                                       |
+                  +---------------------------------------+
+                    |  |  |  |  |  |              |  |  |
+                    |  |  |  |  |  |              |  |  +-- 1 LOWER HALF (LIMIT)
+                    |  |  |  |  |  |              |  +----- 0 UPPER HALF (BASE)
+                    |  |  |  |  |  |              |         OF CAPABILITY
+                    |  |  |  |  |  |              |         REGISTER
+                    |  |  |  |  |  |              +-------- NUMBER WHICH SPECIFIES
+                    |  |  |  |  |  |                        ONE OUT OF SIXTEEN
+                    |  |  |  |  |  |                        CAPABILITY OR DATA
+                    |  |  |  |  |  |                        REGISTERS
+                    |  |  |  |  |  +----------------------- DATA REGISTERS
+                    |  |  |  |  +-------------------------- CAPABILITY REGISTERS
+                    |  |  |  +----------------------------- HISTORICAL REGISTERS
+                    |  |  +-------------------------------- PRIMARY INDICATOR REGISTER
+                    |  +----------------------------------- FAULT INDICATOR REGISTER
+                    +-------------------------------------- SPECIAL CAPABILITY REGISTER C(S)
+
+ SECONDARY INDICATOR REGISTER  [shown separately at the high-order end]
+
+ MIP = 8R400
+ MIF = 8R100
+ D1  = 8R62
+
+                                                                  PAGE 7
