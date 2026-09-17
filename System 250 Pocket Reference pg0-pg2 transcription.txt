@@ -1,0 +1,103 @@
+SYSTEM 250 POCKET REFERENCE BOOK
+TRANSCRIPTION OF PAGES 0-2
+
+Source: System 250 Pocket Reference pg0-pg2.pdf
+Status: Visual transcription of a scanned source. Verify against the scan
+        before treating an ambiguous character as definitive.
+
+
+                                 [COVER]
+
+                              SYSTEM 250
+
+                               POCKET
+
+                              REFERENCE
+
+                                BOOK
+
+
+                                 PAGE 0
+
+
+                               ISSUE 1
+                                MAY '76
+
+                              SYSTEM 250
+
+                         POCKET REFERENCE BOOK
+
+                                CONTENTS
+
+                                                               Page
+Instruction Codes                                               3
+ROS/PDOS Process Structure                                      5
+ROS/PDOS State and Internal Priority Word                      5
+Process Dump Stack Format                                       6
+Special Purpose CPU Registers                                   7
+Internal Mode Addressing                                        7
+CPU MK3 Indicator Names and Locations                           8
+CPU Display Address Functions                                   9
+CPU Display Miscellaneous Register                             10
+COS Commands (300C1 onwards)                                  11
+ROS Print/Patch Commands                                       13
+ROS Maintenance Commands                                       14
+POS (2MK2.1) Commands                                          15
+Disc Controller Register Set                                   17
+Magnetic Tape Controller Register Set                          17
+Line Printer Controller Register Set                           17
+Parallel Teletype Controller Register Set                      17
+Serial-Parallel Adaptor Register Set                           18
+Serial Teletype Controller Register Set                        18
+Serial Punch Controller Register Set                           18
+Serial Reader Controller Register Set                          18
+Backing and Initialising Store Control
+    Unit Address Structure                                     19
+Console Control Unit Address Structure                         20
+Exchangeable Disc System Address Structure                     21
+Magnetic Tape Controller Registers
+    Command/Status/Diagnostic                                  22
+Serial-Parallel Adaptor Registers
+    Command/Status/Diagnostic                                  23
+
+  [Diagonal stamp: PLESSEY COMMERCIAL IN CONFIDENCE]
+
+                                                                 PAGE 1
+
+
+                             CONTENTS (Cont'd)
+
+                                                               Page
+Disc Controller Registers
+    Command/Status/Transfer Capability                         24
+Parallel Teletype Controller Registers
+    Command/Status                                             25
+Line Printer Controller Registers
+    Command/Status                                             26
+Serial Teletype Controller Registers
+    Command/Status                                             27
+Serial Reader Controller Registers
+    Command/Status                                             27
+Serial Punch Controller Registers
+    Command/Status                                             27
+Backing and Initialising Store Control Unit Registers
+    Command/Status                                             28
+Console Control Unit Registers
+    Command/Operational Status                                 29
+    Secondary Status/Diagnostic                                30
+Exchangeable Disc System Registers
+    Command/Status                                             31
+    Work Item/Work Status                                      32
+    Diagnostic 1/Diagnostic 2/Diagnostic 3                     33
+Exchangeable Disc System
+    Bus Line Specification for CDC Drive Unit                  34
+    The Transfer Capability                                    34
+    Transfer Capability Check Code                             34
+    Last Sector Address                                        34
+Character Code                                                  35
+Powers of Two                                                   35
+Octal-Decimal Conversion Table                                 36
+
+NOTES
+
+                                                                 PAGE 2
