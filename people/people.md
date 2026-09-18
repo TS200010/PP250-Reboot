@@ -84,6 +84,18 @@ Author of:
 
 **Evidence:** Published paper.
 
+### Nigel J. Wheatley
+
+Nigel J. Wheatley is documented as co-inventor with Martyn P. Andrews on multiple Plessey patents directly relevant to System 250 architecture:
+
+- US 4,408,274 — *Memory protection system using capability registers*.
+- US 4,486,831 — *Multi-programming data processing system process suspension*.
+- US 4,383,297 — *Data processing system including internal register addressing arrangements*.
+
+The patents provide documentary evidence of Wheatley's involvement with System 250 capability, process-state and internal-register mechanisms.
+
+**Evidence:** US patent records.
+
 ## Other people directly relevant to the architectural history
 
 ### Maurice V. Wilkes
@@ -102,13 +114,21 @@ Worked on the University of Chicago Magic Number Machine. Levy records that Fabr
 
 ## People known from first-hand project recollection but requiring documentary corroboration
 
-### Martyn P. Andrews
+### Martyn Phillip Andrews
 
-Recalled by Anthony John Stanners as a project manager associated with the CORAL 250 work.
+Martyn Phillip Andrews is documented as a Plessey inventor on multiple patents directly relevant to System 250 architecture. He is also recalled by Anthony John Stanners as a project manager associated with the CORAL 250 work.
 
-**Evidence:** First-hand recollection of Anthony John Stanners.
+Relevant US patents include:
 
-**Status:** Further documentary evidence sought.
+- US 4,408,274 — *Memory protection system using capability registers* — Martyn P. Andrews and Nigel J. Wheatley; assigned to Plessey Overseas Limited.
+- US 4,486,831 — *Multi-programming data processing system process suspension* — Martyn P. Andrews and Nigel J. Wheatley; assigned to Plessey Overseas Limited.
+- US 4,383,297 — *Data processing system including internal register addressing arrangements* — Martyn P. Andrews and Nigel J. Wheatley; assigned to Plessey Overseas Limited.
+
+These patents provide documentary evidence connecting Andrews directly with System 250 capability, process-state and internal-register mechanisms.
+
+**Evidence:** US patent records; first-hand recollection of Anthony John Stanners.
+
+**Recollection:** Stanners recalls Andrews as a project manager associated with the CORAL 250 work.
 
 ### Ian Cottam
 
