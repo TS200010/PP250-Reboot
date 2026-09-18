@@ -36,7 +36,7 @@ Author of major contemporary papers describing System 250 architecture and opera
 
 **Evidence:** Published papers.
 
-### D. C. Cosserat
+### David C. Cosserat
 
 Author of:
 
@@ -52,7 +52,7 @@ Author of:
 
 **Evidence:** Published paper.
 
-### K. J. Hamer-Hodges
+### Ken J. Hamer-Hodges
 
 Author of:
 
