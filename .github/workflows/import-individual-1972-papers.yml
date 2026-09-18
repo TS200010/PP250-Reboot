@@ -1,0 +1,113 @@
+name: Import individual 1972 System 250 papers
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: initial-project-structure
+
+      - name: Locate and download individual papers
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sources/1972/individual /tmp/pp250
+
+          python3 - <<'PY'
+          import json, urllib.parse, urllib.request, pathlib, re, subprocess
+
+          papers = [
+            ("Cotton", "The Operational Requirements for Future Communications Control Processors",
+             "1972-06-Cotton-Operational-Requirements-for-Future-Communications-Control-Processors.pdf"),
+            ("England", "Operating System of System 250",
+             "1972-06-England-Operating-System-of-System-250.pdf"),
+            ("Halton", "Hardware of the System 250 for Communication Control",
+             "1972-06-Halton-Hardware-of-System-250-for-Communication-Control.pdf"),
+            ("Hemmings", "Telephone Switching based on System 250",
+             "1972-06-Hemmings-Telephone-Switching-based-on-System-250.pdf"),
+            ("Cosserat", "A Capability Oriented Multi-Processor System for Real-Time Applications",
+             "1972-10-Cosserat-Capability-Oriented-Multi-Processor-System-for-Real-Time-Applications.pdf"),
+            ("Crompton", "Structure and Internal Communications of a Telephone Control System",
+             "1972-10-Crompton-Structure-and-Internal-Communications-of-a-Telephone-Control-System.pdf"),
+            ("Hamer-Hodges", "Fault Resistance and Recovery within System 250",
+             "1972-10-Hamer-Hodges-Fault-Resistance-and-Recovery-within-System-250.pdf"),
+            ("Repton", "Reliability Assurance for System 250",
+             "1972-10-Repton-Reliability-Assurance-for-System-250.pdf"),
+          ]
+
+          def getjson(url):
+              req=urllib.request.Request(url, headers={"User-Agent":"PP250-Reboot archival importer"})
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  return json.load(r)
+
+          def download(url, dest):
+              req=urllib.request.Request(url, headers={"User-Agent":"PP250-Reboot archival importer"})
+              with urllib.request.urlopen(req, timeout=60) as r, open(dest,"wb") as f:
+                  f.write(r.read())
+              if open(dest,"rb").read(4) != b"%PDF":
+                  raise RuntimeError("Not a PDF: "+url)
+
+          failures=[]
+          for author,title,filename in papers:
+              # Search Internet Archive for an item matching the individual title.
+              q=f'title:("{title}")'
+              api="https://archive.org/advancedsearch.php?"+urllib.parse.urlencode({
+                  "q":q,"fl[]":["identifier","title"],"rows":20,"page":1,"output":"json"
+              }, doseq=True)
+              docs=getjson(api)["response"]["docs"]
+              found=None
+              for doc in docs:
+                  ident=doc["identifier"]
+                  meta=getjson("https://archive.org/metadata/"+urllib.parse.quote(ident))
+                  files=[f for f in meta.get("files",[]) if str(f.get("name","")).lower().endswith(".pdf")]
+                  # Require an individual item whose metadata title substantially matches.
+                  mt=str(meta.get("metadata",{}).get("title","")).lower()
+                  words=[w for w in re.findall(r"[a-z0-9]+",title.lower()) if len(w)>4]
+                  if words and sum(w in mt for w in words) < max(2,len(words)//2):
+                      continue
+                  if files:
+                      originals=[f for f in files if f.get("source")=="original"]
+                      f=max(originals or files,key=lambda x:int(x.get("size",0) or 0))
+                      found="https://archive.org/download/%s/%s"%(ident,urllib.parse.quote(f["name"]))
+                      break
+              if not found:
+                  failures.append(f"{author}: {title}")
+                  continue
+              dest="sources/1972/individual/"+filename
+              print("Downloading",title,"from",found)
+              download(found,dest)
+              text=subprocess.check_output(["pdftotext",dest,"-"],text=True,errors="ignore").lower()
+              if author.lower() not in text and title.lower() not in text:
+                  pathlib.Path(dest).unlink(missing_ok=True)
+                  failures.append(f"{author}: downloaded candidate failed title/author verification")
+                  continue
+
+          if failures:
+              print("\nIndividual archival copies not found/verified for:")
+              for x in failures: print(" -",x)
+              raise SystemExit(2)
+          PY
+
+          file sources/1972/individual/*.pdf
+          ls -lh sources/1972/individual/*.pdf
+
+      - name: Commit verified individual papers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sources/1972/individual/*.pdf
+          if git diff --cached --quiet; then
+            echo "No new individual papers."
+            exit 0
+          fi
+          git commit -m "Add individual 1972 System 250 papers"
+          git push origin HEAD:initial-project-structure
