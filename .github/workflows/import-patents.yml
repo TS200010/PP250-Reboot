@@ -1,0 +1,49 @@
+name: Import PP250 patent PDFs
+
+on:
+  push:
+    branches:
+      - initial-project-structure
+    paths:
+      - '.github/workflows/import-patents.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  import-patents:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: initial-project-structure
+
+      - name: Download original patent PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p patents
+          curl --fail --location --retry 3 -o patents/US4408274-memory-protection-capability-registers.pdf \
+            https://patentimages.storage.googleapis.com/73/b8/3c/9735f0a2e39520/US4408274.pdf
+          curl --fail --location --retry 3 -o patents/US4486831-process-suspension.pdf \
+            https://patentimages.storage.googleapis.com/pdfs/US4486831.pdf
+          curl --fail --location --retry 3 -o patents/US4383297-internal-register-addressing.pdf \
+            https://patentimages.storage.googleapis.com/pdfs/US4383297.pdf
+          file patents/*.pdf
+          for f in patents/*.pdf; do
+            test "$(head -c 4 "$f")" = "%PDF"
+          done
+
+      - name: Commit patent PDFs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add patents/*.pdf
+          if git diff --cached --quiet; then
+            echo "Patent PDFs already present; nothing to commit."
+            exit 0
+          fi
+          git commit -m "Add original System 250 patent PDFs"
+          git push origin HEAD:initial-project-structure
