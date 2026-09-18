@@ -1,0 +1,96 @@
+name: Split 1972 System 250 paper collections
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: initial-project-structure
+          fetch-depth: 0
+
+      - name: Install PDF tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils qpdf
+
+      - name: Find paper boundaries and split
+        shell: bash
+        run: |
+          set -euo pipefail
+          ISS="sources/1972/1972-06-System-250-ISS-Papers-MIT.pdf"
+          ICC="sources/1972/1972-10-System-250-ICCC-Papers-Washington-DC.pdf"
+          mkdir -p /tmp/pp250split
+          pdftotext -layout "$ISS" /tmp/pp250split/iss.txt
+          pdftotext -layout "$ICC" /tmp/pp250split/icc.txt
+
+          python3 - <<'PY'
+          import re, subprocess, pathlib, sys
+
+          jobs = [
+            ("sources/1972/1972-06-System-250-ISS-Papers-MIT.pdf", [
+              ("Cotton", ["Operational Requirements", "Future Communications Control Processors"], "1972-06-Cotton-Operational-Requirements-for-Future-Communications-Control-Processors.pdf"),
+              ("England", ["Operating System", "System 250"], "1972-06-England-Operating-System-of-System-250.pdf"),
+              ("Halton", ["Hardware", "System 250", "Communication Control"], "1972-06-Halton-Hardware-of-System-250-for-Communication-Control.pdf"),
+              ("Hemmings", ["Telephone Switching", "System 250"], "1972-06-Hemmings-Telephone-Switching-based-on-System-250.pdf"),
+            ]),
+            ("sources/1972/1972-10-System-250-ICCC-Papers-Washington-DC.pdf", [
+              ("Cosserat", ["Capability Oriented", "Multi-Processor", "Real-Time"], "1972-10-Cosserat-Capability-Oriented-Multi-Processor-System-for-Real-Time-Applications.pdf"),
+              ("Crompton", ["Structure", "Internal Communications", "Telephone Control"], "1972-10-Crompton-Structure-and-Internal-Communications-of-a-Telephone-Control-System.pdf"),
+              ("Hamer-Hodges", ["Fault Resistance", "Recovery", "System 250"], "1972-10-Hamer-Hodges-Fault-Resistance-and-Recovery-within-System-250.pdf"),
+              ("Repton", ["Reliability Assurance", "System 250"], "1972-10-Repton-Reliability-Assurance-for-System-250.pdf"),
+            ])
+          ]
+
+          def page_text(pdf, p):
+              return subprocess.check_output(["pdftotext","-f",str(p),"-l",str(p),"-layout",pdf,"-"], text=True, errors="ignore")
+
+          for pdf, papers in jobs:
+              n=int(subprocess.check_output(["pdfinfo",pdf],text=True).split("Pages:")[1].splitlines()[0].strip())
+              pages=[page_text(pdf,p) for p in range(1,n+1)]
+              starts=[]
+              for author, terms, out in papers:
+                  scored=[]
+                  for i,t in enumerate(pages):
+                      low=t.lower()
+                      score=sum(term.lower() in low for term in terms)
+                      # title pages should also normally carry the author's surname
+                      if author.lower() in low: score += 1
+                      if score >= max(2, len(terms)):
+                          scored.append((score,i+1))
+                  if not scored:
+                      raise SystemExit(f"Could not locate start of {author} in {pdf}")
+                  best=max(scored, key=lambda x:(x[0],-x[1]))[1]
+                  starts.append([best,author,out])
+              starts.sort()
+              if len(starts)!=len(papers) or len({x[0] for x in starts})!=len(papers):
+                  raise SystemExit(f"Ambiguous boundaries in {pdf}: {starts}")
+              print(pdf, starts)
+              for idx,(start,author,out) in enumerate(starts):
+                  end=(starts[idx+1][0]-1) if idx+1<len(starts) else n
+                  subprocess.check_call(["qpdf",pdf,"--pages",pdf,f"{start}-{end}","--",f"sources/1972/{out}"])
+                  txt=subprocess.check_output(["pdftotext",f"sources/1972/{out}","-"],text=True,errors="ignore").lower()
+                  if author.lower() not in txt:
+                      raise SystemExit(f"Verification failed for {out}")
+                  print(f"{out}: source pages {start}-{end}")
+          PY
+
+          for f in sources/1972/1972-06-*.pdf sources/1972/1972-10-*.pdf; do
+            test "$(head -c 4 "$f")" = "%PDF"
+          done
+
+          rm "$ISS" "$ICC"
+
+      - name: Commit individual papers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A sources/1972
+          git commit -m "Split 1972 System 250 collections into individual papers"
+          git push origin HEAD:initial-project-structure
