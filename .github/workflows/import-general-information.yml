@@ -1,0 +1,33 @@
+name: Import 1972 System 250 General Information
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: initial-project-structure
+      - name: Download primary source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sources/1972
+          curl -fL --retry 3 --retry-delay 2 \
+            "https://archive.org/download/plessey-system-250-general-introduction/Plessey-System_250_General_Information-1972.pdf" \
+            -o "sources/1972/1972-Plessey-System-250-General-Information.pdf"
+          test "$(head -c 4 sources/1972/1972-Plessey-System-250-General-Information.pdf)" = "%PDF"
+      - name: Commit source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sources/1972/1972-Plessey-System-250-General-Information.pdf
+          git commit -m "Add 1972 System 250 General Information"
+          git push origin HEAD:initial-project-structure
