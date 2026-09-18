@@ -99,5 +99,9 @@ Powers of Two                                                   35
 Octal-Decimal Conversion Table                                 36
 
 NOTES
+PDOS = Program Development Operating System
+ROS = Recoverable Operating System
+COS = ???
+POS = ???
 
                                                                  PAGE 2
