@@ -1,6 +1,7 @@
 name: Import PP250 patent PDFs
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - initial-project-structure
