@@ -31,7 +31,7 @@ Jump if Greater or Equal JGE        36          76          4         NO        
 Jump if Less than       JLT         36          76          3         NO           NO
 Jump if Less or Equal   JLE         36          76          5         NO           NO
 Jump if not Equal       JNE         36          76          1         NO           NO
-Jump if Overflow        JNOT        36          76          6         NO           NOTE 3
+Jump if Overflow        JOV         36          76          6         NO           NOTE 3
 Load Capability         LC          30          70          YES       NO           NO
 Load Data               LD          03          43          YES       YES          NO
 Load Data Masked        LDM         23          63          YES       YES          NO
@@ -97,7 +97,7 @@ MOVE:           E.G. MOVE D2 @ D5
                 IF COUNT NON-ZERO, DEVICE IS 'BUSY'
 
 
-          23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
+          23 22 21 20 19 18    17 16 15 14 13 12 11 10  9  8  7  6  5  4  3  2  1  0
         +-----------------------------------------------------------------------------------+
         |                                                                                   |
         +-----------------------------------------------------------------------------------+
@@ -112,12 +112,12 @@ MOVE:           E.G. MOVE D2 @ D5
         | FUNCTION             | REG    | MOD    | SIGNED LITERAL                         |
         +----------------------+--------+--------+----------------------------------------+
 
-      COS       +---+---+---+---+---+---+---+---+---+       CAPABILITY POINTER
-                | 1 | 1 | E | W | R | E | W | R | 0 |
-                +---+---+---+---+---+---+---+---+---+
+      COS       +---+---+----+----+----+----+----+----+---+       CAPABILITY POINTER
+                | 1 | 1 | EC | WC | RC | ED | WD | RD | 0 |
+                +---+---+----+----+----+----+----+----+---+
 
-      POS       +---+---+---+---+---+---+---+---+---+       ACCESS CODES
-                | 0 | 1 | D | E | C | C | C | D | R |
-                +---+---+---+---+---+---+---+---+---+
+      POS       +---+---+---+----+----+----+----+----+----+       ACCESS CODES
+                | 0 | 1 | 1 | EC | WC | RC | ED | WD | RD |
+                +---+---+---+----+----+----+----+----+----+
 
                                                                       PAGE 4
