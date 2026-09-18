@@ -1,0 +1,45 @@
+name: Import MIT System 250 bibliography
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - initial-project-structure
+    paths:
+      - '.github/workflows/import-mit-bibliography.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: initial-project-structure
+
+      - name: Download and verify MIT source PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sources
+          curl --fail --location --retry 3 \
+            -o sources/1973-01-31-Schroeder-Bibliography-of-Papers-on-Plessey-System-250.pdf \
+            https://people.csail.mit.edu/saltzer/Multics/MHP-Saltzer-060508/bookcases/RFCs/csr-rfc-004.pdf
+          test "$(head -c 4 sources/1973-01-31-Schroeder-Bibliography-of-Papers-on-Plessey-System-250.pdf)" = "%PDF"
+          file sources/1973-01-31-Schroeder-Bibliography-of-Papers-on-Plessey-System-250.pdf
+
+      - name: Commit source PDF
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sources/1973-01-31-Schroeder-Bibliography-of-Papers-on-Plessey-System-250.pdf
+          if git diff --cached --quiet; then
+            echo "PDF already present."
+            exit 0
+          fi
+          git commit -m "Add 1973 MIT System 250 bibliography"
+          git push origin HEAD:initial-project-structure
