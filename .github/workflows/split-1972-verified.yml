@@ -1,0 +1,55 @@
+name: Split 1972 System 250 papers
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  split:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: initial-project-structure
+      - name: Split at verified physical page boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq qpdf poppler-utils
+
+          ISS="sources/1972/1972-06-System-250-ISS-Papers-MIT.pdf"
+          ICC="sources/1972/1972-10-System-250-ICCC-Papers-Washington-DC.pdf"
+
+          split_verify () {
+            src="$1"; range="$2"; out="$3"; author="$4"
+            qpdf "$src" --pages "$src" "$range" -- "$out"
+            test "$(head -c 4 "$out")" = "%PDF"
+            pdftotext "$out" - | grep -qi "$author"
+          }
+
+          # Boundaries verified from the diagnostic run against the actual scans.
+          split_verify "$ISS" 2-6  "sources/1972/1972-06-England-Operating-System-of-System-250.pdf" "England"
+          split_verify "$ISS" 7-11 "sources/1972/1972-06-Cotton-Operational-Requirements-for-Future-Communications-Control-Processors.pdf" "Cotton"
+          split_verify "$ISS" 12-18 "sources/1972/1972-06-Halton-Hardware-of-System-250-for-Communication-Control.pdf" "Halton"
+          split_verify "$ISS" 19-24 "sources/1972/1972-06-Hemmings-Telephone-Switching-based-on-System-250.pdf" "Hemmings"
+
+          split_verify "$ICC" 3-10  "sources/1972/1972-10-Cosserat-Capability-Oriented-Multi-Processor-System-for-Real-Time-Applications.pdf" "Cosserat"
+          split_verify "$ICC" 11-17 "sources/1972/1972-10-Hamer-Hodges-Fault-Resistance-and-Recovery-within-System-250.pdf" "Hamer-Hodges"
+          split_verify "$ICC" 18-26 "sources/1972/1972-10-Repton-Reliability-Assurance-for-System-250.pdf" "Repton"
+          split_verify "$ICC" 27-33 "sources/1972/1972-10-Crompton-Structure-and-Internal-Communications-of-a-Telephone-Control-System.pdf" "Crompton"
+
+          rm "$ISS" "$ICC"
+          ls -lh sources/1972/*.pdf
+
+      - name: Commit individual papers
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A sources/1972
+          git commit -m "Split 1972 collections into individual System 250 papers"
+          git push origin HEAD:initial-project-structure
