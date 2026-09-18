@@ -8,25 +8,19 @@ Status: Visual transcription of a scanned source. Verify against the scan
 
                                  [COVER]
 
-                              SYSTEM 250
-
-                               POCKET
-
-                              REFERENCE
-
-                                BOOK
+                               SYSTEM 250
+                                 POCKET
+                               REFERENCE
+                                  BOOK
 
 
                                  PAGE 0
 
 
-                               ISSUE 1
+                                ISSUE 1
                                 MAY '76
-
                               SYSTEM 250
-
                          POCKET REFERENCE BOOK
-
                                 CONTENTS
 
                                                                Page
@@ -39,7 +33,7 @@ Internal Mode Addressing                                        7
 CPU MK3 Indicator Names and Locations                           8
 CPU Display Address Functions                                   9
 CPU Display Miscellaneous Register                             10
-COS Commands (300C1 onwards)                                  11
+COS Commands (300C1 onwards)                                   11
 ROS Print/Patch Commands                                       13
 ROS Maintenance Commands                                       14
 POS (2MK2.1) Commands                                          15
@@ -94,11 +88,11 @@ Exchangeable Disc System
     The Transfer Capability                                    34
     Transfer Capability Check Code                             34
     Last Sector Address                                        34
-Character Code                                                  35
-Powers of Two                                                   35
+Character Code                                                 35
+Powers of Two                                                  35
 Octal-Decimal Conversion Table                                 36
 
-NOTES
+TRANSCRIBERS NOTES
 PDOS = Program Development Operating System
 ROS = Recoverable Operating System
 COS = ???
