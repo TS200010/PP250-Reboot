@@ -25,7 +25,7 @@ Status: Visual transcription of a scanned source. Verify against the scan
  | 0| 1| 0| x| q| q| q| q| q| p| p| p| p| p| c| c| c| c| r| w| f| s| b| b| 
  +-----------------------------------------------------------------------+
 
- x = 0       Process currently running on a CPU
+ r = 0       Process currently running on a CPU
    = 1       Process not running
 
  cccc        CPU No. (0 -> n) if r = 0
@@ -85,7 +85,7 @@ Status: Visual transcription of a scanned source. Verify against the scan
  | 27         | C6 2nd     | C6 1st     | C7 Code         | Process Base    |
  | 30         | C7 Subrou- | C7 Subrou- | IAR Block       | SIP             |
  | 31         | IAR tine   | IAR tine   | C6 1st          | C6 Initial      |
- | 32         |            | C6 2n      | C7 Subrou-      | C7 Code         |
+ | 32         |            | C6 2nd     | C7 Subrou-      | C7 Code         |
  | 33         |            | C7 Subrou- | IAR tine        | IAR Block       |
  | 34         |            | IAR tine   |                 | C6 1st          |
  | 35         |            |            |                 | C7 Subrou-      |
