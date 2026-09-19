@@ -238,7 +238,7 @@ These are ROS/PDOS software/process-state definitions and should not automatical
 
 ## MOVE instruction
 
-Page 4 gives a specific MOVE example, `MOVE D2 @ D5`, and identifies:
+Page 4 gives a specific MOVE example, `MOVE D2 0 D5`, and identifies:
 
 - source capability C2
 - source offset D2
