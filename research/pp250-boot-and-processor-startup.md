@@ -45,6 +45,8 @@ Special Fault/Startup Block                 [cold-start connection inferred]
                                       v
                          FIRST ORDINARY PP250 INSTRUCTION
 ```
+SCT is System Capability Table
+RSPC-n is Reserved Segment Pointer Capability n
 
 This diagram assumes the required memory structures already exist and are valid. It does not explain how they were first loaded. C(S) identifies a data structure; it should not be represented as a direct pointer to bootstrap instructions.
 
