@@ -6,6 +6,33 @@ This repository reconstructs and documents the architecture of the Plessey Syste
 
 Historical accuracy takes precedence over filling gaps with plausible assumptions.
 
+## Primary reconstruction objective
+
+Treat the root `README.md` as the authoritative statement of project scope and direction. **Read it before doing architectural reconstruction, bootstrap research, emulator design, or hardware design**, and re-read the section **"Primary reconstruction: from inert hardware to the first real program"** whenever work touches cold start, faults, CHP, SCTs, dump stacks, capability genesis, C6/C7, processor initialisation, resource allocation, or initial machine state.
+
+The immediate technical objective is to reconstruct the PP250 from an inert machine up to the first legitimate execution of ordinary PP250 software. Do not silently turn this into a project to recreate ROS/POS or the entire historical operating system.
+
+Use the boundary defined in the README to guide research:
+
+- **Below the boundary:** reconstruct the hardware, microcode-visible mechanisms, and initial state required before ordinary software can run.
+- **At the boundary:** determine the complete relevant state of the first legitimate process and the provenance of every protected object/capability needed to establish it.
+- **Above the boundary:** investigate only far enough to prove that the reconstructed initial state is sufficient for ordinary PP250 software to construct a self-sustaining capability system.
+
+For every proposed bootstrap mechanism ask:
+
+1. Where did the authority come from?
+2. Which documented data structure holds it?
+3. How was that structure created from the preceding machine state?
+4. Does the proposal require capability fabrication that has not been explained?
+5. Does it introduce an undocumented privileged/supervisor mechanism?
+6. Can normal PP250 mechanisms take over once the first process is running?
+
+The target is not merely to make an emulator boot by convenient assumptions. The target is an evidence-backed chain from power-on/inert state to the first real program.
+
+Where documentation stops before that chain is complete, label the missing link explicitly as inference, hypothesis or unknown and investigate the data structures that constrain the possible algorithm. Prefer **data structures -> necessary algorithms** over inventing plausible operating-system behaviour.
+
+The current completion criterion is the one stated in the README: hardware/microcode must be able to reach a valid first process with sufficient legitimate capability authority to construct subsequent software-managed resources without undocumented privilege or arbitrary capability fabrication.
+
 ## Evidence policy
 
 Distinguish clearly between:
