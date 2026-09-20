@@ -47,23 +47,97 @@ The project should not just silently fill gaps in the historical record.
 
 Where two sources disagree, the disagreement itself is recorded.
 
-**Primary reconstruction boundary**
+**Primary reconstruction: from inert hardware to the first real program**
 
-The main technical objective is narrower and more concrete than reconstructing the complete historical operating system:
+The main technical objective of PP250 Reboot is not, in the first instance, to recreate ROS, POS, or the complete historical System 250 software environment. It is to reconstruct the **PP250 hardware architecture and its initial state**, starting with an inert machine and continuing until the point at which the first legitimate ordinary PP250 program can execute.
 
-> **Starting from an inert machine, reconstruct the PP250 hardware and initial machine state sufficiently to reach the first legitimate execution of ordinary PP250 software.**
+That boundary gives the historical investigation a concrete engineering target:
 
-The reconstruction therefore concentrates on everything below and at that boundary: processor and memory/module architecture, bus behaviour, capability and special registers, SCT mechanisms, fault and dump-stack machinery, timers, capability validation, CHP, cold-start state, and whatever hardware or microcode establishes the first valid process.
+> **Starting from an inert machine, what hardware state and microcode mechanisms are required to reach the first legitimate execution of ordinary PP250 software?**
 
-Immediately before the first ordinary instruction executes, the project should be able to state exactly what architectural state exists: relevant C and D registers, C6/C7, IAR and indicators, timers, SCT and dump-stack state, pre-existing SCT entries and capabilities, and the provenance of the authority available to the first process.
+### Below the boundary — the machine we must reconstruct
 
-The operating system above this boundary does **not** have to be reconstructed merely to complete the hardware model. It is used as an architectural proof: the initial state must be sufficient for real software subsequently to allocate resources, manage SCT entries, derive restricted capabilities, construct process state and use CHP, without relying on an undocumented privileged mode or arbitrary capability fabrication.
+Everything needed to reach that first instruction is part of the primary reconstruction. This includes, insofar as the surviving evidence allows us to establish it:
 
-A practical completion test for the reconstructed machine is therefore:
+* processors, store modules and the shared bus;
+* the 24-bit data registers and 48-bit capability registers;
+* special-purpose processor registers;
+* capability representation, validation and access checking;
+* physical/module addressing;
+* the System Capability Table (SCT) mechanism;
+* dump-stack representation and manipulation;
+* faults and the hardware/microcode fault sequence;
+* Change Process (CHP);
+* watchdog and interval-timer mechanisms;
+* processor initialisation and admission;
+* cold-start behaviour;
+* any state held outside the ordinary programmer-visible architecture during start-up;
+* the mechanism by which the first valid capabilities come into existence;
+* and whatever initial memory/SCT/dump-stack structures must already exist before ordinary software can run.
 
-> **The PP250 bootstrap reconstruction is complete when hardware/microcode can transition from power-on state, through the documented fault/CHP mechanisms, into a valid first process possessing sufficient legitimate capability authority to construct all subsequent software-managed resources.**
+The reconstruction must not hide the difficult bootstrap problem behind an assumed operating system. If the first program needs a capability, an SCT entry, C6/C7, a dump stack or some other protected state, the project must explain **where it came from and how the machine could legitimately have constructed it**.
 
-Hypotheses about primordial resource allocation, capability genesis and early resource ownership should be judged against this boundary. They are useful insofar as they demonstrate that the reconstructed initial hardware state can support a coherent working System 250.
+### The boundary — the first legitimate process
+
+Immediately before the first ordinary software instruction executes, we should eventually be able to describe the complete relevant processor state.
+
+That means answering questions such as:
+
+* What is in C0-C7, particularly C6 and C7?
+* What is in D0-D7?
+* What are the IAR, indicators and other control state?
+* What are the watchdog and timer states?
+* What points to the SCT and dump stack?
+* Which SCT entries already exist and what do they describe?
+* Which capabilities already exist?
+* Where did those capabilities come from?
+* Where is the first executable code and how was it loaded?
+* What exact event — cold start, fault sequence, CHP, or combination — causes the first instruction to be fetched?
+
+The desired result is not merely a plausible register dump. Every element of that initial state should have a provenance through documented hardware behaviour or an explicitly identified reconstruction where documentation is missing.
+
+### Above the boundary — proof that the reconstructed machine is sufficient
+
+The complete historical operating system is outside this initial reconstruction boundary. However, the architecture immediately above the boundary is still important because it provides a **proof of sufficiency**.
+
+The first real program must receive enough legitimate authority to build a functioning capability system from the state provided by the machine. It should be possible, using normal PP250 mechanisms, to:
+
+```
+FIRST REAL SOFTWARE INSTRUCTION
+            |
+            v
+legitimate initial capabilities
+            |
+            +-- manage/allocate physical resources
+            +-- establish and manage SCT entries
+            +-- derive restricted capabilities
+            +-- construct process/dump-stack state
+            +-- create another process
+            +-- CHP to that process
+                         |
+                         v
+              SELF-SUSTAINING SYSTEM
+```
+
+We do not need to reproduce the historical Store Allocator or the whole historical operating system merely to prove the hardware reconstruction. A small demonstrator could eventually establish the same architectural fact: **the machine has supplied enough legitimate initial state for software to construct everything above it using the ordinary capability mechanisms.**
+
+This gives us a powerful test for every bootstrap hypothesis.
+
+If the proposed initial state requires the first program to manufacture a capability from nothing, something is missing.
+
+If it requires an undocumented supervisor mode or a permanent escape from capability protection, something is probably wrong.
+
+If it supplies sufficient ancestral authority for the first software to derive the required resources and then irreversibly reduce or transfer that authority, it is architecturally viable and can be tested against the surviving evidence.
+
+### Definition of success
+
+The primary reconstruction reaches its target when:
+
+> **Hardware/microcode can transition from power-on state, through the documented fault/CHP and capability mechanisms, into a valid first process possessing sufficient legitimate capability authority to construct all subsequent software-managed resources, without relying on an undocumented privileged mode or arbitrary capability fabrication.**
+
+At that point we have reconstructed a machine capable of becoming a working System 250, rather than merely implementing isolated PP250 instructions.
+
+Current work on capability genesis, the primordial resource allocator, SCT creation and reclamation, dynamic resource admission/removal, processor admission through the fault machinery, and the origin of C6/C7 should therefore be judged against this objective. These investigations are not attempts to reconstruct the whole operating system. They are ways of determining whether the hardware and initial state we reconstruct are **sufficient to support a hardware system that can actually work**.
 
 **The technical reconstruction**
 
