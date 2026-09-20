@@ -6,9 +6,9 @@ The Plessey System 250 was an early commercial capability-based computer develop
 
 **PP250 Reboot** is an attempt to reconstruct the System 250 from the surviving technical documentation, software, patents, publications, hardware information, and the recollections of people who worked on the project.
 
-The immediate objective is not to write an emulator ... but perhaps we might one day.
+The immediate objective is to gather, preserve, digitise and cross-reference as much reliable information about the machine as possible. Once that body of evidence has been assembled, we can reconstruct the architecture and determine what can be established about the machine's behaviour.
 
-The first objective is to gather, preserve, digitise and cross-reference as much reliable information about the machine as possible. Once that body of evidence has been assembled, we can reconstruct the architecture and determine what can be established about the machine's behaviour. An emulator could perhaps then emerge from that reconstruction.
+That reconstruction can then become executable: first as a reference emulator, then potentially as a hardware implementation on an FPGA. Beyond that lies a further objective—to explore what a modern computer derived from PP250's capability architecture could become.
 
 **Why?**
 
@@ -24,12 +24,13 @@ For the people who worked deeply with the system, the implications could be appa
 
 Much of the original technical material is now difficult to find, and some aspects of the architecture are incompletely documented in the surviving sources.
 
-This project therefore has two purposes:
+This project therefore has three connected purposes:
 
 * Preservation — collect and make accessible surviving PP250 technical and historical material.
 * Reconstruction — determine, as accurately as possible, how the system actually worked.
+* Experimentation — make the reconstructed architecture executable and use it to investigate the continuing value of its capability model.
 
-A working emulator would be a valuable consequence of that work.
+A working emulator and hardware implementations would be consequences of that work, not substitutes for establishing the evidence.
 
 **Evidence before assumptions**
 
@@ -68,13 +69,49 @@ The eventual reconstruction is expected to cover areas including:
 * hardware implementation
 * programming conventions and system software
 
-**Emulator**
+**Executable reconstruction**
 
-An emulator is a later objective.
+A reference emulator is a later objective. It should implement the architecture that the evidence supports, rather than an architecture invented to make an emulator convenient to write.
 
-It should implement the architecture that the evidence supports, rather than an architecture invented to make an emulator convenient to write.
+Where historical behaviour cannot be established, the emulator should make assumptions explicit. In that sense it will be an executable reconstruction: a way to test whether the individual conclusions form a complete and coherent machine.
 
-Where the historical behaviour cannot be established, the emulator should make those assumptions explicit.
+A possible next stage is an RTL implementation on an FPGA. The FPGA would implement PP250 architectural behaviour as digital hardware—registers, instruction execution, capability checks, process changes, memory access and faults—without necessarily reproducing the original gates, timing or microcode.
+
+The intended progression is:
+
+1. evidence-backed architectural model;
+2. reference emulator and assembler;
+3. test suite comparing documented and reconstructed behaviour;
+4. FPGA implementation checked against the reference model;
+5. experimental multiprocessor, memory and peripheral systems;
+6. only if useful, consideration of an ASIC.
+
+The distinction between architecture and implementation must remain explicit. An FPGA implementation could legitimately be a reconstructed PP250 while using a completely different modern microarchitecture internally.
+
+**A modern descendant**
+
+Historical reconstruction is one machine. A modern PP250-derived capability computer is another. The project should not silently modernise uncertain parts of the original and present the result as history.
+
+The descendant would preserve and test the central ideas that make PP250 distinctive:
+
+* capabilities as the source of authority;
+* hardware-enforced access to segments and objects;
+* capability registers that cannot be manipulated as ordinary data;
+* protected execution domains and C6/C7-style context;
+* process switching and multiprocessor shared memory;
+* protection without relying on a conventional privileged supervisor escape hatch.
+
+It need not preserve features that existed because of 1970s technology. Word size, physical bus signalling, memory technology, storage and peripheral interfaces may all be redesigned.
+
+The outside of the machine should be modern. USB, SPI, SD storage, displays, networking and contemporary debugging interfaces could sit behind a modern interconnect such as Wishbone, AXI-Lite or a simpler purpose-built fabric. Memory-mapped I/O remains useful where it fits, but reproducing the original PP250 bus is not an objective in itself.
+
+The essential rule is that a modern transaction must not bypass the capability model. Access to RAM or a device should be derived from authority held by the initiating process. A process given access to an SD controller should not thereby acquire access to USB or unrelated memory. DMA is a particularly valuable experiment: a device could be given a bounded capability describing exactly which memory it may access instead of receiving an unrestricted physical address.
+
+This gives the project a longer-term research question:
+
+> What would the Plessey System 250 capability architecture look like if the machine were designed today?
+
+The historical work provides a rigorous starting point for answering that question. It prevents the modern machine from becoming merely a new capability design with a PP250 label attached to it.
 
 **Sources**
 
@@ -92,7 +129,7 @@ If you have PP250 documentation, software, photographs, technical notes, persona
 
 The goal is simple:
 
-**Find out what PP250 really was, preserve what can still be recovered, and make it possible to run again.**
+**Find out what PP250 really was, preserve what can still be recovered, make it possible to run again, and discover what its capability architecture can still become.**
 
 ## Repository layout
 
@@ -105,7 +142,8 @@ The goal is simple:
 - `people/` — research notes on people connected with the subject.
 - `patents/` — patents and related research material.
 - `research/` — research notes, leads, and bibliography.
-- `emulator/` — reserved for future emulator work; no emulator development is planned here yet.
+- `emulator/` — reference implementation and executable architectural experiments.
+- `hardware/` — future RTL, FPGA, interconnect and physical implementation work.
 
 ## Working principles
 
