@@ -47,6 +47,24 @@ The project should not just silently fill gaps in the historical record.
 
 Where two sources disagree, the disagreement itself is recorded.
 
+**Primary reconstruction boundary**
+
+The main technical objective is narrower and more concrete than reconstructing the complete historical operating system:
+
+> **Starting from an inert machine, reconstruct the PP250 hardware and initial machine state sufficiently to reach the first legitimate execution of ordinary PP250 software.**
+
+The reconstruction therefore concentrates on everything below and at that boundary: processor and memory/module architecture, bus behaviour, capability and special registers, SCT mechanisms, fault and dump-stack machinery, timers, capability validation, CHP, cold-start state, and whatever hardware or microcode establishes the first valid process.
+
+Immediately before the first ordinary instruction executes, the project should be able to state exactly what architectural state exists: relevant C and D registers, C6/C7, IAR and indicators, timers, SCT and dump-stack state, pre-existing SCT entries and capabilities, and the provenance of the authority available to the first process.
+
+The operating system above this boundary does **not** have to be reconstructed merely to complete the hardware model. It is used as an architectural proof: the initial state must be sufficient for real software subsequently to allocate resources, manage SCT entries, derive restricted capabilities, construct process state and use CHP, without relying on an undocumented privileged mode or arbitrary capability fabrication.
+
+A practical completion test for the reconstructed machine is therefore:
+
+> **The PP250 bootstrap reconstruction is complete when hardware/microcode can transition from power-on state, through the documented fault/CHP mechanisms, into a valid first process possessing sufficient legitimate capability authority to construct all subsequent software-managed resources.**
+
+Hypotheses about primordial resource allocation, capability genesis and early resource ownership should be judged against this boundary. They are useful insofar as they demonstrate that the reconstructed initial hardware state can support a coherent working System 250.
+
 **The technical reconstruction**
 
 The eventual reconstruction is expected to cover areas including:
