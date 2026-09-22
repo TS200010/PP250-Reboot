@@ -87,6 +87,61 @@ The instruction table explicitly includes:
 
 The presence, names and opcodes of these instructions are established by the Pocket Reference. Their full capability semantics are **not established by pages 0–7 alone** and must not be inferred merely from their names.
 
+## Church/Turing interpretation of the capability instruction set
+
+A historically important interpretation attributed to K. J. (Ken) Hamer-Hodges, one of the original System 250 designers, describes System 250 as combining an ordinary binary or "Turing" computational machine with a protected "Church" capability machine. This should not be dismissed merely as a later outside analogy: Hamer-Hodges was directly involved in the original design. However, the precise historical source and wording, and whether this interpretation was explicitly stated in the earliest System 250 papers, still need to be established from the source corpus.
+
+Hamer-Hodges is reported as identifying **six special Church instructions** which operate on or navigate the protected capability world rather than merely processing ordinary mutable binary data.
+
+A strong current hypothesis is that the six instructions are:
+
+| Instruction | Working interpretation |
+|---|---|
+| `LC` | Load Capability — bring protected capability authority into a capability register |
+| `SC` | Store Capability — store/pass capability authority while preserving its protected representation |
+| `LDP` | Load Pointer — obtain the pointer associated with a capability/reference without exposing the capability itself as ordinary manipulable data |
+| `CALL` | Enter a protected procedure/domain through capability-controlled entry |
+| `RET` | Return from that protected invocation/context |
+| `CHP` | Change Process — replace the processor execution context |
+
+This identification is **not yet recorded as established fact**. We need to locate the Hamer-Hodges source that explicitly names the six instructions and compare its terminology with the original instruction documentation.
+
+If the identification is confirmed, it suggests a useful architectural division:
+
+```
+        CHURCH / CAPABILITY MACHINE
+
+        LC  SC  LDP  CALL  RET  CHP
+                    |
+          establishes, navigates
+          or changes protected
+          computational context
+                    |
+                    v
+          TURING / DATA MACHINE
+
+       LD ST ADD CMP JMP AND ...
+                    |
+           operates on ordinary
+          binary data within the
+       capability-defined context
+```
+
+This may be particularly significant for understanding `LDP`. The processor self-test transcription describes LDP as **"D := Pointer associated with A."** Thus LDP apparently produces ordinary data in a D register while being closely associated with capability addressing. If LDP is confirmed as one of Hamer-Hodges's six Church instructions, it should not be approached merely as a conventional address-calculation instruction. It may instead be part of the carefully controlled boundary between ordinary manipulable pointers/references and protected capability authority.
+
+The interpretation is also consistent with an important architectural distinction already evident in System 250: ordinary data registers contain manipulable binary values, whereas capability registers hold protected authority that ordinary instructions cannot simply manufacture or modify as data.
+
+### Research action
+
+Locate the original Hamer-Hodges statement identifying the six Church instructions. Establish:
+
+1. whether the six are explicitly `LC`, `SC`, `LDP`, `CALL`, `RET`, and `CHP`;
+2. the date and context in which Hamer-Hodges made the Church/Turing comparison;
+3. whether contemporary System 250 papers use Church/lambda-calculus terminology;
+4. how each confirmed instruction maps to the Church/lambda-calculus concepts Hamer-Hodges intended.
+
+Until that work is complete, preserve the distinction between **Hamer-Hodges's historically significant interpretation**, the **six-instruction identification hypothesis**, and semantics independently established from primary System 250 documentation.
+
 ## Capability access rights
 
 Page 4 contains capability/access-code diagrams for COS and POS.
