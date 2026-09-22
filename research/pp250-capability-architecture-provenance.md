@@ -341,3 +341,195 @@ As research proceeds, each arrow should be backed by a source and labelled:
 `DOCUMENTED INFLUENCE`, `CLAIMED DESCENT`, `ARCHITECTURAL SIMILARITY`, or `PP250-REBOOT INFERENCE`.
 
 That will allow the project to preserve both the history of the original machine and the provenance of ideas emerging during its modern reconstruction.
+
+
+---
+
+## 11. Research hypothesis: was PP250 framed too narrowly as a protection architecture?
+
+A potentially important explanation for PP250's limited influence on mainstream computer architecture is emerging from the historical material.
+
+### 11.1 The way the architecture was presented
+
+The contemporary and later literature overwhelmingly explains System 250 capabilities in terms of:
+
+- protection;
+- reliability;
+- execution domains;
+- resource ownership and control;
+- protected procedure calls;
+- operating-system resource management;
+- fault containment.
+
+These are genuine and important properties of the architecture. However, this framing may have obscured a more general consequence of the machine: **the capability architecture can represent software structure itself.**
+
+The historical papers describe the mechanisms, but we have not yet found comparable contemporary emphasis on using those mechanisms as a general object/component model.
+
+This remains a research hypothesis and should be tested against the complete contemporary literature before being stated as a historical conclusion.
+
+### 11.2 The CCB as more than a security context
+
+A Central Capability Block can be viewed conventionally as the collection of capabilities defining a process or domain's authority.
+
+But structurally it can also resemble an object's protected environment:
+
+```text
+C6 → Central Capability Block
+
+       +0   capability → operation / method A
+       +1   capability → operation / method B
+       +2   capability → operation / method C
+       +3   capability → private state
+       +4   capability → another protected object/domain
+       ...
+```
+
+If another domain receives an **Enter capability** rather than ordinary capability-read access to this structure, it can be given authority to invoke permitted entry points without acquiring authority to inspect or manipulate the protected implementation.
+
+This is strongly reminiscent of an object interface.
+
+### 11.3 A hardware-protected analogue of a v-table
+
+In a conventional object-oriented implementation, a reference to an object ultimately permits software to select an operation through some form of dispatch structure, commonly a v-table.
+
+PP250's protected call mechanism suggests a stronger construction:
+
+```text
+object authority + entry selector
+              │
+              ▼
+             CALL
+              │
+              ▼
+hardware-mediated protected entry
+              │
+              ▼
+callee executes in its own capability environment
+```
+
+This can be understood as analogous to a **hardware-enforced object dispatch table**, rather than merely a software v-table.
+
+The distinction is important. A conventional v-table is data/code structure interpreted by software. A PP250 Enter capability can provide authority to invoke a protected entry without necessarily providing authority to inspect or rewrite the structure implementing that interface.
+
+Thus:
+
+```text
+Conventional OO                  Possible PP250 interpretation
+
+object reference          ↔      capability / Enter authority
+v-table                    ↔      protected entry structure / CCB
+method selector            ↔      entry displacement
+method call                ↔      CALL
+private object state       ↔      capabilities reachable inside domain
+encapsulation              ↔      hardware-enforced capability boundary
+object graph               ↔      graph of reachable capabilities
+```
+
+This table is an architectural interpretation, not a claim that the PP250 designers used modern object-oriented terminology.
+
+### 11.4 Protected procedure versus object
+
+The historical vocabulary matters.
+
+System 250 was developed at the end of the 1960s and beginning of the 1970s. Although Simula had already introduced classes and objects, the later mainstream vocabulary of:
+
+- object interfaces;
+- encapsulation;
+- dynamic dispatch;
+- v-tables;
+- dependency injection;
+- component graphs;
+
+was not yet the normal language in which computer architecture was described.
+
+The PP250 designers therefore naturally described **protected procedures, execution domains and capabilities**.
+
+A modern reading can see that substantially the same mechanisms may also describe:
+
+**objects, interfaces, method invocation and object graphs.**
+
+The possibility to investigate is that the architecture's software-structuring consequences were larger than the problem its designers were presenting it as solving.
+
+### 11.5 Why this might have affected adoption
+
+If PP250 is presented primarily as:
+
+> a sophisticated hardware architecture for protecting resources,
+
+then it competes against much cheaper and increasingly conventional mechanisms such as supervisor modes, memory-management units, rings, virtual memory, access-control lists and process isolation.
+
+In that comparison, a capability machine can appear to be expensive specialized hardware solving a problem that conventional architectures can solve adequately in software plus simpler protection hardware.
+
+The proposition changes considerably if the architecture is instead understood as:
+
+> **hardware that directly represents and enforces the structure and authority relationships of software components.**
+
+Under that interpretation:
+
+- the CCB is not merely a security context; it can be an object's protected capability environment;
+- Enter is not merely a protection key; it can be an invocation interface;
+- CALL is not merely a protected procedure mechanism; it can be hardware-mediated method dispatch and domain transition;
+- capability closure is not merely the set of resources a process may access; it can describe the reachable object graph;
+- the SCT is not merely memory-protection metadata; it participates in maintaining authoritative object/resource identity independently of physical placement.
+
+This would make PP250's capability machinery a **software architecture mechanism as well as a protection mechanism**.
+
+### 11.6 Evidence that the broader interpretation emerged later
+
+Kenneth Hamer-Hodges's modern Church Machine work explicitly moves toward the language of abstractions and separates authority from ordinary computation.
+
+The Church Machine treats capability structure as the structure of the machine's software world rather than merely as an access-control layer.
+
+This may indicate that at least one original System 250 designer subsequently came to interpret the architectural idea more broadly than the protection/resource-management framing prominent in the early literature.
+
+It does not establish that the original Plessey team consciously intended PP250 as an object-oriented machine.
+
+### 11.7 A possible historical explanation
+
+The working hypothesis is therefore:
+
+> **PP250 may have been understood and presented primarily as a capability protection and reliability architecture at a time when the vocabulary needed to describe its broader software-structuring potential was not yet mature.**
+
+If so, part of the reason capability machines did not become mainstream may be that their proponents and their audience evaluated them primarily against alternative **protection mechanisms**, rather than against alternative **models for constructing software systems**.
+
+This is not yet established historical fact. It is a hypothesis worth testing against:
+
+1. the original System 250 papers;
+2. Plessey manuals and training material;
+3. patents;
+4. contemporary conference discussions and reviews;
+5. later recollections by Cotton, England, Cosserat, Hamer-Hodges and other designers;
+6. early object-oriented literature, especially Simula and later Smalltalk;
+7. contemporary and later descriptions of CAP and Hydra, where similar software-structuring effects may have been noticed.
+
+### 11.8 Why this matters to PP250-Reboot
+
+This hypothesis changes the question PP250-Reboot asks of the historical machine.
+
+Instead of asking only:
+
+> How did PP250 protect memory and resources?
+
+we should also ask:
+
+> **What software structures can the PP250 capability model express directly?**
+
+That includes investigating whether the original architecture naturally supports:
+
+- objects with private state;
+- protected interfaces;
+- method dispatch;
+- polymorphic interfaces;
+- composition through capability references;
+- object graphs;
+- service discovery through capability structures;
+- dependency injection by capability transfer;
+- replacement/revocation of implementations without exposing their representation.
+
+If these emerge naturally from the original architecture, they are not merely security side effects. They may reveal that PP250 contained the basis of a substantially different general-purpose programming model whose significance was never fully articulated at the time.
+
+The strongest form of the hypothesis can be stated as:
+
+> **The capability system was not merely capable of protecting the program. It was capable of being the program's structural model.**
+
+That proposition should now be treated as a research question and tested, not assumed.
