@@ -10,11 +10,34 @@ The immediate objective is to gather, preserve, digitise and cross-reference as 
 
 That reconstruction can then become executable as a reference emulator and simulator: a research bench for testing whether our reconstruction is coherent, for recreating as much of the original System 250 as the evidence permits, and for experimenting with historically distinct derivatives such as later patented developments and clearly identified new extensions.
 
-The broader work now separates three related but distinct lines of research:
+I would define the programme this way:
 
-1. **System 250 reconstruction research bench** — the primary purpose of this repository. A faithful, evidence-led software emulation and simulation of the original machine, with experimental derivatives kept explicitly separate from the historical baseline.
-2. **Modern FPGA capability machine** — a separate real hardware project inspired by System 250's capability principles, but designed using modern FPGA, memory, interconnect, DMA, storage and peripheral technology. This is not intended to be a hardware reproduction of System 250.
-3. **Inter-computer capability research** — a separate, currently conceptual research problem concerning whether and how capability authority can be passed between independently protected computers. This problem is not considered solved.
+1. **System 250 Reconstruction Research Bench.** A software emulation/simulation environment whose primary purpose is historical and architectural reconstruction. We implement the original hardware and behaviour as faithfully as the surviving evidence permits, explicitly recording what is documented, inferred, or still unknown. Once we have a faithful baseline, the same simulator becomes an experimental platform: later Plessey patents can be implemented as variants, and we can explore our own extensions without contaminating the baseline reconstruction. This is where the current work on CHP, SCTs, dump stacks, capability representation, processor self-test, bootstrapping, COS/POS/ROS/PDOS differences, etc. belongs.
+
+2. **Modern FPGA Capability Machine.** A new real computer inspired by the System 250 capability principles—closer in spirit to CHERIoT as a modern small capability machine, but not an attempt to reproduce System 250 hardware. It uses contemporary FPGA technology, RAM, buses and peripherals. We are free to choose an existing modern interconnect, use DMA, modern storage/networking and redesign things where appropriate. The research question becomes: what does a clean hardware capability machine look like if we take the important System 250 ideas and build it today? This could eventually lead toward an ASIC if the architecture proves interesting.
+
+3. **Inter-computer capability research.** For now this is deliberately thinking and documentation only. The problem is whether capability authority can meaningfully extend between independently protected machines without reducing a capability to forgeable/copyable data or merely replacing the capability model with cryptographic credentials. We have interesting ideas, particularly around the distinction between representation and authority to reconstruct, but we have not solved it.
+
+There is also an important relationship between the first two:
+
+```
+Historical evidence
+       |
+       v
+System 250 Reconstruction Research Bench
+       |
+       +-- faithful baseline
+       +-- later Plessey patent variants
+       +-- our own experimental extensions
+       |
+       v
+architectural understanding
+       |
+       v
+Modern FPGA Capability Machine
+```
+
+The reconstruction gives us an evidence-based understanding of what System 250 actually did. The FPGA machine can then draw on that understanding without being constrained to reproduce 1970s implementation technology. Experimental changes in the research bench remain explicitly identified as variants so that they do not contaminate the historical baseline.
 
 **Why?**
 
