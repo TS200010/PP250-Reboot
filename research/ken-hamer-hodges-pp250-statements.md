@@ -20,6 +20,35 @@ The Church Machine repository itself identifies `docs/cloomc-foundation.md` as t
 
 ---
 
+## The objective of the Church Machine / CLOOMC project
+
+The Church Machine project is not an attempt to reconstruct the PP250. Hamer-Hodges's stated objective is substantially broader: to take what he regards as the fundamental architectural principle demonstrated by PP250 — capabilities as the machine's only authority mechanism — and generalize it into a modern general-purpose computer architecture.
+
+In the project's own framing, PP250 demonstrated that a fully capability-mediated machine could operate successfully in the telecommunications domain. Church Machine is intended to carry that approach into general computing.
+
+Its principal objectives are to:
+
+- eliminate raw-address and ambient-authority escape paths so that access to resources is capability-mediated;
+- separate **authority** (the “Church” domain) from ordinary **data computation** (the “Turing” domain);
+- make software components capability-confined abstractions whose accessible world is determined by the capabilities supplied to them;
+- enforce those boundaries in hardware rather than relying upon a conventional privileged operating-system or cybersecurity layer;
+- support revocation, fault containment, recovery and long-lived replaceable abstractions;
+- extend capability authority beyond local memory to storage and remote/network resources;
+- make the capability graph and system structure visible through an integrated development environment; and
+- demonstrate the architecture in practical hardware as well as in the simulator and IDE.
+
+The repository's broader thesis is that conventional computers place a Turing/von-Neumann machine at the centre and subsequently add protection mechanisms around it. Church Machine reverses that relationship: the capability/abstraction system is intended to define the computer, while conventional mutable computation operates inside capability-defined boundaries.
+
+`docs/prologue.md` summarizes the intended division by saying that **the Turing domain handles computation while the Church domain handles authority**, and describes this as an insight pioneered by PP250 and completed by Church Machine.
+
+A concise statement of the project's objective is therefore:
+
+> **To build a practical modern general-purpose computer in which authority is a first-class hardware concept, derived only from capabilities, with conventional computation permanently confined inside capability-defined boundaries — generalizing the architectural approach first demonstrated by PP250.**
+
+This objective provides the context for the repository's Golden Tokens, Namespace, LUMPs, CLOOMC instruction set, IDE and FPGA implementation. They are modern mechanisms intended to pursue that objective, rather than claims about the detailed implementation of the historical PP250.
+
+---
+
 ## 1. Hamer-Hodges's overall characterization of PP250
 
 ### 1.1 “First immersive capability computer”
