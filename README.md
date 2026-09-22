@@ -16,28 +16,44 @@ I would define the programme this way:
 
 2. **Modern FPGA Capability Machine.** A new real computer inspired by the System 250 capability principles—closer in spirit to CHERIoT as a modern small capability machine, but not an attempt to reproduce System 250 hardware. It uses contemporary FPGA technology, RAM, buses and peripherals. We are free to choose an existing modern interconnect, use DMA, modern storage/networking and redesign things where appropriate. The research question becomes: what does a clean hardware capability machine look like if we take the important System 250 ideas and build it today? This could eventually lead toward an ASIC if the architecture proves interesting.
 
-3. **Inter-computer capability research.** For now this is deliberately thinking and documentation only. The problem is whether capability authority can meaningfully extend between independently protected machines without reducing a capability to forgeable/copyable data or merely replacing the capability model with cryptographic credentials. We have interesting ideas, particularly around the distinction between representation and authority to reconstruct, but we have not solved it.
+3. **Top-Down Capability-Native Design.** A complementary research programme that starts with the software system we would like a capability-native computer to express and works downward toward the required hardware abstractions. Rather than beginning with PP250 instructions and asking what software can be built on them, this track begins with objects, services, private state, interfaces and authority relationships and asks what capability graph, invocation mechanisms, protected structures and processor support make those abstractions natural. The objective is to determine where this independently derived top-down machine converges with the faithfully reconstructed PP250 architecture. Repeated convergence—on mechanisms such as Enter, CALL, capability closure, authoritative capability tables and the inability of ordinary data to manufacture authority—would help distinguish fundamental architectural invariants from implementation choices imposed by 1970s technology.
 
-There is also an important relationship between the first two:
+4. **Inter-computer capability research.** For now this is deliberately thinking and documentation only. The problem is whether capability authority can meaningfully extend between independently protected machines without reducing a capability to forgeable/copyable data or merely replacing the capability model with cryptographic credentials. We have interesting ideas, particularly around the distinction between representation and authority to reconstruct, but we have not solved it.
+
+There is also an important relationship between the reconstruction and the top-down design programme. They deliberately approach the same question from opposite directions:
 
 ```
-Historical evidence
-       |
-       v
-System 250 Reconstruction Research Bench
-       |
-       +-- faithful baseline
-       +-- later Plessey patent variants
-       +-- our own experimental extensions
-       |
-       v
-architectural understanding
-       |
-       v
-Modern FPGA Capability Machine
+BOTTOM-UP                               TOP-DOWN
+
+Historical evidence                       Desired software system
+       |                                          |
+       v                                          v
+System 250 reconstruction               Objects / services
+       |                                          |
+       v                                          v
+instructions and capability             Interfaces and authority
+mechanisms                               relationships
+       |                                          |
+       v                                          v
+SCT / CCB / processes                   Capability graph
+       |                                          |
+       +-------------------+  +-------------------+
+                           |  |
+                           v  v
+                      CONVERGENCE
+                           |
+                           v
+              architectural invariants
+                           |
+                           v
+             Modern FPGA Capability Machine
 ```
 
-The reconstruction gives us an evidence-based understanding of what System 250 actually did. The FPGA machine can then draw on that understanding without being constrained to reproduce 1970s implementation technology. Experimental changes in the research bench remain explicitly identified as variants so that they do not contaminate the historical baseline.
+The reconstruction gives us an evidence-based understanding of what System 250 actually did. The top-down programme asks a different question: what would computing look like if capability architecture, rather than the conventional address-space/process/operating-system model, were the foundation of software design?
+
+The two tracks are intended to meet in the middle. If a mechanism appears only because the original PP250 hardware required it, the top-down derivation may not need it. If mechanisms such as Enter, capability closure, the SCT or non-forgeable authority reappear when the machine is independently derived from software requirements, that is evidence that they may be architectural invariants rather than historical baggage.
+
+This also changes the role of the modern FPGA machine. It need not simply be a modernised PP250. It can become the experimental implementation of the architecture that survives this two-direction analysis: historically grounded from below and independently justified from above. Experimental changes in the reconstruction research bench remain explicitly identified as variants so that they do not contaminate the historical baseline.
 
 **Why?**
 
