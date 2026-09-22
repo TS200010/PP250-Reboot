@@ -1,0 +1,46 @@
+name: Import US3787813 patent
+on:
+  push:
+    paths:
+      - '.github/workflows/import-us3787813.yml'
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download patent PDF
+        run: |
+          mkdir -p patents transcriptions
+          curl -L --fail --retry 3 -o patents/US3787813A-Data-Processing-Devices-Using-Capability-Registers.pdf \
+            'https://patentimages.storage.googleapis.com/b6/fe/2f/bcddc5c22e16e2/US3787813.pdf'
+      - name: Extract searchable text
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq poppler-utils
+          pdftotext -layout patents/US3787813A-Data-Processing-Devices-Using-Capability-Registers.pdf /tmp/patent.txt
+          {
+            echo '# US 3,787,813 — Data Processing Devices Using Capability Registers'
+            echo
+            echo 'Source: United States Patent 3,787,813; Cole, Cotton and Cosserat; priority 26 May 1970; published 22 January 1974.'
+            echo
+            echo '> Machine-extracted text from the source PDF using pdftotext -layout. Retained as a research/search aid; consult the source PDF for authoritative diagrams, typography and ambiguous OCR.'
+            echo
+            echo '---'
+            echo
+            echo '~~~text'
+            cat /tmp/patent.txt
+            echo '~~~'
+          } > transcriptions/US3787813A-Data-Processing-Devices-Using-Capability-Registers.md
+      - name: Remove temporary importer
+        run: rm .github/workflows/import-us3787813.yml
+      - name: Commit imported source and transcription
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add patents/US3787813A-Data-Processing-Devices-Using-Capability-Registers.pdf \
+                  transcriptions/US3787813A-Data-Processing-Devices-Using-Capability-Registers.md \
+                  .github/workflows/import-us3787813.yml
+          git commit -m 'Add US3787813 capability-register patent and transcription'
+          git push
