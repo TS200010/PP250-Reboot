@@ -533,3 +533,278 @@ The strongest form of the hypothesis can be stated as:
 > **The capability system was not merely capable of protecting the program. It was capable of being the program's structural model.**
 
 That proposition should now be treated as a research question and tested, not assumed.
+
+
+---
+
+## 12. Evolution of the hypothesis: from “object insight was missed” to “where should the hardware boundary be?”
+
+The reasoning that led to the current research question is itself important and should be preserved. The conclusion changed as the historical comparison broadened.
+
+### 12.1 Initial observation
+
+The starting observation was that contemporary PP250 material appears to emphasize capabilities primarily as mechanisms for:
+
+- protection;
+- reliability;
+- resource control;
+- namespaces/domains;
+- protected procedure invocation.
+
+At the same time, the reconstructed mechanisms suggest a much broader software interpretation. A CCB can resemble a protected object environment; an Enter capability can resemble an object reference exposing an invocation interface; CALL can resemble protected method dispatch; and the reachable capability structure can resemble an object graph.
+
+This led initially to the hypothesis that PP250's wider potential may simply never have been understood because it was presented as a protection architecture before modern object-oriented vocabulary became commonplace.
+
+### 12.2 First correction: the object connection was not missed
+
+That hypothesis proved too broad.
+
+Hydra clearly treated capabilities as references to protected objects with permitted operations. KeyKOS explicitly developed a capability-based object-oriented operating system. EROS continued this tradition, treating capabilities as unforgeable object references coupled to authorized interfaces.
+
+These systems demonstrate that researchers did understand the deeper relationship:
+
+```text
+capability
+    │
+    ├── designation
+    ├── authority
+    └── protected invocation
+             │
+             ▼
+           object
+```
+
+Therefore the historical question cannot be:
+
+> Why did nobody realize that capabilities could represent objects?
+
+They did.
+
+### 12.3 Second correction: researchers also put object models into hardware
+
+A stronger version of the hypothesis also fails.
+
+The Intel iAPX 432 was deliberately designed as an object-based computer architecture with hardware/microcode support for object-based programming and protected object references.
+
+IBM System/38 likewise made objects central to the machine architecture and used protected/tagged capability-like pointers.
+
+SRI's PSOS work also explored typed, unforgeable capabilities and a highly structured object-oriented capability architecture extending toward hardware.
+
+Thus researchers did not merely build object-capability operating systems on conventional machines. Some explicitly attempted to move the object model into the processor architecture.
+
+### 12.4 The question that survives
+
+The comparison suggests that the interesting distinction may instead be **where the hardware/software semantic boundary is drawn**.
+
+Three broad approaches can be distinguished:
+
+```text
+A. SOFTWARE OBJECT-CAPABILITY SYSTEM
+
+    application objects
+           │
+    capability/object model
+           │
+    kernel / nanokernel
+           │
+    conventional processor
+
+    Examples: Hydra, KeyKOS, EROS
+
+
+B. HARDWARE OBJECT MACHINE
+
+    application objects
+           │
+    architectural object types
+           │
+    object operations / descriptors
+           │
+    specialised processor architecture
+
+    Examples to investigate:
+    iAPX 432, System/38, PSOS
+
+
+C. PP250 POSSIBILITY
+
+    software-defined meaning
+           │
+    protected interface / domain
+           │
+    Enter / CALL
+           │
+    capability closure / CCB
+           │
+    capability registers
+           │
+    SCT / hardware authority enforcement
+```
+
+The potentially distinctive PP250 property is that the hardware need not know what an object **means**.
+
+It need not know whether protected state represents a file, account, compiler object, telephone call, device, semaphore or application-defined abstraction.
+
+The hardware may need to know only **authority**:
+
+- what capability is possessed;
+- what operations that capability permits;
+- what protected domain may be entered;
+- what capability environment becomes available after entry;
+- and whether ordinary computation can manufacture or escape that authority.
+
+### 12.5 Meaning above; authority below
+
+This suggests a clean conceptual boundary:
+
+```text
+             SOFTWARE MEANING
+
+          application abstraction
+                   │
+              interface
+                   │
+              operations
+                   │
+────────────────────────────────────
+             HARDWARE AUTHORITY
+                   │
+            Enter capability
+                   │
+                 CALL
+                   │
+                 CCB
+                   │
+         capability closure
+                   │
+                 SCT
+```
+
+The upper layer decides **what something is**.
+
+The lower layer decides **who has authority to do what with it**.
+
+The capability hardware therefore does not have to implement an object-oriented language or understand application types. Objects can emerge from software structure while their encapsulation and authority relationships are enforced below the semantic boundary.
+
+This is importantly different from concluding that PP250 contains a hardware v-table or that the processor itself understands objects. The v-table analogy helped reveal the possibility, but the deeper abstraction may be simpler than “object”.
+
+### 12.6 Reinterpreting an apparent limitation
+
+Earlier PP250-Reboot discussion noted that a capability protects an address space and authority over it but does not know the **meaning** of the bits within that space.
+
+Initially this can look like a limitation.
+
+The comparison with richer hardware object machines suggests the opposite interpretation may be worth testing:
+
+> **Not knowing the meaning may be precisely what keeps the capability mechanism general.**
+
+If the processor embeds particular object semantics, types or programming-language concepts, the architecture becomes coupled to those abstractions.
+
+If the processor enforces only authority, software remains free to define new abstractions without changing the hardware protection model.
+
+### 12.7 Revised historical trajectory
+
+A useful research model is therefore not that PP250 discovered an object architecture which everybody subsequently overlooked.
+
+A more plausible schematic history is:
+
+```text
+                    capability ideas
+                          │
+                          ▼
+                        PP250
+                          │
+                 hardware authority
+                          │
+             ┌────────────┴────────────┐
+             │                         │
+             ▼                         ▼
+    object-capability OSs       hardware object systems
+             │                         │
+          Hydra                    iAPX 432
+             │                     System/38
+          KeyKOS                       │
+             │                  rich architectural
+           EROS                  object semantics
+             │                         │
+             └────────────┬────────────┘
+                          │
+                          ▼
+             later capability research
+                          │
+                        CHERI
+```
+
+This diagram is conceptual rather than a claim of direct historical descent. Each edge requires separate provenance evidence.
+
+### 12.8 The resulting PP250-Reboot research question
+
+The question has therefore evolved through three stages:
+
+**Initial question**
+
+> Did researchers fail to see that PP250 capabilities could provide the structural basis for object-oriented software?
+
+**Corrected question**
+
+> How far did capability researchers take the idea that capability graphs could define software structure?
+
+**Current question**
+
+> **Did PP250 place the hardware/software boundary at an unusually powerful minimal abstraction: hardware enforces authority, isolation and protected invocation, while software remains responsible for the meaning and type of the objects constructed above it?**
+
+This is now one of the principal questions for the Top-Down Capability-Native Design track.
+
+### 12.9 A falsifiable top-down experiment
+
+The top-down programme provides a way to test the idea rather than merely admire it historically.
+
+Begin without assuming PP250 mechanisms. Start with the requirements of a general-purpose software system:
+
+```text
+objects / services
+       │
+private state
+       │
+interfaces
+       │
+composition
+       │
+polymorphism
+       │
+controlled delegation
+       │
+revocation / lifecycle
+       │
+fault containment
+```
+
+Then derive the minimum machine mechanisms required to enforce the authority relationships between those abstractions.
+
+If that independent derivation naturally converges on something resembling:
+
+```text
+capabilities
+Enter
+CALL
+capability closure
+CCB-like protected environments
+SCT-like authoritative identity
+non-forgeability
+```
+
+without requiring the hardware to understand application-level object types, that convergence would be significant.
+
+It would suggest that these PP250 mechanisms are not merely historical implementation choices. They may represent a compact hardware substrate from which richer software abstractions naturally emerge.
+
+Conversely, if the top-down derivation requires mechanisms PP250 cannot naturally express, that is equally valuable evidence and should identify where the original architecture's abstraction boundary is insufficient.
+
+### 12.10 Working proposition
+
+The resulting proposition is deliberately narrower than the original speculation:
+
+> **The interesting possibility is not that PP250 uniquely discovered objects. It is that PP250 may have put the hardware boundary in an unusually clean place: the hardware understands authority without needing to understand the semantic meaning of the objects over which that authority operates.**
+
+That proposition now needs comparison against Hydra, KeyKOS, EROS, iAPX 432, System/38, PSOS, CAP, CHERI and other relevant capability architectures.
+
+The objective is not to establish that PP250 was “first” or “better”, but to determine precisely what abstraction boundary each architecture chose, why it chose it, and what consequences followed.
