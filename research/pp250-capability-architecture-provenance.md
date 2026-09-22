@@ -808,3 +808,254 @@ The resulting proposition is deliberately narrower than the original speculation
 That proposition now needs comparison against Hydra, KeyKOS, EROS, iAPX 432, System/38, PSOS, CAP, CHERI and other relevant capability architectures.
 
 The objective is not to establish that PP250 was “first” or “better”, but to determine precisely what abstraction boundary each architecture chose, why it chose it, and what consequences followed.
+
+
+---
+
+## 13. Potential PhD thesis: The Authority Machine
+
+The work now suggests a research programme large enough to frame as a doctoral thesis. The thesis would **not** simply be “reconstruct PP250”. The historical reconstruction would instead provide evidence, an experimental reference architecture and one half of a two-direction investigation.
+
+### 13.1 Working title
+
+> **The Authority Machine: Finding the Minimal Hardware Abstraction for Capability-Native Computing**
+
+Possible subtitle:
+
+> **A bottom-up reconstruction of the Plessey System 250 and a top-down derivation of a modern capability architecture**
+
+An alternative more conventional academic title is:
+
+> **Authority as the Hardware Abstraction: Re-evaluating Capability-Native Computer Architecture through the Plessey System 250**
+
+### 13.2 Central research question
+
+> **What is the minimal hardware abstraction required to support a general-purpose capability-native software system, and does PP250's separation of hardware-enforced authority from software-defined meaning represent such an abstraction?**
+
+This is deliberately a testable question rather than an attempt to prove that PP250 was correct.
+
+### 13.3 Contribution 1 — rigorous PP250 reconstruction
+
+The first contribution would establish, as accurately as surviving evidence permits, what the original machine actually did.
+
+This includes:
+
+- SCT semantics and lifecycle;
+- capability representation in memory and registers;
+- capability genesis;
+- CCB and execution-domain structure;
+- Enter and CALL;
+- process construction and CHP;
+- dump-stack behaviour;
+- protected capability manipulation;
+- fault handling and recovery;
+- bootstrapping from inert hardware to the first legitimate process.
+
+The objective is not historical completeness for its own sake. The reconstruction supplies a concrete historical architecture against which the larger architectural hypothesis can be tested.
+
+### 13.4 Contribution 2 — comparative semantic-boundary analysis
+
+The second contribution would compare relevant capability and object architectures specifically by asking:
+
+> **What does the hardware have to understand?**
+
+Candidate systems include:
+
+- PP250;
+- CAP;
+- Hydra;
+- KeyKOS;
+- EROS;
+- IBM System/38;
+- Intel iAPX 432;
+- PSOS;
+- CHERI and related contemporary capability architectures.
+
+The comparison should distinguish architectures in which:
+
+1. object/capability semantics exist primarily in software over conventional hardware;
+2. rich object types and operations become architectural concepts;
+3. hardware implements lower-level authority primitives from which software abstractions emerge.
+
+The purpose is not to rank these machines. It is to identify where each places the boundary between **software meaning** and **hardware-enforced authority**, why that boundary was chosen, and what consequences followed.
+
+### 13.5 Contribution 3 — independent top-down derivation
+
+This is likely where the central thesis contribution lies.
+
+Without assuming PP250's mechanisms, begin with the requirements of a general-purpose capability-native software system:
+
+```text
+software abstractions
+        │
+        ▼
+objects / services
+        │
+        ▼
+interfaces
+        │
+        ▼
+authority relationships
+        │
+        ▼
+delegation / revocation
+        │
+        ▼
+protected invocation
+        │
+        ▼
+minimum required hardware primitives
+```
+
+Independently, reconstruct PP250 from the bottom upward:
+
+```text
+PP250 hardware
+      │
+      ▼
+SCT
+      │
+      ▼
+capabilities
+      │
+      ▼
+CCB / capability closure
+      │
+      ▼
+Enter / CALL
+      │
+      ▼
+software abstractions
+```
+
+The experiment is whether the two derivations meet.
+
+If the top-down derivation independently produces mechanisms resembling non-forgeable capabilities, Enter, protected invocation, capability closure, CCB-like protected environments and SCT-like authoritative identity, that convergence is itself a research result.
+
+If it does not, the divergence is equally valuable: it identifies precisely where PP250's abstraction boundary is insufficient or historically contingent.
+
+### 13.6 Contribution 4 — experimental implementation
+
+The modern FPGA capability machine becomes the experimental validation platform rather than merely a modern PP250 implementation.
+
+Implement the minimum architecture derived by the research and demonstrate non-trivial software constructed entirely in terms of it.
+
+Candidate demonstrations include:
+
+- objects/services with private state;
+- protected interfaces;
+- capability-mediated method/service invocation;
+- composition through capability references;
+- controlled delegation;
+- revocation and lifecycle management;
+- capability-protected devices;
+- persistent objects/resources;
+- fault containment;
+- potentially, later work on inter-machine authority.
+
+The critical requirement is that the demonstration must not quietly depend on an unrestricted underlying privileged environment that invalidates the claimed capability model.
+
+### 13.7 Candidate thesis claim
+
+A defensible candidate claim is:
+
+> **A general-purpose object/component software model does not require object semantics to be encoded in the processor. A smaller hardware abstraction based on unforgeable authority, protected invocation and capability-defined execution environments may be sufficient, while application semantics remain entirely above that boundary.**
+
+PP250 would then be significant not because it proves the claim, but because a machine designed around 1970 may provide an independently developed historical architecture remarkably close to the abstraction obtained from the modern top-down derivation.
+
+### 13.8 Experimental comparison
+
+A useful evaluation could implement the same small object/service system in several environments:
+
+```text
+                    SAME SOFTWARE MODEL
+                           │
+          ┌────────────────┼────────────────┐
+          │                │                │
+          ▼                ▼                ▼
+ reconstructed         new minimal      contemporary
+    PP250               capability       capability
+    model               architecture     architecture
+```
+
+The comparison should not be restricted to execution speed.
+
+Potential measures include:
+
+- trusted computing base;
+- amount of privileged mechanism;
+- number and complexity of architectural primitives;
+- authority paths;
+- capability derivation rules;
+- isolation/domain-transition cost;
+- representation complexity;
+- revocation behaviour;
+- fault containment;
+- whether ordinary data computation has any path to unrestricted authority;
+- how naturally the same high-level component/object structure maps onto each architecture.
+
+A contemporary architecture such as CHERI could provide a useful comparison, subject to defining a fair experimental methodology.
+
+### 13.9 Why the thesis remains valid if the hypothesis fails
+
+A strong research programme must permit a negative result.
+
+If the independently derived top-down architecture does **not** converge on PP250, the work can still establish:
+
+- which PP250 mechanisms were consequences of 1970s implementation constraints;
+- which abstractions are missing;
+- why later capability systems moved the boundary;
+- what additional mechanisms a modern capability-native architecture requires;
+- and where the minimum viable authority abstraction actually lies.
+
+Thus the thesis question is not:
+
+> Was PP250 right?
+
+It is:
+
+> **Where should a general-purpose computer place the boundary between software-defined meaning and hardware-enforced authority?**
+
+### 13.10 Relationship to PP250-Reboot
+
+The doctoral-scale research programme naturally unifies the project's two directions:
+
+```text
+             BOTTOM-UP                         TOP-DOWN
+
+          historical PP250                desired software model
+                 │                               │
+                 ▼                               ▼
+            reconstruction                  requirements
+                 │                               │
+                 ▼                               ▼
+       architectural mechanisms          minimum primitives
+                 │                               │
+                 └──────────────┬────────────────┘
+                                │
+                                ▼
+                           CONVERGENCE?
+                                │
+                  ┌─────────────┴─────────────┐
+                  │                           │
+                 yes                          no
+                  │                           │
+                  ▼                           ▼
+          candidate minimal          identify missing /
+          authority substrate        contingent mechanisms
+                  │                           │
+                  └─────────────┬─────────────┘
+                                ▼
+                    experimental architecture
+                                │
+                                ▼
+                         FPGA validation
+```
+
+This makes the PP250 reconstruction neither an end in itself nor merely historical background. It becomes one side of a controlled architectural experiment.
+
+### 13.11 Working proposition for the research notebook
+
+For now, the research programme can be summarized as:
+
+> **The Authority Machine investigates whether authority, rather than object semantics, address spaces, privilege levels or operating-system abstractions, can form the minimal hardware foundation of a general-purpose computer. It combines a bottom-up reconstruction of PP250 with an independent top-down derivation from modern software requirements, and tests the point at which those two approaches converge.**
