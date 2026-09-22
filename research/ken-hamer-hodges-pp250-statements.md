@@ -112,7 +112,31 @@ This is presented as one of the defining differences between PP250 and conventio
 
 The modern Church Machine contains its own special hardware mechanisms, but Hamer-Hodges presents **absence of a software privilege bypass around capability enforcement** as PP250 heritage.
 
-### 2.4 Capability hardware
+### 2.4 Enter capability and the continuing distinction between Enter and Execute
+
+The Church Machine retains **Enter** as a distinct capability permission.
+
+Its modern permission model separates the Turing-domain permissions **R/W/X** (Read, Write, Execute) from the Church-domain permissions **L/S/E** (Load, Save, Enter). The two domains are deliberately distinct.
+
+An **E-GT** (a Golden Token carrying Enter authority) gives its holder authority to enter or call an abstraction. This is the modern Church Machine descendant of the PP250 **Enter capability** concept: authority to invoke a protected domain without thereby granting ordinary read, write, or execute access to its underlying representation.
+
+The important continuity is that **Enter and Execute remain different kinds of authority**. Execute belongs to ordinary code execution in the Turing domain; Enter belongs to protected capability-mediated transfer of control in the Church domain.
+
+In simplified form:
+
+```text
+PP250                         Church Machine
+
+Enter capability       →      E-GT / E permission
+       │                           │
+       └──── controlled entry ─────┘
+                    │
+                   CALL
+```
+
+This is one of the clearest examples in the repository of a specific PP250 capability concept surviving into the Church Machine rather than merely influencing its general philosophy.
+
+### 2.5 Capability hardware
 
 The foundation document calls PP250 capabilities **hardware-enforced capability keys** and says the original descriptors were “wide hardware words.”
 
