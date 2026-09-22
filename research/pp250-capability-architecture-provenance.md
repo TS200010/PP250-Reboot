@@ -1059,3 +1059,14 @@ This makes the PP250 reconstruction neither an end in itself nor merely historic
 For now, the research programme can be summarized as:
 
 > **The Authority Machine investigates whether authority, rather than object semantics, address spaces, privilege levels or operating-system abstractions, can form the minimal hardware foundation of a general-purpose computer. It combines a bottom-up reconstruction of PP250 with an independent top-down derivation from modern software requirements, and tests the point at which those two approaches converge.**
+
+
+### 13.12 Authority-integrity follow-on
+
+The subsequent architectural argument distinguishing **software-defined meaning** from **hardware-enforced authority integrity** is preserved separately in `research/authority-integrity-and-semantic-boundary.md`.
+
+That note records the complete reasoning chain from the original object/v-table observation, through the Hydra/KeyKOS/EROS and iAPX 432/System/38 corrections, to the current design rule:
+
+> **Put only the mechanisms required to preserve authority integrity below the trusted boundary. Leave meaning above it.**
+
+This cross-reference is intentional: this provenance document preserves how the research question developed historically, while the authority-integrity note develops the resulting architectural principle.
