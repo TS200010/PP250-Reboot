@@ -8,7 +8,13 @@ The Plessey System 250 was an early commercial capability-based computer develop
 
 The immediate objective is to gather, preserve, digitise and cross-reference as much reliable information about the machine as possible. Once that body of evidence has been assembled, we can reconstruct the architecture and determine what can be established about the machine's behaviour.
 
-That reconstruction can then become executable: first as a reference emulator, then potentially as a hardware implementation on an FPGA. Beyond that lies a further objective—to explore what a modern computer derived from PP250's capability architecture could become.
+That reconstruction can then become executable as a reference emulator and simulator: a research bench for testing whether our reconstruction is coherent, for recreating as much of the original System 250 as the evidence permits, and for experimenting with historically distinct derivatives such as later patented developments and clearly identified new extensions.
+
+The broader work now separates three related but distinct lines of research:
+
+1. **System 250 reconstruction research bench** — the primary purpose of this repository. A faithful, evidence-led software emulation and simulation of the original machine, with experimental derivatives kept explicitly separate from the historical baseline.
+2. **Modern FPGA capability machine** — a separate real hardware project inspired by System 250's capability principles, but designed using modern FPGA, memory, interconnect, DMA, storage and peripheral technology. This is not intended to be a hardware reproduction of System 250.
+3. **Inter-computer capability research** — a separate, currently conceptual research problem concerning whether and how capability authority can be passed between independently protected computers. This problem is not considered solved.
 
 **Why?**
 
@@ -161,49 +167,75 @@ The eventual reconstruction is expected to cover areas including:
 * hardware implementation
 * programming conventions and system software
 
-**Executable reconstruction**
+**Executable reconstruction and simulation research bench**
 
-A reference emulator is a later objective. It should implement the architecture that the evidence supports, rather than an architecture invented to make an emulator convenient to write.
+The executable System 250 work is intended first and foremost as a **software research bench**. Its reference emulator/simulator should implement the architecture that the evidence supports rather than an architecture invented for convenience.
 
-Where historical behaviour cannot be established, the emulator should make assumptions explicit. In that sense it will be an executable reconstruction: a way to test whether the individual conclusions form a complete and coherent machine.
+Its first responsibility is to provide a faithful baseline against which our historical hypotheses can be tested. Where historical behaviour cannot be established, assumptions must be explicit and traceable to their evidence status.
 
-A possible next stage is an RTL implementation on an FPGA. The FPGA would implement PP250 architectural behaviour as digital hardware—registers, instruction execution, capability checks, process changes, memory access and faults—without necessarily reproducing the original gates, timing or microcode.
+Once that baseline exists, the simulator can also support deliberately separate experimental variants. These may include mechanisms described by later patents, alternative historical developments, and our own extensions. Such variants must never silently alter the faithful System 250 model.
 
 The intended progression is:
 
 1. evidence-backed architectural model;
-2. reference emulator and assembler;
+2. reference emulator, simulator and assembler;
 3. test suite comparing documented and reconstructed behaviour;
-4. FPGA implementation checked against the reference model;
-5. experimental multiprocessor, memory and peripheral systems;
-6. only if useful, consideration of an ASIC.
+4. increasingly complete reconstruction of the original multiprocessor System 250 environment;
+5. separate experimental branches/models implementing later patents and clearly labelled new extensions.
 
-The distinction between architecture and implementation must remain explicit. An FPGA implementation could legitimately be a reconstructed PP250 while using a completely different modern microarchitecture internally.
+The objective is therefore broader than simply making PP250 instructions execute. The simulator should become an experimental laboratory in which the reconstructed architecture can be observed, challenged and extended while the historical baseline remains intact.
 
-**A modern descendant**
+**Modern FPGA capability machine — a separate project**
 
-Historical reconstruction is one machine. A modern PP250-derived capability computer is another. The project should not silently modernise uncertain parts of the original and present the result as history.
+A modern FPGA machine is a second and distinct undertaking. It is **not the faithful System 250 reconstruction in hardware**.
 
-The descendant would preserve and test the central ideas that make PP250 distinctive:
+Its purpose is to take the architectural ideas that make System 250 interesting—hardware-protected capabilities, non-forgeable authority, protected execution domains, controlled derivation of authority, and protection without an ordinary privileged escape path—and ask what a small real capability computer built with contemporary technology should look like.
 
-* capabilities as the source of authority;
-* hardware-enforced access to segments and objects;
-* capability registers that cannot be manipulated as ordinary data;
-* protected execution domains and C6/C7-style context;
-* process switching and multiprocessor shared memory;
-* protection without relying on a conventional privileged supervisor escape hatch.
+This machine may therefore use:
 
-It need not preserve features that existed because of 1970s technology. Word size, physical bus signalling, memory technology, storage and peripheral interfaces may all be redesigned.
+* a modern FPGA implementation;
+* contemporary RAM;
+* a standard modern system interconnect;
+* modern high-speed storage and peripherals;
+* conventional modern DMA mechanisms where appropriate;
+* contemporary debugging and development interfaces;
+* and architectural simplifications or extensions justified by the new design.
 
-The outside of the machine should be modern. USB, SPI, SD storage, displays, networking and contemporary debugging interfaces could sit behind a modern interconnect such as Wishbone, AXI-Lite or a simpler purpose-built fabric. Memory-mapped I/O remains useful where it fits, but reproducing the original PP250 bus is not an objective in itself.
+It need not reproduce the System 250 word width, electrical bus, memory modules, physical packaging, peripheral interfaces or other implementation choices dictated by 1970s technology.
 
-The essential rule is that a modern transaction must not bypass the capability model. Access to RAM or a device should be derived from authority held by the initiating process. A process given access to an SD controller should not thereby acquire access to USB or unrelated memory. DMA is a particularly valuable experiment: a device could be given a bounded capability describing exactly which memory it may access instead of receiving an unrestricted physical address.
+The historical reconstruction remains valuable to this project because it gives us a rigorously understood capability architecture from which to draw ideas. But the FPGA machine must be described as a **new System-250-inspired capability computer**, not as evidence about how the original machine worked.
 
-This gives the project a longer-term research question:
+This separation is deliberate:
 
-> What would the Plessey System 250 capability architecture look like if the machine were designed today?
+```
+surviving evidence
+       |
+       v
+System 250 reconstruction
+research bench
+       |
+       +---- faithful historical baseline
+       |
+       +---- later patents / experimental derivatives
+       |
+       +---- architectural lessons
+                    |
+                    v
+          modern FPGA capability machine
+          (separate new architecture)
+```
 
-The historical work provides a rigorous starting point for answering that question. It prevents the modern machine from becoming merely a new capability design with a PP250 label attached to it.
+**Inter-computer capabilities — separate unsolved research**
+
+A third line of work concerns capability authority between independently protected computers.
+
+This is currently a **thinking and research problem**, not an implementation objective of the System 250 reconstruction and not a settled feature of the FPGA machine.
+
+The central difficulty is that a capability protected inside one machine cannot simply be transmitted over an ordinary communication channel without becoming data. Data can be copied, modified and manufactured. The unresolved architectural question is therefore not merely how to serialise a capability, but what legitimate authority permits a receiving machine to turn received information into local capability authority.
+
+Ideas explored in this area must be treated as research hypotheses rather than established architecture. In particular, the project should not imply that the inter-computer capability problem has been solved simply because representations can be authenticated, encrypted or transported securely.
+
+Until a satisfactory authority model is established, this work remains conceptually separate from both the faithful System 250 research bench and the modern FPGA capability machine.
 
 **Sources**
 
