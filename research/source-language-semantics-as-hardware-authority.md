@@ -406,3 +406,204 @@ source semantic relationship
 The purpose is not merely to demonstrate that PP250 can execute compiled C++.
 
 The experiment asks whether the source-language authority structure can survive the compiler pipeline sufficiently for a PP250 backend to realise it directly in hardware.
+
+
+## A layered route to capability-aware compilation
+
+The discussion subsequently exposed an important correction to the earlier framing. It is not necessary to solve the richest source-language-to-authority mapping before capability compilation becomes useful. There is a continuum, ranging from treating an entire program as opaque to preserving rich source semantics such as those available in Swift SIL.
+
+This matters because each level can stand independently and all levels can target the same capability architecture.
+
+### Level 1 — Opaque program or module containment
+
+At the coarsest level, we need know nothing about the internal semantics of the program or module.
+
+Conceptually:
+
+```text
+              ENTER capability
+                    |
+                    v
+          +-------------------+
+          |   opaque module   |
+          |                   |
+          |  arbitrary code   |
+          |  arbitrary data   |
+          |                   |
+          +-------------------+
+                    |
+             only explicitly
+             granted capabilities
+```
+
+The module is entered with an execution environment containing only the capabilities it has legitimately been granted. We do not care how badly behaved its internal computation may be: provided the architecture is sound, it cannot manufacture authority that is absent from that environment.
+
+The guarantee is therefore:
+
+> The component may do anything permitted by the capabilities supplied to it, but it cannot access authority outside that set.
+
+This requires no source-language knowledge and potentially no understanding of the internal program at all. It demonstrates a fundamental distinction between capability architecture and compiler-derived memory safety: useful authority confinement exists even for opaque code.
+
+### Level 2 — Structural raising from ordinary LLVM IR
+
+The next level uses ordinary LLVM IR without requiring source-language authority metadata.
+
+LLVM still exposes structural facts such as allocations, globals, GEP-derived locations, loads and stores. Those facts may be sufficient to recognise bounded storage objects and accesses derived from them.
+
+```text
+alloca / global / allocation
+             |
+             v
+           object
+             |
+            GEP
+             |
+             v
+       derived access
+        |          |
+      load       store
+```
+
+The compiler need not know that an object was a Swift class, C++ object, Rust value or C structure. It can make only the claim justified by the IR: there is an identifiable storage object and accesses are derived from it.
+
+This allows a PP250 lowering to investigate representing the object by a capability and using ordinary D-register computation for displacement:
+
+```text
+C = bounded authority over object
+D = computed displacement
+```
+
+This is less semantically rich than source-derived authority, but it can still turn ordinary LLVM storage structure into hardware-enforced bounded authority.
+
+### Level 3 — Behavioural and flow analysis of ordinary LLVM IR
+
+There is a possible intermediate level between simple object bounding and source-semantic authority.
+
+LLVM exposes function boundaries, calls, arguments, returns, aliases, captures, read/write behaviour and data flow. Conservative analysis may therefore reveal authority-transfer opportunities even when the original source semantics are no longer known.
+
+For example:
+
+```text
+Function A
+    |
+    | passes object X
+    v
+Function B
+    |
+    +-- reads X
+    +-- does not retain X
+```
+
+This may permit the compiler to realise the call as a temporary delegation of authority to X.
+
+Likewise, if analysis establishes that a function requires only capabilities A, B and C, the execution environment constructed for it may be narrower than that of its caller.
+
+This level must remain conservative. It cannot recreate source semantics that have disappeared. It can only derive authority relationships justified by behaviour actually visible in LLVM IR.
+
+Nevertheless, this moves beyond simple bounds protection toward inferred least-authority execution.
+
+### Level 4 — Preserve semantic authority from a richer IR such as Swift SIL
+
+At the richest end, the compiler acts before source-language semantics have been reduced to ordinary LLVM operations.
+
+Swift is particularly interesting because its existing compiler pipeline contains SIL, a Swift-specific intermediate representation above LLVM IR. SIL retains concepts including ownership, borrowing, access, object relationships, dispatch and lifetime that are largely absent after conventional LLVM lowering.
+
+The experimental path therefore becomes:
+
+```text
+Swift semantics
+      |
+      v
+     SIL
+      |
+      +-- ownership
+      +-- borrowing
+      +-- object relationships
+      +-- access
+      +-- invocation / dispatch
+      +-- lifetime
+      |
+      v
+authority interpretation
+      |
+      v
+LLVM-preserved authority representation
+      |
+      v
+PP250 lowering
+```
+
+This does not imply writing a new compiler. It means investigating the existing SIL-to-LLVM boundary and determining which semantic relationships can usefully be retained as authority.
+
+The same principle could later apply to other frontends if they possess sufficiently rich pre-LLVM representations.
+
+### Passing authority through LLVM
+
+If authority identified above LLVM affects correctness, it cannot simply be placed in disposable descriptive metadata and hoped to survive optimisation.
+
+The working direction is to investigate LLVM's existing semantic extension mechanisms—particularly intrinsics and operand bundles—and determine whether they can preserve a small, language-independent authority vocabulary through optimisation without requiring a new fundamental LLVM type.
+
+Conceptually that vocabulary might eventually express relationships such as:
+
+```text
+authority root
+delegation
+attenuation
+access requirement
+invocation authority
+domain transition
+```
+
+These are deliberately authority concepts, not Swift or C++ concepts. Swift SIL might recognise one relationship through ownership or dispatch while another frontend reaches the same authority operation through completely different source semantics.
+
+No final representation has yet been selected. The important design requirement is that authority affecting correctness must survive optimisation with defined semantics.
+
+### The continuum
+
+The resulting research programme is therefore not a binary choice between an unaware compiler and a fully capability-native language:
+
+```text
+             increasing semantic knowledge
+                       -------------------->
+
+ OPAQUE          STRUCTURAL          FLOW          SEMANTIC
+ MODULE            LLVM              LLVM            SIL
+   |                 |                 |               |
+   v                 v                 v               v
+ domain           bounded          inferred        language
+ isolation        objects          delegation      authority
+   |                 |                 |               |
+   +-----------------+--------+--------+---------------+
+                              |
+                              v
+                       SAME CAPABILITY
+                         ARCHITECTURE
+```
+
+Each level is independently useful.
+
+Failure to recover rich source semantics does not invalidate opaque-domain protection. Failure to infer useful delegation from ordinary LLVM does not invalidate bounded-object raising. Conversely, richer semantic information can progressively produce more precise authority without requiring a different underlying machine.
+
+### Architectural consequence
+
+This gives the modern capability-machine work a strong design criterion:
+
+> **Hardware protects authority; software defines meaning.**
+
+The processor need not know whether a capability arose because a module was sandboxed, LLVM recognised a bounded object, flow analysis inferred delegation, or Swift SIL identified a semantically meaningful object relationship.
+
+An Enter capability protecting an opaque module and an Enter capability produced from rich language semantics are the same kind of architectural authority. What differs is how much knowledge the software/compiler possessed when constructing the authority graph.
+
+This is important because it keeps source-language complexity out of the hardware while allowing progressively richer compiler understanding to exploit the same underlying capability mechanisms.
+
+### Where to resume this investigation
+
+When this work is resumed, the useful next questions are:
+
+1. Define the minimum authority environment required to execute an opaque LLVM module under an Enter capability.
+2. Take small ordinary LLVM IR examples and determine exactly which bounded-object relationships can be raised without additional metadata.
+3. Determine how far conservative LLVM flow/capture analysis can reduce delegated authority at function boundaries.
+4. Take a small Swift example and inspect its actual SIL for ownership, access, object and dispatch relationships that disappear during IRGen.
+5. Test which existing LLVM semantic mechanisms can carry those relationships through optimisation without modifying LLVM's fundamental IR model.
+
+The objective is not to commit prematurely to one compiler integration strategy. It is to establish experimentally how much authority can be extracted or preserved at each level and show that all of those levels converge on the same hardware authority model.
