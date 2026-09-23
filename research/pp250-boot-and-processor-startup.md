@@ -200,7 +200,176 @@ Three situations must remain distinct:
 
 **UNKNOWN:** whether cold-start and fault-start microsequences are identical. Shared architectural machinery does not prove identical entry conditions, parity handling, outgoing-state treatment or microinstruction order.
 
-## 9. Unresolved questions and research leads
+## 9. Ground zero: establishing the first executable authority state
+
+This section records the central reasoning that emerges when the documented fault/startup mechanism is considered as an architectural bootstrap mechanism rather than merely as ROS/PDOS checkout policy.
+
+### 9.1 Start from the first instruction, not from an operating system
+
+The reconstruction question can be reduced to a sharper one:
+
+> Immediately before the first ordinary instruction is fetched, what legitimate capability state exists, and how did the processor obtain it?
+
+A conventional bootstrap model tends to assume that some privileged code is already executing and can construct the machine state it needs. That assumption is inappropriate here. System 250 has no ordinary unrestricted supervisor mode that can simply manufacture capabilities from data.
+
+It is useful to separate two aspects of processor state conceptually:
+
+- **computational state** — data registers, arithmetic state, instruction sequencing and the other state needed to continue an ordinary computation; and
+- **authority state** — the capabilities and tables that determine what code and data that computation is permitted to reach.
+
+In the terminology used elsewhere in this research, these are the Turing and Church aspects of the machine. At genesis there is no previously running ordinary computation whose Turing state must be resumed. The first architectural requirement is therefore to establish a legitimate **Church/authority state** from which an executable process context can be entered.
+
+There must of course be enough exceptional hardware sequencing to perform the startup transition. The point is that this is not yet an ordinary PP250 process executing arbitrary instructions.
+
+### 9.2 C(S) provides a hardware root
+
+The Pocket Reference explicitly names **C(S)** as the **FAULT START-UP BLOCK** capability. [P2] further reports that C(S) is preset by the processor following power-up, apart from the base bits manipulated during the fault sequence.
+
+This is the crucial break in the apparent circularity. The processor does not need an already functioning normal SCT in order to find the first protected structure. C(S) is exceptional hardware-established capability state.
+
+The communication-control description reinforces the role: C(S) permits access to a *special limited area of store containing the necessary parameters*, with corresponding blocks available in successive store modules for fault retry.
+
+Thus the first trusted chain begins:
+
+```text
+processor hardware
+      |
+      v
+     C(S)
+      |
+      v
+four-word Start-Up / Special Fault Block
+```
+
+### 9.3 The four words establish a miniature capability universe
+
+[P1] reports the four-word per-processor block as:
+
+| Word | Function |
+|---:|---|
+| 0 | Sum-check |
+| 1 | Base of the special capability table |
+| 2 | Limit/type information for that table |
+| 3 | RSPC-0, reserved segment pointer to the selected process Dump Stack |
+
+This explains why the block does not need to contain bootstrap instructions or a complete process image. Its purpose is more fundamental: it supplies the parameters needed by the fault/startup microcode to establish a **small, separate SCT environment**.
+
+Words 1 and 2 are loaded by the microcode into the capability-table/master-capability state, subject to the reported validation. The processor has therefore moved from one exceptional hardware capability, C(S), to a restricted capability namespace without executing ordinary software.
+
+Conceptually:
+
+```text
+C(S)
+ |
+ v
+Start-Up Block
+ |
+ +-- base/limit --> special SCT
+ |
+ +-- RSPC-0 -----> entry in that SCT
+```
+
+This special SCT is not the normal operating system's SCT. It is a deliberately small authority universe sufficient for the recovery/startup transition.
+
+### 9.4 RSPC-0 leads to a process, not directly to an instruction
+
+RSPC-0 is interpreted through the newly established special SCT. [P1] reports that it selects the capability for the checkout process Dump Stack.
+
+The important architectural point is independent of the historical checkout policy. The underlying mechanism is:
+
+```text
+special SCT
+    |
+ RSPC-0
+    |
+    v
+process Dump Stack capability
+    |
+    v
+automatic CHANGE PROCESS
+    |
+    v
+executable process context
+```
+
+The fault-tolerant ROS/PDOS system chose to make that process a **checkout process**. It could test the processor and, if successful, participate in returning it to system service. That is software policy layered above the architectural transition.
+
+The basic mechanism does not intrinsically mean "run checkout". It means, in effect, **enter the process identified through this restricted startup authority structure**.
+
+This distinction matters for reconstruction. An emulator or reconstructed machine should not bake the historical checkout policy into the fundamental startup mechanism unless further evidence shows that the hardware itself did so.
+
+### 9.5 Automatic CHANGE PROCESS is the boundary
+
+This resolves a question that had appeared circular when approached from the first instruction.
+
+An ordinary instruction does **not** have to create C6, C7, the SCT and the authority needed to fetch itself. The documented fault machinery establishes protected capability state in microcode and then performs an **automatic CHANGE PROCESS**.
+
+The incoming Dump Stack supplies the process state consumed by that transition. As described earlier in this note, its fixed and active-frame structures provide the saved C0-C5 and D0-D7 state, pushdown state, indicators and ultimately the C6/C7/IAR execution frame.
+
+The sequence is therefore:
+
+```text
+NO TRUSTWORTHY ORDINARY PROCESS STATE
+              |
+              v
+       hardware C(S)
+              |
+              v
+        Start-Up Block
+              |
+              v
+         special SCT
+              |
+              v
+ RSPC-0 -> process Dump Stack
+              |
+              v
+     automatic CHANGE PROCESS
+              |
+              v
+ legitimate capability + computation state
+              |
+              v
+      FIRST ORDINARY INSTRUCTION
+```
+
+The first ordinary instruction is consequently fetched **after** an executable C7/IAR context has been established. There is no need to postulate an unprotected bootstrap instruction stream that later turns capability protection on.
+
+### 9.6 What is documented and what is inferred
+
+The following central pieces are supported by the cited material:
+
+- C(S) is the Fault Start-Up Block capability [R1].
+- C(S) is reported as processor-preset following power-up [P2].
+- C(S)/SSCR reaches a four-word special block [P1/P2 comparison].
+- that block contains the special-table descriptor information and RSPC-0 [P1].
+- fault microcode establishes the restricted table, resolves RSPC-0 to the checkout Dump Stack and performs automatic CHANGE PROCESS [P1].
+- a Dump Stack contains the state needed for process restoration, including the route to the C6/C7/IAR frame [R1/P3].
+
+The important **inference** is the architectural interpretation: this machinery constitutes a hardware root-of-authority transition capable of taking a processor that has no trustworthy ordinary process context into a fully capability-constrained executable process.
+
+It is also an inference that cold power-up and fault recovery converge on exactly this path. The evidence that C(S) is preset following power-up makes that connection compelling enough to investigate, but it does not yet prove that the complete cold-start and fault-entry microsequences are identical.
+
+### 9.7 Why this matters to the reconstruction
+
+This substantially narrows the bootstrap problem.
+
+We no longer need to invent a privileged bootstrap program that fabricates initial capabilities, nor assume that the first software instruction somehow loads its own C7. The architecture already contains a plausible finite transition from hardware-established authority to ordinary protected execution.
+
+The remaining ground-zero questions are correspondingly concrete:
+
+1. What exact protected and special-register state is established by power-up before the C(S) sequence begins?
+2. Does cold power-up execute the same C(S) -> special SCT -> RSPC-0 -> automatic CHANGE PROCESS sequence as fault recovery, or merely a closely related one?
+3. How were the Start-Up Block, special SCT, initial Dump Stack and first code populated in store for a completely cold system?
+4. What exact state does automatic CHANGE PROCESS establish immediately before the first instruction fetch?
+5. Where does Hamer-Hodges' recollection that PP250 could be booted in three instructions fit? The three instructions, if correctly remembered, now appear more plausibly **after** the hardware has established the initial protected process context rather than before capability state exists.
+
+Until those are answered, the reconstruction should preserve this boundary:
+
+> **Hardware establishes a minimal legitimate authority universe; automatic process transition converts it into an ordinary executable PP250 context; software policy begins on the far side of that transition.**
+
+
+## 10. Unresolved questions and research leads
 
 1. **Virgin memory and stored capabilities:** who initially loads the Special Fault Block, SCT, Dump Stack and checkout code? How are genuine stored capabilities established before any ordinary process can execute? Raw data bit patterns must not simply be assumed to confer capability authority.
 2. **Initial pointer and template:** which system-generation or process-template operation constructs the initial C6/C7/IAR frame and absolute saved pushdown pointer? The pocket reference mentions a Process Template in its error-control definition, but does not supply the construction algorithm.
