@@ -80,7 +80,7 @@ Prefer changed files and Git diffs when reviewing recent work.
 
 ## Architecture
 
-`docs/architecture/` represents the current working reconstruction of the PP250 architecture.
+`architecture/` represents the current working reconstruction of the PP250 architecture.
 
 It is not itself primary evidence.
 
