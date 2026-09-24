@@ -44,6 +44,45 @@ The principal test of a reconstruction is not simply **“where does a document 
 
 Documentary provenance remains essential: observations must remain traceable to their sources, and reconstructions must remain distinguishable from observations. The purpose of this method is not to weaken the evidence standard, but to permit the architecture to be reconstructed from evidence that was never assembled into a single definitive description by the original authors.
 
+## Research publication and PhD potential
+
+While reconstructing or analysing the architecture, actively notice results that may constitute an **original academic contribution**, rather than treating every result only as repository documentation.
+
+Flag material to the repository owner when it appears to have credible potential for:
+
+- a conference or journal research paper;
+- a substantial historical/computer-architecture paper;
+- a formal security or architecture result;
+- an experimental architecture paper;
+- or a contribution to the developing PhD research programme.
+
+In particular, flag a result when one or more of the following occurs:
+
+- a reconstruction gives a single explanation for several previously disconnected PP250 mechanisms;
+- an inference makes a non-obvious prediction that is subsequently supported by independent evidence;
+- PP250 appears to embody an architectural principle not adequately captured by the usual description of it as a capability/protection machine;
+- the work identifies a useful new abstraction, formal model, invariant, security property or architectural decomposition;
+- bottom-up PP250 reconstruction independently converges with a top-down derivation from modern requirements;
+- comparison with later architectures reveals a materially different semantic, authority, privilege or trust boundary;
+- an implementation or experiment could test a general architectural claim rather than merely demonstrate historical emulation;
+- a negative or contradictory result materially changes the understanding of capability-machine architecture.
+
+When flagging academic potential, state briefly:
+
+1. **what the candidate contribution is;**
+2. **why it may be novel or academically significant;**
+3. **what evidence or experiment would be required to support it;**
+4. **what prior-art/literature search is needed before claiming novelty;**
+5. **whether it belongs primarily to a standalone paper, the PhD programme, or both.**
+
+Do not wait for the repository owner to ask whether an idea is paper-worthy or PhD-worthy. Raise the possibility when it becomes apparent during the work.
+
+Do not overstate novelty. Treat publication/PhD potential as a research lead until comparison with the relevant academic literature has been performed. Conversely, do not dismiss a result merely because no historical source explicitly states the reconstructed conclusion; apply the Historical reconstruction method above.
+
+Where appropriate, preserve developed doctoral-scale material in `research/phd-research-programme.md`. Preserve paper-sized arguments in an appropriate research note, with their observation -> constraint -> reconstruction -> prediction/falsification chain intact, so that the reasoning is not lost.
+
+This academic-publication check is separate from the **Patentable ideas and public disclosure** check below. If a result may also contain a novel patentable technical mechanism, apply the patent safeguard **before** publishing additional implementation detail to this public repository.
+
 ## Primary reconstruction objective
 
 Treat the root `README.md` as the authoritative statement of project scope and direction. **Read it before doing architectural reconstruction, bootstrap research, emulator design, or hardware design**, and re-read the section **"Primary reconstruction: from inert hardware to the first real program"** whenever work touches cold start, faults, CHP, SCTs, dump stacks, capability genesis, C6/C7, processor initialisation, resource allocation, or initial machine state.
