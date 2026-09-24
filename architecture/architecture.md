@@ -14,7 +14,7 @@ Primary sources used for this revision include:
 
 - *System 250 Pocket Reference Book*, Issue 1, May 1976, pages 0–7.
 - D. Halton, *Hardware of the System 250 for Communication Control* (1972).
-- Contemporary Plessey capability-register patent material transcribed in this repository.
+- Contemporary Plessey capability-register, interrupt, and store-allocation patent material.
 - Repository transcriptions under `transcriptions/`.
 
 The transcriptions themselves warn that ambiguous characters should be checked against the scans before being treated as definitive.
@@ -25,7 +25,7 @@ The instruction-format diagrams number bits 23 through 0. This establishes a 24-
 
 ## Instruction formats
 
-The Pocket Reference distinguishes two instruction formats:
+The Pocket Reference distinguishes two instruction formats.
 
 ### Store mode
 
@@ -79,10 +79,10 @@ Contemporary Plessey patent material describes the high-order two-bit classifica
 
 | Two-bit value | Meaning |
 |---|---|
-| `11` | Active store-segment capability — refers through the System Capability Table (SCT) to a segment currently represented in main-store capability machinery |
+| `11` | Active store-segment capability — refers through the System Capability Table (SCT) to a segment represented by an SCT identity |
 | `10` | Passive/backing-store segment capability — represents a segment in backing store rather than an immediately usable active SCT reference |
 | `01` | Resource capability — represents a non-store logical/system resource |
-| `00` | Null capability — no capability/authority |
+| `00` | Null capability — no usable capability/authority |
 
 These values are architecturally important: the two-bit field is not merely another pair of access permissions. It classifies the form of capability and determines the interpretation of the rest of the stored representation.
 
@@ -101,65 +101,114 @@ stored active capability
     = capability form/type + access rights + SCT identity/reference
 
 SCT entry
-    = physical realisation of that segment identity
+    = physical realisation and current state of that segment identity
 
 loaded capability register
-    = physical base/bounds + access authority
+    = physical base/bounds + access authority,
+      or a distinguished unusable/trap representation
 ```
 
 Consequently, relocating a segment need not require rewriting every stored capability that designates it: its SCT identity can remain stable while the SCT entry is changed.
 
 ### Entry structure
 
-The current primary-source reconstruction is that a normal SCT entry occupies **three 24-bit words**:
+A normal SCT entry occupies **three 24-bit words**:
 
 | Entry word | Contents |
 |---:|---|
 | 0 | Sum-check / validity word |
 | 1 | Base |
-| 2 | Limit (or segment extent, according to source terminology) |
+| 2 | Limit/extent plus additional access/spare-bit capacity used by later system mechanisms |
 
 Halton states that capability loading uses the System Capability Table and that the table contains a sum-check formed from the base and limit values. The patent material describes the corresponding three-word descriptor access and validation sequence.
 
-The access rights are **not supplied by the SCT entry**. They originate in the stored capability and are combined with the base/limit information obtained through the SCT to form the loaded capability-register representation.
+Later Plessey store-allocation/deallocation patent material establishes that the third SCT word has spare capacity in its access-code portion. Two such bits are used by the described garbage-collection mechanism as **GARBAGE** and **VISITED** bits. This is concrete primary-source evidence for additional SCT flag/state bits and is likely the basis of later descriptions referring to special SCT flags.
 
-Conceptually:
+The ordinary capability access rights are **not supplied by the SCT entry**. They originate in the stored capability and are combined with the base/limit information obtained through the SCT to form the loaded capability-register representation.
+
+### Sum-check, relocation and unavailable segments
+
+The sum-check protects the integrity of the base/limit descriptor during capability loading. Patent material describes zeroing the check word as a mechanism for making an SCT entry temporarily unavailable while its descriptor is being changed, including relocation.
+
+The interrupt patent further establishes an important distinction: encountering such an unavailable SCT state during capability loading need not immediately execute the whole software recovery action. The capability-loading machinery can establish a distinguished **unusable/trap representation** in the destination capability register. Hardware detects that state when the capability register is subsequently used and enters the trap/change-process machinery.
+
+Thus the mechanism is approximately:
 
 ```text
-       STORED ACTIVE CAPABILITY
- +-------------------------------+
- | form=11 | rights | SCT ref    |
- +----+--------+----------+-------+
-      |        |          |
-      |        |          v
-      |        |      SCT[reference]
-      |        |      +----------------+
-      |        |      | sum-check      |
-      |        |      | base           |
-      |        |      | limit          |
-      |        |      +-------+--------+
-      |        |              |
-      |        +-------+      |
-      |                |      |
-      v                v      v
-   active form     LOADED CAPABILITY REGISTER
-                   +-------------------------+
-                   | base                    |
-                   | access rights + limit   |
-                   +-------------------------+
+stored active capability (11)
+        |
+        v
+      LC / SCT lookup
+        |
+        +-- valid descriptor --> normal expanded C register
+        |
+        +-- unavailable state --> distinguished unusable C-register state
+                                      |
+                                      v
+                              attempted use of C register
+                                      |
+                                      v
+                              hardware trap detection
+                                      |
+                                      v
+                              change-process/trap handling
 ```
 
-### Sum-check and temporary invalidity
+This is more precise than saying simply that "LC page-faults": capability loading establishes the protected state that causes the later attempted use to trap.
 
-The sum-check protects the integrity of the base/limit descriptor during capability loading. Patent material further describes zeroing the check word as a mechanism for making an SCT entry temporarily unavailable while its descriptor is being changed, such as during relocation. A capability load encountering that state does not simply obtain an unchecked descriptor.
+### Trap discrimination and storage management
 
-Thus word 0 is more than passive error-detection data: at least one distinguished value participates in the segment-state protocol.
+The trap handler can recover information about the capability/reference responsible for the suspended operation from the saved process state/dump stack and use its form/type to discriminate the required software action.
 
-### Important caution about “flag bits”
+The contemporary patent descriptions distinguish the broad cases:
 
-A later secondary description refers to special flag bits associated with this area. At present the stronger contemporary evidence does **not** justify adding unidentified flag fields to the three-word SCT entry. The clearly established classification flags are the two high-order form/type bits of the **stored capability** (`11`, `10`, `01`, `00`) described above. The zero sum-check condition provides a separate SCT-entry state mechanism.
+- active (`11`) capability whose SCT representation is unavailable: segment/store-management handling;
+- passive/backing-store (`10`) capability: page-changing/disc handling is required;
+- resource (`01`) capability: resource/I/O handling;
+- null (`00`) capability: null/trap handling rather than usable authority.
 
-Until a primary-source SCT figure or description establishes additional embedded bits, do not invent extra SCT flag fields in the emulator or architecture specification.
+This provides a capability-native virtual-store path rather than a conventional privileged page-fault handler. Hardware detects an unusable authority state and performs the protected process transition; ordinary capability-constrained system processes determine the reason and perform storage management.
+
+A reconstructed page-in path is therefore:
+
+```text
+faulting process
+      |
+      | attempts to use unavailable/passive authority
+      v
+hardware detects trap representation
+      |
+      v
+change-process / trap-handling process
+      |
+      | inspect saved offending reference/state
+      v
+store/page-management process
+      |
+      +-- determine required segment
+      +-- obtain/allocate main-store space
+      +-- arrange disk-to-store transfer
+      +-- install/update SCT physical descriptor
+      +-- establish valid SCT check/state
+      v
+I/O proceeds / completes
+      |
+      v
+scheduler can make waiting process runnable
+      |
+      v
+original operation can be retried/resumed
+```
+
+England's system description identifies the store-management package as responsible for moving blocks between backing store and main store, and Plessey allocation patent material describes disk-to-main-store transfer being initiated by an I/O-handler process, proceeding asynchronously, and completion feeding back into scheduling of waiting processes.
+
+The important architectural point is that this does **not** require a permanently privileged supervisor execution mode. The hardware supplies protected state detection and process transition; the higher-level storage policy is implemented by capability-controlled software.
+
+### Active versus passive representation
+
+Do not equate "segment is not currently resident" with "every reference to it has type `10`." An active (`11`) reference identifies an SCT entry and can remain meaningful while the SCT entry is unavailable. A passive (`10`) representation instead carries backing-store identity/address information and is used when authority itself has been converted to its backing-store/outform representation.
+
+When capability-containing blocks are moved between main store and backing store, embedded capability representations may therefore require inform/outform conversion. The SCT identity mechanism allows active references elsewhere in main store to remain stable across relocation/page movement.
 
 ## Data and capability registers
 
