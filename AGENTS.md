@@ -6,6 +6,44 @@ This repository reconstructs and documents the architecture of the Plessey Syste
 
 Historical accuracy takes precedence over filling gaps with plausible assumptions.
 
+## Historical reconstruction method
+
+The surviving PP250 documentation is fragmentary. No single surviving document should be assumed to contain a complete or definitive description of the machine. Different papers, patents, manuals, diagrams, operating-system descriptions and implementation accounts often describe different parts of the same underlying architecture from different viewpoints.
+
+Research in this repository therefore uses **architectural reconstruction**, not merely documentary lookup. Treat the surviving sources as multiple partial observations of one underlying machine. A proposition does **not** require an explicit statement in a primary source before it can become a working architectural conclusion.
+
+For significant reconstruction questions use the reasoning chain:
+
+**Observation -> Constraint -> Reconstruction -> Prediction -> Falsification**
+
+- **Observation** records what individual sources say, show diagrammatically, or necessarily demonstrate.
+- **Constraint** identifies what must be true for multiple credible observations to coexist.
+- **Reconstruction** proposes the simplest coherent architecture satisfying all known constraints.
+- **Prediction** identifies consequences that should follow if the reconstruction is correct.
+- **Falsification** actively looks for observations inconsistent with the reconstruction.
+
+A reconstruction becomes stronger when it independently explains observations that were not used to construct it.
+
+Do **not** repeatedly demand a source explicitly stating a reconstructed architectural conclusion. In many cases no such source exists; producing the missing whole from partial descriptions is a principal objective of PP250-Reboot. Do not respond to every architectural inference with a recommendation to search for documentary confirmation. First determine whether documentary confirmation should reasonably be expected to exist.
+
+Distinguish clearly between:
+
+- **DOCUMENTED OBSERVATION** — directly supported by a source;
+- **NECESSARY INFERENCE** — required to reconcile documented observations;
+- **WORKING RECONSTRUCTION** — the current simplest model explaining the evidence;
+- **SPECULATION** — possible but not presently constrained by sufficient evidence;
+- **UNKNOWN** — a question for which the available observations do not yet constrain an answer adequately.
+
+Search the documentation when it can provide a **new observation, discriminate between competing reconstructions, test a prediction, or potentially falsify the current model**. Do not search merely to find explicit wording for a conclusion already reached by synthesis unless such explicit confirmation would materially change its evidential status.
+
+When sources appear inconsistent, do not immediately choose one and discard the others. First consider differences of machine version, operating system, abstraction level, terminology, viewpoint, or implementation versus architecture. The objective is to find the underlying machine that explains all credible observations.
+
+The principal test of a reconstruction is not simply **“where does a document say this?”** but:
+
+> **Does this model explain the observations, contradict none of the reliable evidence, and introduce the fewest unsupported mechanisms?**
+
+Documentary provenance remains essential: observations must remain traceable to their sources, and reconstructions must remain distinguishable from observations. The purpose of this method is not to weaken the evidence standard, but to permit the architecture to be reconstructed from evidence that was never assembled into a single definitive description by the original authors.
+
 ## Primary reconstruction objective
 
 Treat the root `README.md` as the authoritative statement of project scope and direction. **Read it before doing architectural reconstruction, bootstrap research, emulator design, or hardware design**, and re-read the section **"Primary reconstruction: from inert hardware to the first real program"** whenever work touches cold start, faults, CHP, SCTs, dump stacks, capability genesis, C6/C7, processor initialisation, resource allocation, or initial machine state.
@@ -43,7 +81,7 @@ Distinguish clearly between:
 - HYPOTHESIS
 - UNKNOWN
 
-Never promote an inference or hypothesis to established architecture without supporting evidence.
+Never promote an inference or hypothesis to established architecture without supporting evidence. A working reconstruction may nevertheless combine multiple documented observations and necessary inferences when no source provides a complete architectural description; label that status explicitly in accordance with the Historical reconstruction method above.
 
 ## New evidence
 
