@@ -17,7 +17,7 @@ where:
 
 - **T** is the Turing/general computational machine;
 - **H** is the Church/authority machine;
-- **M** is the governing machine that admits and performs legitimate transitions involving H and T;
+- **M** is the governing relation/machine that admits and performs legitimate transitions involving H and T;
 - **capability** is an orthogonal protected representation/mechanism of authority that can be incorporated wherever protected authority is required, rather than being synonymous with H.
 
 The resulting research hypothesis is:
@@ -125,6 +125,115 @@ The absence of an unrestricted privileged software mode ceases to look like an o
 
 These observations are important because the M<H,T> reconstruction was not invented separately to explain each one. A single model is beginning to make several formerly awkward or disconnected features coherent.
 
+### Normal interrupt entry: a callback from M into software
+
+The reconstructed PP250 normal-interrupt path adds an important refinement:
+
+```text
+protected exceptional condition
+        |
+        v
+      C(N)
+        |
+        v
+Normal Interrupt Block
+        |
+        v
+incoming Dump Stack capability
+        |
+        v
+automatic CHP
+        |
+        v
+Normal Interrupt process
+        |
+        v
+software policy / dispatch
+```
+
+In the M/H/T abstraction, **C(N) has the structural character of a capability-protected callback from M into T executing under an H-defined authority environment**.
+
+M determines **that intervention is required** and performs the legitimate transition. It does not need to contain the higher-level policy for resolving the condition. The process entered through C(N) executes ordinary computation under capability-defined authority and determines **what policy is to be applied** — for example storage management, I/O handling or scheduling.
+
+Thus:
+
+```text
+             T executing under H₁
+                    |
+                    | intervention required
+                    v
+                    M
+          protected transition
+                    |
+                    | callback through C(N)
+                    v
+             Tn under Hn
+       Normal Interrupt process
+                    |
+                    | software policy
+                    v
+                    M
+          subsequent legitimate transition
+                    |
+                    v
+             T continues
+```
+
+The word **callback** is an abstraction, not historical PP250 terminology. It describes the structural relationship: M invokes a software-defined continuation point when machine-level intervention is required.
+
+This sharpens the meaning of M. **M is not “all operating-system code”, nor need it be imagined as a third conventional instruction processor alongside H and T.** It is better understood as the governing relation/mechanism over legitimate state transitions. Software invoked through an M callback executes on T and under H; its system role does not make the software itself M.
+
+Schematically:
+
+```text
+state S₁ = <H₁,T₁>
+        |
+        | M admits/performs transition
+        v
+state S₂ = <H₂,T₂>
+```
+
+The C(N) mechanism also shows how M can remain small while system policy remains extensible. M needs sufficient machinery to recognise a protected condition, identify the configured normal-interrupt authority, preserve/restore state and perform the legitimate process transition. It can then delegate storage, I/O, scheduling and other policy decisions to capability-constrained software.
+
+This is stronger than the conventional statement that an operating system installs an interrupt handler. The callback target is itself authority-bearing: C(N) designates the Normal Interrupt Block, which leads to the Dump Stack defining the process to be entered. The destination is therefore reached through protected authority structures rather than through an arbitrary raw instruction address.
+
+### C(S) bootstraps the configurable C(N) callback
+
+The reconstructed startup chain is:
+
+```text
+C(S)
+  |
+  v
+fault/startup + checkout
+  |
+  v
+initial legitimate process
+  |
+  v
+MIP/SPECIAL
+  |
+  v
+LC establishes C(N)
+  |
+  v
+normal interrupt callback available
+```
+
+In the M/H/T abstraction, C(S) and C(N) expose two different stages of governance.
+
+**C(S)** belongs to the root/recovery machinery by which M can establish a legitimate H/T state when no ordinary running H/T context can be relied upon.
+
+**C(N)** is the configurable operational callback. Once legitimate execution exists, software arising from that state can establish C(N); thereafter M can use C(N) to request software policy during normal operation.
+
+The concise relationship is:
+
+> **C(S) establishes the first trusted transition; software arising from that transition establishes C(N); C(N) thereafter supplies M's normal callback path into T executing under capability-controlled H.**
+
+This provides a bootstrap for a configurable M/software boundary without introducing an unexplained second source of sovereign authority or a conventional supervisor mode. The callback is configurable, but the authority to configure it traces back through the startup chain to the machine's root transition mechanism.
+
+It also reinforces the orthogonality of capability to H/T/M. Capabilities occur as ordinary H authority, as candidate M-state in C(S), as the protected callback designation C(N), and as Dump Stack capabilities defining process-transition targets.
+
 ---
 
 ## 4. Why later capability systems can encourage the misreading
@@ -231,13 +340,17 @@ Documentation describing fault and start-up should contain transitions that cann
 
 The process transition should operate on protected state at a level below the particular operating-system meaning subsequently assigned to the restored process.
 
+### Prediction: normal software intervention decomposes into M/H/T roles
+
+If the refined model is sound, other mechanisms that appear to require privileged software should often decompose into an M-level protected transition, an H-defined authority environment/target, ordinary T computation implementing policy, and a subsequent M-mediated transition. I/O completion, scheduling, timer handling, process creation and protected CALL/RETURN provide candidate tests.
+
 ### Prediction: capability semantics recur across machine roles
 
-The protected authority representation used by C(S) and by ordinary H capability state should share enough machinery to justify calling both capabilities, while their architectural ownership and purposes differ.
+The protected authority representation used by C(S), C(N), Dump Stack targets and ordinary H capability state should share enough machinery to justify calling them capabilities, while their architectural ownership and purposes differ.
 
 ### Falsification
 
-The reconstruction would be weakened if C(S) proves to be ordinary H state, if all apparently M-level transitions reduce cleanly to conventional privileged T execution, or if M adds no explanatory or predictive power beyond established descriptions of the processor.
+The reconstruction would be weakened if C(S) proves to be ordinary H state, if all apparently M-level transitions reduce cleanly to conventional privileged T execution, if normal system intervention requires unrestricted T to rewrite H/M state, or if M adds no explanatory or predictive power beyond established descriptions of the processor.
 
 ---
 
@@ -256,7 +369,7 @@ Why this may matter academically:
 - it offers a unified interpretation of several PP250 mechanisms normally treated separately;
 - it changes the appropriate unit of comparison between PP250 and later capability architectures;
 - it may explain the architectural significance of the absence of conventional supervisor privilege;
-- it connects bootstrap, fault recovery and protected invocation to the same authority model;
+- it connects bootstrap, fault recovery, normal interrupt callbacks and protected invocation to the same authority model;
 - it suggests that historical work may have concentrated on the capability representation while overlooking the machine that governs capability-bearing state;
 - if generalizable, it may identify a useful architectural abstraction beyond PP250 itself.
 
@@ -268,6 +381,6 @@ Before claiming novelty, perform a literature review across historical PP250 ana
 
 The current working proposition is:
 
-> **PP250 was certainly a capability machine, but “capability machine” may describe its protected authority mechanism rather than its deepest architecture. The emerging reconstruction is a sovereign machine M governing an authority machine H and a computational machine T, with capability orthogonal to those roles. If correct, many features historically treated as special cases — CALL/RETURN, CHP, fault recovery, power-up, C(S), capability genesis and the absence of supervisor mode — are parts of one coherent architecture.**
+> **PP250 was certainly a capability machine, but “capability machine” may describe its protected authority mechanism rather than its deepest architecture. The emerging reconstruction is a sovereign governing relation M over an authority machine H and a computational machine T, with capability orthogonal to those roles. M need not contain system policy: C(N) shows how it can invoke T under an H-defined authority environment when policy is required. The C(S)-rooted startup establishes the first legitimate state from which C(N) can be configured; thereafter C(N) provides the normal protected callback from M into software. If correct, CALL/RETURN, CHP, fault recovery, power-up, C(S), C(N), capability genesis and the absence of supervisor mode are parts of one coherent architecture.**
 
 This proposition should be preserved as a reconstruction to be tested, not promoted to historical fact until the evidence and literature comparison justify doing so.
