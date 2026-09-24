@@ -6,17 +6,16 @@ This document is the current working reconstruction of the Plessey System 250 ar
 
 It is **not primary evidence**. Statements below are derived from source material held or transcribed in this repository. Where the available evidence does not establish semantics, this document records the fact without filling the gap by assumption.
 
-This first pass is deliberately limited primarily to evidence in the *System 250 Pocket Reference Book*, Issue 1, May 1976, pages 0–7.
+This first pass is deliberately limited primarily to evidence in the *System 250 Pocket Reference Book*, Issue 1, May 1976, pages 0–7, with additional contemporary Plessey papers and patent material where explicitly identified below.
 
 ## Source basis
 
-Primary source used for this revision:
+Primary sources used for this revision include:
 
 - *System 250 Pocket Reference Book*, Issue 1, May 1976, pages 0–7.
-- Repository transcriptions:
-  - `transcriptions/System 250 Pocket Reference pg0-pg2 transcription.txt`
-  - `transcriptions/System 250 Pocket Reference pg3-pg4 transcription.txt`
-  - `transcriptions/System 250 Pocket Reference pg5-pg7 transcription.txt`
+- D. Halton, *Hardware of the System 250 for Communication Control* (1972).
+- Contemporary Plessey capability-register patent material transcribed in this repository.
+- Repository transcriptions under `transcriptions/`.
 
 The transcriptions themselves warn that ambiguous characters should be checked against the scans before being treated as definitive.
 
@@ -30,110 +29,27 @@ The Pocket Reference distinguishes two instruction formats:
 
 ### Store mode
 
-The store-mode instruction contains fields labelled:
-
-- FUNCTION
-- REG
-- MOD
-- CAP
-- ADDRESS
-
-The exact bit widths and semantics of these fields are not yet stated here because the current ASCII transcription does not preserve the graphical field boundaries with sufficient confidence.
+The store-mode instruction contains fields labelled FUNCTION, REG, MOD, CAP and ADDRESS.
 
 ### Direct mode
 
-The direct-mode instruction contains fields labelled:
-
-- FUNCTION
-- REG
-- MOD
-- SIGNED LITERAL
-
-Again, exact field widths should be established from the source image or additional documentation before being specified here.
+The direct-mode instruction contains fields labelled FUNCTION, REG, MOD and SIGNED LITERAL.
 
 ## Programmer-visible instruction set
 
-Page 3 lists the following assembly commands:
+Page 3 lists:
 
 `ADD AND ASH CALL CHP CMP COR CSH DIV EOR JMP JEQ JGT JGE JLT JLE JNE JOV LC LD LDM LDN LDP LSH MOVE MPY OR RET SC SD SDM SUB SWP SWPM`
 
-The table distinguishes store-mode and direct-mode opcodes where applicable and identifies whether an instruction uses a register field, changes LT/EQ indicators, or can set overflow.
-
-The jump family shares store/direct function codes 36/76 and uses the register field to select the condition:
-
-| Register field | Assembly | Condition |
-|---:|---|---|
-| 0 | JEQ | Equal |
-| 1 | JNE | Not equal |
-| 2 | JGT | Greater than |
-| 3 | JLT | Less than |
-| 4 | JGE | Greater or equal |
-| 5 | JLE | Less or equal |
-| 6 | JOV | Overflow |
-| 7 | JMP | Unconditional |
-
-The Pocket Reference records that JOV clears overflow.
+The jump family shares store/direct function codes 36/76 and uses the register field to select the condition.
 
 ### Capability-related instructions
 
-The instruction table explicitly includes:
+The instruction table explicitly includes `LC`, `LDP`, `SWPM`, `SC`, `CALL`, and `RET`. Full semantics must be established from the wider source corpus rather than inferred from their names alone.
 
-- `LC` — Load Capability — store 30, direct 70
-- `LDP` — Load Pointer — store 31, direct 71
-- `SWPM` — Swap Masked — store 32
-- `SC` — Store Capability — store 34
-- `CALL` — Call — store 10
-- `RET` — Return — direct 75
+## Church/Turing interpretation
 
-The presence, names and opcodes of these instructions are established by the Pocket Reference. Their full capability semantics are **not established by pages 0–7 alone** and must not be inferred merely from their names.
-
-## Church/Turing interpretation of the capability instruction set
-
-A historically important interpretation attributed to K. J. (Ken) Hamer-Hodges, one of the original System 250 designers, describes System 250 as combining an ordinary binary or "Turing" computational machine with a protected "Church" capability machine. This should not be dismissed merely as a later outside analogy: Hamer-Hodges was directly involved in the original design. However, the precise historical source and wording, and whether this interpretation was explicitly stated in the earliest System 250 papers, still need to be established from the source corpus.
-
-Hamer-Hodges is reported as identifying **six special Church instructions** which operate on or navigate the protected capability world rather than merely processing ordinary mutable binary data.
-
-A strong current hypothesis is that the six instructions are:
-
-| Instruction | Working interpretation |
-|---|---|
-| `LC` | Load Capability — bring protected capability authority into a capability register |
-| `SC` | Store Capability — store/pass capability authority while preserving its protected representation |
-| `LDP` | Load Pointer — obtain the pointer associated with a capability/reference without exposing the capability itself as ordinary manipulable data |
-| `CALL` | Enter a protected procedure/domain through capability-controlled entry |
-| `RET` | Return from that protected invocation/context |
-| `CHP` | Change Process — replace the processor execution context |
-
-This identification is **not yet recorded as established fact**. We need to locate the Hamer-Hodges source that explicitly names the six instructions and compare its terminology with the original instruction documentation.
-
-If the identification is confirmed, it suggests a useful architectural division:
-
-```
-        CHURCH / AUTHORITY MACHINE H
-
-        LC  SC  LDP  CALL  RET  CHP
-                    |
-          establishes, navigates
-          or changes protected
-          computational context
-                    |
-                    v
-          TURING / DATA MACHINE T
-
-       LD ST ADD CMP JMP AND ...
-                    |
-           operates on ordinary
-          binary data within the
-       authority-defined context
-```
-
-### Capability is orthogonal to H, T and M
-
-The current reconstruction must not identify **capability** with the Church machine H itself. Capability is an independent architectural concept: a protected representation/mechanism of authority that may be incorporated wherever the architecture requires protected authority.
-
-Thus the decomposition `M<H,T>` is not a partition into a "capability part" H and a "non-capability part" T. H uses capability extensively because H represents and manipulates authority, but capability-bearing state may also belong to M. In particular, the diagrammatic separation of `C(S)` from the ordinary internal and external C-register sets makes `C(S)` a candidate example of capability state belonging to the governing/start-up mechanism M rather than to H.
-
-The working distinction is therefore:
+The current research model distinguishes:
 
 ```text
 H = Church/authority machine
@@ -144,93 +60,114 @@ capability = protected authority mechanism/representation,
              orthogonal to the H/T/M decomposition
 ```
 
-Consequently, the fact that some state is a capability does **not** by itself establish that the state belongs to H. Capability state can in principle occur in H or M (and any future claim about capability-bearing T state must likewise be decided independently rather than by definition).
-
-This distinction is important to bootstrap reconstruction. The existence of a capability such as `C(S)` in M does not require H first to manufacture or authorize it. Power-up or fault behaviour implemented by M may establish or use capability-bearing M-state while preserving the rule that ordinary computation cannot fabricate authority.
-
-This is a **WORKING RECONSTRUCTION** derived from the emerging `M<H,T>` model and the documented special placement of `C(S)`, not a claim that the historical sources explicitly use this terminology.
-
-This may be particularly significant for understanding `LDP`. The processor self-test transcription describes LDP as **"D := Pointer associated with A."** Thus LDP apparently produces ordinary data in a D register while being closely associated with capability addressing. If LDP is confirmed as one of Hamer-Hodges's six Church instructions, it should not be approached merely as a conventional address-calculation instruction. It may instead be part of the carefully controlled boundary between ordinary manipulable pointers/references and protected capability authority.
-
-The interpretation is also consistent with an important architectural distinction already evident in System 250: ordinary data registers contain manipulable binary values, whereas capability registers hold protected authority that ordinary instructions cannot simply manufacture or modify as data.
-
-### Research action
-
-Locate the original Hamer-Hodges statement identifying the six Church instructions. Establish:
-
-1. whether the six are explicitly `LC`, `SC`, `LDP`, `CALL`, `RET`, and `CHP`;
-2. the date and context in which Hamer-Hodges made the Church/Turing comparison;
-3. whether contemporary System 250 papers use Church/lambda-calculus terminology;
-4. how each confirmed instruction maps to the Church/lambda-calculus concepts Hamer-Hodges intended.
-
-Until that work is complete, preserve the distinction between **Hamer-Hodges's historically significant interpretation**, the **six-instruction identification hypothesis**, and semantics independently established from primary System 250 documentation.
+A strong current hypothesis identifies the six special Church instructions as `LC`, `SC`, `LDP`, `CALL`, `RET`, and `CHP`. This remains a historical-source verification item.
 
 ## Capability access rights
 
-Page 4 contains capability/access-code diagrams for COS and POS.
-
-Both identify six named access rights:
-
-- `EC`
-- `WC`
-- `RC`
-- `ED`
-- `WD`
-- `RD`
-
-The current evidence therefore uses **ED**, not the generic abbreviation `X`, for the execute-related data access code.
-
-The exact meanings and enforcement rules of all six codes should be documented only when supported by source material. Their names and ordering in the page-4 diagrams are primary evidence.
+Page 4 identifies six named access rights: `EC`, `WC`, `RC`, `ED`, `WD`, `RD`.
 
 The diagrams are transcribed as:
 
 - COS capability pointer: `1 1 EC WC RC ED WD RD 0`
 - POS access codes: `0 1 1 EC WC RC ED WD RD`
 
-No interpretation of the fixed bits is made in this revision.
+The exact relationship between these OS-specific diagrams and the more general capability-form/type encoding below must be kept version- and source-sensitive.
+
+## Stored capability type/form field
+
+Contemporary Plessey patent material describes the high-order two-bit classification of a stored capability/reference. These two bits determine what kind of protected reference the remaining word represents and therefore what processing is appropriate.
+
+| Two-bit value | Meaning |
+|---|---|
+| `11` | Active store-segment capability — refers through the System Capability Table (SCT) to a segment currently represented in main-store capability machinery |
+| `10` | Passive/backing-store segment capability — represents a segment in backing store rather than an immediately usable active SCT reference |
+| `01` | Resource capability — represents a non-store logical/system resource |
+| `00` | Null capability — no capability/authority |
+
+These values are architecturally important: the two-bit field is not merely another pair of access permissions. It classifies the form of capability and determines the interpretation of the rest of the stored representation.
+
+The six access rights (`EC WC RC ED WD RD`) are conceptually distinct from this form/type classification. A capability therefore carries both a statement of **what kind of protected reference it is** and, where applicable, **what operations are permitted through it**.
+
+## System Capability Table (SCT)
+
+### Role
+
+The SCT is the system indirection structure used when an active stored capability is expanded into a capability register. A stored active capability carries an SCT reference/index rather than a raw physical base address. The processor uses the SCT reference relative to the special SCT capability register `C(C)` / `C12` to obtain the physical segment bounds.
+
+This gives a useful separation:
+
+```text
+stored active capability
+    = capability form/type + access rights + SCT identity/reference
+
+SCT entry
+    = physical realisation of that segment identity
+
+loaded capability register
+    = physical base/bounds + access authority
+```
+
+Consequently, relocating a segment need not require rewriting every stored capability that designates it: its SCT identity can remain stable while the SCT entry is changed.
+
+### Entry structure
+
+The current primary-source reconstruction is that a normal SCT entry occupies **three 24-bit words**:
+
+| Entry word | Contents |
+|---:|---|
+| 0 | Sum-check / validity word |
+| 1 | Base |
+| 2 | Limit (or segment extent, according to source terminology) |
+
+Halton states that capability loading uses the System Capability Table and that the table contains a sum-check formed from the base and limit values. The patent material describes the corresponding three-word descriptor access and validation sequence.
+
+The access rights are **not supplied by the SCT entry**. They originate in the stored capability and are combined with the base/limit information obtained through the SCT to form the loaded capability-register representation.
+
+Conceptually:
+
+```text
+       STORED ACTIVE CAPABILITY
+ +-------------------------------+
+ | form=11 | rights | SCT ref    |
+ +----+--------+----------+-------+
+      |        |          |
+      |        |          v
+      |        |      SCT[reference]
+      |        |      +----------------+
+      |        |      | sum-check      |
+      |        |      | base           |
+      |        |      | limit          |
+      |        |      +-------+--------+
+      |        |              |
+      |        +-------+      |
+      |                |      |
+      v                v      v
+   active form     LOADED CAPABILITY REGISTER
+                   +-------------------------+
+                   | base                    |
+                   | access rights + limit   |
+                   +-------------------------+
+```
+
+### Sum-check and temporary invalidity
+
+The sum-check protects the integrity of the base/limit descriptor during capability loading. Patent material further describes zeroing the check word as a mechanism for making an SCT entry temporarily unavailable while its descriptor is being changed, such as during relocation. A capability load encountering that state does not simply obtain an unchecked descriptor.
+
+Thus word 0 is more than passive error-detection data: at least one distinguished value participates in the segment-state protocol.
+
+### Important caution about “flag bits”
+
+A later secondary description refers to special flag bits associated with this area. At present the stronger contemporary evidence does **not** justify adding unidentified flag fields to the three-word SCT entry. The clearly established classification flags are the two high-order form/type bits of the **stored capability** (`11`, `10`, `01`, `00`) described above. The zero sum-check condition provides a separate SCT-entry state mechanism.
+
+Until a primary-source SCT figure or description establishes additional embedded bits, do not invent extra SCT flag fields in the emulator or architecture specification.
 
 ## Data and capability registers
 
-The process dump-stack format explicitly saves:
-
-### Capability registers
-
-- C0
-- C1
-- C2
-- C3
-- C4
-- C5
-
-### Data registers
-
-- D0
-- D1
-- D2
-- D3
-- D4
-- D5
-- D6
-- D7
-
-The same dump-stack format separately records C6 and C7 as part of saved execution state. This establishes that C6 and C7 exist, but their architectural roles are not derived here solely from this table.
+The process dump-stack format explicitly saves C0–C5 and D0–D7, with C6 and C7 separately represented as execution state.
 
 ## Special-purpose CPU registers
 
-Page 7 lists the following special-purpose data registers:
-
-| Register | Description |
-|---|---|
-| D10 | ABSOLUTE D/S PUSHDOWN POINTER |
-| D11 | WATCHDOG TIMER |
-| D12 | FIRST FAULT MIF COPY |
-| D13 | not described |
-| D14 | not described |
-| D15 | INTERRUPT ACCEPT REGISTER |
-| D16 | not described |
-| D17 | INSTRUCTION ADDRESS REGISTER (IAR) |
-
-It also lists special-purpose capability registers:
+Page 7 identifies:
 
 | Register | Name / description |
 |---|---|
@@ -238,124 +175,12 @@ It also lists special-purpose capability registers:
 | C11 | C(I) INTERVAL TIMER |
 | C12 | C(C) SCT |
 | C13 | C(N) NORMAL INTERRUPT BLOCK |
-| C14 | not described |
-| C15 | not described |
-| C16 | not described |
-| C17 | not described |
+| C14–C17 | not described |
 
-A separate special capability register is shown as:
+A separate `C(S)` capability identifies the FAULT START-UP BLOCK and is not assigned one of C10–C17 in the Pocket Reference table.
 
-- `C(S)` — FAULT START-UP BLOCK
-
-The Pocket Reference does not assign C(S) one of the C10–C17 numbers in this table.
+Named special data registers include D10 (absolute D/S pushdown pointer), D11 (watchdog timer), D12 (first-fault MIF copy), D15 (interrupt accept register), and D17 (IAR).
 
 ## Indicator and fault registers
 
-The source identifies:
-
-- MIP — Primary Indicator Register
-- MIF — CPU Fault Indicator Register
-
-The dump-stack description says that its MIF entry is a copy of the CPU Fault Indicator Register.
-
-Page 7 gives internal-mode examples:
-
-- `MIP = 8R400`
-- `MIF = 8R100`
-- `D1 = 8R62`
-
-The exact notation and decoding of these examples remain to be documented.
-
-## Internal mode addressing
-
-Page 7 provides a 12-bit Internal Mode Addressing diagram, bits 11 through 0.
-
-The diagram provides selections for:
-
-- lower half (limit) / upper half (base) of a capability register;
-- one of sixteen capability or data registers;
-- data registers;
-- capability registers;
-- historical registers;
-- Primary Indicator Register;
-- Fault Indicator Register;
-- special capability register C(S);
-- Secondary Indicator Register.
-
-Because this is a layout-sensitive diagram, exact bit assignments should be checked against the scan before they are made normative in the architecture specification.
-
-## Process state evidence
-
-The Pocket Reference contains ROS/PDOS process structures and dump-stack layouts. These are operating-system-specific structures, but they expose architectural state.
-
-The common saved state includes C0–C5, D0–D7, a pushdown pointer, watchdog timer register and MIP. Additional saved state varies between COS, POS, ROS and PDOS.
-
-The dump-stack table contains repeated C6, C7 and IAR entries associated with initial, code, block and subroutine state. Their precise CALL/RETURN interpretation is not specified in this revision.
-
-## ROS/PDOS state and internal priority word
-
-Page 5 defines a 24-bit ROS/PDOS state and internal priority word containing fixed bits and fields labelled `x`, `q`, `p`, `c`, `r`, `w`, `f`, `s` and `b`.
-
-The accompanying definitions establish:
-
-- `r = 0`: process currently running on a CPU
-- `r = 1`: process not running
-- `cccc`: CPU number when `r = 0`
-- `ppppp`: 23 minus current priority
-- `qqqqq`: 23 minus standard priority
-- `x = 1`: process is on the Ready List
-- `s = 1`: suspended on WAITFOR
-- `f = 1`: process has faulted
-- `bb = 00`: double unblocked
-- `bb = 01`: unblocked
-- `bb = 10`: blocked
-- `bb = 11`: double blocked
-- `w`: may be 0 or 1
-
-These are ROS/PDOS software/process-state definitions and should not automatically be generalized into processor architecture.
-
-## MOVE instruction
-
-Page 4 gives a specific MOVE example, `MOVE D2 0 D5`, and identifies:
-
-- source capability C2
-- source offset D2
-- destination capability C3
-- destination offset D3
-- sumcheck D5
-- count D0
-
-It further states that overflow is to be reset before MOVE, that overflow is set on exit by the STATUS wire, that an indicator is set on count, and that a non-zero count means the device is BUSY.
-
-This is retained as established instruction-level evidence, but the complete MOVE mechanism and its relationship to devices/bus transfers require additional documentation.
-
-## Areas deliberately unresolved
-
-The following questions are **not answered by the pages used for this first pass**:
-
-- exact semantics of LDP;
-- how capabilities are created;
-- how capability rights are reduced or masked;
-- exact LC, SC and SWPM semantics;
-- full CALL and RET semantics;
-- architectural roles of C6 and C7;
-- meaning and structure of the SCT referenced by C12/C(C);
-- processor cold-start/bootstrap behaviour;
-- how C(S), C(N), C(D) and C(I) are populated;
-- exact internal-mode address bit assignments;
-- exact interpretation of the fixed COS/POS capability/access-code bits;
-- relationship between the phrase "privileged system facilities" in the dump-stack notes and the processor protection model.
-
-These should remain open until supported by primary or reliable secondary evidence.
-
-## Evidence discipline
-
-Future revisions should preserve the distinction between:
-
-1. what a primary source explicitly states;
-2. conclusions that follow directly from multiple pieces of evidence;
-3. historical recollection;
-4. architectural inference;
-5. unresolved hypothesis.
-
-Where new evidence conflicts with this reconstruction, the conflict should be recorded and investigated rather than silently reconciled.
+The source identifies MIP (Primary Indicator Register) and MIF (CPU Fault Indicator Register). The dump-stack description says its MIF entry is a copy of the CPU Fault Indicator Register.
