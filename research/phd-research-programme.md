@@ -18,11 +18,13 @@ M<H,T>
 
 where:
 
-- **H** is the Church/authority machine: protected authority, capability state, domains and the rules governing legitimate access;
+- **H** is the Church/authority machine: protected authority, domains and the rules governing legitimate access;
 - **T** is the Turing/general computational machine: ordinary data computation, arithmetic, instruction progress and conventional mutable state;
 - **M** is the governing machine/mechanism that mediates and transforms the state of H and T while preserving the architectural invariants between them.
 
 **Notation rule:** reserve **C** for PP250 capability registers and capability-register names such as C0-C7 and C(S). Do not use C as the symbol for the abstract Church/authority machine.
+
+A further essential distinction is that **capability is not synonymous with H**. Capability is an orthogonal protected-authority mechanism/representation that can be used by more than one machine in the decomposition. H is capability-bearing, but M may also contain capability-bearing state; C(S) is the principal current candidate. Thus `M<H,T>` must not be read as "capability machine H inside non-capability machine M".
 
 The important new possibility is that these are not competing PhD ideas. They may be two views of the same research programme.
 
@@ -36,7 +38,7 @@ The **Sovereign Machine** asks what kind of machine must govern computation and 
 
 A candidate overarching thesis is:
 
-> **A general-purpose capability-native computer can be structured as a Turing/general computational machine T and a Church/authority machine H governed by a transition machine M. The hardware need not understand application-level object meaning; instead, M preserves the integrity of authority and controls the legitimate interaction between H and T. The Plessey System 250 may constitute an early concrete realization of this separation.**
+> **A general-purpose capability-native computer can be structured as a Turing/general computational machine T and a Church/authority machine H governed by a transition machine M. Capability is an orthogonal protected-authority mechanism that may occur wherever protected authority is required, including H and potentially M. The hardware need not understand application-level object meaning; instead, M preserves the integrity of authority and controls the legitimate interaction between H and T. The Plessey System 250 may constitute an early concrete realization of this separation.**
 
 This is a research hypothesis, not an established description of PP250.
 
@@ -64,6 +66,21 @@ T determines or requests computation.
 H determines the authority within which that computation may act.
 
 M ensures that transformations of T and H obey the architecture's invariants.
+
+Capability cuts across this decomposition rather than defining one of its members:
+
+```text
+                 capability
+          protected representation
+              of authority
+               /        \
+              /          \
+             M            H
+       may hold/use    extensively
+      capability state capability-based
+```
+
+Whether T ever contains capability-bearing state is a separate architectural question; it must not be decided merely from the definitions of H and T.
 
 An ordinary instruction can therefore be represented abstractly as:
 
@@ -149,7 +166,7 @@ M<H,T>  --event-->  M<H',T'>
 
 T need never become unrestricted or sovereign.
 
-Operations that would conventionally require privileged software can instead be controlled state transitions performed by M. The resulting T continues to execute within a capability-constrained authority environment H.
+Operations that would conventionally require privileged software can instead be controlled state transitions performed by M. The resulting T continues to execute within an authority environment governed through H.
 
 This gives a candidate explanation for an important PP250 characteristic: the absence of a conventional supervisor-mode escape hatch need not mean that privileged functionality is missing. The functionality may instead reside in the governing transition mechanism rather than in a privileged version of T.
 
@@ -193,7 +210,7 @@ M fault transition
 M<H_recovery,T_recovery>
 ```
 
-M is not an ordinary process requiring a capability that authorizes it to create the first capability. It is the mechanism whose correct operation defines which H states can legitimately exist.
+M is not an ordinary process requiring an H capability that authorizes it to create the first capability. Because capability is orthogonal to H, M can itself contain or establish capability-bearing state as part of its defined power-up/fault transitions. This removes the category error in which every capability is assumed to require prior creation by H.
 
 This does **not** by itself establish the historical PP250 boot algorithm. It removes an apparent architectural paradox and produces a framework in which the surviving observations can be assembled.
 
@@ -208,9 +225,9 @@ Under the M<H,T> reconstruction this peculiar placement becomes potentially sign
 A working reconstruction to test is:
 
 ```text
-ordinary authority/capability-machine state -> H
-ordinary computational state                -> T
-start-up / recovery state C(S)               -> M-state
+ordinary authority-machine state     -> H
+ordinary computational state         -> T
+start-up / recovery capability C(S)   -> M-state
 ```
 
 or schematically:
@@ -218,6 +235,8 @@ or schematically:
 ```text
 M[C(S)]<H,T>
 ```
+
+The fact that C(S) is capability-bearing does not force it into H. Capability and machine membership are independent dimensions. If C(S) belongs to M, it is an example of the same capability concept being incorporated into the governing machine for a different architectural purpose.
 
 This would explain why C(S) can survive or participate in transitions in which ordinary processor/capability state is invalidated, and why it does not fit naturally into the normal programmable capability-register set.
 
@@ -298,6 +317,8 @@ The Authority Machine asks **what hardware must know**.
 
 The Sovereign Machine asks **what governs the legitimate evolution of the machine state**.
 
+The capability-orthogonality insight asks a third question: **which machines require protected authority representation, independently of their role in the M/H/T decomposition?**
+
 Together they suggest:
 
 ```text
@@ -315,6 +336,10 @@ Together they suggest:
             +--------- M -------+
                governing
                transitions
+
+Capability is orthogonal to this diagram: it is a protected
+authority mechanism that can be incorporated into H, M, or
+elsewhere where the architecture requires it.
 ```
 
 M need not understand the semantic meaning of the object. It must understand enough about the protected representations and permitted transitions to preserve authority integrity.
@@ -348,14 +373,19 @@ The purpose is not merely historical preservation. PP250 provides the concrete m
 
 ### 9.2 Formal M<H,T> model
 
-Define H, T and M sufficiently precisely to state invariants and transition rules.
+Define H, T and M sufficiently precisely to state invariants and transition rules. Define capability separately as a protected representation/mechanism of authority, rather than making it synonymous with H.
+
+The formal model should therefore represent at least two orthogonal classifications:
+
+1. **machine role** — M, H or T;
+2. **authority representation** — whether particular state is capability-bearing and what operations can create, transform, transfer or consume it.
 
 Candidate invariants include:
 
 ```text
-ordinary T computation cannot manufacture authority
+ordinary T computation cannot fabricate authority
 
-T !-> arbitrary H
+T !-> arbitrary capability-bearing state
 ```
 
 and:
@@ -369,7 +399,7 @@ The model should distinguish events initiated by ordinary instructions from asyn
 
 ### 9.3 Explanatory test against PP250
 
-Determine whether M<H,T> gives a unified explanation of mechanisms that otherwise appear as unrelated special cases:
+Determine whether M<H,T>, together with capability as an orthogonal mechanism, gives a unified explanation of mechanisms that otherwise appear as unrelated special cases:
 
 - ordinary data instructions;
 - capability instructions;
@@ -389,10 +419,11 @@ A successful reconstruction should reduce rather than multiply special mechanism
 
 Compare the model with relevant architectures and research traditions, including PP250, CAP, Hydra, KeyKOS, EROS, PSOS, IBM System/38, Intel iAPX 432, CHERI and related capability machines.
 
-The comparison should ask at least two orthogonal questions:
+The comparison should ask at least three orthogonal questions:
 
 1. **Semantic boundary:** what does the hardware have to understand — authority alone, or richer object/type semantics?
 2. **Sovereignty boundary:** where does the power to change authority reside — privileged computation, a reference monitor, capability operations, a governing transition mechanism, or some combination?
+3. **Capability placement:** which architectural machines or layers contain capability-bearing state, and is capability treated as an authority mechanism or conflated with a particular execution machine?
 
 This is a more precise comparison than simply classifying systems as “capability machines”.
 
@@ -402,7 +433,7 @@ Retain the experiment proposed in the Authority Machine thesis.
 
 Begin with modern requirements for a general-purpose capability-native software system and derive the minimum hardware mechanisms without assuming PP250.
 
-Then ask whether the result naturally decomposes into something equivalent to H, T and M.
+Then ask whether the result naturally decomposes into something equivalent to H, T and M, and independently determine where capability-bearing state is required.
 
 If the top-down derivation and bottom-up PP250 reconstruction converge, that is a significant result.
 
@@ -415,6 +446,7 @@ Implement the reconstructed/formal model first in software and then, if practica
 The implementation should demonstrate that:
 
 - ordinary computation cannot fabricate authority;
+- capability-bearing state can exist in the architectural component that requires it without implying that component is H;
 - protected invocation changes authority context without exposing unrestricted privilege;
 - complete process transitions can occur without granting T sovereign machine access;
 - boot can establish legitimate initial authority without a hidden software privilege escape;
@@ -431,7 +463,8 @@ The M<H,T> reconstruction would be weakened or falsified if, for example:
 
 - PP250 requires ordinary privileged T execution with unrestricted authority beneath the capability model;
 - supposedly M-like operations turn out to be ordinary software conventions with no architectural distinction;
-- C(S) behaves exactly like ordinary capability-register state despite its apparent diagrammatic separation;
+- C(S) behaves exactly like ordinary H capability-register state despite its apparent diagrammatic separation;
+- capability cannot in fact be separated coherently from H in the formal or historical reconstruction;
 - the proposed M layer adds no explanatory or predictive power over conventional ISA/protection descriptions;
 - a top-down derivation of a minimal capability-native machine requires substantially different primitives;
 - existing literature already contains an equivalent formal abstraction and the PP250 analysis adds no material new result.
@@ -459,7 +492,7 @@ Relevant areas include:
 - CAP, Hydra, KeyKOS, EROS, PSOS and CHERI;
 - formal models of authority and protected state transition.
 
-The key novelty question is not whether anyone has used the letters M, H and T. It is whether prior work has already articulated essentially the same architectural decomposition and consequences: computation and authority as distinct state spaces governed by a machine whose transitions remain sovereign over both, including boot and fault transitions, without resort to privileged computation.
+The key novelty question is not whether anyone has used the letters M, H and T. It is whether prior work has already articulated essentially the same architectural decomposition and consequences: computation and authority as distinct state spaces governed by a machine whose transitions remain sovereign over both, including boot and fault transitions, while capability remains an orthogonal protected-authority mechanism rather than being identified with the authority machine itself.
 
 ---
 
@@ -493,26 +526,27 @@ A plausible eventual thesis could be organized as:
 2. **Method** — reconstruction from fragmentary historical evidence using observation, constraint, reconstruction, prediction and falsification.
 3. **PP250 reconstruction** — the machine as supported by surviving evidence.
 4. **Authority versus meaning** — the semantic-boundary question from the Authority Machine work.
-5. **The M<H,T> model** — formal definition of computation, authority and governing transitions.
+5. **The M<H,T> model** — formal definition of computation, authority and governing transitions, with capability modelled orthogonally rather than identified with H.
 6. **Boot, fault and process transition** — testing the model against the hardest PP250 mechanisms.
 7. **Comparative architecture** — CAP, Hydra, KeyKOS, EROS, PSOS, System/38, iAPX 432, CHERI and other relevant systems.
 8. **Top-down derivation** — derive the minimum capability-native hardware abstraction independently of PP250.
 9. **Convergence/divergence analysis** — compare the independent derivation with reconstructed PP250 and M<H,T>.
 10. **Implementation** — executable model and FPGA validation where practical.
 11. **Security and architectural evaluation** — authority paths, trusted mechanisms, privilege, fault containment and no-bypass properties.
-12. **Conclusions** — what should hardware know, and what should govern authority-changing transitions?
+12. **Conclusions** — what should hardware know, what should govern authority-changing transitions, and where should capability-bearing state reside?
 
 ---
 
 ## 14. Core research questions
 
-The integrated programme can currently be reduced to five questions:
+The integrated programme can currently be reduced to six questions:
 
 1. **Where should a general-purpose computer place the boundary between software-defined meaning and hardware-enforced authority?**
 2. **Can the state of a capability-native machine usefully and rigorously be decomposed into computation T, authority H and a governing transition machine M?**
-3. **Does that decomposition explain PP250's apparently disparate mechanisms, especially CHP, fault recovery, power-up, C(S), dump stacks and the absence of conventional privilege?**
-4. **Can a modern capability-native architecture be independently derived from software requirements and converge on the same abstraction without assuming PP250?**
-5. **What security and engineering properties follow if computation never becomes sovereign and all authority-changing transitions remain governed by M?**
+3. **Is capability best modelled as an orthogonal protected-authority mechanism that may be incorporated into multiple architectural machines rather than as synonymous with H?**
+4. **Does that decomposition explain PP250's apparently disparate mechanisms, especially CHP, fault recovery, power-up, C(S), dump stacks and the absence of conventional privilege?**
+5. **Can a modern capability-native architecture be independently derived from software requirements and converge on the same abstraction without assuming PP250?**
+6. **What security and engineering properties follow if computation never becomes sovereign and all authority-changing transitions remain governed by M?**
 
 ---
 
@@ -520,7 +554,7 @@ The integrated programme can currently be reduced to five questions:
 
 The integrated PhD idea can presently be summarized as follows:
 
-> **The Authority Machine investigates whether authority can be the minimal hardware abstraction of a general-purpose computer. The Sovereign Machine hypothesis adds that authority (H) and computation (T) may be distinct architectural state spaces governed by a third mechanism, M, which alone admits legitimate transitions between machine states. PP250 provides a fragmentarily documented historical machine from which this structure can be reconstructed bottom-up; a modern top-down derivation and executable implementation provide independent tests. If the two directions converge, the result may identify a general capability-native architectural principle rather than merely a historical peculiarity of System 250.**
+> **The Authority Machine investigates whether authority can be the minimal hardware abstraction of a general-purpose computer. The Sovereign Machine hypothesis adds that authority (H) and computation (T) may be distinct architectural state spaces governed by a third mechanism, M, which alone admits legitimate transitions between machine states. Capability is orthogonal to that decomposition: it is a protected representation/mechanism of authority that may be incorporated wherever the architecture requires protected authority, including H and potentially M. PP250 provides a fragmentarily documented historical machine from which this structure can be reconstructed bottom-up; a modern top-down derivation and executable implementation provide independent tests. If the two directions converge, the result may identify a general capability-native architectural principle rather than merely a historical peculiarity of System 250.**
 
 This proposition should remain explicitly provisional until the historical reconstruction, formalisation and novelty review have progressed further.
 
@@ -532,6 +566,7 @@ This document consolidates rather than replaces the earlier work.
 
 - `research/pp250-capability-architecture-provenance.md` preserves the development of the **Authority Machine** thesis and its provenance context.
 - `research/authority-integrity-and-semantic-boundary.md` develops the distinction between software-defined meaning and hardware-enforced authority integrity.
+- `architecture/architecture.md` records the working architectural distinction between capability and membership of H, T or M.
 - the boot/capability-genesis research supplies the principal historical test case for the **Sovereign Machine / M<H,T>** reconstruction.
 - `AGENTS.md` now records the architectural-reconstruction method to be used when working from fragmentary PP250 evidence.
 
