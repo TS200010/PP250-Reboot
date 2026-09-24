@@ -109,7 +109,7 @@ This identification is **not yet recorded as established fact**. We need to loca
 If the identification is confirmed, it suggests a useful architectural division:
 
 ```
-        CHURCH / CAPABILITY MACHINE
+        CHURCH / AUTHORITY MACHINE H
 
         LC  SC  LDP  CALL  RET  CHP
                     |
@@ -118,14 +118,37 @@ If the identification is confirmed, it suggests a useful architectural division:
           computational context
                     |
                     v
-          TURING / DATA MACHINE
+          TURING / DATA MACHINE T
 
        LD ST ADD CMP JMP AND ...
                     |
            operates on ordinary
           binary data within the
-       capability-defined context
+       authority-defined context
 ```
+
+### Capability is orthogonal to H, T and M
+
+The current reconstruction must not identify **capability** with the Church machine H itself. Capability is an independent architectural concept: a protected representation/mechanism of authority that may be incorporated wherever the architecture requires protected authority.
+
+Thus the decomposition `M<H,T>` is not a partition into a "capability part" H and a "non-capability part" T. H uses capability extensively because H represents and manipulates authority, but capability-bearing state may also belong to M. In particular, the diagrammatic separation of `C(S)` from the ordinary internal and external C-register sets makes `C(S)` a candidate example of capability state belonging to the governing/start-up mechanism M rather than to H.
+
+The working distinction is therefore:
+
+```text
+H = Church/authority machine
+T = Turing/general computational machine
+M = governing transition machine
+
+capability = protected authority mechanism/representation,
+             orthogonal to the H/T/M decomposition
+```
+
+Consequently, the fact that some state is a capability does **not** by itself establish that the state belongs to H. Capability state can in principle occur in H or M (and any future claim about capability-bearing T state must likewise be decided independently rather than by definition).
+
+This distinction is important to bootstrap reconstruction. The existence of a capability such as `C(S)` in M does not require H first to manufacture or authorize it. Power-up or fault behaviour implemented by M may establish or use capability-bearing M-state while preserving the rule that ordinary computation cannot fabricate authority.
+
+This is a **WORKING RECONSTRUCTION** derived from the emerging `M<H,T>` model and the documented special placement of `C(S)`, not a claim that the historical sources explicitly use this terminology.
 
 This may be particularly significant for understanding `LDP`. The processor self-test transcription describes LDP as **"D := Pointer associated with A."** Thus LDP apparently produces ordinary data in a D register while being closely associated with capability addressing. If LDP is confirmed as one of Hamer-Hodges's six Church instructions, it should not be approached merely as a conventional address-calculation instruction. It may instead be part of the carefully controlled boundary between ordinary manipulable pointers/references and protected capability authority.
 
