@@ -14,6 +14,8 @@ The reconstruction can then become executable as a reference emulator and simula
 
 Along the way the project has already begun to raise some deeper questions about capability machines, programming models and the computational structure of System 250. Those are worth pursuing seriously, and useful research may come out of them. That would be a welcome consequence of the project rather than its justification. The primary aim remains to reconstruct this remarkable old machine and see where that takes us.
 
+This is not being done in ignorance of later capability work. In particular, Ken Hamer-Hodges' **CLOOMC** work explores ideas closely related to the natural mapping between capabilities, protected objects and software structure. That is important context for this project: the aim is not to reinvent that mapping, but to reconstruct the System 250 beneath it, understand what the original architecture actually provided, and see what follows from that understanding.
+
 This is roughly where the project is heading:
 
 1. **System 250 Architectural Reconstruction.** Reconstruct the original hardware and behaviour as faithfully as the surviving evidence permits, explicitly recording what is documented, inferred, or still unknown. The historical reconstruction remains the foundation for everything that follows.
@@ -43,6 +45,16 @@ Because System 250 was an extraordinary machine, I spent part of my early career
 It was not merely a theoretical architecture: it became an operational commercial system. Yet much of its technical history is now difficult to recover, and there is an important difference between knowing a list of PP250 features and understanding how the machine fitted together and what those features made possible.
 
 Much of computing developed around the conventional von Neumann model, while System 250 approached protection, authority and computation in a rather different way. That makes it interesting both historically and technically. If reconstructing it also turns up ideas that remain useful today, so much the better.
+
+### On a more serious note…
+
+I have also become increasingly convinced that something important in the System 250 architecture has been overlooked. PP250 is usually remembered, when it is remembered at all, as an early capability machine. That is true, but I suspect it is an incomplete description which has encouraged later discussion to concentrate on capabilities primarily as a mechanism for protection and controlled access to memory.
+
+To those of us who programmed the machine, capabilities were also part of a remarkably natural way of structuring software. Protected objects, the authority to use them, and the interfaces through which they were entered were reflected directly in the machine architecture rather than being abstractions constructed entirely in software above it. Ken Hamer-Hodges' later **CLOOMC** work is important evidence that I am not alone in seeing significance in that relationship.
+
+Much subsequent academic work on capability machines has understandably concentrated on security and protection. Those are important properties, but I wonder whether classifying System 250 simply as an early member of that lineage has caused another part of its architecture to receive much less attention than it deserves.
+
+I don't yet know whether that suspicion will survive a complete reconstruction. That is one reason for doing the reconstruction carefully. Rather than starting by claiming that System 250 contained a forgotten answer, I would like to rebuild enough of it to find out exactly what was there, how the hardware and software fitted together, and whether there really is an architectural idea worth recovering.
 
 **Materials and Purpose**
 
