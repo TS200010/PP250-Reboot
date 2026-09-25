@@ -8,50 +8,29 @@ The Plessey System 250 (incorporating the PP250 processor) was an early commerci
 
 The immediate objective is to gather, preserve, digitise and cross-reference as much reliable information about the machine as possible. Once that body of evidence has been assembled, we can reconstruct the architecture and determine what can be established about the machine's behaviour.
 
-That reconstruction can then become executable as a reference emulator and simulator: a research bench for testing whether our reconstruction is coherent, for recreating as much of the original System 250 as the evidence permits, and for experimenting with historically distinct derivatives such as later patented developments and clearly identified new extensions.
+That reconstruction can then become executable as a reference emulator and simulator: a research bench for testing whether our reconstruction is coherent, for recreating as much of the original System 250 as the evidence permits, and for exploring what its architectural ideas might mean for modern capability-native hardware and software.
 
 The project is defined this way:
 
 1. **System 250 Architectural Reconstruction.** Reconstruct the original hardware and behaviour as faithfully as the surviving evidence permits, explicitly recording what is documented, inferred, or still unknown. The historical reconstruction remains the foundation for everything that follows.
 
-2. **M⟨H,T⟩ architectural theory.** The surviving System 250 material identifies two aspects of the architecture as the **Church machine** and the **Turing machine**. In this project we use **H** for the Church machine, since **C** is already used for capability registers, and **T** for the Turing machine.
+2. **Executable reconstruction and emulator workbench.** Once the architecture is sufficiently reconstructed, it becomes executable as a reference emulator/simulator. The workbench provides a way to test the coherence of the reconstruction, recreate as much of the original System 250 as the evidence permits, and experiment with historically distinct derivatives and new ideas without contaminating the faithful baseline.
 
-   The surviving architectural description appears to include within the Church machine two conceptually different things: the capability machinery itself, and machinery capable of acting on the state of the Church and Turing machines together. Our reconstruction investigates whether these should instead be treated separately.
+3. **Architectural and capability-native research.** Use the reconstructed machine as a basis for investigating what its architectural ideas mean beyond historical emulation. This includes the natural relationship between capabilities, protected objects and software abstractions, and how contemporary languages and compiler infrastructure might map onto capability-native hardware rather than merely being protected by it.
 
-   **Change Process (CHP) provides a concrete example.** A running process contains both Turing-machine state and Church-machine capability state. CHP, through the Dump Stack, can replace that complete state. Whatever performs that operation is therefore acting on **H and T together**, rather than merely performing an operation within H.
+   One research direction has emerged during the reconstruction itself: **M⟨H,T⟩**. The surviving System 250 material identifies two aspects of the architecture as the **Church machine** and the **Turing machine**. In this project we use **H** for the Church machine, since **C** is already used for capability registers, and **T** for the Turing machine.
 
-   We provisionally call this higher-level concept **M**. M is not a third machine parallel to H and T. It is a proposed **meta-machine**: either machinery which manipulates H and T, or perhaps the underlying machinery which implements them. The surviving architecture appears to conflate this role with the Church machine; the **M⟨H,T⟩** model deliberately separates them so that their relationships can be investigated.
+   The surviving architectural description appears to include within the Church machine two conceptually different things: the capability machinery itself, and machinery capable of acting on the state of the Church and Turing machines together. **Change Process (CHP)** provides a concrete example: through the Dump Stack it can replace a complete process state containing both Turing-machine state and Church-machine capability state.
 
-   The precise nature of M and the resulting M⟨H,T⟩ model remain research questions. The theory must be developed from, and tested against, the architectural reconstruction rather than imposed upon it.
+   We provisionally call this higher-level concept **M**. M is not a third machine parallel to H and T. It may be a meta-machine which manipulates H and T, or perhaps the underlying machinery which implements them. The **M⟨H,T⟩** model is therefore a developing theory arising from the reconstruction, to be tested against it rather than imposed upon it.
 
-3. **Executable reconstruction and emulator workbench.** Once the architecture is sufficiently reconstructed, it becomes executable as a reference emulator/simulator. The workbench provides a way to test the coherence of the reconstruction, exercise the M⟨H,T⟩ theory against concrete machine behaviour, recreate as much of the original System 250 as the evidence permits, and experiment with historically distinct derivatives without contaminating the faithful baseline.
-
-4. **Modern FPGA Capability Machine.** A new real computer informed by what survives the preceding reconstruction and theoretical work. It is not an attempt to reproduce System 250 hardware. It may use contemporary FPGA technology, RAM, buses, peripherals, DMA, storage and networking, and may eventually lead toward an ASIC if the architecture proves interesting.
+4. **Modern FPGA Capability Machine.** A new real computer informed by what survives the reconstruction and subsequent research. It is not an attempt to reproduce System 250 hardware. It may use contemporary FPGA technology, RAM, buses, peripherals, DMA, storage and networking, and may eventually lead toward an ASIC if the architecture proves interesting.
 
 5. **Inter-computer capability research.** For now this is deliberately thinking and documentation only. The problem is whether capability authority can meaningfully extend between independently protected machines without reducing a capability to forgeable/copyable data or merely replacing the capability model with cryptographic credentials. We have interesting ideas, particularly around the distinction between representation and authority to reconstruct, but we have not solved it.
 
-The main direction of the project is therefore:
+The broad direction is therefore from **historical evidence**, through **architectural reconstruction** and an **executable workbench**, into research on the computational and capability-native ideas exposed by the reconstructed machine, and ultimately into experiments with new hardware. M⟨H,T⟩ is an important emerging line of enquiry within that programme, not a prerequisite that the rest of the project depends upon.
 
-```
-historical evidence
-        |
-        v
-architectural reconstruction
-        |
-        v
-develop M⟨H,T⟩ theory
-        |
-        v
-test M⟨H,T⟩ against the reconstruction
-        |
-        v
-emulator workbench
-        |
-        v
-FPGA
-```
-
-The order matters. Historical evidence drives the architectural reconstruction. The M⟨H,T⟩ model is then developed as a theory of what that reconstructed architecture is doing and tested back against it. Only after that do the executable workbench and any new hardware implementation follow.
+**Relationship to other capability work.** PP250 Reboot is not an attempt to rediscover the correspondence between capabilities and protected objects. Ken Hamer-Hodges' **CLOOMC** work is particularly relevant here, and **CHERI** and **CHERIoT** provide important modern capability architectures and comparison points. Our starting point is the reconstruction of System 250 itself: recovering the architecture from the surviving evidence, making that reconstruction executable, and using it to investigate which of its ideas remain useful in a modern machine and software environment. This includes questions such as how contemporary language and object abstractions might map naturally onto hardware capabilities rather than merely being protected by them. During that reconstruction the M⟨H,T⟩ line of enquiry has emerged; it may reveal an aspect of the original architecture that is obscured when System 250 is described simply as a capability machine. CLOOMC, CHERI and CHERIoT are therefore not work to be reinvented, but related work against which both the reconstruction and the new questions it raises can be compared.
 
 **Why?**
 
@@ -102,7 +81,7 @@ Everything needed to cross that boundary belongs to the reconstruction. The proj
 
 The detailed reconstruction boundary, proof-of-sufficiency criterion, emulator contract and later-project boundaries are preserved in `research/reconstruction-sufficiency-and-workbench-boundaries.md`. Detailed startup reconstruction is in `research/pp250-boot-and-processor-startup.md`; capability genesis and resource lifecycle work is in `research/capability-genesis-and-resource-lifecycle.md`.
 
-The emulator/workbench is the executable test of the reconstruction and of the developing M⟨H,T⟩ theory. It must preserve a faithful historical baseline while keeping later patents and new experiments explicitly separate. The FPGA work follows from what survives that process and is a new architecture, not evidence about the historical machine. Inter-computer capability authority remains a separate unsolved research problem.
+The emulator/workbench is the executable test of the reconstruction and a platform for subsequent research, including the developing M⟨H,T⟩ theory and capability-native software experiments. It must preserve a faithful historical baseline while keeping later patents and new experiments explicitly separate. The FPGA work follows from what survives that process and is a new architecture, not evidence about the historical machine. Inter-computer capability authority remains a separate unsolved research problem.
 
 **Sources**
 
