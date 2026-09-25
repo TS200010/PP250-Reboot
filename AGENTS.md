@@ -6,6 +6,12 @@ This repository reconstructs and documents the architecture of the Plessey Syste
 
 Historical accuracy takes precedence over filling gaps with plausible assumptions.
 
+The root `README.md` is the authoritative concise statement of project scope and direction. The project sequence is:
+
+**historical evidence -> architectural reconstruction -> develop M⟨H,T⟩ theory -> test M⟨H,T⟩ against the reconstruction -> emulator workbench -> FPGA**
+
+Do not reverse this dependency. Later theory or implementation must not be projected backwards as historical evidence.
+
 ## Historical reconstruction method
 
 The surviving PP250 documentation is fragmentary. No single surviving document should be assumed to contain a complete or definitive description of the machine. Different papers, patents, manuals, diagrams, operating-system descriptions and implementation accounts often describe different parts of the same underlying architecture from different viewpoints.
@@ -44,6 +50,20 @@ The principal test of a reconstruction is not simply **“where does a document 
 
 Documentary provenance remains essential: observations must remain traceable to their sources, and reconstructions must remain distinguishable from observations. The purpose of this method is not to weaken the evidence standard, but to permit the architecture to be reconstructed from evidence that was never assembled into a single definitive description by the original authors.
 
+## M⟨H,T⟩ theory
+
+Treat **H** (the Church machine) and **T** (the Turing machine) as concepts identified in the surviving System 250 material. The project uses **H** rather than C because C is already used for capability registers.
+
+Treat **M** differently. M is a developing reconstruction theory, not an established historical term and not a third peer machine alongside H and T.
+
+The motivating observation is that the surviving architectural description appears to conflate within the Church machine both the capability machinery and machinery capable of acting on the combined Church/Turing state. **CHP through the Dump Stack is the concrete example:** a complete process state includes both ordinary Turing-machine state and Church-machine capability state, and CHP can replace that combined state. The project therefore investigates whether machinery acting at that level should be separated conceptually as **M**.
+
+The current notation is **M⟨H,T⟩**. The open theoretical question is whether M is best understood as a meta-machine manipulating H and T, as underlying machinery implementing H and T, or by some more precise formulation that emerges from the reconstruction.
+
+Do not present a particular mathematical formulation of M as settled merely because it is useful. Develop the theory from the architectural reconstruction and continually test it back against that reconstruction. If M⟨H,T⟩ fails to explain reconstructed behaviour, revise the theory or re-examine the reconstruction and evidence; do not force the machine to fit the model.
+
+Preserve substantial M⟨H,T⟩ reasoning, definitions, invariants, predictions and falsification tests in the appropriate research documents rather than expanding the README into a research notebook.
+
 ## Research publication and PhD potential
 
 While reconstructing or analysing the architecture, actively notice results that may constitute an **original academic contribution**, rather than treating every result only as repository documentation.
@@ -61,8 +81,7 @@ In particular, flag a result when one or more of the following occurs:
 - a reconstruction gives a single explanation for several previously disconnected PP250 mechanisms;
 - an inference makes a non-obvious prediction that is subsequently supported by independent evidence;
 - PP250 appears to embody an architectural principle not adequately captured by the usual description of it as a capability/protection machine;
-- the work identifies a useful new abstraction, formal model, invariant, security property or architectural decomposition;
-- bottom-up PP250 reconstruction independently converges with a top-down derivation from modern requirements;
+- the M⟨H,T⟩ investigation yields a useful abstraction, formal model, invariant, security property or architectural decomposition;
 - comparison with later architectures reveals a materially different semantic, authority, privilege or trust boundary;
 - an implementation or experiment could test a general architectural claim rather than merely demonstrate historical emulation;
 - a negative or contradictory result materially changes the understanding of capability-machine architecture.
@@ -85,7 +104,7 @@ This academic-publication check is separate from the **Patentable ideas and publ
 
 ## Primary reconstruction objective
 
-Treat the root `README.md` as the authoritative concise statement of project scope and direction. **Read it before doing architectural reconstruction, bootstrap research, emulator design, or hardware design.**
+Read the root `README.md` before doing architectural reconstruction, M⟨H,T⟩ work, emulator design, or hardware design.
 
 For detailed work on the reconstruction boundary and its proof-of-sufficiency criterion, read `research/reconstruction-sufficiency-and-workbench-boundaries.md`. For cold start, faults, CHP, Dump Stacks, initial C6/C7, processor initialisation/admission and the transition to the first legitimate process, read `research/pp250-boot-and-processor-startup.md`. For capability genesis, SCT/resource lifecycle, primordial authority and dynamic resource admission/removal, read `research/capability-genesis-and-resource-lifecycle.md`.
 
@@ -111,6 +130,16 @@ The target is not merely to make an emulator boot by convenient assumptions. The
 Where documentation stops before that chain is complete, label the missing link explicitly as inference, hypothesis or unknown and investigate the data structures that constrain the possible algorithm. Prefer **data structures -> necessary algorithms** over inventing plausible operating-system behaviour.
 
 The current completion criterion is preserved in `research/reconstruction-sufficiency-and-workbench-boundaries.md`: hardware/microcode must be able to reach a valid first process with sufficient legitimate capability authority to construct subsequent software-managed resources without undocumented privilege or arbitrary capability fabrication.
+
+## Emulator and FPGA work
+
+The emulator/simulator is an **executable research workbench downstream of the reconstruction and M⟨H,T⟩ theory**. Its faithful baseline must implement the evidence-backed reconstruction, expose uncertain assumptions, and permit the theory to be tested against concrete behaviour. Later patents and new experimental mechanisms must remain explicitly separate from that baseline.
+
+The FPGA project is downstream again. It is a new machine informed by what survives the reconstruction, theory and workbench; it is not a hardware reproduction of the historical System 250 and must not be used as evidence for it.
+
+Inter-computer capability authority remains a separate unsolved research problem. Do not present transport, authentication or cryptography alone as solving the authority-to-reconstruct problem.
+
+See `research/reconstruction-sufficiency-and-workbench-boundaries.md` for the detailed boundaries.
 
 ## Evidence policy
 
