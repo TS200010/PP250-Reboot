@@ -44,7 +44,7 @@ Because System 250 was an extraordinary machine, I spent part of my early career
 
 It was not merely a theoretical architecture: it became an operational commercial system. Yet much of its technical history is now difficult to recover, and there is an important difference between knowing a list of PP250 features and understanding how the machine fitted together and what those features made possible.
 
-Much of computing developed around the conventional von Neumann model, while System 250 approached protection, authority and computation in a rather different way. That makes it interesting both historically and technically. If reconstructing it also turns up ideas that remain useful today, so much the better.
+Much of computing developed around the conventional von Neumann model, while System 250 approached protection, authority, fault tolerance, recovery and computation in a rather different way. That makes it interesting both historically and technically. If reconstructing it also turns up ideas that remain useful today, so much the better.
 
 ### On a more serious note…
 
@@ -52,7 +52,7 @@ I have also become increasingly convinced that something important in the System
 
 To those of us who programmed the machine, capabilities were also part of a remarkably natural way of structuring software. Protected objects, the authority to use them, and the interfaces through which they were entered were reflected directly in the machine architecture rather than being abstractions constructed entirely in software above it. Ken Hamer-Hodges' later **CLOOMC** work is important evidence that I am not alone in seeing significance in that relationship.
 
-Much subsequent academic work on capability machines has understandably concentrated on security and protection. Those are important properties, but I wonder whether classifying System 250 simply as an early member of that lineage has caused another part of its architecture to receive much less attention than it deserves.
+Much subsequent work on capability machines has understandably concentrated on security, protection and, in some cases, fault isolation. System 250 certainly provided those properties, but its architecture was also deeply concerned with fault tolerance, recovery and maintaining legitimate system state in the presence of failure. I wonder whether classifying System 250 simply as an early capability machine has caused both this aspect and its unusually direct relationship between hardware capabilities and software structure to receive much less attention than they deserve.
 
 I don't yet know whether that suspicion will survive a complete reconstruction. That is one reason for doing the reconstruction carefully. Rather than starting by claiming that System 250 contained a forgotten answer, I would like to rebuild enough of it to find out exactly what was there, how the hardware and software fitted together, and whether there really is an architectural idea worth recovering.
 
