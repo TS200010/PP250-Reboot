@@ -2,7 +2,7 @@
 
 **Reconstructing the Plessey System 250...**
 
-The Plessey System 250 was an early commercial capability-based computer developed in the United Kingdom by Plessey. It was a groundbreaking computer architecture and which has perhaps more relevance today than in the 1970's.
+The Plessey System 250 (incorporating the PP250 processor) was an early commercial capability-based computer developed in the United Kingdom by Plessey. It was a groundbreaking computer architecture and which has perhaps more relevance today than in the 1970's.
 
 **PP250 Reboot** is an attempt to reconstruct the System 250 from the surviving technical documentation, software, patents, publications, hardware information, and the recollections of people who worked on the project.
 
@@ -10,13 +10,13 @@ The immediate objective is to gather, preserve, digitise and cross-reference as 
 
 That reconstruction can then become executable as a reference emulator and simulator: a research bench for testing whether our reconstruction is coherent, for recreating as much of the original System 250 as the evidence permits, and for experimenting with historically distinct derivatives such as later patented developments and clearly identified new extensions.
 
-I would define the programme this way:
+The project is defined this way:
 
-1. **System 250 Reconstruction Research Bench.** A software emulation/simulation environment whose primary purpose is historical and architectural reconstruction. We implement the original hardware and behaviour as faithfully as the surviving evidence permits, explicitly recording what is documented, inferred, or still unknown. Once we have a faithful baseline, the same simulator becomes an experimental platform: later Plessey patents can be implemented as variants, and we can explore our own extensions without contaminating the baseline reconstruction. This is where the current work on CHP, SCTs, dump stacks, capability representation, processor self-test, bootstrapping, COS/POS/ROS/PDOS differences, etc. belongs.
+1. **System 250 Reconstruction Research Bench.** A software emulation/simulation environment whose primary purpose is historical and architectural reconstruction. We implement the original hardware and behaviour as faithfully as the surviving evidence permits, explicitly recording what is documented, inferred, or still unknown. Once we have a faithful baseline, the same simulator becomes an experimental platform: later Plessey patents can be implemented as variants, and we can explore our own extensions without contaminating the baseline reconstruction.
 
-2. **Modern FPGA Capability Machine.** A new real computer inspired by the System 250 capability principles—closer in spirit to CHERIoT as a modern small capability machine, but not an attempt to reproduce System 250 hardware. It uses contemporary FPGA technology, RAM, buses and peripherals. We are free to choose an existing modern interconnect, use DMA, modern storage/networking and redesign things where appropriate. The research question becomes: what does a clean hardware capability machine look like if we take the important System 250 ideas and build it today? This could eventually lead toward an ASIC if the architecture proves interesting.
+2. **Modern FPGA Capability Machine.** A new real computer inspired by the System 250 capability principles—closer in spirit to CHERIoT and CLOOMC as a modern small capability machine, but not an attempt to reproduce System 250 hardware. It uses contemporary FPGA technology, RAM, buses and peripherals. We are free to choose an existing modern interconnect, use DMA, modern storage/networking and redesign things where appropriate. The research question becomes: what does a clean hardware capability machine look like if we take the important System 250 ideas and build it today? This could eventually lead toward an ASIC if the architecture proves interesting. It is entirely possible that this work is a fork or contribution to the aforementioned projects rather than a separate ground up reconstruction. 
 
-3. **Top-Down Capability-Native Design.** A complementary research programme that starts with the software system we would like a capability-native computer to express and works downward toward the required hardware abstractions. Rather than beginning with PP250 instructions and asking what software can be built on them, this track begins with objects, services, private state, interfaces and authority relationships and asks what capability graph, invocation mechanisms, protected structures and processor support make those abstractions natural. The objective is to determine where this independently derived top-down machine converges with the faithfully reconstructed PP250 architecture. Repeated convergence—on mechanisms such as Enter, CALL, capability closure, authoritative capability tables and the inability of ordinary data to manufacture authority—would help distinguish fundamental architectural invariants from implementation choices imposed by 1970s technology.
+3. **Top-Down Capability-Native Design.** A complementary research programme that starts with the software system we would like a capability-native computer to express and works downward toward the required hardware abstractions. Rather than beginning with PP250 instructions and asking what software can be built on them, this track begins with objects, services, private state, interfaces and authority relationships and asks what capability graph, invocation mechanisms, protected structures and processor support make those abstractions natural. The objective is to determine where this independently derived top-down machine converges with the faithfully reconstructed PP250 architecture. Repeated convergence—on mechanisms such as ENTER, CALL, capability closure, authoritative capability tables and the inability of ordinary data to manufacture authority—would help distinguish fundamental architectural invariants from implementation choices imposed by 1970s technology.
 
 **Top-down design principle — hardware protects authority; software defines meaning.** Software may define what an object represents and what its operations mean, and those semantics may be faulty without thereby creating new authority. Ordinary software state must not be able to manufacture, amplify or escape the authority legitimately granted to it. The trusted boundary should contain only the mechanisms required to preserve this authority integrity; application meaning should remain above it. The full argument is recorded in `research/authority-integrity-and-semantic-boundary.md`.
 
@@ -27,27 +27,27 @@ There is also an important relationship between the reconstruction and the top-d
 ```
 BOTTOM-UP                               TOP-DOWN
 
-Historical evidence                       Desired software system
-       |                                          |
-       v                                          v
+Historical evidence                     Desired software system
+       |                                           |
+       v                                           v
 System 250 reconstruction               Objects / services
-       |                                          |
-       v                                          v
+       |                                           |
+       v                                           v
 instructions and capability             Interfaces and authority
-mechanisms                               relationships
-       |                                          |
-       v                                          v
+mechanisms                              relationships
+       |                                           |
+       v                                           v
 SCT / CCB / processes                   Capability graph
-       |                                          |
-       +-------------------+  +-------------------+
-                           |  |
-                           v  v
-                      CONVERGENCE
-                           |
-                           v
-              architectural invariants
-                           |
-                           v
+       |                                           |
+       +-------------------+   +-------------------+
+                           |   |
+                           v   v
+                        CONVERGENCE
+                             |
+                             v
+                Architectural invariants
+                             |
+                             v
              Modern FPGA Capability Machine
 ```
 
@@ -59,17 +59,17 @@ This also changes the role of the modern FPGA machine. It need not simply be a m
 
 **Why?**
 
-PP250 occupies a distinctive place in the history of (capability-based) computing. It was not merely a theoretical architecture: it became an operational commercial system, and those who worked closely with it understood that its err... capabilities went well beyond conventional computer architectures of its time.
+System 250 occupies a distinctive place in the history of (capability-based) computing. It was not merely a theoretical architecture: it became an operational commercial system, and those who worked closely with it understood that its err... capabilities went well beyond conventional computer architectures of its time.
 
-Yet PP250 has received surprisingly little recognition for the power of the ideas embodied in its design. There is an important distinction between understanding PP250 as a collection of hardware and software features and understanding the computational model that lay behind it. The former can be learned from documentation; the latter requires seeing what the architecture makes possible.
+Yet System 250 has received surprisingly little recognition for the power of the ideas embodied in its design. There is an important distinction between understanding PP250 as a collection of hardware and software features and understanding the computational model that lay behind it. The former can be learned from documentation; the latter requires seeing what the architecture makes possible.
 
-Much of the history of computing is described through the lens of the conventional von Neumann model, in which computation operates on data and addresses in a shared memory. PP250 approached computing from a different foundation: the ideas associated with capability systems and, ultimately, with the more general computational principles explored by Church and others. That difference is easy to miss if PP250 is viewed simply as an unusual computer of its period.
+Much of the history of computing is described through the lens of the conventional von Neumann model, in which computation operates on data and addresses in a shared memory. System 250 approached computing from a different foundation: the ideas associated with capability systems and, ultimately, with the more general computational principles explored by Church and others. That difference is easy to miss if System250 is viewed simply as an unusual computer of its period.
 
-For the people who worked deeply with the system, the implications could be apparent in the architecture itself. For those who encountered PP250 only through descriptions of it, much of that significance was easier to overlook. This project is an attempt to recover not only what PP250 did, but to understand the architectural ideas that made it possible—and to make those ideas accessible and relavent again.
+For the people who worked deeply with the system, the implications could be apparent in the architecture itself. For those who encountered described only through descriptions of it, much of that significance was easier to overlook. This project is an attempt to recover not only what described did, but to understand the architectural ideas that made it possible—and to make those ideas accessible and relavent again.
 
 **Materials and Purpose**
 
-Much of the original technical material is now difficult to find, and some aspects of the architecture are incompletely documented in the surviving sources.
+Much of the original technical material is now lost, and some aspects of the architecture are incompletely documented in the surviving sources.
 
 This project therefore has three connected purposes:
 
@@ -96,7 +96,7 @@ Where two sources disagree, the disagreement itself is recorded.
 
 **Primary reconstruction: from inert hardware to the first real program**
 
-The main technical objective of PP250 Reboot is not, in the first instance, to recreate ROS, POS, or the complete historical System 250 software environment. It is to reconstruct the **PP250 hardware architecture and its initial state**, starting with an inert machine and continuing until the point at which the first legitimate ordinary PP250 program can execute.
+The main technical objective of PP250 Reboot is not, in the first instance, to recreate ROS, POS, or the complete historical System 250 software environments. It is to reconstruct the **PP250 hardware architecture and its initial state**, starting with an inert machine and continuing until the point at which the first legitimate ordinary PP250 program can execute.
 
 That boundary gives the historical investigation a concrete engineering target:
 
