@@ -85,11 +85,13 @@ This academic-publication check is separate from the **Patentable ideas and publ
 
 ## Primary reconstruction objective
 
-Treat the root `README.md` as the authoritative statement of project scope and direction. **Read it before doing architectural reconstruction, bootstrap research, emulator design, or hardware design**, and re-read the section **"Primary reconstruction: from inert hardware to the first real program"** whenever work touches cold start, faults, CHP, SCTs, dump stacks, capability genesis, C6/C7, processor initialisation, resource allocation, or initial machine state.
+Treat the root `README.md` as the authoritative concise statement of project scope and direction. **Read it before doing architectural reconstruction, bootstrap research, emulator design, or hardware design.**
+
+For detailed work on the reconstruction boundary and its proof-of-sufficiency criterion, read `research/reconstruction-sufficiency-and-workbench-boundaries.md`. For cold start, faults, CHP, Dump Stacks, initial C6/C7, processor initialisation/admission and the transition to the first legitimate process, read `research/pp250-boot-and-processor-startup.md`. For capability genesis, SCT/resource lifecycle, primordial authority and dynamic resource admission/removal, read `research/capability-genesis-and-resource-lifecycle.md`.
 
 The immediate technical objective is to reconstruct the PP250 from an inert machine up to the first legitimate execution of ordinary PP250 software. Do not silently turn this into a project to recreate ROS/POS or the entire historical operating system.
 
-Use the boundary defined in the README to guide research:
+Use the reconstruction boundary to guide research:
 
 - **Below the boundary:** reconstruct the hardware, microcode-visible mechanisms, and initial state required before ordinary software can run.
 - **At the boundary:** determine the complete relevant state of the first legitimate process and the provenance of every protected object/capability needed to establish it.
@@ -108,7 +110,7 @@ The target is not merely to make an emulator boot by convenient assumptions. The
 
 Where documentation stops before that chain is complete, label the missing link explicitly as inference, hypothesis or unknown and investigate the data structures that constrain the possible algorithm. Prefer **data structures -> necessary algorithms** over inventing plausible operating-system behaviour.
 
-The current completion criterion is the one stated in the README: hardware/microcode must be able to reach a valid first process with sufficient legitimate capability authority to construct subsequent software-managed resources without undocumented privilege or arbitrary capability fabrication.
+The current completion criterion is preserved in `research/reconstruction-sufficiency-and-workbench-boundaries.md`: hardware/microcode must be able to reach a valid first process with sufficient legitimate capability authority to construct subsequent software-managed resources without undocumented privilege or arbitrary capability fabrication.
 
 ## Evidence policy
 
