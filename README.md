@@ -2,57 +2,59 @@
 
 **Reconstructing the Plessey System 250...**
 
-The Plessey System 250 (incorporating the PP250 processor) was an early commercial capability-based computer developed in the United Kingdom by Plessey. It was a groundbreaking computer architecture and which has perhaps more relevance today than in the 1970's.
+The Plessey System 250 (incorporating the PP250 processor) was an early commercial capability-based computer developed in the United Kingdom by Plessey. It was a groundbreaking computer architecture which perhaps has more relevance today than it did in the 1970s.
 
-**PP250 Reboot** is an attempt to reconstruct the System 250 from the surviving technical documentation, software, patents, publications, hardware information, and the recollections of people who worked on the project.
+**PP250 Reboot is, first of all, a personal project.** I worked on the System 250 in the 1970s and, fifty years later, I would like to find out how much of the machine can still be recovered, understood and ultimately made to run again. Much of the documentation has disappeared, memories are imperfect, and there are some wonderfully awkward gaps in what survives. Working out what must have been there is a large part of the fun.
 
-The immediate objective is to gather, preserve, digitise and cross-reference as much reliable information about the machine as possible. Once that body of evidence has been assembled, we can reconstruct the architecture and determine what can be established about the machine's behaviour.
+The repository is public because this is much more likely to succeed with help. If you worked on System 250, have documentation or software tucked away somewhere, recognise something we have misunderstood, or simply find the architecture interesting and want to contribute, that would be enormously welcome.
 
-That reconstruction can then become executable as a reference emulator and simulator: a research bench for testing whether our reconstruction is coherent, for recreating as much of the original System 250 as the evidence permits, and for exploring what its architectural ideas might mean for modern capability-native hardware and software.
+The work is intended to be careful even though the motivation is personal. Surviving technical documentation, software, patents, publications, hardware information and recollections are being gathered, preserved and cross-referenced so that reconstruction can be distinguished from guesswork.
 
-The project is defined this way:
+The reconstruction can then become executable as a reference emulator and simulator: a workbench for testing whether it is coherent, for recreating as much of the original System 250 as the evidence permits, and for exploring what its architectural ideas might mean for modern capability-native hardware and software.
+
+Along the way the project has already begun to raise some deeper questions about capability machines, programming models and the computational structure of System 250. Those are worth pursuing seriously, and useful research may come out of them. That would be a welcome consequence of the project rather than its justification. The primary aim remains to reconstruct this remarkable old machine and see where that takes us.
+
+This is roughly where the project is heading:
 
 1. **System 250 Architectural Reconstruction.** Reconstruct the original hardware and behaviour as faithfully as the surviving evidence permits, explicitly recording what is documented, inferred, or still unknown. The historical reconstruction remains the foundation for everything that follows.
 
-2. **Executable reconstruction and emulator workbench.** Once the architecture is sufficiently reconstructed, it becomes executable as a reference emulator/simulator. The workbench provides a way to test the coherence of the reconstruction, recreate as much of the original System 250 as the evidence permits, and experiment with historically distinct derivatives and new ideas without contaminating the faithful baseline.
+2. **Executable reconstruction and emulator workbench.** Once the architecture is sufficiently reconstructed, make it executable as a reference emulator/simulator. The workbench gives us a way to test the coherence of the reconstruction, recreate as much of the original System 250 as the evidence permits, and experiment with historically distinct derivatives and new ideas without contaminating the faithful baseline.
 
-3. **Architectural and capability-native research.** Use the reconstructed machine as a basis for investigating what its architectural ideas mean beyond historical emulation. This includes the natural relationship between capabilities, protected objects and software abstractions, and how contemporary languages and compiler infrastructure might map onto capability-native hardware rather than merely being protected by it.
+3. **Architectural and capability-native exploration.** Use the reconstructed machine to explore what its architectural ideas might mean beyond historical emulation. This includes the natural relationship between capabilities, protected objects and software abstractions, and how contemporary languages and compiler infrastructure might map onto capability-native hardware rather than merely being protected by it.
 
-   One research direction has emerged during the reconstruction itself: **M⟨H,T⟩**. The surviving System 250 material identifies two aspects of the architecture as the **Church machine** and the **Turing machine**. In this project we use **H** for the Church machine, since **C** is already used for capability registers, and **T** for the Turing machine.
+   One particularly interesting line of enquiry has emerged during the reconstruction itself: **M⟨H,T⟩**. The surviving System 250 material identifies two aspects of the architecture as the **Church machine** and the **Turing machine**. In this project we use **H** for the Church machine, since **C** is already used for capability registers, and **T** for the Turing machine.
 
    The surviving architectural description appears to include within the Church machine two conceptually different things: the capability machinery itself, and machinery capable of acting on the state of the Church and Turing machines together. **Change Process (CHP)** provides a concrete example: through the Dump Stack it can replace a complete process state containing both Turing-machine state and Church-machine capability state.
 
-   We provisionally call this higher-level concept **M**. M is not a third machine parallel to H and T. It may be a meta-machine which manipulates H and T, or perhaps the underlying machinery which implements them. The **M⟨H,T⟩** model is therefore a developing theory arising from the reconstruction, to be tested against it rather than imposed upon it.
+   We provisionally call this higher-level concept **M**. M is not a third machine parallel to H and T. It may be a meta-machine which manipulates H and T, or perhaps the underlying machinery which implements them. The **M⟨H,T⟩** model is therefore a developing idea arising from the reconstruction, to be tested against it rather than imposed upon it.
 
-4. **Modern FPGA Capability Machine.** A new real computer informed by what survives the reconstruction and subsequent research. It is not an attempt to reproduce System 250 hardware. It may use contemporary FPGA technology, RAM, buses, peripherals, DMA, storage and networking, and may eventually lead toward an ASIC if the architecture proves interesting.
+4. **Modern FPGA Capability Machine.** If the preceding work gets far enough, it would be fascinating to build a real computer informed by what survives the reconstruction and subsequent experiments. This would not be an attempt to reproduce System 250 hardware. It could use contemporary FPGA technology, RAM, buses, peripherals, DMA, storage and networking, and might eventually point toward an ASIC if the architecture proved interesting enough.
 
-5. **Inter-computer capability research.** For now this is deliberately thinking and documentation only. The problem is whether capability authority can meaningfully extend between independently protected machines without reducing a capability to forgeable/copyable data or merely replacing the capability model with cryptographic credentials. We have interesting ideas, particularly around the distinction between representation and authority to reconstruct, but we have not solved it.
+5. **Inter-computer capability exploration.** Another question worth thinking about is whether capability authority can meaningfully extend between independently protected machines without reducing a capability to forgeable/copyable data or merely replacing the capability model with cryptographic credentials. There are some interesting ideas here, particularly around the distinction between representation and authority to reconstruct, but this remains an unsolved question rather than an implementation objective.
 
-The broad direction is therefore from **historical evidence**, through **architectural reconstruction** and an **executable workbench**, into research on the computational and capability-native ideas exposed by the reconstructed machine, and ultimately into experiments with new hardware. M⟨H,T⟩ is an important emerging line of enquiry within that programme, not a prerequisite that the rest of the project depends upon.
+So the broad direction is from **historical evidence**, through **architectural reconstruction** and an **executable workbench**, into whatever interesting computational and capability-native questions the reconstructed machine exposes, and perhaps ultimately into experiments with new hardware. M⟨H,T⟩ is one important emerging line of enquiry within that journey, not a prerequisite that the rest of the project depends upon.
 
-**Relationship to other capability work.** PP250 Reboot is not an attempt to rediscover the correspondence between capabilities and protected objects. Ken Hamer-Hodges' **CLOOMC** work is particularly relevant here, and **CHERI** and **CHERIoT** provide important modern capability architectures and comparison points. Our starting point is the reconstruction of System 250 itself: recovering the architecture from the surviving evidence, making that reconstruction executable, and using it to investigate which of its ideas remain useful in a modern machine and software environment. This includes questions such as how contemporary language and object abstractions might map naturally onto hardware capabilities rather than merely being protected by them. During that reconstruction the M⟨H,T⟩ line of enquiry has emerged; it may reveal an aspect of the original architecture that is obscured when System 250 is described simply as a capability machine. CLOOMC, CHERI and CHERIoT are therefore not work to be reinvented, but related work against which both the reconstruction and the new questions it raises can be compared.
+**Relationship to other capability work.** PP250 Reboot is not an attempt to rediscover the correspondence between capabilities and protected objects. Ken Hamer-Hodges' **CLOOMC** work is particularly relevant here, and **CHERI** and **CHERIoT** provide important modern capability architectures and comparison points. Our starting point is the reconstruction of System 250 itself: recovering the architecture from the surviving evidence, making that reconstruction executable, and then seeing what can be learned from it. This includes questions such as how contemporary language and object abstractions might map naturally onto hardware capabilities rather than merely being protected by them. CLOOMC, CHERI and CHERIoT are not work to be reinvented, but related work from which this project can learn and against which its experiments and observations can be compared.
 
 **Why?**
 
-System 250 occupies a distinctive place in the history of (capability-based) computing. It was not merely a theoretical architecture: it became an operational commercial system, and those who worked closely with it understood that its err... capabilities went well beyond conventional computer architectures of its time.
+Because System 250 was an extraordinary machine, I spent part of my early career programming it, and I would like to understand the rest of it.
 
-Yet System 250 has received surprisingly little recognition for the power of the ideas embodied in its design. There is an important distinction between understanding PP250 as a collection of hardware and software features and understanding the computational model that lay behind it. The former can be learned from documentation; the latter requires seeing what the architecture makes possible.
+It was not merely a theoretical architecture: it became an operational commercial system. Yet much of its technical history is now difficult to recover, and there is an important difference between knowing a list of PP250 features and understanding how the machine fitted together and what those features made possible.
 
-Much of the history of computing is described through the lens of the conventional von Neumann model, in which computation operates on data and addresses in a shared memory. System 250 approached computing from a different foundation: the ideas associated with capability systems and, ultimately, with the more general computational principles explored by Church and others. That difference is easy to miss if System250 is viewed simply as an unusual computer of its period.
-
-For the people who worked deeply with the system, the implications could be apparent in the architecture itself. For those who encountered described only through descriptions of it, much of that significance was easier to overlook. This project is an attempt to recover not only what described did, but to understand the architectural ideas that made it possible—and to make those ideas accessible and relavent again.
+Much of computing developed around the conventional von Neumann model, while System 250 approached protection, authority and computation in a rather different way. That makes it interesting both historically and technically. If reconstructing it also turns up ideas that remain useful today, so much the better.
 
 **Materials and Purpose**
 
 Much of the original technical material is now lost, and some aspects of the architecture are incompletely documented in the surviving sources.
 
-This project therefore has three connected purposes:
+There are therefore three practical strands to the project:
 
 * Preservation — collect and make accessible surviving PP250 technical and historical material.
-* Reconstruction — determine, as accurately as possible, how the system actually worked.
-* Experimentation — make the reconstructed architecture executable and use it to investigate the continuing value of its capability model.
+* Reconstruction — work out, as accurately as possible, how the system actually worked.
+* Experimentation — make the reconstructed architecture executable and see what we can learn from it.
 
-A working emulator and hardware implementations would be consequences of that work, not substitutes for establishing the evidence.
+A working emulator and any eventual hardware implementation are consequences of that work, not substitutes for establishing the evidence.
 
 **Evidence before assumptions**
 
@@ -63,25 +65,23 @@ A central principle of the project is to distinguish between:
 * **Inferred** — a technically strong conclusion derived from available evidence.
 * **Uncertain** — an interpretation for which the evidence is incomplete.
 * **Speculative** — a possibility requiring further evidence.
-* **Gaps** — a known gap in the record requiring further research. 
+* **Gaps** — a known gap in the record requiring further research.
 
-The project should not just silently fill gaps in the historical record.
-
-Where two sources disagree, the disagreement itself is recorded.
+The project should not just silently fill gaps in the historical record. Where two sources disagree, the disagreement itself is worth recording.
 
 **Primary reconstruction: from inert hardware to the first real program**
 
-The main technical objective of PP250 Reboot is not, in the first instance, to recreate ROS, POS, or the complete historical System 250 software environments. It is to reconstruct the **PP250 hardware architecture and its initial state**, starting with an inert machine and continuing until the point at which the first legitimate ordinary PP250 program can execute.
+The first substantial technical milestone I have set myself is not to recreate ROS, POS, or the complete historical System 250 software environments. It is to reconstruct the **PP250 hardware architecture and its initial state**, starting with an inert machine and continuing until the point at which the first legitimate ordinary PP250 program can execute.
 
-That boundary gives the historical investigation a concrete engineering target:
+That gives the historical investigation a wonderfully concrete engineering question:
 
 > **Starting from an inert machine, what hardware state and microcode mechanisms are required to reach the first legitimate execution of ordinary PP250 software?**
 
-Everything needed to cross that boundary belongs to the reconstruction. The project must account for the provenance of the protected state required by the first legitimate process rather than hiding the bootstrap problem behind an assumed operating system. It must then establish that the resulting process has sufficient legitimate authority for ordinary PP250 mechanisms to construct a continuing capability-managed system.
+Everything needed to cross that boundary belongs to the reconstruction. We need to account for the provenance of the protected state required by the first legitimate process rather than hiding the bootstrap problem behind an assumed operating system. We then need to establish that the resulting process has sufficient legitimate authority for ordinary PP250 mechanisms to construct a continuing capability-managed system.
 
 The detailed reconstruction boundary, proof-of-sufficiency criterion, emulator contract and later-project boundaries are preserved in `research/reconstruction-sufficiency-and-workbench-boundaries.md`. Detailed startup reconstruction is in `research/pp250-boot-and-processor-startup.md`; capability genesis and resource lifecycle work is in `research/capability-genesis-and-resource-lifecycle.md`.
 
-The emulator/workbench is the executable test of the reconstruction and a platform for subsequent research, including the developing M⟨H,T⟩ theory and capability-native software experiments. It must preserve a faithful historical baseline while keeping later patents and new experiments explicitly separate. The FPGA work follows from what survives that process and is a new architecture, not evidence about the historical machine. Inter-computer capability authority remains a separate unsolved research problem.
+The emulator/workbench will be the executable test of the reconstruction and a playground for subsequent experiments, including the developing M⟨H,T⟩ idea and capability-native software work. It must preserve a faithful historical baseline while keeping later patents and new experiments explicitly separate. Any FPGA work would follow from what survives that process and would be a new architecture, not evidence about the historical machine. Inter-computer capability authority remains a separate unsolved problem to think about.
 
 **Sources**
 
@@ -91,15 +91,15 @@ Original documents should be preserved separately from derived material. Transcr
 
 **Contributions**
 
-Information from former PP250 engineers, programmers, users and maintainers is particularly valuable.
+Information from former PP250 engineers, programmers, users and maintainers would be particularly valuable.
 
-If you have PP250 documentation, software, photographs, technical notes, personal recollections or information about people involved in the project, please get in touch or open an issue.
+If you have PP250 documentation, software, photographs, technical notes, personal recollections, information about people involved in the project, or simply spot something here that looks wrong, please get in touch or open an issue. Help reconstructing the machine would be very welcome.
 
-**PP250 Reboot** is an historical and technical reconstruction project.
+**PP250 Reboot** is an historical and technical reconstruction project, but above all it is something I am doing because I want to see whether this machine can be understood and brought back to life.
 
 The goal is simple:
 
-**Find out what PP250 really was, preserve what can still be recovered, make it possible to run again, and discover what its capability architecture can still become.**
+**Find out what PP250 really was, preserve what can still be recovered, make it possible to run again, and see where its ideas lead.**
 
 ## Repository layout
 
@@ -128,4 +128,4 @@ Please describe the source, date of access or acquisition where known, any trans
 
 ## About me...
 
-As you might have guessed I worked on the PP250 in Taplow Berkshire. A programmer on the CORAL 250 Compiler team and later its project leader.
+I worked on the PP250 at Plessey in Taplow, Berkshire, first as a programmer on the CORAL 250 compiler team and later as its project leader. Fifty years later, I'd quite like to understand the rest of the machine.
