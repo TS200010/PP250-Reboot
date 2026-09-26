@@ -31,9 +31,52 @@ The Pocket Reference distinguishes two instruction formats.
 
 The store-mode instruction contains fields labelled FUNCTION, REG, MOD, CAP and ADDRESS.
 
+#### Store-mode address formation
+
+The `MOD` field selects a data register used as the address modifier (index). This interpretation is independently corroborated by Henry Levy's description of the System 250 instruction format and addressing mechanism.
+
+The Store-mode offset is formed by adding the contents of the selected data register to the 9-bit `ADDRESS` field:
+
+```text
+offset = ADDRESS + D[MOD]
+```
+
+The selected `CAP` capability register supplies the segment base and the authority under which the store reference is made. The resulting memory address is therefore:
+
+```text
+memory address = C[CAP].base + offset
+               = C[CAP].base + ADDRESS + D[MOD]
+```
+
+The reference is subject to the bounds and access permissions of the selected capability.
+
 ### Direct mode
 
 The direct-mode instruction contains fields labelled FUNCTION, REG, MOD and SIGNED LITERAL.
+
+#### Direct-mode operand formation
+
+The 12-bit `SIGNED LITERAL` supplies the direct literal value. The same three-bit `MOD` field is present, but the Store-mode indexing rule must not simply be projected onto Direct mode.
+
+Levy describes Direct mode as supplying a 12-bit literal or supporting register-to-register operations, and states that when the literal is zero, `MOD` identifies the second register of a two-register instruction.
+
+Accordingly, the following distinction is retained explicitly:
+
+```text
+Store mode:
+    ADDRESS + D[MOD]                 established
+
+Direct mode:
+    SIGNED LITERAL + D[MOD]          not established
+```
+
+The complete semantics of `MOD` for Direct-mode instructions with a non-zero signed literal are therefore not stated here.
+
+#### Architectural significance of MOD in the two modes
+
+The presence of the same three-bit `MOD` field in both instruction formats does not by itself establish identical semantics.
+
+In Store mode, `MOD` is established as selecting a data register whose contents participate in address formation. In Direct mode, the evidence establishes at least a register-selection role when the signed literal is zero. The Store-mode rule is not extrapolated beyond that evidence.
 
 ## Programmer-visible instruction set
 
