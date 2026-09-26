@@ -14,6 +14,7 @@ Primary sources used for this revision include:
 
 - *System 250 Pocket Reference Book*, Issue 1, May 1976, pages 0–7.
 - D. Halton, *Hardware of the System 250 for Communication Control* (1972).
+- D. M. England, *Architectural Features of System 250*, Figure 7, "Examples of Commands".
 - Contemporary Plessey capability-register, interrupt, and store-allocation patent material.
 - Repository transcriptions under `transcriptions/`.
 
@@ -120,7 +121,7 @@ Levy provides an important additional fact about Direct mode: when `SIGNED LITER
 For Direct-mode `LD`, therefore:
 
 ```text
-LD D1, D2, 0
+LD D1 D2 0
 ```
 
 means:
@@ -143,15 +144,28 @@ for an ordinary Data-register operation such as `LD` and a non-zero `MOD` field.
 
 #### Non-zero-literal reconstruction hypothesis
 
-What remains uncorroborated is the behaviour when `SIGNED LITERAL` is non-zero.
+England's Figure 7 now supplies a real executable-source example of a non-zero signed literal in Direct mode:
 
-A simple interpretation consistent with the established evidence is:
+```text
+LSH D3 -1
+```
+
+This establishes that the assembler accepts the literal-only form with no modifier contribution. Figure 7 also supplies register-only Direct-mode examples:
+
+```text
+OR  D1 D3
+EOR D1 D3
+```
+
+These establish the complementary assembler form in which the second Data register is supplied and the literal contribution is zero.
+
+The general interpretation remains:
 
 ```text
 operand = D[MOD] + SIGNED LITERAL
 ```
 
-The established zero-literal case then follows naturally:
+with either contribution omitted in source syntax when zero/not required. The established zero-literal case follows naturally:
 
 ```text
 SIGNED LITERAL = 0
@@ -160,9 +174,7 @@ operand = D[MOD] + 0
         = D[MOD]
 ```
 
-Thus Levy's documented register-to-register case requires no separate special mechanism.
-
-For Direct-mode `LD`, the proposed general rule would be:
+For Direct-mode `LD`, the general rule is therefore:
 
 ```text
 D[REG] = D[MOD] + SIGNED LITERAL
@@ -171,10 +183,10 @@ D[REG] = D[MOD] + SIGNED LITERAL
 For example:
 
 ```text
-LD D1, D2, 0
+LD D1 D2 0
 ```
 
-gives the established:
+gives:
 
 ```text
 D1 = D2
@@ -183,20 +195,20 @@ D1 = D2
 while:
 
 ```text
-LD D1, D1, 1
+LD D1 D1 1
 ```
 
-would give:
+gives:
 
 ```text
 D1 = D1 + 1
 ```
 
-The latter is a reconstruction prediction, not yet an established ISA fact.
+The remaining evidential gap is narrower than before: Figure 7 independently demonstrates a non-zero modifier/register contribution and a non-zero literal contribution, but does not itself contain an instruction in which both are non-zero simultaneously.
 
 #### Consistency of MOD across Store and Direct modes
 
-The proposed Direct-mode interpretation is entirely consistent with the established use of `MOD` elsewhere in the instruction set.
+The Direct-mode interpretation is entirely consistent with the established use of `MOD` elsewhere in the instruction set.
 
 In Store mode:
 
@@ -204,7 +216,7 @@ In Store mode:
 modified value = ADDRESS + D[MOD]
 ```
 
-In Direct mode, under the hypothesis:
+In Direct mode:
 
 ```text
 modified value = SIGNED LITERAL + D[MOD]
@@ -226,7 +238,7 @@ offset for store access through C[CAP]
 store operand
 
 
-DIRECT MODE — hypothesis for non-zero literal
+DIRECT MODE
 
 SIGNED LITERAL + optional D[MOD]
         |
@@ -259,18 +271,97 @@ Direct mode, literal = 0 and MOD != 0:
     MOD supplies the second register
         ESTABLISHED
 
-Direct LD D1,D2,0:
+Direct LD D1 D2 0:
     D1 = D2
         ESTABLISHED
 
-Direct mode, non-zero literal:
+Direct mode, MOD = 0 and non-zero literal:
+    literal supplies the operand contribution
+        ESTABLISHED BY ENGLAND FIGURE 7
+
+Direct mode, MOD != 0 and non-zero literal simultaneously:
     operand = D[MOD] + SIGNED LITERAL
-        RECONSTRUCTION HYPOTHESIS
+        ARCHITECTURALLY CONSISTENT; NO FIGURE 7 EXAMPLE OF BOTH NON-ZERO
 ```
 
-The Direct-mode hypothesis is supported by its ability to explain the established zero-literal behaviour and by its complete structural consistency with the established use of `MOD` in Store mode and elsewhere in the instruction set.
+Figure 7 therefore materially strengthens the Direct-mode reconstruction: real System 250 source demonstrates both the register-only and signed-literal-only forms. The only remaining source-evidence question is whether a surviving example can be found with both a non-zero modifier and a non-zero literal in the same Direct-mode instruction.
 
-It should nevertheless remain identified as reconstruction until a primary description or an executable-code example establishes the behaviour for a non-zero Direct-mode literal.
+### Historical assembler source syntax
+
+England's Figure 7, "Examples of Commands", is currently the strongest primary example in the repository of actual System 250 assembly source. It establishes that assembler source notation must be distinguished from binary instruction-field order.
+
+The Figure 7 binary-search example includes:
+
+```text
+        LD   D1  0
+LOOP:   OR   D1  D3
+        CMP  D2  TBL  D1  C1
+        JEQ  FINISH
+        JGT  UPPER
+        EOR  D1  D3
+UPPER:  LSH  D3  -1
+        JNE  LOOP
+        CMP  D2  TBL  D1  C1
+FINISH: RET
+```
+
+For the demonstrated Store-mode `CMP`, the machine encoding fields are:
+
+```text
+FUNCTION | REG | MOD | CAP | ADDRESS
+```
+
+but the historical assembler writes the operands as:
+
+```text
+CMP REG ADDRESS MOD CAP
+```
+
+Thus:
+
+```text
+CMP D2 TBL D1 C1
+```
+
+maps to:
+
+```text
+REG     = D2
+ADDRESS = TBL
+MOD     = D1
+CAP     = C1
+```
+
+and denotes a comparison of D2 with the store operand addressed at:
+
+```text
+C1.base + TBL + D1
+```
+
+subject to the normal C1 bounds and access checks.
+
+Figure 7 also establishes:
+
+- colon-terminated symbolic labels, e.g. `LOOP:`, `UPPER:`, `FINISH:`;
+- symbolic branch operands, e.g. `JEQ FINISH`, `JGT UPPER`, `JNE LOOP`;
+- symbolic Store-mode address operands such as `TBL`;
+- register-only Direct-mode forms such as `OR D1 D3` and `EOR D1 D3`;
+- literal-only Direct-mode forms such as `LD D1 0` and `LSH D3 -1`;
+- zero-operand source form `RET`.
+
+The assembler therefore permits fields whose contribution is absent/zero to be omitted in the source notation. This does not imply that the underlying machine fields cease to exist. In particular, the full Direct-mode semantic form remains useful and valid for describing instructions such as:
+
+```text
+LD D1 D1 1
+```
+
+meaning:
+
+```text
+D1 = D1 + 1
+```
+
+No change is made here to CALL or CHP source syntax because Figure 7 does not contain examples of those instructions.
 
 ## Programmer-visible instruction set
 
