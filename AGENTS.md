@@ -186,6 +186,8 @@ Do not perform broad repository scans when a narrower operation will answer the 
 
 Prefer changed files and Git diffs when reviewing recent work.
 
+If a task would be materially better suited to Codex—for example repository-wide edits, substantial implementation, refactoring, or running and iterating on tests—suggest using Codex to the repository owner.
+
 ## Architecture
 
 `architecture/` represents the current working reconstruction of the PP250 architecture.
