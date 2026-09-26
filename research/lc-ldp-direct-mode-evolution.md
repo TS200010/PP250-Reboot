@@ -141,7 +141,34 @@ Questions include:
 6. Is there a relationship to later pointer-register, SCT, capability propagation or access-reduction mechanisms described in patents?
 7. Can code from Checkout, ROS/COS/POS, the processor self-test material, or surviving Plessey listings demonstrate actual LC/LDP operand usage?
 
-## 7. Falsification / evidence targets
+## 7. Unresolved capability attenuation question
+
+A separate but closely related reconstruction problem is how the original PP250 could pass or derive a capability to an existing object with **reduced access rights**.
+
+The evidence currently available does **not** establish that ordinary original-PP250 `LC` reduced the access field. We therefore must not silently assume an attenuation operation that has not been found in the early documentation.
+
+### D0 mask hypothesis
+
+One hypothesis worth retaining is that **D0 may have acted as an access-rights mask during `LC`**, so that loading a capability could preserve or remove rights but could not add them. This would be a natural monotonic attenuation mechanism and fits the broader PP250 philosophy of preventing ordinary data operations from manufacturing additional authority.
+
+This is **speculation, not documented PP250 behaviour**. It arose as a reconstruction hypothesis. No primary PP250 source found so far states that `LC` masks capability rights with D0, and D0's documented role as a mask register elsewhere is not evidence by itself that it participates in `LC`.
+
+There is also evidence that may weigh against the hypothesis. A later Andrews/Wheatley Plessey patent explicitly describes access-reduction facilities, including masked capability loading, as an enhancement to the capability mechanism. If this facility was genuinely new, that would suggest that equivalent general attenuation may **not** have existed in the original PP250. The later patent must not be projected backwards onto the early machine without corroboration.
+
+The unresolved question is therefore:
+
+> **Could the original PP250 derive a reduced-rights capability from an existing capability, and if so, by what mechanism?**
+
+Possibilities to investigate include:
+
+- the D0/LC masking hypothesis;
+- another original PP250 instruction or protected mechanism for attenuation;
+- creation of differently restricted capabilities through a controlled system mechanism rather than arbitrary derivation by ordinary code;
+- or absence of general capability attenuation in the original PP250, with explicit access reduction appearing only in later Plessey development.
+
+The D0 idea should remain recorded as a **testable hypothesis within this unresolved question**, not as part of the established PP250 instruction-set specification.
+
+## 8. Falsification / evidence targets
 
 The architectural-evolution hypothesis should be revised or rejected if primary evidence shows, for example:
 
@@ -150,9 +177,11 @@ The architectural-evolution hypothesis should be revised or rejected if primary 
 - early hardware already implemented these opcodes despite the Checkout documentation;
 - different PP250/System 250 processor variants account for the difference rather than chronological evolution.
 
-Highest-value evidence would be the missing **Plessey Telecommunications System 250 Processor Instruction Set Manual**, microprogram listings, assembler definitions, or real program listings using opcode `70` or `71`.
+For the attenuation question, particularly valuable evidence would be any original PP250 description of D0 during `LC`, another instruction capable of reducing access fields, or code showing two capabilities referring to the same object with different rights. The later Andrews/Wheatley patent should be examined chronologically and technically to establish exactly what it claims as new relative to earlier Plessey capability machinery.
 
-## 8. Current state
+Highest-value evidence overall would be the missing **Plessey Telecommunications System 250 Processor Instruction Set Manual**, microprogram listings, assembler definitions, or real program listings using opcode `70` or `71`.
+
+## 9. Current state
 
 ### Established
 
@@ -165,6 +194,10 @@ Highest-value evidence would be the missing **Plessey Telecommunications System 
 
 LC and LDP acquired direct forms as part of an architectural development in capability-pointer handling between the early PP250 and the 1976 System 250 documentation.
 
+### Retained hypothesis
+
+- D0 may have provided a monotonic access-rights mask during `LC`, but this is presently unsupported by primary evidence; the later Andrews/Wheatley introduction of explicit access-reduction machinery may instead indicate that this facility was absent from the original PP250.
+
 ### Unresolved
 
 - Exact semantics of direct LC.
@@ -172,5 +205,6 @@ LC and LDP acquired direct forms as part of an architectural development in capa
 - Exact meaning and representation of `Pointer associated with A`.
 - Why LDP changes LT/EQ.
 - Whether the source difference is chronological evolution, variant difference, or documentation discrepancy.
+- Whether and how the original PP250 could derive a reduced-rights capability from an existing capability.
 
 Until those points are resolved, this document remains **work in progress** and its interpretations must not be promoted to documented PP250 architectural facts.
