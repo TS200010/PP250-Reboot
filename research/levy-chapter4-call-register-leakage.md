@@ -29,7 +29,7 @@ A more accurate conceptual description is:
 before CALL
 -----------
 C0-C4 : caller-held capabilities / possible arguments
-C5    : current-process dynamic state role
+C5    : current-process dynamic state
 C6    : caller Central Capability Block
 C7    : caller current code
 
@@ -38,11 +38,34 @@ CALL through Enter capability
 inside callee
 -------------
 C0-C4 : survive unless software/procedure convention changes them
+C5    : current-process dynamic state persists
 C6    : entered Central Capability Block
 C7    : selected executable code
 ```
 
 Thus the C6/C7 transition establishes the protected execution environment, while C0-C4 may carry delegated authority across that boundary.
+
+### C5 is structurally different from C0-C4
+
+Levy's register-usage description assigns C0-C4 to general program use but gives C5 a distinct role: it points to a data structure containing dynamically allocated elements associated with current process execution. His protected-CALL vulnerability discussion identifies the persistence of **C0-C4**, not C0-C5, as the authority-leakage problem.
+
+Taken together with CALL changing C6/C7, this supports the following **strong reconstruction inference**:
+
+- C5 is persistent process context;
+- C6/C7 identify the currently executing protected package/domain;
+- C0-C4 are general capability registers that can intentionally or unintentionally convey authority across the transition.
+
+Conceptually, two processes may therefore enter the same protected package while retaining distinct process state:
+
+```text
+Process A                         Process B
+---------                         ---------
+C5 -> A dynamic state             C5 -> B dynamic state
+C6 -> package environment         C6 -> same package environment
+C7 -> package code                C7 -> same package code
+```
+
+This is an architectural interpretation of the documented/secondary register roles, not yet proof that the processor contains special C5-only hardware treatment. The distinction matters: **C5 can have an architecturally defined role even if its persistence is implemented simply because protected CALL replaces C6/C7 and leaves C5 untouched.** Primary instruction or microcode evidence should be sought before claiming more.
 
 ## ABI consequence
 
@@ -52,7 +75,8 @@ This is directly relevant to future PP250 ABI work. C0-C4 cannot be treated mere
 - which are caller-saved or callee-saved;
 - whether unused capability argument registers must be cleared at a protection boundary;
 - whether capability return values are permitted in these registers;
-- what confidentiality/confinement guarantee an ABI claims when registers are intentionally retained.
+- what confidentiality/confinement guarantee an ABI claims when registers are intentionally retained;
+- how the C5 persistent process-context role is preserved across ordinary and protected procedure calls.
 
 The mechanism can be useful rather than purely defective: retaining a C register across CALL provides an efficient way to delegate a capability argument to the callee. The security issue is that such delegation must be intentional and governed by calling convention rather than occurring as residual register state.
 
@@ -60,4 +84,6 @@ The mechanism can be useful rather than purely defective: retaining a C register
 
 The survival/leakage observation here is **SECONDARY EVIDENCE from Levy** until checked against primary instruction/microcode documentation. It is consistent with the reconstructed role of CALL in changing C6/C7, but this note must not silently promote Levy's retrospective discussion to primary evidence.
 
-This note supplements `research/pp250-execution-and-process-model.md`; it does not replace or modify that reconstruction.
+The stronger C5 interpretation is explicitly an **inference** from Levy's distinct register roles plus the asymmetry of his C0-C4 leakage discussion. It should be tested against primary CALL/RET documentation.
+
+This note supplements `research/pp250-execution-and-process-model.md`; it does not replace that reconstruction.
