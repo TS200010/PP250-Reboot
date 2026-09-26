@@ -29,54 +29,220 @@ The Pocket Reference distinguishes two instruction formats.
 
 ### Store mode
 
-The store-mode instruction contains fields labelled FUNCTION, REG, MOD, CAP and ADDRESS.
+The Store-mode instruction contains the fields:
+
+```text
+FUNCTION | REG | MOD | CAP | ADDRESS
+   6        3     3     3       9
+```
+
+`REG` selects the register used by the instruction. Depending on the instruction, this may be a Data register or a Capability register.
+
+`MOD` selects one of the Data registers D0–D7.
+
+`CAP` selects one of the Capability registers C0–C7.
+
+`ADDRESS` is the 9-bit address field.
 
 #### Store-mode address formation
 
-The `MOD` field selects a data register used as the address modifier (index). This interpretation is independently corroborated by Henry Levy's description of the System 250 instruction format and addressing mechanism.
+The role of `MOD` in Store mode is established independently of the Pocket Reference format diagram. Levy identifies it as the Data register used as the address modifier or index.
 
-The Store-mode offset is formed by adding the contents of the selected data register to the 9-bit `ADDRESS` field:
+The contents of the Data register selected by `MOD` are added to `ADDRESS`:
 
 ```text
 offset = ADDRESS + D[MOD]
 ```
 
-The selected `CAP` capability register supplies the segment base and the authority under which the store reference is made. The resulting memory address is therefore:
+The resulting offset is used through the Capability register selected by `CAP`:
 
 ```text
-memory address = C[CAP].base + offset
-               = C[CAP].base + ADDRESS + D[MOD]
+memory address = C[CAP].base + ADDRESS + D[MOD]
 ```
 
-The reference is subject to the bounds and access permissions of the selected capability.
+The store reference is subject to the bounds and access rights of the selected Capability register.
+
+Thus the significant Store-mode relationship is:
+
+```text
+ADDRESS + D[MOD]
+        |
+        v
+offset within the segment designated by C[CAP]
+        |
+        v
+store operand
+```
+
+This is established architecture.
 
 ### Direct mode
 
-The direct-mode instruction contains fields labelled FUNCTION, REG, MOD and SIGNED LITERAL.
+The Direct-mode instruction contains the fields:
 
-#### Direct-mode operand formation
+```text
+FUNCTION | REG | MOD | SIGNED LITERAL
+   6        3     3          12
+```
 
-The 12-bit `SIGNED LITERAL` supplies the direct literal value. The same three-bit `MOD` field is present, but the Store-mode indexing rule must not simply be projected onto Direct mode.
+There is no `CAP` or `ADDRESS` field. Direct mode therefore does not make the ordinary Store-mode operand reference through a Capability register.
 
-Levy describes Direct mode as supplying a 12-bit literal or supporting register-to-register operations, and states that when the literal is zero, `MOD` identifies the second register of a two-register instruction.
+`REG` selects the register used by the instruction.
 
-Accordingly, the following distinction is retained explicitly:
+`SIGNED LITERAL` is a 12-bit signed literal.
+
+The remaining question is the complete meaning of `MOD`.
+
+#### Established zero-literal behaviour
+
+Levy provides an important additional fact about Direct mode: when `SIGNED LITERAL` is zero, `MOD` identifies the second register of a two-register instruction.
+
+For Direct-mode `LD`, therefore:
+
+```text
+LD D1, D2, 0
+```
+
+means:
+
+```text
+D1 = D2
+```
+
+This register-to-register behaviour is established evidence, not reconstruction.
+
+We therefore know:
+
+```text
+Direct mode, SIGNED LITERAL = 0:
+
+    operand = D[MOD]
+```
+
+for an ordinary Data-register operation such as `LD`.
+
+#### Non-zero-literal reconstruction hypothesis
+
+What remains uncorroborated is the behaviour when `SIGNED LITERAL` is non-zero.
+
+A simple interpretation consistent with the established evidence is:
+
+```text
+operand = D[MOD] + SIGNED LITERAL
+```
+
+The established zero-literal case then follows naturally:
+
+```text
+SIGNED LITERAL = 0
+
+operand = D[MOD] + 0
+        = D[MOD]
+```
+
+Thus Levy's documented register-to-register case requires no separate special mechanism.
+
+For Direct-mode `LD`, the proposed general rule would be:
+
+```text
+D[REG] = D[MOD] + SIGNED LITERAL
+```
+
+For example:
+
+```text
+LD D1, D2, 0
+```
+
+gives the established:
+
+```text
+D1 = D2
+```
+
+while:
+
+```text
+LD D1, D1, 1
+```
+
+would give:
+
+```text
+D1 = D1 + 1
+```
+
+The latter is a reconstruction prediction, not yet an established ISA fact.
+
+#### Consistency of MOD across Store and Direct modes
+
+The proposed Direct-mode interpretation is entirely consistent with the established use of `MOD` elsewhere in the instruction set.
+
+In Store mode:
+
+```text
+modified value = ADDRESS + D[MOD]
+```
+
+In Direct mode, under the hypothesis:
+
+```text
+modified value = SIGNED LITERAL + D[MOD]
+```
+
+Thus `MOD` has the same underlying role in both instruction formats: it selects the Data register whose contents are added to the value supplied by the instruction.
+
+What differs is the use made of the result:
+
+```text
+STORE MODE
+
+ADDRESS + D[MOD]
+        |
+        v
+offset for store access through C[CAP]
+        |
+        v
+store operand
+
+
+DIRECT MODE — hypothesis for non-zero literal
+
+SIGNED LITERAL + D[MOD]
+        |
+        v
+operand supplied directly to the instruction
+```
+
+This also provides a straightforward hardware interpretation: the same modification/addition mechanism could be used by both instruction formats, with its result directed either to capability-relative store addressing or directly to the instruction's operand path. That hardware interpretation is inferential, but it is consistent with the instruction formats.
+
+The terminology `MOD` is likewise consistent with this interpretation: in both modes it identifies the Data register used to modify the value contained in the instruction.
+
+### Evidential status
+
+The present position is therefore:
 
 ```text
 Store mode:
-    ADDRESS + D[MOD]                 established
+    ADDRESS + D[MOD]
+        ESTABLISHED
 
-Direct mode:
-    SIGNED LITERAL + D[MOD]          not established
+Direct mode, literal = 0:
+    MOD supplies the second register
+        ESTABLISHED
+
+Direct LD D1,D2,0:
+    D1 = D2
+        ESTABLISHED
+
+Direct mode, non-zero literal:
+    operand = D[MOD] + SIGNED LITERAL
+        RECONSTRUCTION HYPOTHESIS
 ```
 
-The complete semantics of `MOD` for Direct-mode instructions with a non-zero signed literal are therefore not stated here.
+The Direct-mode hypothesis is supported by its ability to explain the established zero-literal behaviour and by its complete structural consistency with the established use of `MOD` in Store mode and elsewhere in the instruction set.
 
-#### Architectural significance of MOD in the two modes
-
-The presence of the same three-bit `MOD` field in both instruction formats does not by itself establish identical semantics.
-
-In Store mode, `MOD` is established as selecting a data register whose contents participate in address formation. In Direct mode, the evidence establishes at least a register-selection role when the signed literal is zero. The Store-mode rule is not extrapolated beyond that evidence.
+It should nevertheless remain identified as reconstruction until a primary description or an executable-code example establishes the behaviour for a non-zero Direct-mode literal.
 
 ## Programmer-visible instruction set
 
