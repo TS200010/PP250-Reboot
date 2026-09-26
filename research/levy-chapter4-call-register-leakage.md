@@ -2,8 +2,9 @@
 
 **Status:** research evidence addition, 26 September 2026  
 **Evidence class:** SECONDARY EVIDENCE  
-**Source:** Henry M. Levy, *Capability-Based Computer Systems* (Digital Press, 1984), Chapter 4, “The Plessey System 250”.  
-**Local working source:** `transcriptions/levy-capability-based-computer-systems-chapter-4-pasted-extract.txt`.
+**Source:** Henry M. Levy, *Capability-Based Computer Systems* (Digital Press, 1984), Chapter 4, “The Plessey System 250”, especially §§4.3, 4.4, 4.7 and 4.10.  
+**Local working source:** `transcriptions/levy-capability-based-computer-systems-chapter-4-pasted-extract.txt`.  
+**External source:** Henry M. Levy, Chapter 4 PDF, `https://homes.cs.washington.edu/~levy/capabook/Chapter4.pdf`.
 
 ## Domain-switch qualification
 
@@ -29,7 +30,7 @@ A more accurate conceptual description is:
 before CALL
 -----------
 C0-C4 : caller-held capabilities / possible arguments
-C5    : current-process dynamic state
+C5    : by convention, current-process dynamic state
 C6    : caller Central Capability Block
 C7    : caller current code
 
@@ -38,24 +39,31 @@ CALL through Enter capability
 inside callee
 -------------
 C0-C4 : survive unless software/procedure convention changes them
-C5    : current-process dynamic state persists
+C5    : unchanged by the C6/C7 domain switch; retains its conventional role
 C6    : entered Central Capability Block
 C7    : selected executable code
 ```
 
 Thus the C6/C7 transition establishes the protected execution environment, while C0-C4 may carry delegated authority across that boundary.
 
-### C5 is structurally different from C0-C4
+### C5 is a documented register convention, not a special hardware register
 
-Levy's register-usage description assigns C0-C4 to general program use but gives C5 a distinct role: it points to a data structure containing dynamically allocated elements associated with current process execution. His protected-CALL vulnerability discussion identifies the persistence of **C0-C4**, not C0-C5, as the authority-leakage problem.
+Levy's research account explicitly distinguishes the conventional uses of the program-accessible capability registers. In §4.3 he says that C6 is used “by convention” to point to the program's Central Capability Block. In §4.4 he gives the register usage more fully:
 
-Taken together with CALL changing C6/C7, this supports the following **strong reconstruction inference**:
+- C0-C4 are freely usable by the program to address accessible segments;
+- **C5 points to a data structure used to store dynamically allocated elements associated with current process execution**;
+- C6 points to the process's Central Capability Block;
+- C7 contains a capability for the currently executing code segment.
 
-- C5 is persistent process context;
-- C6/C7 identify the currently executing protected package/domain;
-- C0-C4 are general capability registers that can intentionally or unintentionally convey authority across the transition.
+This is evidence for a **System 250 software/register convention**. It is not evidence that the hardware assigns C5 special semantics merely because it is register number 5.
 
-Conceptually, two processes may therefore enter the same protected package while retaining distinct process state:
+That distinction also clarifies the protected-CALL evidence. Levy §4.7 describes CALL in terms of saving and replacing C6/C7. His §4.10 leakage discussion specifically identifies **C0-C4**, not C0-C5. The natural interpretation is therefore:
+
+- C5 retains the process-execution dynamic-state convention across an entered procedure;
+- C6/C7 are the registers explicitly changed by the protected domain transition;
+- C0-C4 are general capability registers whose survival can intentionally or unintentionally transfer authority.
+
+Conceptually, two process executions may therefore enter the same protected package while retaining different dynamic process contexts:
 
 ```text
 Process A                         Process B
@@ -65,7 +73,7 @@ C6 -> package environment         C6 -> same package environment
 C7 -> package code                C7 -> same package code
 ```
 
-This is an architectural interpretation of the documented/secondary register roles, not yet proof that the processor contains special C5-only hardware treatment. The distinction matters: **C5 can have an architecturally defined role even if its persistence is implemented simply because protected CALL replaces C6/C7 and leaves C5 untouched.** Primary instruction or microcode evidence should be sought before claiming more.
+The diagram is a reconstruction consequence of the documented convention and CALL behaviour. It should not be restated as a claim that C5 has dedicated hardware treatment.
 
 ## ABI consequence
 
@@ -76,14 +84,20 @@ This is directly relevant to future PP250 ABI work. C0-C4 cannot be treated mere
 - whether unused capability argument registers must be cleared at a protection boundary;
 - whether capability return values are permitted in these registers;
 - what confidentiality/confinement guarantee an ABI claims when registers are intentionally retained;
-- how the C5 persistent process-context role is preserved across ordinary and protected procedure calls.
+- how software observes the documented C5 dynamic-process-state convention across ordinary and protected procedure calls.
 
 The mechanism can be useful rather than purely defective: retaining a C register across CALL provides an efficient way to delegate a capability argument to the callee. The security issue is that such delegation must be intentional and governed by calling convention rather than occurring as residual register state.
 
 ## Evidence discipline
 
-The survival/leakage observation here is **SECONDARY EVIDENCE from Levy** until checked against primary instruction/microcode documentation. It is consistent with the reconstructed role of CALL in changing C6/C7, but this note must not silently promote Levy's retrospective discussion to primary evidence.
+The register-use descriptions and the C0-C4 leakage observation are **SECONDARY EVIDENCE from Levy**. The repository's local pasted extract is a working transcription and must still be checked against the original PDF before being treated as a verified transcription.
 
-The stronger C5 interpretation is explicitly an **inference** from Levy's distinct register roles plus the asymmetry of his C0-C4 leakage discussion. It should be tested against primary CALL/RET documentation.
+The important evidential distinction is now explicit:
+
+- **documented in the research literature:** the C5 dynamic-process-state register convention;
+- **documented in Levy's account of CALL:** C6/C7 are saved/replaced/restored during protected CALL/RETURN;
+- **documented in Levy's discussion:** C0-C4 survive the domain change and constitute a possible authority-leakage channel;
+- **reconstruction consequence:** C5 can carry process-specific dynamic context while different process executions enter a shared C6/C7 package environment;
+- **not claimed:** any special C5-only hardware semantics.
 
 This note supplements `research/pp250-execution-and-process-model.md`; it does not replace that reconstruction.
