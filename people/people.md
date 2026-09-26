@@ -64,13 +64,15 @@ Author of *Telephone Switching based on System 250* (ISS, MIT, June 1972).
 
 **Evidence:** Published paper.
 
-### D. J. Repton / Charles S. Repton
+### D. J. Repton / Charles S. “Charlie” Repton
 
-D. J. Repton is author of *Reliability Assurance for System 250: A Reliable, Real-Time Control System* (ICCC, Washington, October 1972). The patent corpus names Charles S. Repton as co-inventor with Peter C. Venton and Kenneth J. Hamer-Hodges on the PP250 fault-detection/handling family (US3814919A / GB1344474A).
+D. J. Repton is author of *Reliability Assurance for System 250: A Reliable, Real-Time Control System* (ICCC, Washington, October 1972).
 
-**Status:** The relationship between the published initials D. J. Repton and patent inventor Charles S. Repton should not be assumed without identity corroboration.
+Charles S. Repton, known as **Charlie Repton**, is independently confirmed as a PP250 person by Anthony John Stanners's first-hand recollection: Stanners remembers both the name and Repton personally. The patent corpus independently names Charles S. Repton as co-inventor with Peter C. Venton and Kenneth J. Hamer-Hodges on the PP250 fault-detection/handling family (US3814919A / GB1344474A).
 
-**Evidence:** Published paper and patent records.
+**Status:** Charlie Repton's PP250 involvement is established by both first-hand recollection and patent evidence. The separate question of whether the published author **D. J. Repton** is the same person remains unresolved because the initials conflict; do not merge those identities without further evidence.
+
+**Evidence:** First-hand recollection of Anthony John Stanners; published paper; patent records.
 
 ### Peter Bennett
 
