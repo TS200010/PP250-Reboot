@@ -1,0 +1,104 @@
+POS (2MK 2.1) COMMANDS
+
+POS       POS COMMAND or
+ABBREV.   COS EQUIVALENT
+AD        # ADR
+RQ        # ALO
+WB        # BLK
+BC        BINCOM
+RC        RELCOM
+CU        # CON
+CY        # COP
+PT        PRINT
+DL        # DEL
+AL        # EDI
+WC        # FST
+GI        # GIV
+TR        # HOL
+LO        # LOO
+LI        # LOI
+LP        # LOP
+MN        # MON
+NM        # NAM
+ON        # ONS
+OF        # OFS
+WS        # PRO
+RB        # REB
+PR        # REG
+RI        # REL
+RN        # REN
+RS        # RES
+SP        # RSP
+RU        # RUN
+PS        # STA
+ST        # STO
+SU        # SUS
+TX        # TEX
+TI        TIME
+MO        MODE
+QI        QUIET
+PL        PRINTLAST
+CS        CLOSEDOWN
+
+NOTE     COS COMMANDS ARE INDICATED BY #.
+
+
+BINCOM   <C6><Command Name> <C7 Offset in C6> <Abbreviation>
+         Sets up the defined subroutine as CI Binary Command
+
+         The command name must be 3-12 chars in length and unique within system.
+         The offset and 2 char abbreviation are optional and default to 0, and no
+         abbreviation, respectively.
+
+RELCOM   <Command Name>
+         Releases the specified command which may be specified in full or as an
+         abbreviated name. The system will not allow basic commands to be released.
+
+PAGE 15
+
+
+POS (2MK 2.1) COMMANDS (Cont'd)
+
+PRINT    <Block Name> <Mode> <Start Offset> <Finish Offset>
+         Prints the defined locations of the block in the defined mode, which must
+         be one of following:-
+
+                         DEC = DECIMAL
+                         BIN = BINARY
+                         OCT = OCTAL
+                         HEX = HEXADECIMAL
+                         CAP = CAPABILITY
+                         INS = INSTRUCTION
+
+         The default mode is decimal.
+
+TIME     <Hours> <Minutes> <Seconds>
+         Initialises POS time of day. e.g. TI 21 29 02
+
+MODE     <Device Type> <Full or Half Duplex>
+         Defines the type of Console in use
+         Parameter 1 must be TTY, S700 or VDU.
+         Parameter 2 is optional and if present should be either HD or FD
+         (Default is FD).
+
+QUIET    <On or Off>
+         Suppresses error messages.
+         Parameter 1 is optional. If absent, the state of the QUIET switch will
+         be inverted. If QUIET is ON then errors will be reported as
+
+             ** ERROR <Error Type><Parameter No. In Error>
+
+         Parameter number is only output if error can be attributed to a particular
+         parameter.
+
+PRINTLAST
+         Prints in full last error message. (Useful if QUIET is set).
+
+CLOSEDOWN
+         Causes both CPU's to enter an idle loop, flashing the CPU fault lights, at
+         end of current schedule cycle. The system can be restarted by simply
+         faulting each CPU. This is a safe method of closing the system in
+         order to dump to DISC or MAG TAPE. Terminal use may continue uninterrupted
+         after the system restart.
+
+PAGE 16

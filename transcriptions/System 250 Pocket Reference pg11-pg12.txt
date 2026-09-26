@@ -1,0 +1,133 @@
+COS COMMANDS (300C1 onwards)
+
+# ADR    <Absolute store address> RET
+         Prints block name and offset
+
+# ADR    <Block Name> <Offset> RET
+         Prints absolute store address
+
+# ALO    <Block Name> <size in octal> RET
+         Allocate a block - no zero size block allowed
+
+# BLK    <Key characters><LP (Optional)> RET
+         Outputs directory details of blocks starting with the key characters.
+         1-4 Key characters are allowed, a "?" indicating a don't care.
+         If LP then O/P is to line printer.
+
+# CMD    <Command Name> <Command enter block name> RET
+         Adds additional commands to the system.
+
+# CON    <Dumpstack name> <WDT Time Value> RET
+         Continue running a process.
+
+# COP    <Old Block Name> <New Block Name>
+         <New size if larger than old (optional)> RET
+         Copy old block into new created block. If OLD and NEW block names are
+         the same the block is adjusted in size without changing its offset in
+         the system capability table.
+
+# DCA    <block><start offset><(optional) no. of words> RET
+         Display capability block, giving block names.
+
+# DEL    <Block Name> RET
+         Delete a block
+
+# DIS    <Block Name><offset in block><No. of words (optional-default 1)>
+         Display block starting at specified offset.
+
+# EDI    <Block Name><starting offset in Block><data><data> etc. RET
+         Edit locations; there is a limit to number of consecutive edits which
+         can be carried out, by the size of input buffer area and should therefore
+         be limited to 64 characters; both offset and data numerics are in octal.
+
+# FST    RET
+         Prints free space in each store module
+
+# GIV    <Block name><base><size> RET
+         Allocates Capability Table entry
+
+# HOL    <block offset> RET
+         Replace instruction with invalid instruction, saving old inst.
+
+# LOI    RET/load assembler output via data break.
+
+# LOO    RET/load assembler output from serial medium reader.
+
+# LOP
+
+# MON    <block offset> RET
+         Continuous monitor of location e.g. Device status registers etc.
+
+PAGE 11
+
+
+COS COMMANDS (300C1 onwards) (Cont'd)
+
+# NAM    <set offset> RET
+         Prints name of block.
+
+# OFL    <CPU><Number> RET
+         Remove module from system.
+
+# OFS    RET
+         Complementary to # ONS
+
+# ONL    <Store or CPU><Number> RET
+         Online module to system
+
+# ONS    <Process name> RET
+         Routes teletype input to another process
+
+# PRO    RET
+         Details of running process
+         T = Waiting for timeout
+         F = Waiting for flag
+         P = Printing on teletype
+         S = Suspended
+         R = Ready to run or running
+
+# REB    <Key characters><No. of key chars. (optional)> RET
+         Delete all blocks starting with key character/s
+
+# REG    <dumpstack> RET
+         Prints all registers of process
+
+# REL    <block offset> RET
+         Replace original instruction
+
+# REN    <old block name><new block name> RET
+         Renames block
+
+# RES    <Process name><IAR><Time WDT> RET
+         Will restart process with PD pointer reset to SR21
+
+# RSP    <Block name><Pointer Block name><offset in Pointer Block>
+         <Access code*> RET
+         Creates a pointer and stores it away.
+         *Access code in same format as most sig. 8 bits of pointer
+
+# RUN    <Dumpstack name><Pointer Block name>
+         <Code Block name><WDT (time value)>
+         <i.a.r. value> RET
+         Start a process (WDT value in mS)
+
+# STA    <dumpstack> RET
+         Prints process call stack
+
+# STO    <Dumpstack name> RET
+         Stop a process
+
+# SUS    <Dumpstack name> RET
+         Suspend a process from running
+
+# TEX    <Name of Block for Text to be inserted> RET
+         <'Text              *" (Text terminator)> RET
+         Return and line feed can be input and treated as normal characters.
+         The input is limited to 64 characters between 'returns', characters
+         are packed 3 characters to a word the first word of the Block
+         (offset 0) holds the number of characters inserted.
+
+N.B. RETURN (RET) can be replaced by LINE FEED (LF) at the end of each
+     command.
+
+PAGE 12

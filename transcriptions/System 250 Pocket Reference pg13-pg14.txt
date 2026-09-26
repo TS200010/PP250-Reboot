@@ -1,0 +1,78 @@
+ROS PRINT/PATCH COMMANDS
+
+NOTE     All input is in DECIMAL unless prefixed by 8R.
+
+         All output is in OCTAL.
+
+         All printing commands output to teletype on which command
+         was typed, unless LPR typed at end of command, in which
+         case Line Printer will be used if available.
+
+PRBLK    <Disc No.> <SCT Offset> <Start Offset> <End Offset> LPR
+         Print contents of block from specified disc.
+
+PABLK    <Disc No.> <SCT Offset> <Start Offset>
+         <New Value 1> <New Value 2> <New Value 3> etc.
+         Modify contents of block on specified disc
+
+PRINTS   <Store Address> <No. of words> LPR
+         Print contents of fast store
+
+PATCH    <Store Address> <New Value 1> <New Value 2> etc.
+         Modify contents of fast store
+
+PRINTB   <Block name> LPR
+         Print contents of selected fast store blocks known to the
+         system by name.
+
+PRDISC   <Disc No.> <Start track> <Start sector> <Start word
+         in sector> <No. of words> LPR
+
+         Print contents of disc
+
+PADISC   <Disc No.> <Start track> <Start sector> <Start word in sector>
+
+         <New Value 1> <New Value 2> etc.
+
+         Modify contents of disc.
+
+PAGE 13
+
+
+ROS MAINTENANCE COMMANDS
+(Device Numbers all start from 1)
+
+STATUS   <Module Type>
+         <Module Type> may be CPUS, STORES, PARALLEL,
+         SERIAL, or may be omitted.
+         Prints status of devices and/or ports.
+
+REMOVE   <Device Type> <No.>
+         Removes the device from the online system.
+
+RESTORE  <Device Type><No.>
+or
+RESTORE  <Device Type><No.> PORT <A or B>
+         Tests and if OK returns device (or port) to the online system.
+
+DIAGNOSE <Device Type><No.> <XT>
+         XT is the "Tag" to identify I/O to the test process.
+         T may be any letter from A-Z not already in use.
+         Runs Diagnostic tests for device.
+
+TEST     <Device Type><No.> <XT>
+         Runs diagnostics for device in Test Mode
+
+IN       <XT><Command>
+         Inputs commands or data to Test Mode process XT.
+
+SUSPEND  <XT>
+         Suspends test process XT at end of current DIAL instruction.
+
+CANCEL   <XT>
+         Stop and delete test process XT
+
+WHATTESTS
+         Lists tests currently in progress, with tags.
+
+PAGE 14
