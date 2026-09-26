@@ -47,7 +47,7 @@ Each instruction occupies one **24-bit word**.
 
 The PP250 provides two instruction modes: **Direct Mode** and **Store Mode**.
 
-In **Direct Mode**, no operand is fetched from store. The operand is the signed literal contained in the instruction. When a modifier Data register is specified, the contents of the selected Data register are added to the signed literal to form the operand.
+In **Direct Mode**, no operand is fetched from store. The operand is formed from the signed literal contained in the instruction and, when a modifier Data register is specified, the contents of that selected Data register. Thus the register contribution and literal contribution are independently optional.
 
 In **Store Mode**, the operand is fetched from store. The instruction identifies a Capability register, an address, and optionally a modifier Data register. When a modifier is specified, the contents of the selected Data register are added to the address to form an offset. The offset is used to access the segment identified by the Capability register and fetch the operand.
 
@@ -88,6 +88,8 @@ The Direct-mode operand is:
 
 When `MOD = 0`, there is no modifier and the operand is the signed literal.
 
+This is the adopted ISA interpretation. England Figure 7 independently demonstrates the register-only form (`OR D1 D3`, `EOR D1 D3`) and the literal-only form (`LD D1 0`, `LSH D3 -1`). A surviving historical example in which both `MOD` and `SIGNED LITERAL` are non-zero simultaneously is still sought.
+
 ### Store Mode
 
 ```text
@@ -114,6 +116,91 @@ When `MOD = 0`, there is no modifier and the operand is:
 `C_CAP[ADDRESS]`
 
 The store reference is subject to the bounds and access rights of C_CAP.
+
+### Historical Assembler Source Notation
+
+The binary instruction-field layout and assembler source operand order are not the same thing.
+
+For Store mode, the machine encoding is:
+
+```text
+FUNCTION | REG | MOD | CAP | ADDRESS
+```
+
+England Figure 7 demonstrates historical assembler source order as:
+
+```text
+OP REG ADDRESS MOD CAP
+```
+
+For example:
+
+```text
+CMP D2 TBL D1 C1
+```
+
+maps to:
+
+```text
+REG     = D2
+ADDRESS = TBL
+MOD     = D1
+CAP     = C1
+```
+
+and addresses the Store operand at:
+
+```text
+C1.base + TBL + D1
+```
+
+subject to C1's normal bounds and access checks.
+
+Figure 7 also establishes colon-terminated labels (`LOOP:`, `UPPER:`, `FINISH:`), symbolic branch operands, symbolic Store addresses, register-only Direct forms, literal-only Direct forms, and the zero-operand source form `RET`.
+
+Where an omitted field would contribute zero, the historical source can use an abbreviated form. The exact historical spelling of every possible abbreviation is not yet established; in particular, a Store-mode source form with `CAP` present but `MOD` omitted is not demonstrated by Figure 7 and should not be treated as established assembler syntax merely from the machine semantics.
+
+### England Figure 7 — Complete Code Example
+
+The following complete example is transcribed from D. M. England, *Architectural Features of System 250*, Figure 7, "Examples of Commands". It is retained here as a primary validation specimen for reconstruction of the assembler and command language. The comments are included because they directly document the intended register contents and instruction behaviour.
+
+```text
+------
+LOGIN SMITH JOB15
+ASM BINSEARCH (
+    .. BINARY SEARCH SUBROUTINE
+    INPUT:  C1 CONTAINS CAPABILITY FOR BLOCK
+            D2 CONTAINS PATTERN TO BE MATCHED
+            D3 CONTAINS ADDRESS OF MIDDLE ELEMENT
+    INDICATORS: ZERO SET IF MATCHED
+                NONZERO IF NOT MATCHED
+
+        LD  D1  0               .. SET START ADDRESS
+LOOP:   OR  D1  D3              .. OR IN TRIAL INCREMENT
+        CMP D2  TBL D1  C1      .. COMPARE WITH ELEMENT
+        JEQ FINISH               .. JUMP OUT IF MATCH
+        JGT UPPER                .. JUMP IF UPPER HALF
+        EOR D1  D3              .. LOWER HALF - REMOVE INCREMENT
+UPPER:  LSH D3  -1              .. SHIFT INCREMENT RIGHT ONE PLACE
+        JNE LOOP                 .. REPEAT IF NOT FINISHED
+        CMP D2  TBL D1  C1      .. SET INDICATORS
+FINISH: RET
+        )
+
+PRINT OLDFILE
+
+BLOCK FRED 615 RWD
+
+PROCESS ANALYSER CPX CODEX
+
+AT JOE 3 ( PRINT FRED (2*P)
+    N:=N-1)
+IF N<0 THEN ( REMOVE JOE 3) )
+
+LOGOUT
+```
+
+This specimen should ultimately be used as an assembler acceptance/validation case. The assembly portion in particular must be accepted according to historical source syntax rather than a modernised notation invented by the reconstruction project.
 
 ---
 
@@ -166,7 +253,7 @@ For `ADD`, `REG` selects a Data register.
 **Direct Mode**
 
 ```text
-ADD D1, D2, 5
+ADD D1 D2 5
 ```
 
 `D1 ← D1 + D2 + 5`
@@ -174,36 +261,38 @@ ADD D1, D2, 5
 With no modifier:
 
 ```text
-ADD D1, 5
+ADD D1 5
 ```
 
 `D1 ← D1 + 5`
 
-With a zero signed literal:
+With a zero signed literal, historical source syntax can omit the zero literal:
 
 ```text
-ADD D1, D2, 0
+ADD D1 D2
 ```
 
 `D1 ← D1 + D2`
 
+The corresponding machine encoding has `SIGNED LITERAL = 0`.
+
 **Store Mode**
 
 ```text
-ADD D1, 10, D2, C3
+ADD D1 10 D2 C3
 ```
 
 `D1 ← D1 + C3[D2 + 10]`
 
 The contents of D2 are added to 10 to form the offset into the segment identified by C3.
 
-With no modifier:
+With no modifier, the machine semantics are:
 
 ```text
-ADD D1, 10, C3
+D1 ← D1 + C3[10]
 ```
 
-`D1 ← D1 + C3[10]`
+The exact abbreviated historical assembler spelling for a Store-mode instruction with `CAP` present and `MOD` omitted is not yet established by Figure 7, so no unevidenced source spelling is asserted here.
 
 ### 3.3 Shift Instructions
 
