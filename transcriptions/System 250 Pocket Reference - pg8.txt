@@ -1,0 +1,44 @@
+CPU MK3 INDICATOR NAMES AND LOCATIONS
+PAGE 8
+
+            Fault Indicators             |            Primary Indicators            |           Secondary Indicators          
+-----------------------------------------+------------------------------------------+-----------------------------------------
+MIF00  Bus Corrupt                  1835 | MIP00  =0                          1856A | MIS00  Microprogram O/F             1835
+   01                                    |    01  <0                          1856A |    01
+   02  Interrupt T/O                1835 |    02  Overflow                    1856A |    02  Inhibit Slot Decode          1835
+-----------------------------------------+------------------------------------------+-----------------------------------------
+   03                                    |    03  Spare                       1856A |    03
+   04  Spare                       1856A |    04  Second Group                1856A |    04
+   05  Slave T/O                   1856A |    05  Inh. Interface Flts.        1856A |    05  Interval Timer Matured      1856A
+-----------------------------------------+------------------------------------------+-----------------------------------------
+   06  Cap. Parity Fault           1847A |    06  Odd Data Parity             1856A |    06  Multiply                    1847A
+   07  Sumcheck Fault              1840A |    07  1st Attempt                 1856A |    07  Divide                      1840A
+   08  Base/Limit Fault            1847A |    08  Inhibit Interrupts          1856A |    08  Set Read Capability         1847A
+-----------------------------------------+------------------------------------------+-----------------------------------------
+   09  Interface T/O               1840A |                                          |    09  IAR Decrement               1840A
+   10  Parity Comparison           1847A |                                          |    10  Out = Limit                 1847A
+   11  Read Data Parity            1847A |                                          |    11  Trap                        1847A
+-----------------------------------------+------------------------------------------+-----------------------------------------
+   12  Invalid Operation           1847A |                                          |    12  Time Up                     1847A
+   13  Power Failure               1847A |                                          |    13  Cycle Intercomplete         1847A
+   14  Invalid Control Code        1840A |                                          |    14  Move                        1840A
+-----------------------------------------+------------------------------------------+-----------------------------------------
+   15  Trap with MIP08             1840A |                                          |    15  Fault Toggle                1840A
+   16  Hardware Fault 1            1840A |                                          |    16  Fault Link From B.P.W.      1840A
+   17  W.D.T. Expired              1840A |                                          |    17  Dump Process Before Int     1840A
+-----------------------------------------+------------------------------------------+-----------------------------------------
+   18  Access Violation            1840A |                                          |    18  Internal Mode               1840A
+   19  Hardware Fault 2            1840A |                                          |    19  Cap. Pointer in OPP         1840A
+   20  [LS  Capability Register ]  1840A |                                          |    20  HAD Increment               1840A
+-----------------------------------------+------------------------------------------+-----------------------------------------
+   21  [    on which failure   ]   1840A |                                          |    21  Even Parity Internal        1840A
+   22  [    occurred.          ]   1840A |                                          |    22  Busy                        1840A
+   23  [MS                     ]   1840A |                                          |    23  Status                      1840A
+-----------------------------------------+------------------------------------------+-----------------------------------------
+
+[Transcription notes]
+The square brackets across Fault Indicators rows 20-23 represent one shared
+bracketed label: "Capability Register on which failure occurred.", with LS
+at row 20 and MS at row 23. Its line wrapping is adapted to plain text.
+Blank cells reproduce blank cells in the source.
+
