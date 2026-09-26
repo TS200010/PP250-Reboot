@@ -1,0 +1,46 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+The following is taken from Architectural Features of System 250 D M England\
+\
+It is a diagram labelled Fig 7. Examples of Commands\
+\
+\'97\'97\'97\'97\'97\'97\
+LOGIN SMITH JOB15\
+ASM BINSEARCH (\
+	.. BINARY SEARCH SUBROUTINE\
+	INPUT: 	C1 CONTAINS CAPABILITY FOR BLOCK\
+			D2 CONTAINS PATTERN TO BE MATCHED\
+			D3 CONTAINS ADDRESS OF MIDDLE ELEMENT\
+	INDICATORS: ZERO SET IF MATCHED\
+			NONZERO IF NOT MATCHED\
+\
+		LD 	D1	0			.. SET START ADDRESS\
+LOOP:	OR	D1	D3			.. OR IN TRIAL INCREMENT\
+		CMP	D2	TBL	D1	C1	.. COMPARE WITH ELEMENT	\
+		JEQ	FINISH			.. JUMP OUT IF MATCH\
+		JGT	UPPER			.. JUMP IF UPPER HALF\
+		EOR	D1	D3			.. LOWER HALF - REMOVE INCREMENT\
+UPPER:	LSH	D3	-1			.. SHIFT INCREMENT RIGHT ONE PLACE\
+		JNE	LOOP				.. REPEAT IF NOT FINISHED\
+		CMP	D2	TBL	D1	C1	.. SET INDICATORS\
+FINISH:	RET\
+		)\
+\
+PRINT OLDFILE\
+\
+BLOCK FRED 615 RWD\
+\
+PROCESS ANALYSER CPX CODEX\
+\
+AT JOE 3 ( PRINT FRED (2*P)\
+	N:=N-1)\
+IF N<0 THEN ( REMOVE JOE 3) )\
+\
+LOGOUT\
+}
