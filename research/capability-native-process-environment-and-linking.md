@@ -1,7 +1,7 @@
 # Capability-Native Process Environment and Linking
 
 **Status:** PP250-Reboot research hypothesis  
-**Date:** 2026-09-23
+**Date:** 2026-09-23; refined 2026-09-26
 
 ## 1. Observation
 
@@ -28,6 +28,26 @@ CALL  OPEN_ACCOUNT,0,C6
 The first operation obtains an authority; the second invokes an interface entry relative to that authority. The symbolic names can therefore be resolved to small constants at compile/assembly time rather than linked to addresses.
 
 This raises the hypothesis that conventional linking between such components may be unnecessary. The remaining construction problem is not symbol-to-address binding but the construction of the correct capability graph.
+
+### C7 sharpens the argument
+
+C7 contains the capability for the currently executing code segment. References whose targets are known within that segment can therefore be expressed as offsets relative to C7. The compiler/assembler can know such offsets without knowing the segment's physical placement.
+
+References outside the current C7 domain are reached through capabilities in the C6 environment and offsets within the referenced interface or object. If those C6 positions and target offsets are published interface constants, they too can potentially be fixed at compile/assembly time.
+
+Conceptually:
+
+```text
+within current code:
+    C7 + compile-time offset
+
+outside current code/domain:
+    capability reachable through C6 + compile-time interface offset
+```
+
+Neither expression inherently contains a physical address. Physical placement remains behind the capability/SCT mechanism.
+
+This does **not** establish that historical System 250 software required no linker. Separately compiled modules may still have required combination, checking, capability-graph construction, load-image construction, or other tooling. The narrower conclusion is that conventional symbol-to-physical-address binding and relocation must not be assumed.
 
 ## 2. Process environment hypothesis
 
@@ -149,7 +169,7 @@ protected execution in target capability environment
 
 This is more than a procedure pointer. It is an authority-bearing connection between protection domains.
 
-## 8. Consequence for software construction
+## 8. Consequence for software construction and loading
 
 If this model is historically correct, the apparent absence so far of a conventional PP250 linker becomes less surprising.
 
@@ -163,6 +183,14 @@ to:
 
 That resembles dependency injection structurally, but with a crucial difference: the dependencies are hardware-enforced authorities rather than ordinary software references.
 
+The same reasoning sharpens the loader question. A loader need not necessarily relocate references throughout code merely because segments are placed at different physical addresses. C7-relative code and C6-reachable external authorities can remain independent of physical placement; the capability/SCT machinery supplies that mapping at execution time.
+
+The historical research question is therefore:
+
+> **What information did the CORAL/System 250 compiler or assembler emit, and what work—if any—remained for a linker, link-loader, binder or loader before execution?**
+
+Possible remaining functions include combining separately produced units, constructing the initial capability graph/CCB, allocating segments, constructing a load image, and checking interface consistency. These are research possibilities, not claims about the historical toolchain.
+
 ## 9. Evidence status and questions
 
 This note records an architectural hypothesis emerging from PP250-Reboot discussion. It must not yet be presented as established historical PP250 behaviour.
@@ -174,8 +202,11 @@ Primary-source work should now test:
 - whether system-service capabilities occupied conventional CCB offsets;
 - exact LC semantics and destination-register behaviour;
 - how CALL selected entries relative to a supplied capability;
+- how C7-relative references were represented by compiler/assembler output;
 - whether CORAL/System 250 separately compiled modules used external symbols;
-- whether a linker, linkage editor, binder, loader, or equivalent existed;
+- whether a linker, linkage editor, binder, loader, link-loader, or equivalent existed;
+- what object/load format was emitted by the compiler or assembler;
+- what, if any, relocation records existed and what they represented;
 - how published service/procedure interfaces were represented;
 - whether interface offsets were defined as compile-time constants;
 - how capability graphs were assembled when applications/processes were created.
