@@ -192,6 +192,22 @@ The emerging model has four operations:
 
 This is useful for both historical investigation and PP250-Reboot design.
 
+### Hypothesis: SC attenuates capability rights at store time
+
+A candidate mechanism for **derivation** is that the access-bit field associated with `SC` (SAVE/store capability) acts as a mask when a capability register is saved into a capability block.
+
+The proposed rule is conceptually:
+
+```
+stored rights = capability-register rights AND SC access mask
+```
+
+On this model, a resource creator can hold a capability with broader legitimate authority and save a deliberately restricted version without first requiring a separate capability-reduction operation. The same operation both stores the capability and attenuates the authority propagated through it.
+
+This would satisfy the required monotonicity property: `SC` could remove rights but could not create a right absent from the source capability register.
+
+**Status: HYPOTHESIS.** The instruction encoding and exact `SC` semantics must be checked to establish whether the access bits are in fact used this way. In particular, the reconstruction predicts that no `SC` mask can cause the stored capability to acquire an access right not already present in the source capability register.
+
 ## 12. Security property of the PRA
 
 The PRA need not be trusted merely by convention. After handing a resource to its specialised allocator/handler, it should no longer possess capability authority over that resource.
