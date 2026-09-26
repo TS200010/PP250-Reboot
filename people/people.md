@@ -2,9 +2,13 @@
 
 ## Status
 
-This is a working register of people currently known from source material or first-hand project recollection to have been associated with the Plessey System 250 (PP250), its software, architecture, development, applications, or contemporary technical documentation.
+This is a working historical register of people currently known from source material or first-hand project recollection to have been associated with the Plessey System 250 (PP250), its software, architecture, development, applications, contemporary technical documentation, or subsequent preservation.
 
 Entries distinguish direct evidence, published authorship, patent evidence and personal recollection. Inclusion does not by itself imply that a person was a member of the core System 250 development team. The patent-derived entries below should be read with `patents/PATENT-AUDIT.md`, which distinguishes original PP250/System 250 work from later architectural development.
+
+### Privacy and corrections
+
+This register documents historical professional involvement with System 250 and related archival work. It intentionally excludes private contact information, current residential information and unrelated personal information. Information about living people should be limited to what is relevant to the historical record and supported by public professional sources or clearly identified first-hand recollection. Corrections, clarifications and requests concerning entries for living people are welcome.
 
 ## Plessey / System 250 people
 
@@ -46,7 +50,7 @@ Author of *Hardware of the System 250 for Communication Control* (ISS, MIT, June
 
 Author of *Fault Resistance and Recovery within System 250* (ICCC, Washington, October 1972). Co-inventor on original System 250 multiprocessor and fault-handling patents and on later capability/MCT allocation-deallocation work.
 
-Hamer-Hodges later wrote *Civilizing Cyberspace: The Fight for Digital Democracy* (2020; later edition 2024). This has been identified as a potentially important later first-hand source: published material about PP250 cites the 2020 book, and Hamer-Hodges's public professional profile describes his capability-computer patents and later Church-Turing/security work. The project has **not yet examined the book itself**. A paper copy is available to the project.
+Hamer-Hodges later wrote *Civilizing Cyberspace: The Fight for Digital Democracy* (2020; later edition 2024). This has been identified as a potentially important later first-hand source: published material about PP250 cites the 2020 book, and Hamer-Hodges's public professional profile describes his capability-computer patents and later Church-Turing/security work. The project has **not yet examined the book itself**.
 
 **Research question:** Examine the book for explicit PP250/Plessey recollections, names of other participants, and Hamer-Hodges's own account of the relationship between System 250 and his later Church/capability/security thinking. Do not project the later interpretation backwards onto the 1970s machine without contemporary corroboration.
 
@@ -216,15 +220,11 @@ A person recalled in connection with the PP250/CORAL project. The spelling of th
 
 ## Current research and provenance contacts
 
-These people are useful to the reconstruction project because of archival, documentary or professional-network connections. Inclusion here does not imply that they worked on System 250.
+These people are included only where their work has a direct archival or provenance relationship to surviving System 250 material. Inclusion here does not imply that they worked on System 250.
 
 ### Paul McJones
 
 Software historian and collector associated with modern preservation of System 250 source material. McJones scanned surviving Plessey/System 250 documents discussed by the Retro Computing Forum in 2022. The provenance of those papers is a potential route to further internal documentation, particularly the missing System 250 Processor Instruction Set Manual.
-
-### Alan Lindsay
-
-Surfaced during investigation of Peter Bennett's professional network. At present no direct PP250/System 250 role has been established. Retain as a research lead only.
 
 ## Maintenance policy
 
@@ -232,10 +232,12 @@ For each additional person, record where possible:
 
 - full name and initials;
 - role or relationship to System 250;
-- dates;
+- dates relevant to that work;
 - project or subsystem;
 - source/provenance;
 - whether the information is primary evidence, secondary evidence or personal recollection;
 - unresolved questions about identity or role.
 
 Do not convert recollection into documentary fact without corroboration, and do not infer that authors or patent inventors necessarily held a particular organisational role unless the evidence establishes it.
+
+For living people, apply data minimisation: include only information relevant to System 250 history, its technical lineage or preservation. Do not add private contact details, current residential information, unrelated biographical details, or research leads that have no established historical/provenance relationship to System 250.
