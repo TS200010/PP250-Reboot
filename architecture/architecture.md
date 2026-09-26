@@ -27,6 +27,20 @@ The instruction-format diagrams number bits 23 through 0. This establishes a 24-
 
 The Pocket Reference distinguishes two instruction formats.
 
+### Data register D0 and the modifier field
+
+The processor self-test appendix states that the programmer-visible register set contains eight 24-bit Data registers, that **seven** of them can be used as modifiers in Store mode or as the second register in Direct mode, and that the eighth is the **mask register**. The instruction descriptions in the same appendix identify that mask register explicitly as `D(0)`.
+
+The same source describes the modifier register in Store-mode address formation as **optional**.
+
+Taken together, these statements establish the interpretation of the three-bit `MOD` field:
+
+- `MOD = 0` specifies **no modifier**;
+- `MOD = 1` through `7` select Data registers D1 through D7;
+- D0 is the mask register and is not used as a modifier register.
+
+Thus an unmodified Store-mode reference requires no Data register to contain zero. Similarly, where Direct mode uses the modifier/second-register field, D1–D7 are the available Data registers and the zero field value supplies no register contribution.
+
 ### Store mode
 
 The Store-mode instruction contains the fields:
@@ -38,7 +52,7 @@ FUNCTION | REG | MOD | CAP | ADDRESS
 
 `REG` selects the register used by the instruction. Depending on the instruction, this may be a Data register or a Capability register.
 
-`MOD` selects one of the Data registers D0–D7.
+`MOD` is optional: zero specifies no modification; values 1–7 select Data registers D1–D7.
 
 `CAP` selects one of the Capability registers C0–C7.
 
@@ -46,18 +60,24 @@ FUNCTION | REG | MOD | CAP | ADDRESS
 
 #### Store-mode address formation
 
-The role of `MOD` in Store mode is established independently of the Pocket Reference format diagram. Levy identifies it as the Data register used as the address modifier or index.
+The role of `MOD` in Store mode is established independently of the Pocket Reference format diagram. Levy identifies it as the Data register used as the address modifier or index, and the processor self-test appendix explicitly describes the specified modifier register as optional.
 
-The contents of the Data register selected by `MOD` are added to `ADDRESS`:
+When `MOD` is non-zero, the contents of the selected Data register are added to `ADDRESS`:
 
 ```text
 offset = ADDRESS + D[MOD]
 ```
 
+When `MOD` is zero:
+
+```text
+offset = ADDRESS
+```
+
 The resulting offset is used through the Capability register selected by `CAP`:
 
 ```text
-memory address = C[CAP].base + ADDRESS + D[MOD]
+memory address = C[CAP].base + offset
 ```
 
 The store reference is subject to the bounds and access rights of the selected Capability register.
@@ -65,7 +85,7 @@ The store reference is subject to the bounds and access rights of the selected C
 Thus the significant Store-mode relationship is:
 
 ```text
-ADDRESS + D[MOD]
+ADDRESS + optional D[MOD]
         |
         v
 offset within the segment designated by C[CAP]
@@ -119,7 +139,7 @@ Direct mode, SIGNED LITERAL = 0:
     operand = D[MOD]
 ```
 
-for an ordinary Data-register operation such as `LD`.
+for an ordinary Data-register operation such as `LD` and a non-zero `MOD` field.
 
 #### Non-zero-literal reconstruction hypothesis
 
@@ -190,14 +210,14 @@ In Direct mode, under the hypothesis:
 modified value = SIGNED LITERAL + D[MOD]
 ```
 
-Thus `MOD` has the same underlying role in both instruction formats: it selects the Data register whose contents are added to the value supplied by the instruction.
+Thus `MOD` has the same underlying role in both instruction formats: when non-zero it selects the Data register whose contents are added to the value supplied by the instruction. A zero `MOD` value specifies no register contribution.
 
 What differs is the use made of the result:
 
 ```text
 STORE MODE
 
-ADDRESS + D[MOD]
+ADDRESS + optional D[MOD]
         |
         v
 offset for store access through C[CAP]
@@ -208,7 +228,7 @@ store operand
 
 DIRECT MODE — hypothesis for non-zero literal
 
-SIGNED LITERAL + D[MOD]
+SIGNED LITERAL + optional D[MOD]
         |
         v
 operand supplied directly to the instruction
@@ -216,18 +236,26 @@ operand supplied directly to the instruction
 
 This also provides a straightforward hardware interpretation: the same modification/addition mechanism could be used by both instruction formats, with its result directed either to capability-relative store addressing or directly to the instruction's operand path. That hardware interpretation is inferential, but it is consistent with the instruction formats.
 
-The terminology `MOD` is likewise consistent with this interpretation: in both modes it identifies the Data register used to modify the value contained in the instruction.
+The terminology `MOD` is likewise consistent with this interpretation: in both modes it identifies the Data register used to modify the value contained in the instruction when modification is specified.
 
 ### Evidential status
 
 The present position is therefore:
 
 ```text
-Store mode:
-    ADDRESS + D[MOD]
+D0:
+    mask register; not a modifier register
         ESTABLISHED
 
-Direct mode, literal = 0:
+MOD = 0:
+    no modifier contribution
+        ESTABLISHED
+
+Store mode:
+    ADDRESS + optional D[MOD]
+        ESTABLISHED
+
+Direct mode, literal = 0 and MOD != 0:
     MOD supplies the second register
         ESTABLISHED
 
