@@ -32,6 +32,7 @@ Architecture; basic capability mechanism; capability access field; SCT; Load Cap
    - **FOLLOW REFERENCE.** Historical MONADS/capability material; original URL may require archive recovery.
 2. `http://www.cs.washington.edu/homes/levy/capabook/Chapter4.pdf`
    - **FOLLOW REFERENCE.** Henry M. Levy, *Capability-Based Computer Systems*, chapter 4.
+   - **LOCAL WORKING TEXT PRESERVED (2026-09-26):** `transcriptions/levy-capability-based-computer-systems-chapter-4-pasted-extract.txt`, derived from a Chapter 4 text pasted into the PP250-Reboot research chat. This is not yet a PDF-verified transcription; retain the PDF as a download/acquisition target and verify the working text against it when recovered.
 3. `http://www.cs.ucf.edu/~eurip/cop6614/englandplessey250.pdf`
    - **FOLLOW REFERENCE / LOCATED in newer UCF path.** D. M. England System 250 paper; see item 3 below.
 
@@ -174,7 +175,7 @@ The reading list also identifies nearby capability literature including Dennis &
 
 ## Follow-on bibliography
 
-7. Levy, *Capability-Based Computer Systems* (especially Chapter 4 and the System 250 chapter/material).
+7. Levy, *Capability-Based Computer Systems* (especially Chapter 4 and the System 250 chapter/material). Working text is preserved under `transcriptions/`; original PDF remains to be acquired and checked.
 8. Dennis & Van Horn (1966).
 9. Fabry, *Capability-Based Addressing* (1974).
 10. Recover the old Ulm MONADS `capabilitiesE.html` page/archive cited by Diercks.
