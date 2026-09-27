@@ -188,6 +188,18 @@ Prefer changed files and Git diffs when reviewing recent work.
 
 If a task would be materially better suited to Codex—for example repository-wide edits, substantial implementation, refactoring, or running and iterating on tests—suggest using Codex to the repository owner.
 
+### Safe modification of existing files
+
+GitHub file updates replace the complete file contents. Before updating an existing file, establish that the complete current file has been retrieved. A tool response that is truncated, clipped, partial, limited to a line range, or otherwise does not contain the entire current file must never be used directly as the replacement contents.
+
+If retrieval is truncated because of a tool-response or context limit, retrieve the remaining content in explicit line ranges or by another lossless method before constructing the replacement. Preserve all existing material unless the requested change explicitly requires its alteration or deletion.
+
+For a narrowly scoped edit, change only the intended text. Do not rewrite, compress, summarise, reorganise, or regenerate unaffected portions merely to make the update easier.
+
+Before writing a whole-file replacement, verify that the reconstructed input includes the original end of file and that no unexplained tail loss has occurred. After the write, inspect the resulting diff or compare the before/after versions. Treat an unexpected large deletion, disappearance of the previous file tail, or unrelated rewrite as a failed update and stop rather than proceeding with further edits.
+
+Never infer that a successful GitHub API response proves content preservation; success only proves that the submitted replacement was accepted.
+
 ## Architecture
 
 `architecture/` represents the current working reconstruction of the PP250 architecture.
