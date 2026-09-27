@@ -442,3 +442,27 @@ That possibility is sufficiently important that the next research step should be
 - **US 4,408,274, Andrews/Wheatley, “Memory protection system using capability registers”**: later FORM discrimination, propagation and multiple capability forms; use as version-qualified evidence.
 - **US 4,486,831, “Multi-programming data processing system process suspension”**: later detailed Process Dump Stack and process-suspension description.
 - **Processor self-test transcription**: particularly the operational description of LDP and evidence about processor mechanisms.
+
+## 19. Microprogram-state clues to access-code interpretation
+
+The access-code question must also be constrained by the processor's documented internal control mechanism rather than treated purely as a static capability-bit layout problem.
+
+The processor self-test material describes a one-slot displacement in microprogram control: conditions established from preceding activity are available to influence subsequent slot behaviour. The Pocket Reference's Internal Mode register descriptions expose state bits including **MIS08 Set Read Capability** and **MIS19 Cap. Pointer in OPP**. Taken together, these are evidence that the microprogram carries explicit transient information about whether a transfer is to be treated as capability-related rather than merely moving undifferentiated bits through the same datapath.
+
+A useful working interpretation of `Set Read Capability` is therefore that it conditions a following memory read as a capability read rather than an ordinary data read. `Cap. Pointer in OPP` similarly indicates that OPP can contain a capability pointer and that M must retain the semantic status of what is passing through an otherwise shared internal path. The exact expansion and detailed function of OPP remain unresolved.
+
+This does **not** yet explain how COS and POS/ROS/PDOS encode the six familiar rights in different positions, nor does it establish that MIS directly decodes the access field. It does, however, weaken the assumption that each architectural permission must correspond to one permanently hardwired permission input at a fixed bit position.
+
+The same processor is documented in a Pocket Reference that presents both COS and POS access-code layouts. Unless evidence establishes that those sections describe incompatible processor variants, the reconstruction must allow one processor implementation to support both representations. A plausible implementation class is therefore:
+
+**encoded access value -> microprogrammed interpretation using common primitive hardware -> operation-specific capability/data control**
+
+rather than:
+
+**fixed architectural bit position -> permanently hardwired permission meaning**
+
+This remains a **working reconstruction**, not a conclusion. The PP250's small 1970s implementation budget is an important constraint: any such interpretation must be achievable with modest microcode/state and simple gating, not with an elaborate general decoder.
+
+The Internal Mode material provides one further clue worth retaining separately. `MIP04 Second Group` may refer to the documented second group of special-purpose registers D10-D17 and C10-C17. If so, it would be an example of MIP carrying execution-visible selection state while MIS carries more transient internal sequencing/semantic state. This identification is plausible but not yet established.
+
+The access-field investigation should therefore ask not only **what do the nine bits mean?**, but also **at what stage does M convert their encoded representation into the primitive read/write/enter/capability actions that the datapath actually enforces?**
