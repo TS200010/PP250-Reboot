@@ -88,6 +88,16 @@ The patent's general statement that special registers can be read and altered mu
 
 **Version boundary:** [P2] describes C(C1)/C(C2), C(L) and C(P), whereas the 1976 table names C(C) and leaves other slots blank. Those later names are evidence for that patent embodiment, not a completed 1976 register map.
 
+### MIP, MIF and MIS: persistent versus transient processor state
+
+**Documented, [R1], pp. 6–7:** MIP is the Primary Indicator Register and is part of the common fixed Process Dump Stack state at offset `20`. ROS and PDOS additionally preserve MIF, the Fault Indicator Register, in their OS-dependent Dump Stack area. The Internal Mode diagram also exposes MIS (Secondary Indicator Register), but MIS is not shown as a saved Dump Stack word in the documented COS/POS/ROS/PDOS layouts.
+
+This difference is architecturally significant. A current **working reconstruction** is that MIP contains execution state that must survive process suspension/resumption, MIF carries fault state that ROS/PDOS deliberately preserve for recovery/management, while at least some MIS bits represent more transient M-level sequencing or semantic state that need not form part of the resumable H/T process context. This is an inference from the save layouts and Internal Mode exposure, not a documented definition of the three registers.
+
+The named MIS bits strengthen that interpretation. `MIS08 Set Read Capability` and `MIS19 Cap. Pointer in OPP` appear to retain the semantic status of capability-related transfers through internal processor sequencing. Their exact timing and the meaning of OPP remain unresolved; they must not yet be turned into emulator behaviour merely from their names.
+
+`MIP04 Second Group` may refer to selection of the documented second group of special-purpose registers D10–D17 and C10–C17. This is a useful **HYPOTHESIS**, not an established decoding of the bit. If correct, it would be consistent with MIP retaining processor-visible selection/execution state while MIS carries more transient internal control state.
+
 ## 3. Stored and expanded capabilities
 
 **Documented, [E1], paragraphs 16 and 19:** a stored capability combines access rights with a reference to an SCT entry. Loading it obtains base/limit information from that entry and combines it with the stored access rights. The result addresses a bounded segment with specified permitted operations.
@@ -221,10 +231,12 @@ The OS-dependent portion is summarized below. “Blank” means blank in the sou
 |---|---|---|---|---|
 | COS | Initial frame immediately follows | 21 / 22 / 23 | 24 / 25 / 26 | 27 / 30 / 31 |
 | POS | 21–23 blank | 24 / 25 / 26 | 27 / 30 / 31 | 32 / 33 / 34 |
-| ROS | 21 MIF; 22 LOCK; 23 Error Control; 24 Process Base; 25 SIP | 26 / 27 / 30 | 31 / 32 / 33 | Not shown |
-| PDOS | 21 MIF; 22 LOCK; 23–25 three Ptarmigan words; 26 Error Control; 27 Process Base; 30 SIP | 31 / 32 / 33 | 34 / 35 / 36 | Not shown |
+| ROS | 21 MIF; 22 LOKK; 23 Error Control; 24 Process Base; 25 SIP | 26 / 27 / 30 | 31 / 32 / 33 | Not shown |
+| PDOS | 21 MIF; 22 LOKK; 23–25 three Ptarmigan words; 26 Error Control; 27 Process Base; 30 SIP | 31 / 32 / 33 | 34 / 35 / 36 | Not shown |
 
-The initial entries are labelled **C6 Initial**, **C7 Code**, **IAR Block**; subsequent triples are associated with subroutines. The source defines MIF as a copy of the CPU Fault Indicator Register, LOCK as used by privileged system facilities, Error Control as the Process Error Control Parameter from the Process Template, and SIP as the State and Internal Priority Word. “Privileged system facilities” here does not establish a processor supervisor mode.
+The initial entries are labelled **C6 Initial**, **C7 Code**, **IAR Block**; subsequent triples are associated with subroutines. The source defines MIF as a copy of the CPU Fault Indicator Register, LOKK as used by privileged system facilities, Error Control as the Process Error Control Parameter from the Process Template, and SIP as the State and Internal Priority Word. “Privileged system facilities” here does not establish a processor supervisor mode. LOKK must not be conflated with the separately documented lock state associated with synchronising flags; its exact semantics remain **UNKNOWN**.
+
+The save layout itself provides an additional constraint on the processor-state model. MIP is saved for all four operating systems shown; MIF is additionally saved by ROS/PDOS; MIS is not shown as a saved Dump Stack word. This is consistent with, but does not prove, the working distinction above between persistent execution state, explicitly preserved fault state, and transient M-level sequencing state.
 
 ```text
 Dump Stack
