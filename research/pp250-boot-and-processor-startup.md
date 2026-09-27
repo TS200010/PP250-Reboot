@@ -378,7 +378,7 @@ Until those are answered, the reconstruction should preserve this boundary:
 5. **Version correspondence:** how do SSCR/MCR, C(S)/C(C), and C(C1)/C(C2) map across processor descriptions? Which later-patent details apply to the user's 1976 machine?
 6. **Loading equipment:** maintenance hardware, another processor, retained memory, tape/disk loading and INFORM/OUTFORM are research possibilities, not established boot mechanisms. No ROM bootstrap is established or ruled out by this note.
 
-Priority evidence targets are the original fault-patent figures and microsequence, processor startup/maintenance manuals, process-template documentation, and the repository's System 250 General Information material. These findings extend questions left open in [the architecture WIP](../architecture/architecture.md); they do not silently amend that document.
+Priority evidence targets are the original fault-patent figures and microsequence, processor startup/maintenance manuals, process-template documentation, and the repository's System 250 General Information material. These findings extend questions left open in [the architecture WIP](../architecture/faults-interrupts-startup.md); they do not silently amend that document.
 
 ## Sources and provenance
 
