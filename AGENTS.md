@@ -108,7 +108,9 @@ Research may be overlapping; architecture must be canonical. Each architectural 
 
 An architecture document may cite multiple research notes, source reviews, transcriptions, patents, papers or other evidence that independently led to or support the same reconstruction. Do not remove duplicated research in order to manufacture a single provenance chain.
 
+Use **proportionate provenance** in architecture documents. The architecture is a usable specification/reconstruction, not a paper requiring citations on every statement. Basic, well-established architectural facts do not require inline references. Cite evidence or research for non-obvious, obscure, reconstructed, disputed, version-dependent or otherwise significant claims. Use multiple references only when their independent agreement or differing perspectives materially support the reconstruction; do not accumulate citations merely because an elementary fact appears in many sources. Clearly label inference, uncertainty and unresolved disagreement.
+
 - `architecture/architecture.md` is the navigation index. Put substantive reconstruction in the relevant subject document under `architecture/`, identified through that index.
-- Architecture documents are working reconstruction, not primary evidence. Trace statements to evidence/research or label them as inference.
+- Architecture documents are working reconstruction, not primary evidence. Apply proportionate provenance rather than requiring every statement to carry a source reference.
 - When reviewing architecture, distinguish between material the document canonically owns and architectural material that belongs in another subject document. Report proposed moves before making them unless editing has explicitly been authorised.
 - `transcriptions/` contains source transcriptions. Never silently correct technical content; identify suspected transcription errors separately.
