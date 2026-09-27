@@ -77,7 +77,7 @@ Status: Visual transcription of a scanned source. Verify against the scan
  | 20         | MIP (PRIMARY INDICATOR REGISTER)                            |
  +------------+------------+------------+-----------------+-----------------+
  | 21         | C6 Initial |            | MIF             | MIF             |
- | 22         | C7 Code    |            | LOCK WORD       | LOCK Word       |
+ | 22         | C7 Code    |            | LOKK WORD       | LOKK Word       |
  | 23         | IAR Block  |            | Error Control   | 3 words for     |
  | 24         | C6 1st     | C6 Initial | Process Base    | Ptarmigan       |
  | 25         | C7 Subrou- | C7 Code    | SIP             |                 |
@@ -93,7 +93,7 @@ Status: Visual transcription of a scanned source. Verify against the scan
  +------------+------------+------------+-----------------+-----------------+
 
  MIF  = Copy of CPU Fault Indicator Register
- LOCK = Used by privileged system facilities
+ LOKK = Used by privileged system facilities
  Error Control = Process Error Control Parameter from Process Template
  SIP  = State and Internal Priority Word
 
