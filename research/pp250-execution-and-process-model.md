@@ -20,9 +20,9 @@ This reconstruction continues the user's [PP250 Boot Sequence Knowledge investig
 
 The processor has eight 24-bit data registers D0–D7 and eight 48-bit capability registers C0–C7 [E1; P2; L1, SECONDARY EVIDENCE for the quoted widths]. C6/C7 have execution-domain roles. C(D) identifies the active Dump Stack; D10 is the absolute Dump Stack pushdown pointer, D11 the watchdog and D17 the IAR [R1, p. 7].
 
-A saved capability word need not contain all 48 live register bits: a compact protected reference can preserve identity and rights while the SCT supplies the segment descriptor on restoration. See [capability representation](../architecture/capability-representation.md) and [the SCT](../architecture/system-capability-table.md) for formats and version qualifications.
+A saved capability word need not contain all 48 live register bits: a compact protected reference can preserve identity and rights while the SCT supplies the segment descriptor on restoration. See [capability representation](pp250-capability-representation.md) and [the SCT](pp250-sct-segments-and-virtual-memory.md) for formats and version qualifications.
 
-Processes execute on processors connected to shared store. That physical setting is described in [System 250 Overall Architecture](system-250-overall-architecture.md). The [processor-control note](../architecture/processor-control.md) owns the full register map and Internal Mode access rules.
+Processes execute on processors connected to shared store. That physical setting is described in [System 250 Overall Architecture](system-250-overall-architecture.md). The [processor-control note](pp250-processor-registers-and-internal-mode.md) owns the full register map and Internal Mode access rules.
 
 The scope here is the resumable process context, CALL/RET, CHP and processor mobility. Bootstrap, general capability integrity, OS management policy and M⟨H,T⟩ interpretation are separate subjects; relevant links are collected below.
 
@@ -200,7 +200,7 @@ Physical topology and the bus diagram: [System 250 Overall Architecture](system-
 <a id="2-processor-register-architecture"></a>
 <a id="internal-mode-is-a-separate-access-mechanism"></a>
 
-Register architecture and Internal Mode: [Processor Control](../architecture/processor-control.md).
+Register architecture and Internal Mode: [Processor Control](pp250-processor-registers-and-internal-mode.md).
 
 <a id="mip-mif-and-mis-persistent-versus-transient-processor-state"></a>
 
@@ -208,11 +208,11 @@ MIP/MIF/MIS research interpretation: [save-layout constraint](church-turing-dump
 
 <a id="3-stored-and-expanded-capabilities"></a>
 
-Stored and expanded capability formats: [Capability Representation](../architecture/capability-representation.md).
+Stored and expanded capability formats: [Capability Representation](pp250-capability-representation.md).
 
 <a id="4-sct-segments-and-virtual-memory"></a>
 
-SCT, segments and virtual memory: [System Capability Table](../architecture/system-capability-table.md).
+SCT, segments and virtual memory: [System Capability Table](pp250-sct-segments-and-virtual-memory.md).
 
 <a id="5-capability-integrity-the-unresolved-mixed-access-case"></a>
 <a id="current-access-code-decoding"></a>

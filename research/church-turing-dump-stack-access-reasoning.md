@@ -486,7 +486,7 @@ The evidence establishes several distinct mechanisms:
 
 **Unresolved / UNKNOWN:** precisely which restrictions apply to holders of the Dump Stack capability, how ordinary data and capability operations interact there, and where the `666` exception is admitted and controlled. Restricting such powerful capabilities to trusted management code is a **HYPOTHESIS**, not a demonstrated complete mechanism. Per-word tags, cryptographic validation, parity-as-type-tag, and unrestricted data-to-capability conversion must not be invented.
 
-This is a concrete research issue: reconcile [EP-E1], paragraph 18, with [EP-R1], pp. 4–6, by cross-correlating LC/SC and capability-access observations in the existing corpus. The existing [architecture WIP](../architecture/capability-representation.md) already leaves complete LC/SC semantics open; this relocated discussion preserves the conflict and its evidence boundary.
+This is a concrete research issue: reconcile [EP-E1], paragraph 18, with [EP-R1], pp. 4–6, by cross-correlating LC/SC and capability-access observations in the existing corpus. The [capability-representation research note](pp250-capability-representation.md) preserves the representation evidence; complete LC/SC semantics remain unresolved, and this relocated discussion preserves the conflict and its evidence boundary.
 
 ## 21. ROS/PDOS link access-code interpretation
 

@@ -37,8 +37,8 @@ Disk storage is off the bus as a peer bus-connected subsystem. It does **not** h
 
 ## Related architectural subjects
 
-- [Processor control](../architecture/processor-control.md): processor registers and Internal Mode.
-- [Capability representation](../architecture/capability-representation.md) and [System Capability Table](../architecture/system-capability-table.md): protected references, segments and their physical realisation.
+- [Processor control](pp250-processor-registers-and-internal-mode.md): processor registers and Internal Mode.
+- [Capability representation](pp250-capability-representation.md) and [System Capability Table](pp250-sct-segments-and-virtual-memory.md): protected references, segments and their physical realisation.
 - [Execution and process model](pp250-execution-and-process-model.md): running and suspended processes, CALL and CHP, and processor mobility.
 - [Boot and processor startup](pp250-boot-and-processor-startup.md): establishment of executable processor state.
 - [Normal interrupt and system dispatch](pp250-normal-interrupt-and-system-dispatch.md): operational entry and dispatch.
