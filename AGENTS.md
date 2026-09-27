@@ -155,7 +155,7 @@ Never promote an inference or hypothesis to established architecture without sup
 
 ## New evidence
 
-When new evidence conflicts with the architecture WIP:
+When new evidence conflicts with the architectural reconstruction:
 
 - do not silently alter the architecture;
 - identify the conflicting statements;
@@ -202,9 +202,11 @@ Never infer that a successful GitHub API response proves content preservation; s
 
 ## Architecture
 
-`architecture/` represents the current working reconstruction of the PP250 architecture.
+`architecture/architecture.md` is the navigation index for the current working reconstruction of the PP250 architecture.
 
-It is not itself primary evidence.
+The reconstruction is divided into subject-specific documents under `architecture/`. Use the index to identify and update the relevant subject document rather than accumulating substantive architecture in `architecture/architecture.md`.
+
+The architecture documents are not themselves primary evidence.
 
 Statements in architecture documents should be traceable to evidence or explicitly identified as inference.
 
