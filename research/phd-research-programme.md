@@ -566,7 +566,7 @@ This document consolidates rather than replaces the earlier work.
 
 - `research/pp250-capability-architecture-provenance.md` preserves the development of the **Authority Machine** thesis and its provenance context.
 - `research/authority-integrity-and-semantic-boundary.md` develops the distinction between software-defined meaning and hardware-enforced authority integrity.
-- `architecture/architecture.md` records the working architectural distinction between capability and membership of H, T or M.
+- `architecture/instruction-set.md` records the working architectural distinction between capability and membership of H, T or M.
 - the boot/capability-genesis research supplies the principal historical test case for the **Sovereign Machine / M<H,T>** reconstruction.
 - `AGENTS.md` now records the architectural-reconstruction method to be used when working from fragmentary PP250 evidence.
 
