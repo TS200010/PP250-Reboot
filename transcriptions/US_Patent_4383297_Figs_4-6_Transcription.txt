@@ -1,0 +1,89 @@
+U.S. Patent              May 10, 1983              Sheet 4 of 5              4,383,297
+
+
+                    SPECIAL PURPOSE CAPABILITY REGISTERS
+
+C(D)    ────────────────────────>  PROCESS DUMPSTACK
+
+C(I)    ────────────────────────>  INTERVAL TIMER WORD
+
+C(C1)   ────────────────────────>  SYSTEM CAPABILITY TABLE 1
+
+C(N)    ────────────────────────>  NORMAL INTERRUPT BLOCK
+
+C(L)    ────────────────────────>  LOCAL STORE STACK BLOCK
+
+C(P)
+
+C(C2)   ────────────────────────>  SYSTEM CAPABILITY TABLE 2
+
+C(S)    ────────────────────────>  SPECIAL START UP BLOCK
+
+
+                       SPECIAL PURPOSE DATA REGISTERS
+
+PDSPR   ────────────────────────   PROCESS DUMPSTACK PUSHDOWN
+                                   POINTER REGISTER
+
+WTR     ────────────────────────   WATCHDOG TIMER REGISTER
+
+FIDR    ────────────────────────   FAULT INDICATOR DUMP REGISTER
+
+D(A)    ────────────────────────   DATA REGISTER D(A)
+
+D(B)    ────────────────────────   DATA REGISTER D(B)
+
+LNR     ────────────────────────   LEVEL NUMBER AND LOCAL
+                                   STORE STACK POINTER REGISTER
+
+LCCR    ────────────────────────   LOCAL CAPABILITY COUNT AND LOCAL
+                                   STORE CLEAR COUNT REGISTER
+
+IAR     ────────────────────────   INSTRUCTION ADDRESS REGISTER
+
+IR      ────────────────────────   INTERRUPT ACCEPT REGISTER
+
+
+                           INDICATOR REGISTERS
+
+PIR     ────────────────────────   PRIMARY INDICATOR REGISTER
+
+FIR     ────────────────────────   FAULT INDICATOR REGISTER
+
+HR      ────────────────────────   HISTORICAL REGISTER
+
+TR      ────────────────────────   TEST REGISTER
+
+
+                                  Fig. 4
+
+
+U.S. Patent              May 10, 1983              Sheet 5 of 5              4,383,297
+
+
+          ADDRESS                    REGISTER                         ACCESS
+
+     11 10 9 8 7 6 5 4 3 2 1 0
+
+     1  0 0 0 0 0 0 0 0 0 0 0    INTERRUPT ACCEPT (IR)            R/W-
+
+     0  1 0 0 0 0 0 0 0 0 0 0    C(S) BASE                        R/W (12ms bits)
+
+     0  0 1 0 0 0 0 0 0 0 0 0    FAULT INDICATORS (FIR)           R/W
+
+     0  0 0 1 0 0 X X X X X X    PRIMARY INDICATORS (PIR)         R/W
+
+     0  0 0 0 1 0 0 0 0 0 0 0    HISTORICAL (HR)                  R
+
+     0  0 0 0 0 1 0 X X X X 0    CAPABILITY BASE C(X)B            R
+
+     0  0 0 0 0 1 0 X X X X 1    CAPABILITY LIMIT C(X)L           R
+
+     0  0 0 0 0 0 1 X X X X 0    DATA (D(X))                      R/W
+
+     0  0 0 0 0 0 1 X X X X 1    POINTER (P(X))                   R/W
+
+     0  0 1 0 0 0 0 0 0 0 0 1    TEST (TR)                        R
+
+
+                                 
