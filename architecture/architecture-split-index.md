@@ -1,0 +1,32 @@
+# System 250 Architecture — Working Reconstruction
+
+## Status
+
+This document is the current working reconstruction of the Plessey System 250 architecture.
+
+It is **not primary evidence**. Statements below are derived from source material held or transcribed in this repository. Where the available evidence does not establish semantics, this document records the fact without filling the gap by assumption.
+
+This first pass is deliberately limited primarily to evidence in the *System 250 Pocket Reference Book*, Issue 1, May 1976, pages 0–7, with additional contemporary Plessey papers and patent material where explicitly identified below.
+
+## Source basis
+
+Primary sources used for this revision include:
+
+- *System 250 Pocket Reference Book*, Issue 1, May 1976, pages 0–7.
+- D. Halton, *Hardware of the System 250 for Communication Control* (1972).
+- D. M. England, *Architectural Features of System 250*, Figure 7, "Examples of Commands".
+- Contemporary Plessey capability-register, interrupt, and store-allocation patent material.
+- Repository transcriptions under `transcriptions/`.
+
+## Architecture sections
+
+The working architecture reconstruction has been split by subject into the following documents:
+
+- [Instruction Set](instruction-set.md) — architectural word size, instruction formats, addressing, assembler syntax, programmer-visible instructions, and the existing Church/Turing interpretation.
+- [Capability Representation](capability-representation.md) — capability access rights and stored capability type/form representation.
+- [System Capability Table](system-capability-table.md) — SCT role and entry structure, descriptor validation, unavailable segments, and active/passive representation.
+- [Process Model](process-model.md) — process data and capability register state.
+- [Processor Control](processor-control.md) — special-purpose CPU registers and indicator/fault registers.
+- [Faults, Interrupts and Startup](faults-interrupts-startup.md) — C(N), Normal Interrupt Block, automatic CHP, SPECIAL/C(S)-rooted startup, and trap/storage-management paths.
+
+This file is a temporary migration index. The original `architecture.md` remains authoritative until the split has been fully verified. Once that verification is complete, this index can replace it without leaving references pointing at a fossil document.
