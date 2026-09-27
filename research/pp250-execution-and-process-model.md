@@ -1,6 +1,6 @@
 # PP250 execution and process model: research reconstruction
 
-Status: research note, 19 September 2026. Architectural preamble to [PP250 boot and processor startup](pp250-boot-and-processor-startup.md); not an emulator specification.
+Status: research reconstruction, originally 19 September 2026; reorganised 27 September 2026. This note describes execution state and process transitions; it is not an emulator specification.
 
 ## Scope and evidence
 
@@ -16,176 +16,19 @@ This reconstruction continues the user's [PP250 Boot Sequence Knowledge investig
 
 **Verification boundary:** the pocket-reference transcriptions, England's 1972 paper and the online descriptions of patents [P1–P4] were read for this note. Source scans and patent figures were not visually rechecked. Layout-sensitive details not recoverable confidently from text remain open. The 1976 pocket reference anchors the Dump Stack offsets; later patents describe extensions and must not silently redefine that machine. Source identifiers below match those in the boot note where possible.
 
-## 1. Physical System 250
+## Execution context and scope
 
-**Documented, [E1], paragraphs 4–9:** System 250 comprises multiple processors, shared Store Modules and peripheral subsystems. A processor can reach each Store Module. Devices expose controller registers through the interconnection and can be addressed using ordinary data instructions.
+The processor has eight 24-bit data registers D0–D7 and eight 48-bit capability registers C0–C7 [E1; P2; L1, SECONDARY EVIDENCE for the quoted widths]. C6/C7 have execution-domain roles. C(D) identifies the active Dump Stack; D10 is the absolute Dump Stack pushdown pointer, D11 the watchdog and D17 the IAR [R1, p. 7].
 
-The following is a **conceptual common system/CPU-bus view**, showing peer subsystems, not a wiring diagram:
+A saved capability word need not contain all 48 live register bits: a compact protected reference can preserve identity and rights while the SCT supplies the segment descriptor on restoration. See [capability representation](../architecture/capability-representation.md) and [the SCT](../architecture/system-capability-table.md) for formats and version qualifications.
 
-```text
-   +-------------+     +-------------+     +-------------+
-   | Processor 0 |     | Processor 1 | ... | Processor n |
-   +------+------+     +------+------+     +------+------+
-          |                   |                   |
-==========+===================+===================+===========
-          Common system / CPU-bus interconnection (conceptual)
-==========+===================+===================+===========
-          |                   |                   |
-   +------+------+     +------+------+     +------+----------+
-   | Store       |     | Store       | ... | Disk / secondary|
-   | Module A    |     | Module B    |     | storage subsystem|
-   | shared      |     | shared      |     | via controller /|
-   +-------------+     +-------------+     | bus interface   |
-                                          +-----------------+
-```
+Processes execute on processors connected to shared store. That physical setting is described in [System 250 Overall Architecture](system-250-overall-architecture.md). The [processor-control note](../architecture/processor-control.md) owns the full register map and Internal Mode access rules.
 
-Disk storage is off the bus as a peer bus-connected subsystem. It does **not** hang from a Store Module. This does not imply that disk sectors are directly accessible like primary-memory words: controller-register access and backing-store transfer are distinct operations.
+The scope here is the resumable process context, CALL/RET, CHP and processor mobility. Bootstrap, general capability integrity, OS management policy and M⟨H,T⟩ interpretation are separate subjects; relevant links are collected below.
 
-**Physical-topology qualification:** England describes each CPU's own parallel CPU bus, with a port at each Store Module's access unit; bus multiplexors connect CPU buses to peripheral buses. [P2], description of Figure 1, likewise has separate CB1/CB2 paths terminating at access-unit ports. Thus “common bus” above means a common reachable system interconnection, not one electrically shared CPU wire bundle. Multiplexors, duplicated peripheral paths and access-unit arbitration are collapsed in the diagram.
+<a id="6-the-hardware-defined-process"></a>
 
-**Strong inference from [E1], paragraphs 16–19, and [P2]:** the bus transports addresses, information and control/status signals; it is capability/data agnostic in the sense that a transmitted bit pattern does not acquire authority merely by travelling on it. The processor's capability checks and microcode enforce permitted operations and bounds. This does not deny transport parity, control codes or interface checks, and should not be read as saying the bus carries only unqualified data bits.
-
-## 2. Processor register architecture
-
-```text
-+------------------------------------------------------------+
-| PROCESSOR                                                  |
-| Programmer-visible register set                            |
-|   D0-D7: eight 24-bit Data Registers                        |
-|   C0-C7: eight 48-bit Capability Registers                  |
-|          (C6/C7 have execution-domain roles)                |
-+------------------------------------------------------------+
-| Special Purpose CPU Registers                              |
-|   special capability registers, special data registers     |
-|   and the processor control state identified by the manual |
-+------------------------------------------------------------+
-| Other internal execution machinery                         |
-|   instruction sequencing, microcode and fault machinery    |
-+------------------------------------------------------------+
-```
-
-The general register sets are documented in [E1], paragraph 16, and [P2], processor description; the 24/48-bit sizes are also stated by [L1], section 4.2 (**SECONDARY EVIDENCE**). “Programmer-visible” does not mean that every capability register has an interchangeable role or accepts arbitrary data as its contents.
-
-**Documented, [R1], p. 7:** the manual's term is **Special Purpose CPU Registers**. The following are its named capability registers; register numbers retain the manual's octal notation.
-
-| Manual register | Name | Function named by the pocket reference |
-|---|---|---|
-| C10 | C(D) | Dump Stack |
-| C11 | C(I) | Interval Timer |
-| C12 | C(C) | SCT |
-| C13 | C(N) | Normal Interrupt Block |
-| No C10–C17 number assigned | C(S) | Fault Start-Up Block |
-
-C14–C17 are blank in the table: no functions are assigned here. The named special data registers are D10, absolute D/S pushdown pointer; D11, watchdog timer; D12, first-fault MIF copy; D15, interrupt accept register; and D17, IAR. Blank D13/D14/D16 entries remain unspecified. C(I) designates the timer's store block in [P2]; it is not the watchdog value saved for an individual process.
-
-**Documented mechanism, [P2]; synthesis:** these special capability registers are internal processor architectural state. Ordinary instructions do not normally name and manipulate them as ordinary C0–C7 operands. Defined instructions and processor events use or modify them through microcode: CHP changes C(D); CALL/RET and CHP affect the pushdown and execution state; fault/startup machinery uses C(S). They are not all process state that must be saved with every process.
-
-### Internal Mode is a separate access mechanism
-
-**Documented, [P2], “Internal Mode Operation General” and its restrictions:** possession of an appropriate capability permits addressing internal processor registers through a reserved module-address interpretation. General-purpose instructions can thereby access permitted internal state, with capability bounds restricting the accessible set. This is capability-controlled access, not a conventional privileged/supervisor execution mode that bypasses protection.
-
-The patent's general statement that special registers can be read and altered must be read with its specific restrictions: capability registers are read-only to data stores except for twelve alterable high base bits of C(S); all C(S) bits may be read. The remaining capability-register loading is through capability manipulation mechanisms. Consequently, “internal” must not be strengthened into “never accessible by software,” nor does Internal Mode imply unrestricted fabrication of capability registers. The pocket reference independently lists C(S) in its Internal Mode addressing diagram [R1, p. 7].
-
-**Version boundary:** [P2] describes C(C1)/C(C2), C(L) and C(P), whereas the 1976 table names C(C) and leaves other slots blank. Those later names are evidence for that patent embodiment, not a completed 1976 register map.
-
-### MIP, MIF and MIS: persistent versus transient processor state
-
-**Documented, [R1], pp. 6–7:** MIP is the Primary Indicator Register and is part of the common fixed Process Dump Stack state at offset `20`. ROS and PDOS additionally preserve MIF, the Fault Indicator Register, in their OS-dependent Dump Stack area. The Internal Mode diagram also exposes MIS (Secondary Indicator Register), but MIS is not shown as a saved Dump Stack word in the documented COS/POS/ROS/PDOS layouts.
-
-This difference is architecturally significant. A current **working reconstruction** is that MIP contains execution state that must survive process suspension/resumption, MIF carries fault state that ROS/PDOS deliberately preserve for recovery/management, while at least some MIS bits represent more transient M-level sequencing or semantic state that need not form part of the resumable H/T process context. This is an inference from the save layouts and Internal Mode exposure, not a documented definition of the three registers.
-
-The named MIS bits strengthen that interpretation. `MIS08 Set Read Capability` and `MIS19 Cap. Pointer in OPP` appear to retain the semantic status of capability-related transfers through internal processor sequencing. Their exact timing and the meaning of OPP remain unresolved; they must not yet be turned into emulator behaviour merely from their names.
-
-`MIP04 Second Group` may refer to selection of the documented second group of special-purpose registers D10–D17 and C10–C17. This is a useful **HYPOTHESIS**, not an established decoding of the bit. If correct, it would be consistent with MIP retaining processor-visible selection/execution state while MIS carries more transient internal control state.
-
-## 3. Stored and expanded capabilities
-
-**Documented, [E1], paragraphs 16 and 19:** a stored capability combines access rights with a reference to an SCT entry. Loading it obtains base/limit information from that entry and combines it with the stored access rights. The result addresses a bounded segment with specified permitted operations.
-
-```text
-24-bit stored capability pointer
-+------------------+------------------------------------+
-| access/form code | SCT reference / index              |
-+------------------+------------------+-----------------+
-                                      |
-                                      v
-                              SCT entry: base / limit
-                                      |
-                                      v
-48-bit capability-register representation
-+-------------------------------------------------------+
-| base address                                          |
-+-------------------------------------------------------+
-| access information and limit                          |
-+-------------------------------------------------------+
-       conceptual fields; not a universal bit allocation
-```
-
-The compact stored pointer is not a raw physical address. Nor is saving C0 at one Dump Stack word evidence for storing all 48 register bits there. Capability identity and rights can be preserved compactly and the expanded descriptor reconstructed.
-
-**Exact layouts available, with provenance:** [L1], Figure 4-1, labels its stored format as an 8-bit rights field and 16-bit SCT index (**SECONDARY EVIDENCE**). [R1], p. 4, instead supplies the following nine-position access/prefix diagrams; it does not establish a complete universal 24-bit layout:
-
-```text
-COS:  1 1 EC WC RC ED WD RD 0
-POS:  0 1  1 EC WC RC ED WD RD
-```
-
-The diagrams are reproduced as transcribed. They are not interchangeable. [P4], “Capability Formats,” explicitly describes a 24-bit pointer with form/access information in the high nine bits and an identity in the low fifteen; its later form discrimination and propagation-permit rules introduce further distinctions. These source differences must be reconciled by machine/version and capability form before selecting emulator bit fields. The complete expanded-register bit map is likewise not reconstructed from schematic text alone.
-
-The named rights are enter capability (EC), write/read capability (WC/RC), execute data (ED), and write/read data (WD/RD); [E1], paragraph 16 and Figure 2, explains the corresponding operations. EC permits entry through a capability block; ED permits instruction execution. They are distinct rights.
-
-## 4. SCT, segments and virtual memory
-
-**Documented, [E1], paragraphs 19–20:** the **System Capability Table (SCT)** holds the physical base/limit information for store blocks. A special processor capability identifies that table. Programs traverse capability structures without supplying physical addresses for the referenced segments.
-
-```text
-process's capability environment
-          |
-          v
-stored capability --SCT reference--> SCT entry
-          |                              |
-       rights                         base / limit
-          +---------------+--------------+
-                          v
-                 expanded capability
-                          |
-                checked segment access
-                          v
-                 shared Store Module
-```
-
-Multiple processes can possess different rights to the same segment [P4, “Description of Prior Art”]. A shared table does not mean universal authority: the reachable capability network and each capability's rights constrain a process's accesses.
-
-**Documented, [E1], paragraph 30:** virtual store extends the capability structure to disk. The store-management package moves blocks between backing store and main store, and an attempted access can trigger bringing a block into main store. A main-store capability still needs an SCT entry when its target block exists only on disk. On-disk capabilities replace the SCT offset with disk identity/address information; moving a capability block entails converting its contained capabilities.
-
-**SECONDARY EVIDENCE, [L1], sections 4.3–4.5:** the SCT is shared by processors, with synchronization required during updates. Primary-memory capabilities are called inform/active, and disk capabilities outform/passive; the latter identify the disk object rather than its current SCT slot. LC retains the SCT index in the Process Dump Stack, and SC combines that identity with register rights to reconstruct the stored capability.
-
-Thus PP250 virtual memory is **segment/capability oriented**, not a conventional separate flat paged address space for each process. Sharing follows segment identity and authority. The disk representation is documented at this conceptual level; exact outform fields, conversion procedures and the applicability of each OS's implementation remain **UNKNOWN**. This does not establish an INFORM or OUTFORM machine instruction, a page-table mechanism, or a disk-based cold loader.
-
-**Strong inference:** a common SCT supports processor-independent segment identity. Updating an SCT entry must also account for any descriptors already expanded in running processors; changing the table alone must not be assumed sufficient for coherent relocation. The exact synchronization protocol for the target machine remains to be established.
-
-## 5. Capability integrity: the unresolved mixed-access case
-
-Authority cannot safely be created merely by writing arbitrary data and then treating it as a capability. An SCT lookup checks/resolves a reference; it does not by itself prove that a process was entitled to manufacture that reference.
-
-**Documented, [E1], paragraph 18:** England explicitly identifies data-write followed by capability-read as a way to manufacture authority and says access combinations permitting it are forbidden, with blocks separated into capability and data types. This is a primary-source protection rule, not a conjectured memory tag.
-
-**Documented, [R1], pp. 5–6:** the Dump Stack contains saved data and capability state, and the ROS/PDOS Process Base diagram labels its forward link `666`. Under the COS-style field interpretation examined in section 12, that link permits both WC/RC and WD/RD. The two observations do not yet establish how the 1976 implementation enforces England's earlier general rule around this exceptional structure.
-
-The evidence establishes several distinct mechanisms:
-
-| Mechanism | What is established | What is not established |
-|---|---|---|
-| LC and SC | The manual lists separate capability load/store instructions; [E1], paragraph 19, explains SCT expansion. [P1], automatic CHANGE PROCESS discussion, says corresponding reserved-segment pointers are recorded in the dump area when capability registers are loaded. | A complete validation rule for loading a word after an arbitrary data store into a mixed-access block. |
-| Capability provenance | [E1], paragraphs 19–25, obtains authority through existing capability blocks and controlled CALL entry. | A per-word provenance tag or other hidden storage encoding in the target machine. |
-| Parity and sum-checks | [P1] checks transmitted/stored descriptor values and reverses internal parity on initial fault entry; [P4] describes descriptor validation. | That parity or a sum-check proves software authorization or prevents deliberate forgery. |
-| Later pointer handling | [P4] adds pointer registers, load-on-use, access reduction and propagation control. | That these extensions existed in 1976 or solve the mixed-access question in that implementation. |
-
-**Unresolved / UNKNOWN:** precisely which restrictions apply to holders of the Dump Stack capability, how ordinary data and capability operations interact there, and where the `666` exception is admitted and controlled. Restricting such powerful capabilities to trusted management code is a **HYPOTHESIS**, not a demonstrated complete mechanism. Per-word tags, cryptographic validation, parity-as-type-tag, and unrestricted data-to-capability conversion must not be invented.
-
-This is a concrete research issue: reconcile [E1], paragraph 18, with [R1], pp. 4–6, using the target CPU's LC/SC and capability-access validation documentation. The existing [architecture WIP](../architecture/capability-representation.md) already leaves complete LC/SC semantics open; this note records the sharper conflict without altering that document or any transcription.
-
-## 6. The hardware-defined process
+## 1. The hardware-defined process
 
 **Documented basis:** England describes a process as an execution of a reentrant program, with multiple executions possible [E1, paragraph 31]. His Dump Stack is unique to an execution and preserves registers on context change [paragraph 26]. The suspension patent explicitly describes hardware preservation of process parameters and procedure nesting [P3, background and “Process Dump-Stack”].
 
@@ -209,7 +52,9 @@ Process A: continuing execution identity
 
 The process is not the physical CPU, nor just a bag of memory bytes. Its Dump Stack is the structure preserving its resumable architectural context, with capability links to other required segments. It need not contain copies of all code/data or every internal CPU register. C(S), SCT-selection machinery and fault history must not automatically be classified as per-process state.
 
-## 7. Process Dump Stack: 1976 format
+<a id="7-process-dump-stack-1976-format"></a>
+
+## 2. Process Dump Stack: 1976 format
 
 **Documented, [R1], p. 6. All offsets below are octal.** The common fixed portion `0–20` contains seventeen words:
 
@@ -236,7 +81,7 @@ The OS-dependent portion is summarized below. “Blank” means blank in the sou
 
 The initial entries are labelled **C6 Initial**, **C7 Code**, **IAR Block**; subsequent triples are associated with subroutines. The source defines MIF as a copy of the CPU Fault Indicator Register, LOKK as used by privileged system facilities, Error Control as the Process Error Control Parameter from the Process Template, and SIP as the State and Internal Priority Word. “Privileged system facilities” here does not establish a processor supervisor mode. LOKK must not be conflated with the separately documented lock state associated with synchronising flags; its exact semantics remain **UNKNOWN**.
 
-The save layout itself provides an additional constraint on the processor-state model. MIP is saved for all four operating systems shown; MIF is additionally saved by ROS/PDOS; MIS is not shown as a saved Dump Stack word. This is consistent with, but does not prove, the working distinction above between persistent execution state, explicitly preserved fault state, and transient M-level sequencing state.
+MIP is saved for all four operating systems shown; MIF is additionally saved by ROS/PDOS; MIS is not shown as a saved Dump Stack word. These are save-layout observations, not a complete classification of internal processor state. Their M/H/T interpretation is developed in [the access reasoning note](church-turing-dump-stack-access-reasoning.md#22-save-layout-constraint-on-the-mht-interpretation).
 
 ```text
 Dump Stack
@@ -263,7 +108,9 @@ Dump Stack
 
 [P3] also extends links with local-store and optional saved-register information. Those extensions are not inserted into the 1976 table above.
 
-## 8. C6, C7 and execution domains
+<a id="8-c6-c7-and-execution-domains"></a>
+
+## 3. C6, C7 and execution domains
 
 **Documented, [E1], paragraphs 21–26:** C6 supplies the current node's main capability block, while C7 supplies its code block. This is the capability environment through which the code can reach authorized objects. The term **Central Capability Block** is also used in [L1, sections 4.3–4.4, SECONDARY EVIDENCE].
 
@@ -277,7 +124,9 @@ IAR --> current instruction position within that code context
 
 C6 is **not inherently an OS Process Base pointer**. A particular management domain may use its C6 environment to reach a Process Base or may arrange for that block itself to be the current capability block. That is a structure and calling-context question, not the definition of C6. C0–C5 can carry capabilities across a domain call [E1, paragraph 25], so describing C6 as the current environment must not imply that all other held authority disappears on CALL.
 
-## 9. CALL versus CHP
+<a id="9-call-versus-chp"></a>
+
+## 4. CALL versus CHP
 
 | Operation | Execution entity | Dump Stack | State transition |
 |---|---|---|---|
@@ -286,32 +135,15 @@ C6 is **not inherently an OS Process Base pointer**. A particular management dom
 
 **Documented, [E1], paragraphs 24–26:** CALL uses an enter capability and an offset selecting code, establishes the called domain's C6/C7, and preserves the caller's context for RETURN. [R1] records the C6/C7/IAR frames; [P3] explicitly distinguishes stack updates by CALL from a process change involving two Dump Stacks. CALL does not itself create another hardware process.
 
-The user's concrete instruction is:
+**Provenance correction:** the recalled example `CHP 3 0 C6` has been withdrawn; see the [erratum](ERRATUM-CHP-3-0-C6.md). It supplies no evidence for CHP syntax, C6 selection, offset 3 or operand semantics.
 
-```text
-CHP 3 0 C6
-```
+[P1], following fault step S17, independently describes normal CHANGE PROCESS using an instruction-supplied offset through a reserved segment-pointer table and the master capability table to obtain the incoming dump area. This observation does not establish the withdrawn assembly example.
 
-**Provenance:** this exact assembly example is supplied by the user's investigation, not printed in the inspected pocket-reference pages. [R1], p. 3, establishes CHP's name and opcodes; its instruction list is not a full operand or microsequence specification.
+Established instruction formats are treated in [the instruction-set architecture](../architecture/instruction-set.md). Competing creation/resumption interpretations, operand questions and OS-specific structural evidence are maintained in [CHP process creation and resumption](chp-process-creation-and-resumption-hypothesis.md). The process-level distinction above does not depend on selecting one of those hypotheses.
 
-**Strong inference / current working interpretation:** C6 plus offset `3` locates the stored capability designating the incoming Dump Stack in the ROS/PDOS arrangement:
+<a id="10-cd-and-process-switching"></a>
 
-```text
-C6 in the calling management context
-             |
-        offset 3
-             v
-   stored Dump Stack capability
-             |
-             v
-            CHP --> incoming C(D) --> incoming execution state
-```
-
-[P1], the discussion after fault step S17, independently says normal CHANGE PROCESS uses an instruction-supplied offset down a reserved segment pointer table to obtain the incoming dump area through the master capability table. This supports the pointer-to-Dump-Stack interpretation, while using earlier terminology.
-
-Use C6 for this mechanism, as in the supplied example; an arbitrary C2 example would contradict the investigation. However, the inspected evidence does not prove whether every alternative CAP-field encoding is illegal. The exact role of `0`, effective-address checks, direct-mode CHP semantics, accepted capability forms, failures and microinstruction order remain **UNKNOWN**. The C6 used to find the operand is outgoing state; incoming C6 is restored from the incoming context and may be different.
-
-## 10. C(D) and process switching
+## 5. C(D) and process switching
 
 **Documented, [R1], p. 7, and [P2], “Capability Register C(D)”:** C(D) is the special capability for the active process's Dump Stack and is changed by CHANGE PROCESS. [P3] describes the two-stack operation. The conceptual transition is:
 
@@ -328,9 +160,11 @@ After:  process B active     C(D) ----------------> Dump B
 
 **Strong inference / conceptual effects, not an ordered microprogram:** outgoing data, indicators, watchdog and execution-frame state become resumable in Dump A; the incoming capability identifies Dump B; C(D) and the restored architectural context come to describe B. Incoming C6/C7/IAR establish its environment and instruction position. Restoring capability state may require reconstructing expanded registers from compact pointers through the SCT.
 
-“Complete context” here means the process's resumable execution context, not every register or transient microcode latch in the CPU. This model leaves the precise sequencing, already-maintained pointer entries, interrupted-instruction rules and cold-entry treatment of an invalid old C(D) to source verification. It must not become literal emulator pseudocode by accident.
+“Complete context” here means the process's resumable execution context, not every register or transient microcode latch in the CPU. The precise sequencing, already-maintained pointer entries and interrupted-instruction rules remain reconstruction questions. Cold-entry treatment of an invalid old C(D) belongs to [startup reconstruction](pp250-boot-and-processor-startup.md#execution-model-boundary-and-startup-provenance). It must not become literal emulator pseudocode by accident.
 
-## 11. Process versus processor: multiprocessor mobility
+<a id="11-process-versus-processor-multiprocessor-mobility"></a>
+
+## 6. Process versus processor: multiprocessor mobility
 
 **Strong inference from the save/restore mechanism:** a process is not intrinsically attached to one CPU. Its saved context and referenced segments can supply execution on another available processor, subject to compatible system state and scheduling/exclusion rules.
 
@@ -347,63 +181,57 @@ There is also direct contemporary support: **[E1], paragraph 31(2)** describes a
 
 **Documented, [R1], p. 5:** the ROS/PDOS state word records whether a process is running, its CPU number when running, priority and ready-list status. Recording the current CPU is not evidence of permanent affinity. Exact queue operations, locks, simultaneous-activation prevention, scheduling policy and fault/rejoin migration in each OS remain **UNKNOWN**. “Can resume elsewhere” must not be read as “may run the same mutable saved context concurrently on two processors.”
 
-## 12. OS Process Base versus hardware process
+<a id="12-os-process-base-versus-hardware-process"></a>
 
-**Documented, [R1], p. 5:** the ROS/PDOS diagram shows an EC arrow entering Process Base, a pointer beginning `666` at Process Base offset `3` directed to Dump Stack, and a Dump Stack pointer beginning `760` returning to Process Base.
+## 7. OS Process Base versus hardware process
 
-```text
-external holder
-      |
-      | EC (as drawn)
-      v
-+------------------+       666 at offset 3      +------------------+
-| OS Process Base  | ------------------------> | Process Dump     |
-| management      | <------------------------ | Stack            |
-| structure       |       760 backlink         | execution state  |
-+------------------+                            +------------------+
-                                                       ^
-                                                       | C(D)
-                                                   active CPU
-```
+**Strong inference:** Process Base is the OS management structure layered above the architectural process. The Dump Stack supplies resumable execution state; management fields and conventions support software operations. The differing COS/POS/ROS/PDOS layouts do not make one OS Process Base format the hardware definition of a process.
 
-### Current access-code decoding
+The ROS/PDOS Process Base diagram and offset-3 Dump Stack link are retained as OS-specific evidence in [the CHP reconstruction note](chp-process-creation-and-resumption-hypothesis.md#relationship-to-the-rospdos-pocket-reference-diagram). The `666`/`760` decoding and its format qualification are in [the access reasoning note](church-turing-dump-stack-access-reasoning.md#21-rospdos-link-access-code-interpretation).
 
-**Documented fields plus arithmetic inference:** interpreting the three octal digits with the COS-style nine-position diagram on [R1], p. 4, gives:
+The frame comparison above records where OS words occur. It does not establish scheduling policy, the semantics of LOKK, Error Control or Ptarmigan fields, or a universal process-management interface.
 
-| Prefix | Binary | `1 1 EC WC RC ED WD RD 0` interpretation |
-|---|---|---|
-| 666 | 110 110 110 | WC + RC + WD + RD; no EC and no ED/execute |
-| 760 | 111 110 000 | EC + WC + RC; no ED or data read/write |
+## Relocated background
 
-The POS diagram has different alignment and fixed bits. The above arithmetic is exact **under the COS-style layout**; applying that layout to the ROS/PDOS prefixes is the current interpretation and needs explicit format confirmation. No meaning for the fixed prefix/trailing bits is invented. `760` is stronger than an enter-only capability, and `666` contains no execute authority.
+<a id="1-physical-system-250"></a>
 
-**Strong inference:** Process Base is the OS management structure layered above the architectural process. The Dump Stack link supplies hardware execution state; other management fields and conventions support software operations. COS/POS/ROS/PDOS can organize management differently while using the architectural process mechanism. The pocket reference's different layouts are evidence against treating one OS Process Base format as the hardware definition of a process.
+Physical topology and the bus diagram: [System 250 Overall Architecture](system-250-overall-architecture.md).
 
-**HYPOTHESIS, with direct diagram support:** external holders may receive an ENTER capability to Process Base, invoking management operations while stronger internal links reach the Dump Stack and associated structures. The EC arrow supports an entry interface, but does not prove that every external holder receives only EC or that all OS versions implement identical object protection. In particular, it does not resolve who can obtain the mixed-access Dump Stack link. Do not generalize this into “all anyone ever gets” without the process-management interface documentation.
+<a id="2-processor-register-architecture"></a>
+<a id="internal-mode-is-a-separate-access-mechanism"></a>
 
-## 13. Relationship to boot and fault research
+Register architecture and Internal Mode: [Processor Control](../architecture/processor-control.md).
 
-This document provides the register, capability, SCT and process concepts assumed by [PP250 boot and processor startup](pp250-boot-and-processor-startup.md).
+<a id="mip-mif-and-mis-persistent-versus-transient-processor-state"></a>
 
-**Strong inference:** at power-up there is no valid running process to supply ordinary execution authority. Startup machinery must establish sufficient valid capability/SCT state to identify a Process Dump Stack and obtain an executable C6/C7/IAR context.
+MIP/MIF/MIS research interpretation: [save-layout constraint](church-turing-dump-stack-access-reasoning.md#22-save-layout-constraint-on-the-mht-interpretation).
 
-```text
-no valid running process
-          |
-C(S) / special startup-fault machinery
-          |
-sufficient valid SCT and capability state
-          |
-identify initial / checkout Dump Stack
-          |
-change-process restoration --> normal process execution
-```
+<a id="3-stored-and-expanded-capabilities"></a>
 
-**Documented, [P1], fault steps S2, S10 and S16–S17 and following text:** fault recovery invalidates prior internal capability parity, establishes a special table, obtains the checkout Dump Stack pointer and performs automatic CHANGE PROCESS. [P2] documents a power-up preset for C(S). **Inference:** related startup machinery can establish a first process; this does not prove that cold startup and fault recovery execute identical microsequences, nor explain loading virgin memory.
+Stored and expanded capability formats: [Capability Representation](../architecture/capability-representation.md).
 
-The boot note expands `RSPC-n`; this note deliberately retains **RSPC-0** without adopting an unverified expansion. [P1] identifies its functional role as a reserved segment pointer to the checkout dump area. The inspected wording establishes that role more securely than the precise acronym expansion. SSCR/MCR/DCR and C(S)/C(C)/C(D) are compared functionally, not asserted to be identical layouts across generations.
+<a id="4-sct-segments-and-virtual-memory"></a>
 
-The main outstanding research questions are the mixed-access anti-forgery mechanism; version-specific capability fields; exact CHP operand/restore rules; saved-pointer and initial-frame construction; and how valid startup structures first enter memory. These remain research questions rather than implicit implementation requirements.
+SCT, segments and virtual memory: [System Capability Table](../architecture/system-capability-table.md).
+
+<a id="5-capability-integrity-the-unresolved-mixed-access-case"></a>
+<a id="current-access-code-decoding"></a>
+
+Mixed-access integrity and access-code decoding: [access reasoning](church-turing-dump-stack-access-reasoning.md#20-mixed-access-dump-stack-observations-and-unresolved-mechanisms).
+
+<a id="13-relationship-to-boot-and-fault-research"></a>
+
+Startup and fault context: [Boot and Processor Startup](pp250-boot-and-processor-startup.md#execution-model-boundary-and-startup-provenance).
+
+## Related research and remaining boundaries
+
+- [Boot and processor startup](pp250-boot-and-processor-startup.md): how the first executable context is established, C(S), checkout and cold-entry questions.
+- [Capability genesis and resource lifecycle](capability-genesis-and-resource-lifecycle.md): where the required authority originates.
+- [Normal interrupt and system dispatch](pp250-normal-interrupt-and-system-dispatch.md): C(N)-rooted entry and operational dispatch, distinct from startup/fault entry.
+- [Church/Turing/Dump Stack reasoning](church-turing-dump-stack-access-reasoning.md): mixed-access integrity, access/form interpretation and the developing M⟨H,T⟩ account.
+- [CHP creation and resumption](chp-process-creation-and-resumption-hypothesis.md): competing lifecycle mechanisms and detailed instruction questions.
+
+The saved active-frame pointer and resumable-state reconstruction remain part of this model. Broader theories and bootstrap mechanisms are not prerequisites for understanding the execution-state transitions described here.
 
 ## Sources and provenance
 
@@ -417,4 +245,4 @@ The main outstanding research questions are the mixed-access anti-forgery mechan
 - **[P4] PRIMARY EVIDENCE:** US 4,408,274, *Memory protection system using capability registers*, [repository PDF](../patents/US4408274-memory-protection-capability-registers.pdf), [patent text](https://patents.google.com/patent/US4408274A/en). Locators: Description of Prior Art, Capability Formats, LC/load-on-use and SC descriptions, Figures 5–9 references. Text read; enhanced pointer format and propagation controls are version-qualified.
 - **[L1] SECONDARY EVIDENCE:** Henry M. Levy, *Capability-Based Computer Systems*, Digital Press, 1984, [chapter 4, “The Plessey System 250”](https://homes.cs.washington.edu/~levy/capabook/Chapter4.pdf), especially sections 4.2–4.5 and Figure 4-1. Read as corroboration and for terminology; it does not override the pocket reference or resolve version conflicts.
 
-Prepared against repository commit `43547b29cbd426a3dfda6f8dce464f4653cb3252`. This note adds a research reconstruction only; no architecture document, original source, transcription or previous research note was modified.
+Originally prepared against repository commit `43547b29cbd426a3dfda6f8dce464f4653cb3252`. Reorganised from `1a4772c8beaf023edd7465c5fa232b8e3a98c995` on 27 September 2026: supporting material relocated to the linked subject notes, and the withdrawn CHP recollection removed as evidence. Original sources and transcriptions were not modified.

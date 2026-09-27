@@ -263,3 +263,24 @@ These uncertainties should be resolved without assuming that the ROS/PDOS Proces
 An earlier research note used the recalled example `CHP 3 0 C6`. That recollection has been withdrawn as unreliable and **must not be used as evidence**. The present hypothesis does not depend on that recalled instruction. Any appearance of offset 3 here comes solely from the documented ROS/PDOS Process Base diagram and is explicitly treated as an OS-specific structural observation, not as universal CHP syntax.
 
 Discarded exploratory paths, including the proposed LDP-to-CHP connection, are intentionally omitted from this note because they did not contribute to the surviving reconstruction.
+
+## OS management interface and remaining instruction questions
+
+Relocated from the execution/process note. The ROS/PDOS diagram above is OS-specific evidence, not a universal CHP operand rule.
+
+**Documented, [EP-R1], p. 5:** the diagram also shows an EC arrow entering Process Base from an external holder. Its forward pointer begins `666` at Process Base offset `3`; the Dump Stack's `760` pointer returns to Process Base.
+
+**HYPOTHESIS, with direct diagram support:** external holders may receive an ENTER capability to Process Base, invoking management operations while stronger internal links reach the Dump Stack and associated structures. The EC arrow supports an entry interface, but does not prove that every external holder receives only EC or that all OS versions implement identical object protection. In particular, it does not resolve who can obtain the mixed-access Dump Stack link. Do not generalize this into “all anyone ever gets” without the process-management interface documentation.
+
+The `666`/`760` access-code arithmetic and its COS-versus-POS format qualification are retained in [the access reasoning note](church-turing-dump-stack-access-reasoning.md#21-rospdos-link-access-code-interpretation).
+
+The independent patent observation [EP-P1], following fault step S17, describes normal CHANGE PROCESS obtaining an incoming dump area through an instruction-supplied offset in a reserved segment-pointer table and the master capability table. That observation must be assessed independently of the withdrawn `CHP 3 0 C6` recollection.
+
+Exact effective-address checks, accepted capability forms, failure behaviour and microinstruction order remain unresolved. Established instruction formats belong in [the instruction-set architecture](../architecture/instruction-set.md); this note retains competing lifecycle interpretations. No meaning is inferred from the literal `0` in the withdrawn example.
+
+### Sources for the relocated material
+
+Source identifiers prefixed `EP-` retain the provenance and verification limits of the execution/process note; this reorganisation does not constitute a new source verification.
+
+- **[EP-R1] PRIMARY EVIDENCE via repository transcription:** user's Plessey *System 250 Pocket Reference Book / Instruction Codes*, Issue 1, May 1976. [Title/contents transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg0-pg2%20transcription.txt); [pp. 3–4 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg3-pg4.pdf); [pp. 5–7 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg5-pg7%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg5-pg7.pdf). Locators: p. 3 instruction codes, p. 4 access-code diagrams, p. 5 ROS/PDOS structures/state word, p. 6 Dump Stack, p. 7 Special Purpose CPU Registers/Internal Mode. Transcriptions checked; scans not independently rechecked here.
+- **[EP-P1] PRIMARY EVIDENCE:** Plessey, US 3,814,919, *Fault detection and isolation in a data processing system*, [patent text](https://patents.google.com/patent/US3814919A/en). Locators: capability parity fault; fault microsequence S2/S10/S16/S17; automatic and normal CHANGE PROCESS discussion immediately afterwards. Retrieved directly and read for this note; not archived in the inspected repository.

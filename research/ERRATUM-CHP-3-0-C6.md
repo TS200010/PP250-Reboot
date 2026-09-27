@@ -14,4 +14,4 @@ Accordingly, the following propositions in the existing note are withdrawn where
 
 The surviving evidence is independent of that recollection: the Pocket Reference documents both store-mode and direct-mode CHP and marks CHP's register field as unused; the processor self-test paper describes CHP as dumping the current register context and reloading it from an indicated block in store; and the separate patent-derived material concerning CHANGE PROCESS must be evaluated on its own provenance.
 
-Until the original note is textually revised, this erratum takes precedence over its `CHP 3 0 C6` passage and any conclusions derived specifically from that example.
+Applied to the execution/process note on 27 September 2026: the recalled example and its dependent interpretation have been removed as evidence and replaced with a link to this correction. This erratum remains the provenance record for older revisions and any conclusions derived specifically from that example.

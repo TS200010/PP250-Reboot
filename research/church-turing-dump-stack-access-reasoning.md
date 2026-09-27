@@ -466,3 +466,61 @@ This remains a **working reconstruction**, not a conclusion. The PP250's small 1
 The Internal Mode material provides one further clue worth retaining separately. `MIP04 Second Group` may refer to the documented second group of special-purpose registers D10-D17 and C10-C17. If so, it would be an example of MIP carrying execution-visible selection state while MIS carries more transient internal sequencing/semantic state. This identification is plausible but not yet established.
 
 The access-field investigation should therefore ask not only **what do the nine bits mean?**, but also **at what stage does M convert their encoded representation into the primitive read/write/enter/capability actions that the datapath actually enforces?**
+
+## 20. Mixed-access Dump Stack: observations and unresolved mechanisms
+
+Authority cannot safely be created merely by writing arbitrary data and then treating it as a capability. An SCT lookup checks/resolves a reference; it does not by itself prove that a process was entitled to manufacture that reference.
+
+**Documented, [EP-E1], paragraph 18:** England explicitly identifies data-write followed by capability-read as a way to manufacture authority and says access combinations permitting it are forbidden, with blocks separated into capability and data types. This is a primary-source protection rule, not a conjectured memory tag.
+
+**Documented, [EP-R1], pp. 5–6:** the Dump Stack contains saved data and capability state, and the ROS/PDOS Process Base diagram labels its forward link `666`. Under the COS-style field interpretation examined in section 21 below, that link permits both WC/RC and WD/RD. The two observations do not yet establish how the 1976 implementation enforces England's earlier general rule around this exceptional structure.
+
+The evidence establishes several distinct mechanisms:
+
+| Mechanism | What is established | What is not established |
+|---|---|---|
+| LC and SC | The manual lists separate capability load/store instructions; [EP-E1], paragraph 19, explains SCT expansion. [EP-P1], automatic CHANGE PROCESS discussion, says corresponding reserved-segment pointers are recorded in the dump area when capability registers are loaded. | A complete validation rule for loading a word after an arbitrary data store into a mixed-access block. |
+| Capability provenance | [EP-E1], paragraphs 19–25, obtains authority through existing capability blocks and controlled CALL entry. | A per-word provenance tag or other hidden storage encoding in the target machine. |
+| Parity and sum-checks | [EP-P1] checks transmitted/stored descriptor values and reverses internal parity on initial fault entry; [EP-P4] describes descriptor validation. | That parity or a sum-check proves software authorization or prevents deliberate forgery. |
+| Later pointer handling | [EP-P4] adds pointer registers, load-on-use, access reduction and propagation control. | That these extensions existed in 1976 or solve the mixed-access question in that implementation. |
+
+**Unresolved / UNKNOWN:** precisely which restrictions apply to holders of the Dump Stack capability, how ordinary data and capability operations interact there, and where the `666` exception is admitted and controlled. Restricting such powerful capabilities to trusted management code is a **HYPOTHESIS**, not a demonstrated complete mechanism. Per-word tags, cryptographic validation, parity-as-type-tag, and unrestricted data-to-capability conversion must not be invented.
+
+This is a concrete research issue: reconcile [EP-E1], paragraph 18, with [EP-R1], pp. 4–6, by cross-correlating LC/SC and capability-access observations in the existing corpus. The existing [architecture WIP](../architecture/capability-representation.md) already leaves complete LC/SC semantics open; this relocated discussion preserves the conflict and its evidence boundary.
+
+## 21. ROS/PDOS link access-code interpretation
+
+### Current access-code decoding
+
+**Documented fields plus arithmetic inference:** interpreting the three octal digits with the COS-style nine-position diagram on [EP-R1], p. 4, gives:
+
+| Prefix | Binary | `1 1 EC WC RC ED WD RD 0` interpretation |
+|---|---|---|
+| 666 | 110 110 110 | WC + RC + WD + RD; no EC and no ED/execute |
+| 760 | 111 110 000 | EC + WC + RC; no ED or data read/write |
+
+The POS diagram has different alignment and fixed bits. The above arithmetic is exact **under the COS-style layout**; applying that layout to the ROS/PDOS prefixes is the current interpretation and needs explicit format confirmation. No meaning for the fixed prefix/trailing bits is invented. `760` is stronger than an enter-only capability, and `666` contains no execute authority.
+
+
+## 22. Save-layout constraint on the M/H/T interpretation
+
+### MIP, MIF and MIS: persistent versus transient processor state
+
+**Documented, [EP-R1], pp. 6–7:** MIP is the Primary Indicator Register and is part of the common fixed Process Dump Stack state at offset `20`. ROS and PDOS additionally preserve MIF, the Fault Indicator Register, in their OS-dependent Dump Stack area. The Internal Mode diagram also exposes MIS (Secondary Indicator Register), but MIS is not shown as a saved Dump Stack word in the documented COS/POS/ROS/PDOS layouts.
+
+This difference is architecturally significant. A current **working reconstruction** is that MIP contains execution state that must survive process suspension/resumption, MIF carries fault state that ROS/PDOS deliberately preserve for recovery/management, while at least some MIS bits represent more transient M-level sequencing or semantic state that need not form part of the resumable H/T process context. This is an inference from the save layouts and Internal Mode exposure, not a documented definition of the three registers.
+
+The named MIS bits strengthen that interpretation. `MIS08 Set Read Capability` and `MIS19 Cap. Pointer in OPP` appear to retain the semantic status of capability-related transfers through internal processor sequencing. Their exact timing and the meaning of OPP remain unresolved; they must not yet be turned into emulator behaviour merely from their names.
+
+`MIP04 Second Group` may refer to selection of the documented second group of special-purpose registers D10–D17 and C10–C17. This is a useful **HYPOTHESIS**, not an established decoding of the bit. If correct, it would be consistent with MIP retaining processor-visible selection/execution state while MIS carries more transient internal control state.
+
+Absence from the documented save layout does not alone prove that every MIS bit is transient. These interpretations remain research hypotheses; the execution/process model requires only the documented save-state distinctions.
+
+### Sources for the relocated material
+
+Source identifiers prefixed `EP-` retain the provenance and verification limits of the execution/process note; this reorganisation does not constitute a new source verification.
+
+- **[EP-R1] PRIMARY EVIDENCE via repository transcription:** user's Plessey *System 250 Pocket Reference Book / Instruction Codes*, Issue 1, May 1976. [Title/contents transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg0-pg2%20transcription.txt); [pp. 3–4 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg3-pg4.pdf); [pp. 5–7 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg5-pg7%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg5-pg7.pdf). Locators: p. 3 instruction codes, p. 4 access-code diagrams, p. 5 ROS/PDOS structures/state word, p. 6 Dump Stack, p. 7 Special Purpose CPU Registers/Internal Mode. Transcriptions checked; scans not independently rechecked here.
+- **[EP-E1] PRIMARY EVIDENCE:** D. M. England, *Architectural Features of System 250* (1972), [repository paper](../sources/1972/1972-England-Architectural-Features-of-System-250.pdf). Paragraphs 4–9: topology; 16–20: rights, integrity and SCT; 21–26: domains/CALL/Dump Stack; 30: virtual store and disk capabilities; 31: process management and CPU independence. PDF text inspected; diagram bit boundaries not treated as verified from extraction.
+- **[EP-P1] PRIMARY EVIDENCE:** Plessey, US 3,814,919, *Fault detection and isolation in a data processing system*, [patent text](https://patents.google.com/patent/US3814919A/en). Locators: capability parity fault; fault microsequence S2/S10/S16/S17; automatic and normal CHANGE PROCESS discussion immediately afterwards. Retrieved directly and read for this note; not archived in the inspected repository.
+- **[EP-P4] PRIMARY EVIDENCE:** US 4,408,274, *Memory protection system using capability registers*, [repository PDF](../patents/US4408274-memory-protection-capability-registers.pdf), [patent text](https://patents.google.com/patent/US4408274A/en). Locators: Description of Prior Art, Capability Formats, LC/load-on-use and SC descriptions, Figures 5–9 references. Text read; enhanced pointer format and propagation controls are version-qualified.

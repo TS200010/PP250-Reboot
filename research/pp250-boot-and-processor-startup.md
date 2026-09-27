@@ -393,3 +393,36 @@ Priority evidence targets are the original fault-patent figures and microsequenc
 - **[G1] PRIMARY EVIDENCE, next research target:** [Plessey System 250 General Information (1972)](../sources/1972/1972-Plessey-System-250-General-Information.pdf). Initial loading and commissioning procedures remain to be established from suitable contemporary material.
 
 Prepared from the referenced discussion and repository state at commit `88e9f4bc13d8ba63606bcd6e61f4249610abeab6`. No original source or transcription was modified.
+
+## Execution-model boundary and startup provenance
+
+Relocated from the execution/process note. The source verification statements below describe that note's investigation and do not silently upgrade the separately labelled “Documented (reported)” statements elsewhere in this document.
+
+**Strong inference:** at power-up there is no valid running process to supply ordinary execution authority. Startup machinery must establish sufficient valid capability/SCT state to identify a Process Dump Stack and obtain an executable C6/C7/IAR context.
+
+```text
+no valid running process
+          |
+C(S) / special startup-fault machinery
+          |
+sufficient valid SCT and capability state
+          |
+identify initial / checkout Dump Stack
+          |
+change-process restoration --> normal process execution
+```
+
+**Documented, [EP-P1], fault steps S2, S10 and S16–S17 and following text:** fault recovery invalidates prior internal capability parity, establishes a special table, obtains the checkout Dump Stack pointer and performs automatic CHANGE PROCESS. [EP-P2] documents a power-up preset for C(S). **Inference:** related startup machinery can establish a first process; this does not prove that cold startup and fault recovery execute identical microsequences, nor explain loading virgin memory.
+
+**Terminology qualification retained from the execution/process note:** earlier sections of this boot note expand `RSPC-n`; the relocated discussion retains **RSPC-0** without treating that expansion as verified. [EP-P1] identifies its functional role as a reserved segment pointer to the checkout dump area. The inspected wording establishes that role more securely than the precise acronym expansion. SSCR/MCR/DCR and C(S)/C(C)/C(D) are compared functionally, not asserted to be identical layouts across generations.
+
+
+The cold-entry treatment of an invalid old C(D), initial-frame construction and how valid startup structures first enter memory remain startup reconstruction questions. Capability genesis and the provenance of the required authority are treated in [Capability Genesis and Resource Lifecycle](capability-genesis-and-resource-lifecycle.md).
+
+### Sources for the relocated material
+
+Source identifiers prefixed `EP-` retain the provenance and verification limits of the execution/process note; this reorganisation does not constitute a new source verification.
+
+- **[EP-P1] PRIMARY EVIDENCE:** Plessey, US 3,814,919, *Fault detection and isolation in a data processing system*, [patent text](https://patents.google.com/patent/US3814919A/en). Locators: capability parity fault; fault microsequence S2/S10/S16/S17; automatic and normal CHANGE PROCESS discussion immediately afterwards. Retrieved directly and read for this note; not archived in the inspected repository.
+- **[EP-P2] PRIMARY EVIDENCE:** US 4,383,297, *Data processing system including internal register addressing arrangements*, [repository PDF](../patents/US4383297-internal-register-addressing.pdf), [patent text](https://patents.google.com/patent/US4383297A/en). Locators: illustrative embodiment/Figure 1 description; special data and capability registers; Internal Mode Operation General and restrictions. Text read; later register map kept distinct from [EP-R1].
+- **[EP-R1] PRIMARY EVIDENCE via repository transcription:** user's Plessey *System 250 Pocket Reference Book / Instruction Codes*, Issue 1, May 1976. [Title/contents transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg0-pg2%20transcription.txt); [pp. 3–4 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg3-pg4.pdf); [pp. 5–7 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg5-pg7%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg5-pg7.pdf). Locators: p. 3 instruction codes, p. 4 access-code diagrams, p. 5 ROS/PDOS structures/state word, p. 6 Dump Stack, p. 7 Special Purpose CPU Registers/Internal Mode. Transcriptions checked; scans not independently rechecked here.
