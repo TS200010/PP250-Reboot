@@ -368,7 +368,6 @@ Until those are answered, the reconstruction should preserve this boundary:
 
 > **Hardware establishes a minimal legitimate authority universe; automatic process transition converts it into an ordinary executable PP250 context; software policy begins on the far side of that transition.**
 
-
 ## 10. Unresolved questions and research leads
 
 1. **Virgin memory and stored capabilities:** who initially loads the Special Fault Block, SCT, Dump Stack and checkout code? How are genuine stored capabilities established before any ordinary process can execute? Raw data bit patterns must not simply be assumed to confer capability authority.
@@ -379,6 +378,64 @@ Until those are answered, the reconstruction should preserve this boundary:
 6. **Loading equipment:** maintenance hardware, another processor, retained memory, tape/disk loading and INFORM/OUTFORM are research possibilities, not established boot mechanisms. No ROM bootstrap is established or ruled out by this note.
 
 Priority evidence targets are the original fault-patent figures and microsequence, processor startup/maintenance manuals, process-template documentation, and the repository's System 250 General Information material. These findings extend questions left open in [the architecture WIP](../architecture/faults-interrupts-startup.md); they do not silently amend that document.
+
+## 11. SECOND GROUP and primordial special-capability completion
+
+**Status: HYPOTHESIS.** The early MIP bit 4 is named **SECOND GROUP**. The PP250 has ordinary C0–C7/D0–D7 and second/special C10–C17/D10–D17 register groups (octal). The Pocket Reference identifies C10=C(D), C11=C(I), C12=C(C) and C13=C(N); C14–C17 remain UNKNOWN and may be unused, reserved or M-internal/scratch. C(S) is separate.
+
+Later Wheatley/Andrews material places SPECIAL MODE at the corresponding PIR bit 4 and describes it as lasting for one instruction, allowing `LC` to address a corresponding special-purpose capability register. Until contradicted by early evidence, we test the working hypothesis that SECOND GROUP and later SPECIAL MODE represent the same underlying second-bank selection idea, including the one-instruction lifetime.
+
+### 11.1 Virgin Dump Stack and repeated CHP
+
+The proposed trigger is the **virgin initial Dump Stack/startup condition**, not an arbitrary Dump Stack. M recognises that the required special capability environment is incomplete and, on the relevant primordial CHP/change-process transitions, grants SECOND GROUP for exactly one instruction. Bootstrap uses that instruction to install one already-legitimate capability into a required special C register. SECOND GROUP clears; bootstrap passes through CHP/M again; the cycle repeats while required special state remains incomplete.
+
+```text
+virgin initial Dump Stack -> CHP
+        -> M sees required special-C state incomplete
+        -> SECOND GROUP for one instruction
+        -> LC legitimate stored capability into one required C1x
+        -> SECOND GROUP clears
+        -> CHP -> repeat
+        -> required special-C state complete
+        -> M no longer grants SECOND GROUP
+```
+
+Thus a one-instruction SECOND GROUP is sufficient: the bootstrap receives a fresh one-instruction grant on successive transitions rather than attempting the entire setup in one grant.
+
+### 11.2 Candidate completion logic
+
+A simple candidate implementation is:
+
+```text
+present(Cn) = OR(access bits of Cn)
+complete    = AND(present(Cn) for Cn in required special set)
+```
+
+Assuming reset leaves the relevant access fields zero, M need not understand their OS-level meanings. While `complete = 0`, the primordial transition may grant SECOND GROUP; when `complete = 1`, that route closes. This is a candidate circuit-level reconstruction, not documented gate logic.
+
+Early patent evidence recognises an all-zero/null access code, so `access != 0` is not universally equivalent to “defined capability”. The consequence is simply that a register participating in this particular completion test must receive a genuine non-zero capability representation. A register not required for bootstrap need not participate.
+
+In particular, **C14–C17 must not automatically be included**. If they are M scratch/internal registers, they need neither be set nor feed the OR/AND completion logic. C10–C13 are the currently documented special registers to investigate, but even these must be checked individually because CHP may establish C(D) specially.
+
+### 11.3 Boundary with capability genesis
+
+This mechanism, if correct, explains installation of already-legitimate capabilities into normally inaccessible special processor registers. It does **not** explain creation of the first stored capability:
+
+```text
+already legitimate stored capability
+             |
+       LC under SECOND GROUP
+             v
+special processor capability register
+```
+
+General capability genesis therefore remains a separate unresolved problem.
+
+### 11.4 Evidence tests
+
+Search primary material for: exact early MIP04 SECOND GROUP semantics and lifetime; microcode setting/clearing it during primordial CHP/startup; reset state of required special C registers; reduction/OR detection of their access/type bits; combined completion logic; whether CHP establishes C(D) automatically; startup roles of C(I), C(C), C(N); functions of C14–C17; whether any participating register may remain null; and evidence linking a virgin initial Dump Stack with repeated startup/change-process transitions.
+
+Explicit completion logic over required special C-register state would strongly support this reconstruction. Evidence that SECOND GROUP is freely restorable by ordinary process state, or that primordial startup does not depend on special-register population, would weaken or falsify it.
 
 ## Sources and provenance
 
