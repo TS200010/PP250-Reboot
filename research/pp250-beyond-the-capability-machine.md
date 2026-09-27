@@ -125,6 +125,18 @@ The absence of an unrestricted privileged software mode ceases to look like an o
 
 These observations are important because the M<H,T> reconstruction was not invented separately to explain each one. A single model is beginning to make several formerly awkward or disconnected features coherent.
 
+### Microprogram state: a possible concrete boundary between M and resumable H/T state
+
+The Pocket Reference's Internal Mode material and Dump Stack layouts now provide a more concrete clue about where M may exist in the implementation.
+
+MIP, the Primary Indicator Register, is saved in the common fixed Process Dump Stack state. ROS and PDOS additionally save MIF, the Fault Indicator Register. MIS, the Secondary Indicator Register, is exposed through Internal Mode but is not shown in the documented Process Dump Stack layouts. This does not prove a formal M/H/T boundary, but it is consistent with a processor in which some control state belongs to the resumable execution context while other state exists only as transient machinery governing the next internal transition.
+
+The named MIS bits are particularly suggestive. `MIS08 Set Read Capability` and `MIS19 Cap. Pointer in OPP` indicate that the microprogram retains semantic information about capability-related transfers while values move through internal processor paths. Combined with the processor self-test description of slot-displaced microprogram control, this suggests that at least part of M may be implemented not as a separate high-level subsystem but as a small amount of microprogram state and gating carried from one slot into the next.
+
+That matters to the M<H,T> reconstruction. M need not be large, nor need it understand an operating system's abstract objects. It may enforce primitive distinctions — capability versus data transfer, permitted access operation, legitimate state transition — while H and T provide the architectural state on which those primitives operate. Higher-level operating-system meanings can remain outside M.
+
+This is a **working reconstruction**, not an identification of MIS with M. M is an architectural/theoretical concept; MIS is a documented processor register. The useful observation is narrower: the implementation exposes transient semantic control state of exactly the sort a small M-level mechanism would require.
+
 ### Normal interrupt entry: a callback from M into software
 
 The reconstructed PP250 normal-interrupt path adds an important refinement:
