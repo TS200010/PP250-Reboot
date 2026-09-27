@@ -183,7 +183,7 @@ The evidence establishes several distinct mechanisms:
 
 **Unresolved / UNKNOWN:** precisely which restrictions apply to holders of the Dump Stack capability, how ordinary data and capability operations interact there, and where the `666` exception is admitted and controlled. Restricting such powerful capabilities to trusted management code is a **HYPOTHESIS**, not a demonstrated complete mechanism. Per-word tags, cryptographic validation, parity-as-type-tag, and unrestricted data-to-capability conversion must not be invented.
 
-This is a concrete research issue: reconcile [E1], paragraph 18, with [R1], pp. 4–6, using the target CPU's LC/SC and capability-access validation documentation. The existing [architecture WIP](../architecture/architecture.md) already leaves complete LC/SC semantics open; this note records the sharper conflict without altering that document or any transcription.
+This is a concrete research issue: reconcile [E1], paragraph 18, with [R1], pp. 4–6, using the target CPU's LC/SC and capability-access validation documentation. The existing [architecture WIP](../architecture/capability-representation.md) already leaves complete LC/SC semantics open; this note records the sharper conflict without altering that document or any transcription.
 
 ## 6. The hardware-defined process
 
