@@ -91,8 +91,24 @@ For potentially novel, technically useful material—or uncertainty—STOP befor
 
 This is a publication safeguard, not a legal patentability determination; separate prior-art and legal review is required.
 
-## Document organisation and integrity
+## Research document types
+
+`research/` contains research records, not the canonical architecture. Duplication between research documents is acceptable and can be evidentially useful. Do not consolidate, rewrite or delete research merely because the same conclusion appears elsewhere.
+
+There are two distinct research-document lifecycles:
+
+- **Topic research** is a living investigation of a question, such as capability genesis or bootstrap. It may be revisited and updated as new evidence, reasoning, competing hypotheses or revised reconstructions emerge. Preserve the reasoning chain rather than reducing it to the latest conclusion.
+- **Source review** records the examination of a particular paper, patent, manual or other new piece of evidence: what it says, what it newly reveals, its implications, conflicts and questions. Once the review is complete, treat it as a fixed research record. Do not later rewrite it to match the current architecture or eliminate duplication. Amend it only to correct an actual error in the review itself, such as a mistaken citation, transcription error or factual misidentification.
+
+Before modifying an existing research document, determine which type it is. Do not turn a source review into a living synthesis document, and do not freeze topic research merely because an earlier version recorded a conclusion.
+
+## Architecture and document integrity
+
+Research may be overlapping; architecture must be canonical. Each architectural element or mechanism should have one authoritative home under `architecture/`. Other architecture documents should reference that canonical treatment rather than independently defining or maintaining a second version of the same mechanism.
+
+An architecture document may cite multiple research notes, source reviews, transcriptions, patents, papers or other evidence that independently led to or support the same reconstruction. Do not remove duplicated research in order to manufacture a single provenance chain.
 
 - `architecture/architecture.md` is the navigation index. Put substantive reconstruction in the relevant subject document under `architecture/`, identified through that index.
-- Architecture documents are working reconstruction, not primary evidence. Trace statements to evidence or label them as inference.
+- Architecture documents are working reconstruction, not primary evidence. Trace statements to evidence/research or label them as inference.
+- When reviewing architecture, distinguish between material the document canonically owns and architectural material that belongs in another subject document. Report proposed moves before making them unless editing has explicitly been authorised.
 - `transcriptions/` contains source transcriptions. Never silently correct technical content; identify suspected transcription errors separately.
