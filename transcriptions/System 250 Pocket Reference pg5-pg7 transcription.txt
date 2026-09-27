@@ -151,6 +151,6 @@ Status: Visual transcription of a scanned source. Verify against the scan
 
  MIP = 8R400
  MIF = 8R100
- D1  = 8R62
+ D11 = 8R62
 
                                                                   PAGE 7
