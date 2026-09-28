@@ -1,58 +1,6 @@
 # System 250 Architecture — Capability Representation
 
-## Earlier Figure 3 access structure
-
-An earlier capability representation is documented in **US Patent 3,787,813, _Data Processing Devices Using Capability Registers_, Figure 3**. The patent describes an eight-bit permitted-access type code divided into three sections: permitted store operation (`PS`), data type (`DT`), and routing (`RTE`). See `transcriptions/US3787813A-Data-Processing-Devices-Using-Capability-Registers.md`, especially the text accompanying Figure 3.
-
-```text
-       PS        DT              RTE
-     2 bits    2 bits          4 bits
-                         NSO | Q | DUMP | IR
-```
-
-The Figure 3 encodings are:
-
-```text
-PS                    DT
-00  undefined         00  D
-01  ST R              01  —
-10  ST W              10  P
-11  ST R/W            11  PRSP
-```
-
-The patent describes `PS` as selecting store read, store write, or store read/write; `DT` as distinguishing data, program/instruction words, and the Program Reserved Segment Pointer Table (`PRSP`); and `RTE` as identifying the administrative/routing type of the segment, including normal store operation (`NSO`), Queue, program Dump area, and internal-register segment.
-
-This is structurally different from the later `EC WC RC ED WD RD` representation. It should therefore be treated as an **earlier architectural access-code scheme**, rather than interpreted retrospectively using the later access-right definitions.
-
-The relationship between the Figure 3 fields and the later COS/POS access bits remains to be established.
-
-## Capability access rights
-
-Page 4 identifies six named access rights: `EC`, `WC`, `RC`, `ED`, `WD`, `RD`.
-
-The diagrams are transcribed as:
-
-- COS capability pointer: `1 1 EC WC RC ED WD RD 0`
-- POS access codes: `0 1 1 EC WC RC ED WD RD`
-
-These diagrams are evidence for OS/version-specific encodings around the same six named access semantics. They must not be treated as proof that all nine positions have one fixed meaning across every System 250 generation.
-
-## Early capability class/type encoding
-
-Early Plessey patent material describes a two-bit classification associated with a capability/access code:
-
-| Two-bit value | Meaning |
-|---|---|
-| `11` | Active store-segment capability |
-| `10` | Passive/backing-store segment capability |
-| `01` | Resource capability |
-| `00` | Null capability — no usable authority |
-
-The early patent material also describes the null/zero case as an all-zero access code. Thus zero must not automatically be interpreted as merely an uninitialised capability register: it is also an architecturally meaningful null capability representation in this generation.
-
-The six access rights (`EC WC RC ED WD RD`) are conceptually distinct from this class/type information.
-
-## Later capability form encoding
+## Principal reconstructed representation — Andrews/Wheatley
 
 Later Wheatley/Andrews patent material must be treated separately rather than projected backwards onto the original PP250. In that later representation, the 24-bit pointer has nine high-order form/access positions (bits 23–15) and fifteen identity positions (bits 14–0). The two FORM discrimination bits are separated: bits 23 and 15. Between them, bits 22–16 form the seven-bit Primary Access Field.
 
@@ -116,6 +64,62 @@ Neither mechanism should be projected backwards onto early PP250: we have no evi
 **WORKING RECONSTRUCTION:** This is a coherent later architectural evolution: once general capability attenuation/propagation was introduced, the architecture acquired both a permission controlling propagation and a mechanism for reducing propagated authority.
 
 This does **not** explain the earlier COS/POS one-bit displacement of the six access rights. The May 1976 Pocket Reference already records that displacement, whereas the Wheatley/Andrews enhancement is later. The reason for the earlier shift therefore remains **UNKNOWN**.
+
+## Historical representations
+
+The following earlier representations are retained for architectural history and for understanding the evolution of System 250. They should not displace the later Andrews/Wheatley representation above as the principal reconstruction target.
+
+### COS/POS capability access rights
+
+Page 4 identifies six named access rights: `EC`, `WC`, `RC`, `ED`, `WD`, `RD`.
+
+The diagrams are transcribed as:
+
+- COS capability pointer: `1 1 EC WC RC ED WD RD 0`
+- POS access codes: `0 1 1 EC WC RC ED WD RD`
+
+These diagrams are evidence for OS/version-specific encodings around the same six named access semantics. They must not be treated as proof that all nine positions have one fixed meaning across every System 250 generation.
+
+### Early capability class/type encoding
+
+Early Plessey patent material describes a two-bit classification associated with a capability/access code:
+
+| Two-bit value | Meaning |
+|---|---|
+| `11` | Active store-segment capability |
+| `10` | Passive/backing-store segment capability |
+| `01` | Resource capability |
+| `00` | Null capability — no usable authority |
+
+The early patent material also describes the null/zero case as an all-zero access code. Thus zero must not automatically be interpreted as merely an uninitialised capability register: it is also an architecturally meaningful null capability representation in this generation.
+
+The six access rights (`EC WC RC ED WD RD`) are conceptually distinct from this class/type information.
+
+### Earliest Figure 3 access structure
+
+An earlier capability representation is documented in **US Patent 3,787,813, _Data Processing Devices Using Capability Registers_, Figure 3**. The patent describes an eight-bit permitted-access type code divided into three sections: permitted store operation (`PS`), data type (`DT`), and routing (`RTE`). See `transcriptions/US3787813A-Data-Processing-Devices-Using-Capability-Registers.md`, especially the text accompanying Figure 3.
+
+```text
+       PS        DT              RTE
+     2 bits    2 bits          4 bits
+                         NSO | Q | DUMP | IR
+```
+
+The Figure 3 encodings are:
+
+```text
+PS                    DT
+00  undefined         00  D
+01  ST R              01  —
+10  ST W              10  P
+11  ST R/W            11  PRSP
+```
+
+The patent describes `PS` as selecting store read, store write, or store read/write; `DT` as distinguishing data, program/instruction words, and the Program Reserved Segment Pointer Table (`PRSP`); and `RTE` as identifying the administrative/routing type of the segment, including normal store operation (`NSO`), Queue, program Dump area, and internal-register segment.
+
+This is structurally different from the later `EC WC RC ED WD RD` representation. It should therefore be treated as an **earlier architectural access-code scheme**, rather than interpreted retrospectively using the later access-right definitions.
+
+The relationship between the Figure 3 fields and the later COS/POS access bits remains to be established.
 
 ## Reconstruction rule
 
