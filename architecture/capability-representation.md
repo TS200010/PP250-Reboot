@@ -44,6 +44,36 @@ where `PP` is PROPAGATION PERMIT. The patent defines bits 19–21 as the Capabil
 
 This pattern is specifically the **system-store form** (`bit 23 = 1`, `bit 15 = 0`). It must not be treated as the access interpretation for every later capability form: system-resource and passive forms use the same FORM positions but interpret portions of the intervening field differently.
 
+### FORM combinations
+
+In the later Andrews/Wheatley representation, bits 23 and 15 are the two separated FORM discriminators. They select the interpretation of the intervening field rather than merely labelling an otherwise uniform capability.
+
+| Bit 23 | Bit 15 | FORM | Meaning |
+|---:|---:|---:|---|
+| `1` | `0` | `10` | System Store capability |
+| `0` | `0` | `00` | System Resource capability |
+| `1` | `1` | `11` | Passive capability |
+| `0` | `1` | `01` | **Not defined in the material examined so far** |
+
+FORM `01` therefore remains an open architectural possibility: its meaning, if any was assigned, has not yet been established from the surviving material.
+
+For a **System Store capability (`10`)**, the seven intervening bits are the Primary Access Field:
+
+```text
+PP RC WC EC RD WD ED
+```
+
+For a **System Resource capability (`00`)**, bit 22 remains `PP`, while bits 21–16 are a six-bit **Resource Type field** (resource type zero is not permitted) rather than the six store access rights. ENTER access is implied for this form:
+
+```text
+23  22  21 20 19 18 17 16  15
+ 0  PP  <--- RESOURCE TYPE --->  0
+```
+
+For a **Passive capability (`11`)**, the remaining fields are interpreted according to the passive capability form; Local Store is one documented passive type.
+
+**Architectural consequence:** FORM participates in determining how M interprets the remaining bits of the 24-bit pointer. In particular, the same six physical positions used for `RC WC EC RD WD ED` in System Store form are interpreted as the six-bit Resource Type field in System Resource form.
+
 Accordingly, the later form discrimination is not simply the same contiguous two-bit table shown above. The later material includes distinctions among active/system-store, resource, passive/backing-store and ordinary-data representations and adds propagation control.
 
 `PROPAGATION PERMIT` is therefore established for the later architecture but must not be assumed to have been the meaning of one of the original PP250's three non-rights positions without independent early evidence.
