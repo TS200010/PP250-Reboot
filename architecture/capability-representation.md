@@ -1,5 +1,31 @@
 # System 250 Architecture — Capability Representation
 
+## Earlier Figure 3 access structure
+
+An earlier capability representation is documented in **US Patent 3,787,813, _Data Processing Devices Using Capability Registers_, Figure 3**. The patent describes an eight-bit permitted-access type code divided into three sections: permitted store operation (`PS`), data type (`DT`), and routing (`RTE`). See `transcriptions/US3787813A-Data-Processing-Devices-Using-Capability-Registers.md`, especially the text accompanying Figure 3.
+
+```text
+       PS        DT              RTE
+     2 bits    2 bits          4 bits
+                         NSO | Q | DUMP | IR
+```
+
+The Figure 3 encodings are:
+
+```text
+PS                    DT
+00  undefined         00  D
+01  ST R              01  —
+10  ST W              10  P
+11  ST R/W            11  PRSP
+```
+
+The patent describes `PS` as selecting store read, store write, or store read/write; `DT` as distinguishing data, program/instruction words, and the Program Reserved Segment Pointer Table (`PRSP`); and `RTE` as identifying the administrative/routing type of the segment, including normal store operation (`NSO`), Queue, program Dump area, and internal-register segment.
+
+This is structurally different from the later `EC WC RC ED WD RD` representation. It should therefore be treated as an **earlier architectural access-code scheme**, rather than interpreted retrospectively using the later access-right definitions.
+
+The relationship between the Figure 3 fields and the later COS/POS access bits remains to be established.
+
 ## Capability access rights
 
 Page 4 identifies six named access rights: `EC`, `WC`, `RC`, `ED`, `WD`, `RD`.
