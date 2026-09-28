@@ -355,6 +355,30 @@ The jump family shares store/direct function codes 36/76 and uses the register f
 
 The instruction table explicitly includes `LC`, `LDP`, `SWPM`, `SC`, `CALL`, and `RET`. Full semantics must be established from the wider source corpus rather than inferred from their names alone.
 
+### Later Andrews/Wheatley capability-instruction extensions
+
+US Patent 4,408,274, *Memory protection system using capability registers* (Nigel J. Wheatley and Martyn P. Andrews; priority 29 September 1979), documents a later development of the capability-manipulation instructions. These semantics belong to the later architecture and must not be projected backwards onto the original PP250 instruction set.
+
+#### LC — Load Capability: later load-on-use semantics
+
+The later `LC` loads the selected 24-bit capability pointer into the pointer register `P(x)` associated with `C(x)`, then sets the corresponding capability register to **LOAD ON USE**. Base, limit and access information are therefore not necessarily resolved into `C(x)` at execution of `LC`; resolution is postponed until the capability is actually used.
+
+The patent instruction word retains the familiar architectural operands: destination capability `C(x)`, source capability `C(y)`, address `A`, and optional modifier `M`.
+
+#### LCM — Load Capability Masked
+
+The patent explicitly introduces a distinct **load capability masked** operation for access reduction. During the load, the mask in Data register `D(0)` masks selected access bits of the capability pointer before it is installed in `P(x)`. The result is a capability with reduced access rights; the operation cannot use the mask to add rights absent from the source pointer.
+
+`LCM` is used in this reconstruction as the mnemonic for the patent's “load capability masked” instruction. The patent establishes the operation; the exact historical assembler mnemonic/opcode remains to be independently confirmed if not shown in surviving instruction tables.
+
+#### SC — Store Capability: later propagation control
+
+The later `SC` stores the capability pointer from the pointer register associated with `C(x)`, rather than requiring the full capability descriptor to be resolved first. For System Store and System Resource capabilities it tests the pointer's `PROPAGATION PERMIT` bit; if propagation is not permitted, the attempted store faults. This is an enhancement of the existing `SC` instruction rather than evidence for a new opcode.
+
+**Architectural consequence:** by this generation, capability derivation and propagation are explicit ISA concerns. `LCM` provides hardware attenuation of authority, while `SC` enforces whether that authority may be propagated, and load-on-use changes `LC` from immediate descriptor resolution to deferred capability resolution.
+
+**Primary reference:** US 4,408,274, especially Figures 6–9 and the accompanying descriptions of the Load Capability instruction, automatic Load Capability Register sequence, and Store Capability instruction.
+
 ## Church/Turing interpretation
 
 The current research model distinguishes:
