@@ -414,18 +414,3 @@ Return also performs Local Store lifetime enforcement. Local capabilities create
 Protected Return consequently combines control return, selective register restoration, and revocation of procedure-local storage authority. The procedure nesting level is part of the enforcement mechanism, preventing capabilities for expired local storage from surviving the lifetime of the procedure that created them.
 
 **Primary reference for RLS, Sub-set Local Store, Protected Call and Protected Return:** US 4,486,831, *Multi-programming data processing system process suspension*, especially Figures 5–10 and the accompanying descriptions. Figure 7 gives Request Local Store, Figure 8 Sub-set Local Store, Figure 9 Protected Call, and Figure 10 Protected Return.
-
-## Church/Turing interpretation
-
-The current research model distinguishes:
-
-```text
-H = Church/authority machine
-T = Turing/general computational machine
-M = governing transition machine
-
-capability = protected authority mechanism/representation,
-             orthogonal to the H/T/M decomposition
-```
-
-A strong current hypothesis identifies the six special Church instructions as `LC`, `SC`, `LDP`, `CALL`, `RET`, and `CHP`. This remains a historical-source verification item.
