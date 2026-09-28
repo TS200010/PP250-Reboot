@@ -28,7 +28,21 @@ The six access rights (`EC WC RC ED WD RD`) are conceptually distinct from this 
 
 ## Later capability form encoding
 
-Later Wheatley/Andrews patent material must be treated separately rather than projected backwards onto the original PP250. In that later representation, the 24-bit pointer has nine high-order form/access positions and fifteen identity positions. Two separated form-discrimination bits participate in classifying the pointer, while a seven-bit primary access field contains the six familiar rights plus a propagation-permit bit.
+Later Wheatley/Andrews patent material must be treated separately rather than projected backwards onto the original PP250. In that later representation, the 24-bit pointer has nine high-order form/access positions (bits 23–15) and fifteen identity positions (bits 14–0). The two FORM discrimination bits are separated: bits 23 and 15. Between them, bits 22–16 form the seven-bit Primary Access Field.
+
+For a **system-store capability**, the complete high-order nine-bit pattern is:
+
+```text
+bit:    23  22  21  20  19  18  17  16  15
+        -----------------------------------
+        1   PP  RC  WC  EC  RD  WD  ED  0
+        ^                               ^
+      FORM                            FORM
+```
+
+where `PP` is PROPAGATION PERMIT. The patent defines bits 19–21 as the Capability Access Bits READ, WRITE and ENTER CAPABILITY, and bits 16–18 as the Data Access Bits READ, WRITE and EXECUTE DATA. Thus, when written from bit 23 down to bit 15, the order is exactly `1 PP RC WC EC RD WD ED 0`.
+
+This pattern is specifically the **system-store form** (`bit 23 = 1`, `bit 15 = 0`). It must not be treated as the access interpretation for every later capability form: system-resource and passive forms use the same FORM positions but interpret portions of the intervening field differently.
 
 Accordingly, the later form discrimination is not simply the same contiguous two-bit table shown above. The later material includes distinctions among active/system-store, resource, passive/backing-store and ordinary-data representations and adds propagation control.
 
