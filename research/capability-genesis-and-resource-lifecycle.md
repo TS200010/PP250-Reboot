@@ -512,3 +512,223 @@ The research position is therefore:
 - **General creation of the first ordinary capability representing newly admitted/allocated resource authority:** **still unresolved and now the central capability-genesis hole.**
 
 Future work on capability genesis should begin from that narrowed question rather than reopening the already substantially reconstructed `C(S)` bootstrap chain, unless new primary evidence contradicts the reconstruction.
+
+---
+
+## 19. September 2026 update — capability representations, object identity and authority
+
+This section records the representation distinctions established while working bottom-up from the SCT, Inform/Outform capabilities and loaded capability registers. It refines the resource-genesis question without replacing the earlier reasoning.
+
+### 19.1 Capability and object are distinct
+
+**DOCUMENTED OBSERVATION / NECESSARY INFERENCE:** an SCT entry is not itself an individual capability. Multiple Inform capabilities can refer to the same SCT entry while carrying different ACCESS values. They therefore confer different authority over the same object.
+
+```text
+Capability A:  ACCESS A + SCT[42]
+Capability B:  ACCESS B + SCT[42]
+                         |
+                         v
+                       SCT[42]
+                         |
+                         v
+                       Object X
+```
+
+Consequently ACCESS belongs to the individual capability, not simply to the SCT entry or object.
+
+A useful semantic decomposition is therefore:
+
+```text
+CAPABILITY
+    |
+    +-- ACCESS             what authority this capability confers
+    |
+    +-- OBJECT REFERENCE   what that authority applies to
+```
+
+This is a **WORKING RECONSTRUCTION of the semantics**, not a claim about a common physical encoding.
+
+The ACCESS field contains the six documented capability permissions `EC WC RC ED WD RD`. Additional bits exist in the ACCESS field, but they must be described according to the particular documented format/version. They must not all be labelled collectively as `FORM`; in at least one interpretation only two of the additional bits constitute form information.
+
+### 19.2 Inform representation
+
+**DOCUMENTED OBSERVATION:** the primary-store Inform/active representation is a 24-bit stored capability whose semantic content is:
+
+```text
+ACCESS + SCT reference
+```
+
+It does not directly encode the target object's BASE and LIMIT. The SCT reference selects the SCT entry through which the target object is resolved.
+
+Thus:
+
+```text
+ACCESS A + SCT[42]
+ACCESS B + SCT[42]
+```
+
+are distinct capabilities over the same object.
+
+The exact subdivision of the ACCESS field and SCT-reference field must be taken from the relevant architecture/OS/version rather than imposed from a later summary.
+
+### 19.3 The SCT is object-side state, not another capability representation
+
+**DOCUMENTED OBSERVATION:** material examined so far describes an SCT entry as three 24-bit words containing BASE, LIMIT, a 24-bit checksum and additional flag bits. Later patent material identifies examples including `GARBAGE`, `VISITED` and `PRESENCE`; their chronology matters and later fields must not automatically be projected backwards into every PP250 version.
+
+`LIMIT` is retained as the architectural term. It must not be casually renamed `LENGTH`: evidence describing it as a limiting offset must be reconciled with sources using looser descriptions such as size/length when the exact comparison semantics are reconstructed.
+
+**NECESSARY INFERENCE:** because different Inform capabilities with different ACCESS values can share the same SCT entry, the SCT centralises the current mapping/state of the object while authority remains in the individual capabilities.
+
+```text
+Inform A                         Register A
+ACCESS A + SCT[42] ----+------> ACCESS A + BASE42 + LIMIT42
+                       |
+                       +-- SCT[42]
+                       |
+Inform B               +------> Register B
+ACCESS B + SCT[42] ------------> ACCESS B + BASE42 + LIMIT42
+```
+
+### 19.4 Outform representation
+
+**DOCUMENTED OBSERVATION:** when a capability itself is represented in secondary storage, the Outform/passive representation substitutes a persistent object reference for the active SCT reference. Available descriptions identify this persistent reference with the object's unique disk identity/address assigned when the segment is created.
+
+Its established semantic content is therefore:
+
+```text
+ACCESS + persistent object reference
+```
+
+The physical width and detailed bit-level encoding of Outform remain **UNKNOWN** and are deliberately not asserted here.
+
+**NECESSARY INFERENCE:** ACCESS must survive Inform-to-Outform conversion independently of object identity. Two capabilities with different authority over the same object cannot collapse into a bare persistent object identifier:
+
+```text
+Inform:
+    ACCESS A + SCT[42]
+    ACCESS B + SCT[42]
+
+              |
+              | outform
+              v
+
+Outform:
+    ACCESS A + persistent-object-X
+    ACCESS B + persistent-object-X
+```
+
+### 19.5 Loaded capability-register representation
+
+**DOCUMENTED OBSERVATION / WORKING RECONSTRUCTION:** loading an Inform capability resolves its SCT reference through the SCT and produces the execution-time capability-register representation:
+
+```text
+Inform capability
+ACCESS + SCT[n]
+          |
+          v
+        SCT[n]
+       BASE + LIMIT
+          |
+          v
+Capability register
+ACCESS + BASE + LIMIT
+```
+
+The loaded capability register is 48 bits. BASE denotes the System 250 module/address starting point established in the addressing reconstruction; LIMIT bounds access relative to that base; ACCESS remains the authority of the particular capability being loaded.
+
+The SCT reference needed to reconstruct the stored Inform form is retained separately in process state (the Process Dump Stack), rather than requiring it to be encoded in the 48-bit register representation itself.
+
+### 19.6 Capability representation and target-object residence are independent
+
+This distinction corrects an earlier overstatement made during the investigation.
+
+**NECESSARY INFERENCE:** `Inform` and `Outform` describe the representation/location of the **capability itself**. They do not by themselves state whether the target object is currently resident in primary store.
+
+It is therefore incorrect to equate:
+
+```text
+Inform  = resident target object
+Outform = non-resident target object
+```
+
+An Outform capability stored on disk may designate an object that is currently resident in primary store. Conversely, an Inform capability in primary store may refer through an SCT entry whose target object is currently non-present.
+
+Capability representation and target-object residence are separate dimensions.
+
+### 19.7 What is preserved and what changes
+
+The current semantic summary is:
+
+```text
+                         AUTHORITY             OBJECT DENOTATION
+
+INFORM                   ACCESS                SCT reference
+
+OUTFORM                  ACCESS                persistent object identity
+
+CAPABILITY REGISTER      ACCESS                BASE + LIMIT
+```
+
+This is a semantic table, not a claim that the three representations share a physical width or field layout.
+
+The common element is the authority carried by ACCESS. What changes is how the target object is denoted in the context in which the capability is represented.
+
+### 19.8 Role of the SCT
+
+The SCT is the indirection mechanism connecting an active Inform object reference to the object's current system realisation:
+
+```text
+individual capability                    object-side state
+
+ACCESS -------------------+
+                           |
+SCT reference -----> SCT entry -----> BASE / LIMIT / flags / ...
+                           |
+                           v
+                         object
+```
+
+It is not the authority itself and can be shared by capabilities carrying different ACCESS values.
+
+This also explains why physical relocation need not require every Inform capability to be rewritten: the SCT entry can change its current mapping while Inform capabilities continue to refer to that SCT entry.
+
+### 19.9 Persistent object identity and SCT identity are distinct
+
+**DOCUMENTED OBSERVATION / NECESSARY INFERENCE:** an SCT index is an active-system reference, not necessarily the persistent identity of the object. The secondary-storage model permits SCT entries to be reclaimed/reallocated. The persistent object identity used in Outform permits an object to be Inform'ed later through an SCT entry that need not have the same index it previously occupied.
+
+```text
+persistent object X
+       |
+       +--> at one time: SCT[27]
+       |
+       +--> later:       SCT[103]
+```
+
+Capabilities to X retain their individual ACCESS across this change of active SCT representation.
+
+### 19.10 Consequence for the genesis investigation
+
+The earlier genesis model must now distinguish several operations that had sometimes been conflated:
+
+1. creation/existence of an object;
+2. allocation/assignment of an SCT entry representing its current active mapping;
+3. creation of a capability referring to that object;
+4. selection of the ACCESS carried by that particular capability;
+5. expansion of an Inform capability into BASE/LIMIT/ACCESS in a capability register.
+
+**NECESSARY INFERENCE:** a new capability to an already represented object need not imply creation of a new SCT entry. It may be another capability carrying a different ACCESS while referring to the existing object/SCT entry. Conversely, allocating or populating an SCT entry is not by itself equivalent to creating authority to use the object.
+
+This substantially sharpens the remaining genesis question. Rather than asking only how hardware is 'turned into a capability', the investigation must identify separately how System 250 establishes an object representation and how it creates a legitimate, unforgeable stored capability carrying a particular ACCESS to that object.
+
+### 19.11 Current unresolved representation questions
+
+The following remain open:
+
+- exact Outform physical width and encoding;
+- exact bit layout of the Inform ACCESS field and SCT reference for each relevant PP250 version/OS;
+- exact LIMIT comparison semantics, including inclusive/exclusive boundary behaviour;
+- exact chronology and meaning of SCT flag bits across PP250 revisions;
+- exact architectural mechanism that creates a new legitimate stored capability or changes/attenuates ACCESS associated with an existing object reference;
+- exact mechanism by which Outform persistent identity is resolved to an SCT entry when capability-containing material returns to primary store.
+
+These questions should remain labelled unresolved until the evidence or reconstruction constraints discriminate between the alternatives.
