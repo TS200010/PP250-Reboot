@@ -379,6 +379,42 @@ The later `SC` stores the capability pointer from the pointer register associate
 
 **Primary reference:** US 4,408,274, especially Figures 6–9 and the accompanying descriptions of the Load Capability instruction, automatic Load Capability Register sequence, and Store Capability instruction.
 
+#### RLS — Request Local Store
+
+US Patent 4,486,831 documents `RLS` as a Store-mode instruction that allocates a block from the current process's Local Store Stack. The size of the requested block is read from the store operand addressed by the instruction's `M`, `C(x)` and `A` fields, and the resulting local-store capability is loaded into the capability register selected by the instruction's destination field `C(N)`.
+
+Operationally, `RLS` checks that local-store space is available and that the requested size is non-zero, calculates the new block's base and limit, verifies that the allocation does not exceed the process Local Store capability `C(L)`, and writes a three-word local capability-table entry (sumcheck, base and limit) into the variable part of the process Dump Stack. It increments the local-capability count and advances the Local Store Stack pointer. The newly allocated block is cleared before completion. The local capability-table entry is associated with the current procedure nesting level and is created with the Sub-Capability bit reset.
+
+Thus `RLS` is not merely storage allocation software: it is a hardware authority-creation operation which creates a valid capability for newly allocated process-local storage.
+
+#### SLS — Sub-set Local Store
+
+US Patent 4,486,831 documents **Sub-set Local Store** as the companion operation to `RLS`. Given an existing local-store capability, it constructs a capability for a bounded sub-range of that local-store segment and returns the resulting capability in the selected capability register.
+
+The instruction uses `D(0)` to supply the sub-range: the twelve most significant bits contain the offset and the twelve least significant bits contain the requested subset size. The processor loads and validates the source local-store capability, computes the requested subset base and limit, and checks that the derived range remains within the source capability. It then creates another three-word local capability-table entry in the Dump Stack, marks its Base word with the Sub-Capability bit, associates it with the current nesting level, increments the local-capability count, and returns a pointer to that descriptor as the new capability.
+
+This is therefore a hardware capability-derivation operation specifically for Local Store: authority for the subset is derived from, and spatially confined by, an already possessed local-store capability.
+
+The patent text calls this operation **Sub-set Local Store**. The exact historical assembler mnemonic should be taken from an instruction table or assembler source when available rather than inferred solely from the descriptive name.
+
+#### Protected Call
+
+US Patent 4,486,831 adds **Protected Call** for a domain switch with a selectively defined register interface. `D(0)` carries a 24-bit register descriptor: its twelve most significant bits specify Data and Capability registers whose contents are to be preserved in the Dump Stack link, while its twelve least significant bits specify registers to be cleared so that the called domain cannot read their previous contents.
+
+Protected Call constructs an expanded Dump Stack link containing the ordinary return state together with the selected saved registers and a copy of the register descriptor. It loads `C(6)` with the called domain's capability-pointer block, checks the resulting access, increments the procedure level, resets the local-capability count for the new level, and loads `C(7)` with the called program capability. Registers selected for clearing by the descriptor are nulled as part of establishing the new domain.
+
+The architectural significance is that the caller can define, in hardware, which register-held state crosses the domain boundary and which state is concealed from the callee.
+
+#### Protected Return
+
+US Patent 4,486,831 documents **Protected Return** as the corresponding un-nesting operation. It uses the register descriptor saved by Protected Call to restore the selected saved Data and Capability registers and to reconstruct the caller's execution state.
+
+Return also performs Local Store lifetime enforcement. Local capabilities created at the procedure level being left are removed from the Dump Stack; Local Store and Dump Stack pointers are adjusted; the nesting level is decremented; and general-purpose capability registers are checked so that local-store capabilities referring to storage whose lifetime has ended are invalidated. Local Store allocated explicitly by `RLS` is therefore deallocated automatically when returning from the procedure level that owns it.
+
+Protected Return consequently combines control return, selective register restoration, and revocation of procedure-local storage authority. The procedure nesting level is part of the enforcement mechanism, preventing capabilities for expired local storage from surviving the lifetime of the procedure that created them.
+
+**Primary reference for RLS, Sub-set Local Store, Protected Call and Protected Return:** US 4,486,831, *Multi-programming data processing system process suspension*, especially Figures 5–10 and the accompanying descriptions. Figure 7 gives Request Local Store, Figure 8 Sub-set Local Store, Figure 9 Protected Call, and Figure 10 Protected Return.
+
 ## Church/Turing interpretation
 
 The current research model distinguishes:
