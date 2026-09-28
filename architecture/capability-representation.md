@@ -34,6 +34,19 @@ Accordingly, the later form discrimination is not simply the same contiguous two
 
 `PROPAGATION PERMIT` is therefore established for the later architecture but must not be assumed to have been the meaning of one of the original PP250's three non-rights positions without independent early evidence.
 
+### Propagation Permit and access reduction evolved together
+
+The later Wheatley/Andrews architecture introduces two complementary facilities together:
+
+- `PROPAGATION PERMIT` is the seventh bit of the Primary Access Field, alongside the six existing rights `EC WC RC ED WD RD`. It controls whether the authority represented by a capability may be propagated.
+- The masked capability-load operation, `LCM`, provides access reduction: it reduces access rights when deriving/loading reduced authority.
+
+Neither mechanism should be projected backwards onto early PP250: we have no evidence that it had either Propagation Permit or LCM-style general attenuation.
+
+**WORKING RECONSTRUCTION:** This is a coherent later architectural evolution: once general capability attenuation/propagation was introduced, the architecture acquired both a permission controlling propagation and a mechanism for reducing propagated authority.
+
+This does **not** explain the earlier COS/POS one-bit displacement of the six access rights. The May 1976 Pocket Reference already records that displacement, whereas the Wheatley/Andrews enhancement is later. The reason for the earlier shift therefore remains **UNKNOWN**.
+
 ## Reconstruction rule
 
 For reconstruction and emulator work:
