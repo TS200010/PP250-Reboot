@@ -476,7 +476,16 @@ The page-8 transcription is retained at \`transcriptions/System 250 Pocket Refer
 
 The MIF table establishes the available named **fault causes**. In particular, \`Sumcheck Fault\` is MIF07 and \`Access Violation\` is MIF18.
 
-**C(S) entry boundary:** the fault/startup reconstruction establishes that the serious processor fault/check-out path enters through C(S), but this Pocket Reference table by itself does **not** state that every named MIF bit causes that path. The exact mapping from individual MIF causes to C(S) fault start-up versus other handling must therefore be taken from the fault-sequence evidence, not inferred merely from membership of MIF. This distinction remains an evidence target.
+**Fault-interrupt provenance and version warning:** Pocket Reference page 8 alone does not define which faults enter the processor fault/check-out path. The primary provenance is US 3,814,919, *Fault Detection and Isolation in a Data Processing System* (filed 1 March 1972), under “Machine indicator register MIS” and “FAULT INTERRUPT OPERATION”. It states that setting **any of bits 5 through 14** of the patent's **primary indicator register MIP** sets the **common fault indicator (CFI)** in MIS over lead F, and that activation of CFI commences the fault-interrupt microprogram regardless of other current conditions.
+
+This source is earlier than the May 1976 Pocket Reference and its register nomenclature/bit allocation must **not** be silently mapped onto the later table. In particular, the patent describes its SUMCHECK fault as bit 8 of its MIP, whereas Pocket Reference page 8 gives **MIF07 = Sumcheck Fault**. Therefore the documented proposition is:
+
+```text
+US 3,814,919 implementation:
+    MIP bits 5-14 -> MIS Common Fault Indicator -> fault-interrupt microprogram
+```
+
+It is **not** presently justified to rewrite that as “Pocket Reference MIF05-MIF14 -> C(S)” without establishing the version correspondence. The patent's fault-interrupt sequence is the primary provenance for the Common Fault Indicator range; the Pocket Reference is the primary provenance for the later MIF/MIP/MIS bit names and numbers.
 
 ### 12.2 MIP — Primary Indicators
 
