@@ -2,7 +2,9 @@
 
 ## Status
 
-**WORKING RECONSTRUCTION — NOT DOCUMENTED ARCHITECTURE.**
+**DOWNGRADED WORKING RECONSTRUCTION — NOT THE CURRENT LEADING HYPOTHESIS.**
+
+This reconstruction is retained as a plausible alternative and as a record of the reasoning that led to it. Subsequent work identified the mixed-access Inform construction model (`WD [ACCESS | fresh SCT] -> LC`) as a simpler explanation requiring fewer unsupported mechanisms. The present note should therefore not be read as the preferred reconstruction unless new evidence strengthens the Outform/`LC`-trap path.
 
 This note records the reasoning reached on 28 September 2026 about how the early System 250 Store Allocator might have manufactured the first capability for a newly created segment without requiring a general data-to-capability or capability-attenuation instruction.
 
