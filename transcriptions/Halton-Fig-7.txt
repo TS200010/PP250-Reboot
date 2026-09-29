@@ -1,0 +1,13 @@
+# Halton — Figure 7 transcription
+
+Source: D. Halton, *Hardware of the System 250 for Communication Control*, Figure 7.
+
+## System Interrupt Word
+
+- Bits 0–23: one bit per processor and per I/O channel.
+- The System Interrupt Word is pointed to by `C(I)`.
+
+## Interrupt Accept Register
+
+- Bit 6: Trap Accepted.
+- Bits 0–5: correlation count of System Interrupt Word.
