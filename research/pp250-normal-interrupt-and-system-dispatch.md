@@ -82,96 +82,285 @@ The OS-dependent continuation of the Dump Stack supplies the execution frames, i
 
 Accordingly the Normal Interrupt process is an ordinary PP250 process in the architectural sense. What is special is **how the processor selects and enters it**, not a privileged instruction universe in which it subsequently executes.
 
-## 4. SCT failure and deferred normal-interrupt entry
+## 4. Program Trap, non-resident segments and normal interrupt entry
 
-The SCT investigation adds an important detail to the path.
+### DOCUMENTED — Program Trap is distinct from Fault Interrupt
 
-For an active stored capability, `LC` performs the SCT lookup needed to expand the stored representation into a capability register. If the SCT descriptor is valid, the destination C register receives the normal expanded capability.
+Halton explicitly distinguishes **Program Trap** from **Fault Interrupt** during capability-controlled store access.
 
-The surviving interrupt material indicates that an unavailable SCT state can instead result in a distinguished unusable/trap representation being established in the capability register. The full software recovery action need not occur during `LC` itself.
+When a store address is constructed through a capability, the processor performs a sequence of checks:
 
-The later attempt to **use** that unusable capability causes hardware detection and normal interrupt entry.
+1. The ACCESS field is checked for all zeros. If it is all zeros, a **PROGRAM trap** is generated.
+2. The resulting absolute address is checked against the BASE and LIMIT held in the capability register. If the address is outside those bounds, a **Fault Interrupt** is generated.
+3. The operation being attempted is checked against the operations permitted by the ACCESS field. If the operation is not permitted, a **Fault Interrupt** is generated.
+4. Only after these checks succeed does the requested store access take place.
 
-Thus:
+An all-zero ACCESS field is therefore a deliberately distinguished architectural condition. It does **not** represent an ordinary capability-protection failure.
+
+This distinction is important when interpreting the later `MIF18 Access Violation` indication. A reference which violates the authority represented by a capability belongs to the Fault Interrupt mechanism. The all-zero ACCESS condition belongs instead to Program Trap.
+
+### DOCUMENTED — non-resident segments enter a trap-handler process
+
+The System 250 operating-system description explains that movement of blocks between main store and disk is intended to be transparent to processes using those blocks.
+
+A process can therefore attempt to use a block which is not currently resident in main store. Hardware detects this condition and causes an interrupt into a **trap-handler process**. The trap handler arranges for the required block to be transferred into main store so that execution can subsequently continue.
+
+The surviving descriptions of the System 250 virtual-store mechanism therefore establish a direct relationship between:
 
 ```text
-stored active capability
+reference to non-resident block
         |
         v
-       LC
+hardware detection
         |
-        +---- valid SCT entry ----> usable expanded capability
+        v
+trap-handler process
         |
-        +---- unavailable entry --> unusable/trap C-register state
-                                           |
-                                           v
-                                  subsequent attempted use
-                                           |
-                                           v
-                                  normal interrupt condition
-                                           |
-                                           v
-                                         C(N)
-                                           |
-                                           v
-                                          NIB
-                                           |
-                                           v
-                                     automatic CHP
+        v
+make block resident
+        |
+        v
+continue interrupted computation
 ```
 
-This is more precise than saying that `LC` simply "page faults".
+Secondary descriptions of the System 250 architecture independently describe the same mechanism: a segment can have an SCT entry while having no primary-memory allocation, and first reference to such a segment causes a trap. The operating system then allocates or restores primary storage and updates the relevant SCT state.
 
-## 4A. Program Trap entry and the Interrupt Accept Register
+### DOCUMENTED — the System Interrupt Word is polled, not a conventional device interrupt
 
-### DOCUMENTED
+Halton's System Interrupt description must be distinguished from a conventional asynchronous peripheral-interrupt architecture.
+
+Special capability register `C(I)` defines the **System Interrupt Word (SIW)**.
+
+The SIW contains 24 bits, with one bit associated with each processor and I/O channel. Pending system activity is represented by setting the corresponding bit in this shared word.
+
+The processor periodically examines this state. Using `C(I)` it accesses the SIW, and using `C(N)` it obtains the associated interrupt mask information. Pending unmasked bits are correlated and one request is selected.
+
+The selected SIW bit is cleared and its position is represented as a **correlation count**.
+
+Thus ordinary processor/I/O activity does not cause a peripheral to supply an interrupt vector or directly seize processor execution. The activity is represented in shared system state which the processor periodically examines.
+
+### DOCUMENTED — D15 records SIW correlation or Program Trap acceptance
 
 The May 1976 Pocket Reference identifies special-purpose data register `D15` as the **INTERRUPT ACCEPT REGISTER**.
 
-Halton's 1972 description of the interrupt mechanism shows the Interrupt Accept Register with the following presently identified fields:
+Direct inspection of Halton Figure 7 gives the following fields:
 
-| Bits | Meaning |
+| D15 bits | Meaning |
 |---|---|
 | 0–5 | Correlation count of System Interrupt Word |
-| 6 | Trap accepted |
+| 6 | Trap Accepted |
 | 7–23 | Not presently identified |
 
-The correlation-count field records information associated with correlation/acceptance of a request from the System Interrupt Word. The `Trap accepted` indication identifies acceptance of a Program Trap.
+For the SIW path, bits 0–5 contain the correlation count identifying the position selected from the System Interrupt Word.
 
-The later System 250 patent retains the Interrupt Accept Register as `IR`, but describes it as containing a single significant bit: **bit 6**, set when a Program Trap is accepted. It also states that the special-purpose data registers can be accessed by data instructions using **Internal Mode**. The surviving later description does not establish that the 1972 bits 0–5 correlation-count function remained unchanged, so the correlation-count field is presently treated as **version-dependent**.
+For the Program Trap path, bit 6 records that a trap has been accepted.
 
-The normal-interrupt mechanism uses `C(N)`, which is established by the running system during startup and supplies the Normal Interrupt Block from which the processor performs the automatic `CHP` into the Normal Interrupt process.
+The Interrupt Accept Register therefore brings two architecturally different sources of normal processor attention together:
 
-### STRONG RECONSTRUCTION
+```text
+processor / I/O activity                  Program Trap
+          |                                    |
+          v                                    |
+ System Interrupt Word                         |
+          |                                    |
+periodic examination                           |
+and correlation                                |
+          |                                    |
+          v                                    v
+D15[0:5] = correlation count          D15[6] = Trap Accepted
+          |                                    |
+          +----------------+-------------------+
+                           |
+                           v
+                 normal interrupt machinery
+```
 
-The documented mechanisms combine into the following Program Trap entry path:
+This should not be interpreted as evidence for conventional I/O interrupts. The SIW side is the result of processor polling/correlation of shared state. Program Trap is an internally generated processor condition.
+
+### DOCUMENTED — MIF identifies the capability register associated with the event
+
+The May 1976 Pocket Reference identifies `MIF20–23` as the **capability register on which failure occurred**.
+
+Consequently, the processor state available following the trapped reference contains at least two important pieces of information:
+
+- `D15.6` records **Trap Accepted**;
+- `MIF20–23` identifies the **capability register associated with the failure**.
+
+`MIF20–23` should not be described as directly identifying an SCT entry or an object. It identifies a capability register. The relationship from that register to the referenced segment is a separate part of the capability/SCT mechanism.
+
+### DOCUMENTED — C(N) and Internal Mode provide the handler environment
+
+Halton identifies special capability register `C(N)` as defining the **Normal Interrupt Block**.
+
+Normal interrupt entry uses this protected processor mechanism to enter the Normal Interrupt process. The process change is an architectural process change — an automatic `CHP` through the state supplied by the Normal Interrupt Block — rather than an ordinary branch or conventional interrupt-vector transfer.
+
+`C(N)` is established by the running system during startup and thereafter supplies the processor with the protected state required for normal interrupt entry.
+
+The special-purpose processor registers are not normally available to ordinary program addressing. They can, however, be accessed by code operating through the documented **Internal Mode** addressing mechanism.
+
+The Normal Interrupt process can therefore inspect the processor-generated interrupt/trap state without requiring that state to be exposed through the ordinary capability namespace.
+
+### STRONG RECONSTRUCTION — Program Trap is the non-resident-segment mechanism
+
+The documentary evidence combines into a particularly coherent explanation of Program Trap.
+
+A process possesses a legitimate capability for a segment, but the segment is not presently resident in main store. The capability is represented in a state with an all-zero ACCESS field.
+
+Attempting to use it therefore does **not** produce an Access Violation or other protection fault. Hardware detects the zero ACCESS field and generates **Program Trap**.
+
+The processor records the accepted condition in its protected state:
+
+```text
+D15.6      = Trap Accepted
+MIF20-23   = capability register C(n)
+```
+
+The processor then enters the normal-interrupt machinery through `C(N)`. The resulting Normal Interrupt/trap-handler process can use Internal Mode to inspect this processor state.
+
+`D15` tells the handler that the accepted event is a Program Trap rather than an SIW correlation result.
+
+`MIF20–23` tells it which capability register was involved in the trapped reference.
+
+From the capability/SCT state associated with that register, the operating system can determine the non-resident segment which must be made available.
+
+The resulting reconstructed sequence is:
+
+```text
+program references segment through C(n)
+        |
+        v
+segment is not presently resident
+        |
+        v
+capability has ACCESS = 0
+        |
+        v
+processor detects ACCESS = 0
+        |
+        v
+PROGRAM TRAP
+        |
+        +----> D15.6 = Trap Accepted
+        |
+        +----> MIF20-23 = C(n)
+        |
+        v
+normal interrupt acceptance
+        |
+        v
+C(N) / Normal Interrupt Block
+        |
+        v
+automatic CHP
+        |
+        v
+Normal Interrupt / trap-handler process
+        |
+        v
+inspect protected processor state
+using Internal Mode
+        |
+        +----> D15 identifies Program Trap
+        |
+        +----> MIF20-23 identifies C(n)
+        |
+        v
+identify segment represented through C(n)
+and its SCT state
+        |
+        v
+allocate/restore the required main-store block
+        |
+        v
+update the relevant SCT/capability state
+        |
+        v
+interrupted computation can subsequently continue
+```
+
+This explains why the architecture needs both **Program Trap** and **Fault Interrupt**.
+
+They represent fundamentally different conditions:
+
+```text
+valid authority, object unavailable
+        |
+        v
+ACCESS = 0
+        |
+        v
+PROGRAM TRAP
+        |
+        v
+recoverable storage-management action
+
+
+invalid use of authority
+        |
+        +---- outside BASE/LIMIT
+        |
+        +---- operation not permitted by ACCESS
+        |
+        v
+FAULT INTERRUPT
+```
+
+Program Trap therefore appears to represent **temporary unavailability of an otherwise legitimate object**, whereas Fault Interrupt represents an architectural failure or violation.
+
+### STRONG RECONSTRUCTION — apparent singular purpose of Program Trap
+
+No other normal architectural use of **Program Trap** has yet been found in the corpus.
+
+The known alternatives are accounted for elsewhere:
+
+- processor and I/O activity is represented through the System Interrupt Word;
+- interval-timer events have their own mechanism;
+- BASE/LIMIT violations generate Fault Interrupt;
+- ACCESS permission violations generate Fault Interrupt;
+- hardware, parity, sumcheck, watchdog and related failures are represented by MIF/Fault Interrupt state;
+- a Program Trap occurring under the exceptional inhibited-interrupt condition is separately represented as a Trap Fault.
+
+There is therefore presently no evidence for Program Trap being a general software-exception facility analogous to the trap mechanisms of many other architectures.
+
+The evidence instead points strongly to Program Trap being specifically the System 250 mechanism for the recoverable **non-resident-segment/page-in condition**.
+
+This exclusivity remains a **strong reconstruction**, rather than a documented architectural rule, because no source examined so far explicitly states that Program Trap can have no other cause.
+
+### SECOND GROUP is not required for normal Program Trap handling
+
+Earlier consideration of the Program Trap path raised the possibility that SECOND GROUP might be required to give the incoming handler access to processor state such as `D15`.
+
+That hypothesis is unnecessary.
+
+The documented Internal Mode mechanism already provides the means by which the Normal Interrupt/trap-handler process can address the relevant special-purpose processor state.
+
+The reconstructed normal Program Trap path therefore requires no SECOND GROUP transition:
 
 ```text
 Program Trap
     |
     v
-processor records the accepted trap in D15
-    |     bit 6 = Trap accepted
+processor records D15 / MIF state
+    |
     v
 automatic CHP through C(N)
     |
     v
-Normal Interrupt process
+Normal Interrupt / trap-handler process
     |
     v
-read D15 using Internal Mode
-    |
-    v
-dispatch trap handling
+Internal Mode access to processor state
 ```
 
-Thus `D15` provides the Normal Interrupt handler with the processor-generated information needed to identify the accepted event, and the handler can read it through the already documented Internal Mode mechanism.
+SECOND GROUP remains part of the separately reconstructed startup/fault-startup mechanism. No connection between SECOND GROUP and normal Program Trap entry is asserted here.
 
-There is **no need to infer SECOND GROUP on Program Trap entry** merely to make `D15` accessible. SECOND GROUP remains part of the separately reconstructed startup/fault-startup mechanism; no connection between SECOND GROUP and normal Program Trap entry is asserted here.
+### OPEN EVIDENCE QUESTION
 
-### Evidence check
+One documentary question remains:
 
-**ACTION:** inspect the original Halton 1972 Figure 7 image against the transcription and verify the exact bit numbering, field widths and labels of the Interrupt Accept Register — in particular `bits 0–5 = correlation count of System Interrupt Word` and `bit 6 = Trap accepted`. Until that visual check is complete, retain the field layout above as transcription-derived primary evidence rather than silently strengthening it from the drawing.
+> Does any surviving System 250 source explicitly state that Program Trap is used **only** for the non-resident-segment mechanism?
+
+No alternative Program Trap use has yet been found, and the known interrupt and fault conditions are accounted for by other mechanisms. Nevertheless, until an explicit statement of exclusivity is found, “Program Trap is exclusively the page-in/non-resident-segment trap” should remain classified as **STRONG RECONSTRUCTION** rather than DOCUMENTED.
 
 ## 5. Software dispatch after normal interrupt entry
 
