@@ -364,18 +364,27 @@ No alternative Program Trap use has yet been found, and the known interrupt and 
 
 ## 5. Software dispatch after normal interrupt entry
 
-The hardware mechanism need not know the complete policy for resolving the condition. Its responsibility is to detect the protected exceptional state and perform the protected transition into the configured Normal Interrupt process.
+The hardware mechanism need not know the complete policy for resolving the condition. Its responsibility is to detect the architecturally defined condition and perform the protected transition into the configured Normal Interrupt process.
 
-The software process entered through `C(N)` can inspect the saved process/fault state and determine what action is required. Depending on the cause this can lead to storage management, backing-store transfer, I/O/resource handling, scheduling, or other system action.
+For the non-resident-segment case reconstructed in §4, the attempted reference encounters the all-zero ACCESS state and the processor generates a Program Trap. The accepted trap is recorded in protected processor state, after which normal interrupt entry proceeds through `C(N)`, the NIB and automatic `CHP`.
 
-For the storage-management case the reconstructed path is:
+The Normal Interrupt/trap-handler process can then inspect that protected state using Internal Mode and perform the storage-management policy that the processor itself does not need to contain.
+
+The reconstructed storage-management path is therefore:
 
 ```text
 ordinary process
       |
-      | attempts to use unavailable segment authority
+      | references non-resident segment
       v
-hardware detects unusable capability state
+capability ACCESS = 0
+      |
+      v
+PROGRAM TRAP
+      |
+      +--> D15.6 = Trap Accepted
+      |
+      +--> MIF20-23 = capability register
       |
       v
 C(N) -> NIB -> target Dump Stack
@@ -384,25 +393,21 @@ C(N) -> NIB -> target Dump Stack
 automatic CHP
       |
       v
-Normal Interrupt process
+Normal Interrupt / trap-handler process
       |
-      | inspect saved condition/reference
+      | inspect D15 / MIF using Internal Mode
       v
 storage-management software
       |
-      +-- determine required segment
+      +-- identify the required segment
       +-- allocate/identify main-store location
       +-- arrange backing-store transfer
-      +-- update the SCT representation
-      +-- establish valid descriptor/check state
+      +-- update the relevant SCT/capability state
       v
-waiting process can eventually be made runnable
-      |
-      v
-original computation resumes/retries
+interrupted computation can subsequently continue
 ```
 
-This explains how user/system storage-management code can be triggered without requiring the microcode to contain the storage-management policy itself.
+This explains how storage-management software can be triggered without requiring the microcode to contain the storage-management policy itself.
 
 ## 6. SPECIAL and loading the special capability-register bank
 
