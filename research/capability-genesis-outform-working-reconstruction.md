@@ -265,3 +265,60 @@ The next documentary work should concentrate narrowly on:
 8. What exact mechanism allows the early pre-mixed-segment implementation to construct the first capability, if mixed data/capability storage was not yet available?
 
 Until these are resolved, this note remains a **working reconstruction**, not a claim about documented PP250 implementation.
+
+## 13. Trap mechanisms examined and rejected
+
+The fault-driven reconstruction above was not a single hypothesis. Several distinct existing fault mechanisms were examined in sequence as possible ways of making an \`LC\` participate in genesis. They should remain recorded separately because they were rejected for different reasons.
+
+### 13.1 SUMCHECK
+
+**REJECTED.**
+
+SUMCHECK was considered as a possible way of forcing a transition out of ordinary H execution while an attempted capability load was being resolved.
+
+It was rejected because SUMCHECK is an SCT integrity/checking mechanism. Using deliberate checksum failure as a routine part of Store Allocator operation would invoke machinery intended for a substantially more serious integrity/fault-checkout condition. It is too heavyweight and semantically inappropriate for normal capability creation.
+
+The rejection of SUMCHECK did not by itself reject all fault-assisted genesis mechanisms; it led to examination of a normal access-fault/page-fault-like route instead.
+
+### 13.2 Access fault with automatic retry
+
+**REJECTED AS THE GENESIS MECHANISM.**
+
+A more plausible possibility was to use the existing access-fault machinery in the same broad manner as virtual-store handling: an \`LC\` encounters a condition that cannot presently be satisfied, control passes through the normal protected fault path, M repairs or supplies the missing state, and the original operation is automatically retried.
+
+This was attractive precisely because it did **not** require inventing a special genesis trap. The machine already had fault handling and retry machinery.
+
+The difficulty is the result of that established mechanism. Once the fault condition has been repaired, retrying \`LC\` proceeds through the normal active capability machinery and completes with the **Inform representation resolved through the SCT**. That is the ordinary fault/retry path for an already represented object.
+
+This does not match the documented genesis ordering in which the Store Allocator creates the new segment/object and delivers its first capability. Treating ordinary access-fault repair and retry as the act that creates that authority conflates object/residence fault handling with capability manufacture.
+
+Thus the access-fault idea was rejected not because no suitable fault path existed, but because the semantics of the existing fault-and-retry path produce the wrong architectural explanation for genesis.
+
+### 13.3 MIP FIRST ATTEMPT / second-fault machinery
+
+**REJECTED.**
+
+The MIP FIRST ATTEMPT / second-fault state was then examined as a possible way of distinguishing an initial faulting execution from a subsequent attempt and thereby allowing special behaviour on the later pass.
+
+Examination of the fault-checkout material showed that FIRST ATTEMPT has a different purpose. It records that the processor is in the first fault-checkout attempt for the current fault condition; a further fault while that state is set is treated as a second fault and enters the corresponding fault-isolation/check-out path.
+
+It is therefore **not** an architectural flag meaning that an ordinary instruction has already faulted once and should execute with different semantics when retried. It cannot supply the missing second-pass capability-genesis operation.
+
+### 13.4 Consequence for the incomplete-Outform hypothesis
+
+The three investigations progressively remove the plausible existing trap mechanisms from the incomplete-Outform reconstruction:
+
+\`\`\`text
+SUMCHECK
+    -> rejected: integrity/check-out mechanism; too heavyweight
+
+access fault + automatic retry
+    -> rejected: genuine retry mechanism, but normal retry resolves
+       the Inform/SCT path rather than explaining documented genesis
+
+MIP FIRST ATTEMPT / second fault
+    -> rejected: state belongs to fault checkout, not ordinary
+       instruction retry with altered semantics
+\`\`\`
+
+This is a substantive reason for the present downgrade of the incomplete-Outform/\`LC\`-trap hypothesis. It is not merely that direct documentation for the proposed trap has not been found: the specific existing mechanisms examined either have the wrong architectural role or produce the wrong result.
