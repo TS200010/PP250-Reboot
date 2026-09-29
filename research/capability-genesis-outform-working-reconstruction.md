@@ -322,3 +322,6 @@ MIP FIRST ATTEMPT / second fault
 \`\`\`
 
 This is a substantive reason for the present downgrade of the incomplete-Outform/\`LC\`-trap hypothesis. It is not merely that direct documentation for the proposed trap has not been found: the specific existing mechanisms examined either have the wrong architectural role or produce the wrong result.
+
+
+**Indicator-register cross-reference:** the exact Pocket Reference MIF/MIP/MIS tables and their separation are now recorded in `pp250-boot-and-processor-startup.md`, Section 12. For this investigation the relevant identities are MIF07 = SUMCHECK Fault, MIF18 = Access Violation, and MIP07 = FIRST ATTEMPT. MIS is a distinct Secondary Indicator register and must not be conflated with either.
