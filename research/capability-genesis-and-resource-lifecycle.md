@@ -918,6 +918,8 @@ It remains more coherent than the rejected SUMCHECK variant, but it requires sev
 
 The simpler mixed-access Inform construction in Sections 20.2–20.5 currently requires fewer unsupported additions and is therefore the leading working hypothesis.
 
+The fault-driven branch was examined in more detail than this summary implies. Three distinct mechanisms were considered: deliberate SUMCHECK failure; a normal access-fault/page-fault-like `LC` path with automatic retry; and use of MIP FIRST ATTEMPT/second-fault state to distinguish a later execution. They were rejected for different reasons. SUMCHECK is an integrity/check-out mechanism and too heavyweight; normal access-fault retry completes through the ordinary Inform/SCT path and therefore does not match the documented genesis sequence; and FIRST ATTEMPT describes fault-checkout state rather than an ordinary instruction retry with changed semantics. The full reasoning is preserved in `capability-genesis-outform-working-reconstruction.md`, Section 13.
+
 ### 20.8 Current comparison
 
 The genesis candidates should presently be classified as follows:
