@@ -437,6 +437,105 @@ Search primary material for: exact early MIP04 SECOND GROUP semantics and lifeti
 
 Explicit completion logic over required special C-register state would strongly support this reconstruction. Evidence that SECOND GROUP is freely restorable by ordinary process state, or that primordial startup does not depend on special-register population, would weaken or falsify it.
 
+
+## 12. MIF, MIP and MIS indicator registers
+
+**PRIMARY EVIDENCE:** Pocket Reference page 8 gives three separate 24-bit indicator registers. They must not be conflated:
+
+- **MIF — Fault Indicators**
+- **MIP — Primary Indicators**
+- **MIS — Secondary Indicators**
+
+The page-8 transcription is retained at \`transcriptions/System 250 Pocket Reference - pg8.txt\`.
+
+### 12.1 MIF — Fault Indicators
+
+| Bit | Pocket Reference name |
+|---:|---|
+| 00 | Bus Corrupt |
+| 01 | — |
+| 02 | Interrupt T/O |
+| 03 | — |
+| 04 | Spare |
+| 05 | Slave T/O |
+| 06 | Cap. Parity Fault |
+| 07 | Sumcheck Fault |
+| 08 | Base/Limit Fault |
+| 09 | Interface T/O |
+| 10 | Parity Comparison |
+| 11 | Read Data Parity |
+| 12 | Invalid Operation |
+| 13 | Power Failure |
+| 14 | Invalid Control Code |
+| 15 | Trap with MIP08 |
+| 16 | Hardware Fault 1 |
+| 17 | W.D.T. Expired |
+| 18 | Access Violation |
+| 19 | Hardware Fault 2 |
+| 20–23 | Capability Register on which failure occurred (LS at 20, MS at 23) |
+
+The MIF table establishes the available named **fault causes**. In particular, \`Sumcheck Fault\` is MIF07 and \`Access Violation\` is MIF18.
+
+**C(S) entry boundary:** the fault/startup reconstruction establishes that the serious processor fault/check-out path enters through C(S), but this Pocket Reference table by itself does **not** state that every named MIF bit causes that path. The exact mapping from individual MIF causes to C(S) fault start-up versus other handling must therefore be taken from the fault-sequence evidence, not inferred merely from membership of MIF. This distinction remains an evidence target.
+
+### 12.2 MIP — Primary Indicators
+
+| Bit | Pocket Reference name |
+|---:|---|
+| 00 | =0 |
+| 01 | <0 |
+| 02 | Overflow |
+| 03 | Spare |
+| 04 | Second Group |
+| 05 | Inh. Interface Flts. |
+| 06 | Odd Data Parity |
+| 07 | 1st Attempt |
+| 08 | Inhibit Interrupts |
+
+This corrects an earlier conversational conflation: **FIRST ATTEMPT is MIP07**, not MIS. MIP04 is SECOND GROUP, already discussed in Section 11.
+
+### 12.3 MIS — Secondary Indicators
+
+| Bit | Pocket Reference name |
+|---:|---|
+| 00 | Microprogram O/F |
+| 01 | — |
+| 02 | Inhibit Slot Decode |
+| 03 | — |
+| 04 | — |
+| 05 | Interval Timer Matured |
+| 06 | Multiply |
+| 07 | Divide |
+| 08 | Set Read Capability |
+| 09 | IAR Decrement |
+| 10 | Out = Limit |
+| 11 | Trap |
+| 12 | Time Up |
+| 13 | Cycle Intercomplete |
+| 14 | Move |
+| 15 | Fault Toggle |
+| 16 | Fault Link From B.P.W. |
+| 17 | Dump Process Before Int |
+| 18 | Internal Mode |
+| 19 | Cap. Pointer in OPP |
+| 20 | HAD Increment |
+| 21 | Even Parity Internal |
+| 22 | Busy |
+| 23 | Status |
+
+MIS therefore contains secondary microprogram/execution-control state, including \`Trap\`, \`Fault Toggle\`, and \`Internal Mode\`; it is not the CPU Fault Indicator register.
+
+### 12.4 Relevance to capability-genesis trap investigation
+
+The separation is important to the rejected fault-assisted genesis ideas:
+
+- SUMCHECK is specifically **MIF07**.
+- Access Violation is specifically **MIF18**.
+- FIRST ATTEMPT is **MIP07**, and belongs to the fault-checkout sequence rather than being a generic instruction-retry marker.
+- MIS contains additional microprogram state but must not be substituted for either MIF fault causes or MIP FIRST ATTEMPT.
+
+The detailed capability-genesis consequences are recorded in \`capability-genesis-outform-working-reconstruction.md\`.
+
 ## Sources and provenance
 
 - **[R1] PRIMARY EVIDENCE via transcription:** user's *System 250 Pocket Reference Book / Instruction Codes*, Issue 1, May 1976. Pages 5–7 cover Process Base, Dump Stack and special registers. [Repository transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg5-pg7%20transcription.txt); [source scan](../documentation/System%20250%20Pocket%20Reference%20pg5-pg7.pdf). Exact offsets above were checked against the transcription; its scan-verification caveat remains applicable.
