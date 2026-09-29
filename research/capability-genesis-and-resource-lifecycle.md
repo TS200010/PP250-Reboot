@@ -852,3 +852,97 @@ The most valuable evidence would establish any of the following:
 5. whether any architectural check prevents an arbitrary existing SCT reference from being substituted during such construction.
 
 Until such evidence is found, this mechanism is a **leading plausible genesis implementation**, not an asserted historical fact.
+
+
+### 20.7 Alternatives examined and downgraded or rejected
+
+For completeness, the following subsidiary explanations have been considered during the genesis investigation. They are retained here as **negative research results** so that they are not inadvertently reintroduced later without new evidence.
+
+#### Hidden capability-creation instruction
+
+**DOWNGRADED — NO EVIDENCE FOUND.**
+
+One possibility was an undocumented or special instruction capable of constructing a capability directly from data or from an address plus ACCESS.
+
+This would solve genesis mechanically, but it is a poor fit with the evidence examined so far. No such early instruction has been found, and a general data-to-capability operation would require substantial protection if it were not to undermine the capability model. The later Andrews/Wheatley work also makes it less attractive to postulate an earlier general capability-manipulation primitive without documentary evidence.
+
+This possibility is not logically impossible, but it should not be used as the working explanation unless primary evidence for such an instruction appears.
+
+#### Projecting Andrews/LCM-style derivation backwards
+
+**REJECTED AS AN EXPLANATION OF THE EARLY GENESIS MECHANISM.**
+
+Later Andrews/Wheatley mechanisms provide explicit capability manipulation/derivation facilities. These are important evidence about later development of the architecture, but they must not be projected backwards into an earlier PP250 revision merely because they would make genesis easy to explain.
+
+More importantly, derivation from an existing capability addresses a different problem from creation of the first authority to a genuinely new object. The early genesis mechanism must therefore be reconstructed independently unless evidence establishes that the later mechanism already existed.
+
+#### Deliberate SUMCHECK corruption or invalid SCT state
+
+**REJECTED AS THE NORMAL GENESIS PATH.**
+
+A hypothesis considered during the investigation was that the Store Allocator might deliberately construct an invalid SCT entry or SUMCHECK condition in order to force an M-side transition that would complete capability creation.
+
+This was downgraded because SUMCHECK belongs to SCT/processor integrity checking and fault recovery. Deliberately invoking an integrity-failure path to perform routine object creation is both architecturally awkward and unsupported by the evidence examined. It also conflates fault checkout with ordinary virtual-store/resource allocation.
+
+SUMCHECK remains relevant to SCT integrity and recovery, but it should not presently be treated as part of normal capability genesis.
+
+#### Ordinary first-reference primary-store allocation as genesis
+
+**REJECTED AS THE CAPABILITY-GENESIS EVENT.**
+
+The system requires a page/segment-not-present-like mechanism because an established object may have no current primary-store allocation. On first actual reference, primary store can be allocated or the object fetched and its SCT state updated.
+
+However, Levy's ordering places creation of the segment/object, assignment of secondary/backing storage, allocation of its SCT representation, and return of a capability before that later first-reference event.
+
+Therefore:
+
+```
+first reference -> allocate/load primary store
+```
+
+must not be confused with:
+
+```
+create new object -> create its first capability
+```
+
+The former is a residence/virtual-store operation on an already represented object. It does not by itself explain how the first legitimate capability was manufactured.
+
+#### Status of the incomplete-Outform/fault hypothesis
+
+**RETAINED AS A PLAUSIBLE ALTERNATIVE, BUT NO LONGER THE LEADING RECONSTRUCTION.**
+
+The separately recorded incomplete-Outform hypothesis proposed that the Store Allocator constructs a provisional new-object representation and uses a protected M-side fault/completion path to bind it to fresh storage and complete capability creation.
+
+It remains more coherent than the rejected SUMCHECK variant, but it requires several mechanisms for which direct evidence has not yet been found: an incomplete/unassigned Outform state, capability-load recognition of that state, and a protected completion/retry protocol.
+
+The simpler mixed-access Inform construction in Sections 20.2–20.5 currently requires fewer unsupported additions and is therefore the leading working hypothesis.
+
+### 20.8 Current comparison
+
+The genesis candidates should presently be classified as follows:
+
+```
+ordinary resource/capability genesis
+|
++-- hidden MAKECAP/data-to-capability instruction
+|      status: no evidence; downgraded
+|
++-- later Andrews/LCM-style derivation projected backwards
+|      status: rejected for early genesis without evidence
+|
++-- deliberate SUMCHECK/integrity fault
+|      status: rejected as normal genesis path
+|
++-- ordinary first-reference primary-store allocation
+|      status: real mechanism, but rejected as the genesis event
+|
++-- incomplete Outform + protected M completion
+|      status: retained plausible alternative; no longer leading
+|
++-- mixed-access Inform construction
+       WD [ACCESS | fresh SCT] -> LC
+       status: current leading plausible reconstruction
+```
+
+These classifications are provisional research judgements. Any should be reopened if primary evidence materially changes the constraints.
