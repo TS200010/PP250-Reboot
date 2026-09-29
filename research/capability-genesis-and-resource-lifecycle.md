@@ -732,3 +732,123 @@ The following remain open:
 - exact mechanism by which Outform persistent identity is resolved to an SCT entry when capability-containing material returns to primary store.
 
 These questions should remain labelled unresolved until the evidence or reconstruction constraints discriminate between the alternatives.
+
+
+---
+
+## 20. September 2026 update — mixed-access construction as the leading genesis reconstruction
+
+This section records the **currently most plausible implementation hypothesis** for the remaining ordinary resource/capability-genesis problem. It is not yet established by surviving primary documentation.
+
+### 20.1 Constraints the mechanism must satisfy
+
+The reconstruction is attractive because it uses only mechanisms already known to exist in System 250:
+
+- mixed data/capability access exists (the Process Dump Stack is the clearest example);
+- stored Inform capabilities contain ACCESS plus an SCT reference;
+- `LC` loads a stored capability through the SCT into a capability register;
+- the Store Allocator is described as allocating store and returning a capability;
+- segment creation establishes a new object/SCT representation before ordinary use of that object;
+- primary-store residence is separable from capability representation and may be established later;
+- no general early data-to-capability instruction comparable to Andrews' later capability-manipulation mechanisms has yet been found.
+
+There is no per-word capability/data metadata in the mixed-store model currently reconstructed. Whether a word is being treated as data or as a stored capability is determined by the operation and architectural convention; in the Dump Stack that convention is enforced by M.
+
+### 20.2 Candidate implementation
+
+**STRONG WORKING HYPOTHESIS:** the Store Allocator possesses private mixed-access construction storage. It can write the bit pattern of an Inform capability using data access and then load that location using capability access.
+
+Conceptually:
+
+```
+caller requests:
+    size/limit L
+    initial ACCESS A
+
+Store Allocator
+    |
+    +-- requests creation of a new storage object
+    |
+    +-- a fresh SCT entry n is established for that new object
+    |
+    +-- in private mixed construction storage, write as DATA:
+    |       [ A | SCT[n] ]
+    |
+    +-- load the same location as a CAPABILITY:
+    |       LC -> Cx
+    |
+    +-- return/pass Cx (or a stored form of it) to the caller
+```
+
+The exact Store Allocator-to-SCT/store-management interface is **UNKNOWN**. In particular, surviving evidence has not yet established the exact calls, ordering, or which layer allocates the SCT entry versus secondary/backing storage.
+
+### 20.3 Important strengthening: genesis is for a new object, not arbitrary existing primary store
+
+The important security distinction is that this reconstruction does **not** require an operation of the form:
+
+```
+existing primary-store address + chosen ACCESS -> capability
+```
+
+The stored Inform capability being constructed contains an SCT reference, not an arbitrary primary-store BASE. The proposed genesis path starts by establishing a **new object** and its SCT identity. The resulting first capability is authority to that newly created object.
+
+Thus the candidate primitive is better characterised as:
+
+```
+create new object + choose initial ACCESS -> first capability
+```
+
+rather than:
+
+```
+choose existing memory + choose ACCESS -> forge capability
+```
+
+A newly created object may initially have no primary-store residence; later reference can cause primary store to be allocated/loaded independently. This is consistent with the distinction already established in Section 19 between capability representation and target-object residence.
+
+### 20.4 Mixed access and the unresolved safety question
+
+Mixed access deserves explicit attention because, in the absence of per-word type metadata, it appears superficially capable of bridging the data and capability interpretations of the same storage.
+
+The proposed construction depends on the following operation being legitimate:
+
+```
+WD writes [ACCESS | SCT reference] as data
+                 |
+                 v
+LC subsequently treats that location as a stored capability
+```
+
+**THIS STEP IS NOT YET DOCUMENTED.** It is an implementation hypothesis that must be checked against the exact early `WD`, `RC`, `LC`, access-code and mixed-segment semantics.
+
+Likewise, this note does **not** conclude that possession of arbitrary mixed access necessarily constitutes a general capability-forging primitive. That question requires the exact rules governing `LC` from a word written as data and any checks associated with the SCT reference.
+
+The Dump Stack demonstrates that mixed data/capability storage existed and that M could impose a convention on how particular locations were interpreted. It does not by itself prove the proposed Store Allocator construction sequence.
+
+### 20.5 Why this is currently the leading reconstruction
+
+Compared with alternatives examined so far, this mechanism requires fewer unsupported architectural additions. It does not require:
+
+- a hidden MAKECAP instruction;
+- an undocumented general data-to-capability conversion instruction;
+- Andrews' later derivation mechanism to have existed in the early machine;
+- a deliberately invalid SCT checksum;
+- a deliberately faulting `LC`;
+- page-fault handling to manufacture the first capability; or
+- construction of an incomplete Outform capability followed by fault-driven completion.
+
+It instead combines already established architectural pieces in a direct way: **new object/SCT allocation, mixed storage, the normal Inform representation, and ordinary capability load**.
+
+For that reason it should presently be treated as the **most plausible reconstruction examined**, while remaining explicitly below the status of documented System 250 behaviour.
+
+### 20.6 What would confirm or falsify it
+
+The most valuable evidence would establish any of the following:
+
+1. the Store Allocator's actual access to mixed data/capability storage;
+2. the exact instruction sequence by which it returned a newly created capability;
+3. whether `LC` can load a capability representation whose bits were placed in mixed storage by an ordinary data write;
+4. the exact mechanism by which a fresh SCT entry becomes associated with a newly allocated backing-store object;
+5. whether any architectural check prevents an arbitrary existing SCT reference from being substituted during such construction.
+
+Until such evidence is found, this mechanism is a **leading plausible genesis implementation**, not an asserted historical fact.
