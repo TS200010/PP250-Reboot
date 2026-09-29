@@ -122,6 +122,57 @@ stored active capability
 
 This is more precise than saying that `LC` simply "page faults".
 
+## 4A. Program Trap entry and the Interrupt Accept Register
+
+### DOCUMENTED
+
+The May 1976 Pocket Reference identifies special-purpose data register `D15` as the **INTERRUPT ACCEPT REGISTER**.
+
+Halton's 1972 description of the interrupt mechanism shows the Interrupt Accept Register with the following presently identified fields:
+
+| Bits | Meaning |
+|---|---|
+| 0–5 | Correlation count of System Interrupt Word |
+| 6 | Trap accepted |
+| 7–23 | Not presently identified |
+
+The correlation-count field records information associated with correlation/acceptance of a request from the System Interrupt Word. The `Trap accepted` indication identifies acceptance of a Program Trap.
+
+The later System 250 patent retains the Interrupt Accept Register as `IR`, but describes it as containing a single significant bit: **bit 6**, set when a Program Trap is accepted. It also states that the special-purpose data registers can be accessed by data instructions using **Internal Mode**. The surviving later description does not establish that the 1972 bits 0–5 correlation-count function remained unchanged, so the correlation-count field is presently treated as **version-dependent**.
+
+The normal-interrupt mechanism uses `C(N)`, which is established by the running system during startup and supplies the Normal Interrupt Block from which the processor performs the automatic `CHP` into the Normal Interrupt process.
+
+### STRONG RECONSTRUCTION
+
+The documented mechanisms combine into the following Program Trap entry path:
+
+```text
+Program Trap
+    |
+    v
+processor records the accepted trap in D15
+    |     bit 6 = Trap accepted
+    v
+automatic CHP through C(N)
+    |
+    v
+Normal Interrupt process
+    |
+    v
+read D15 using Internal Mode
+    |
+    v
+dispatch trap handling
+```
+
+Thus `D15` provides the Normal Interrupt handler with the processor-generated information needed to identify the accepted event, and the handler can read it through the already documented Internal Mode mechanism.
+
+There is **no need to infer SECOND GROUP on Program Trap entry** merely to make `D15` accessible. SECOND GROUP remains part of the separately reconstructed startup/fault-startup mechanism; no connection between SECOND GROUP and normal Program Trap entry is asserted here.
+
+### Evidence check
+
+**ACTION:** inspect the original Halton 1972 Figure 7 image against the transcription and verify the exact bit numbering, field widths and labels of the Interrupt Accept Register — in particular `bits 0–5 = correlation count of System Interrupt Word` and `bit 6 = Trap accepted`. Until that visual check is complete, retain the field layout above as transcription-derived primary evidence rather than silently strengthening it from the drawing.
+
 ## 5. Software dispatch after normal interrupt entry
 
 The hardware mechanism need not know the complete policy for resolving the condition. Its responsibility is to detect the protected exceptional state and perform the protected transition into the configured Normal Interrupt process.
