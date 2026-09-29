@@ -1,6 +1,6 @@
 # Interrupts, events, faults and process switching
 
-> Status: research/design note. It records both the historical interpretation developed so far and the modern design questions that followed from it. The exact PP250 dispatch sequence after SIW/NIB detection still requires documentary confirmation.
+> Status: research/design note. The historical PP250 interrupt and dispatch mechanism is reconstructed in [pp250-normal-interrupt-and-system-dispatch.md](pp250-normal-interrupt-and-system-dispatch.md). This note preserves the distinct modern architecture/design questions that follow from that reconstruction.
 
 ## Why this topic arose
 
@@ -11,33 +11,11 @@ The discussion therefore separated two questions:
 1. Why did the original System 250 avoid ordinary peripheral interrupts?
 2. Can a modern implementation obtain low event latency without allowing an external device to seize or redirect processor execution state?
 
-## Historical direction established so far
+## Historical basis
 
-The literature examined so far describes System 250 I/O as memory mapped and identifies a polling/event mechanism rather than conventional peripheral-to-CPU interrupt vectors.
+The historical PP250 mechanism is maintained in [pp250-normal-interrupt-and-system-dispatch.md](pp250-normal-interrupt-and-system-dispatch.md). That reconstruction is the source of truth for the original SIW, NIB, `C(N)`, D15, Program Trap and automatic-`CHP` mechanisms.
 
-The emerging interpretation is that this was not merely a performance-era implementation accident. It fits the machine's fault-containment and capability philosophy.
-
-A conventional interrupt can allow an external hardware source to cause an asynchronous processor control transfer. In a capability machine, that creates an important architectural question: what authority and execution state does the interrupt handler inherit, and how is the external source prevented from bypassing the capability model?
-
-System 250 appears to have avoided that route for ordinary device activity.
-
-The broad flow reconstructed in discussion is:
-
-    device / I/O activity
-          |
-          v
-    shared protected state / SIW
-          |
-          v
-    processor periodically observes pending work
-          |
-          v
-    protected software machinery
-          |
-          v
-    appropriate driver/process activity
-
-The System Interrupt Word (SIW), Normal Interrupt Block (NIB), interval-timer behaviour and exact process activation sequence need to be tied to primary sources in a later pass.
+This note does not duplicate that reconstruction. Its concern is the architectural question that follows from it: whether a modern PP250-derived machine can retain the original authority boundary while providing event latency appropriate to modern peripherals.
 
 ## Three meanings of "interrupt" must not be conflated
 
@@ -113,7 +91,7 @@ This suggests three qualitatively different costs:
 
     full CHP process change
 
-The exact historical relationship among normal interrupt handling, CALL, fault handling and CHP remains to be established from the documentation.
+For the historical PP250, normal interrupt entry is now reconstructed as an automatic `CHP` through the `C(N)`/NIB mechanism; the detailed evidence and epistemic status belong in the historical reconstruction rather than here. The modern design question is separate: event arrival need not itself force an immediate process change.
 
 ## Why this matters for fault containment
 
@@ -137,20 +115,6 @@ CHERIoT retains conventional hardware interrupt mechanisms but its software arch
 System 250 appears to have attacked the problem from the other direction: do not give ordinary external peripherals the asynchronous processor-control mechanism in the first place.
 
 This makes interrupt/event handling one of the most valuable PP250-versus-CHERIoT comparison points.
-
-## Open historical questions
-
-The following should be answered from original sources before the modern mechanism is specified:
-
-1. What exactly happens after the interval mechanism detects relevant SIW state?
-2. How is the appropriate process or handler identified?
-3. What role does the NIB play?
-4. Does normal interrupt processing invoke CHP, construct process/dump-stack state, perform a CALL-like protected transition, or use another mechanism?
-5. Which state is saved, and by what hardware/microcode sequence?
-6. What does the external I/O module actually have permission to modify?
-7. How are simultaneous/multiple device events represented?
-8. How is this coordinated in a multiprocessor configuration?
-9. What are the measured/documented costs of CHP and the cheaper protected transitions?
 
 ## Modern design question to preserve
 
