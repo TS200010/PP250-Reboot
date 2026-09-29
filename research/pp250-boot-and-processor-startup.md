@@ -476,7 +476,11 @@ The page-8 transcription is retained at \`transcriptions/System 250 Pocket Refer
 
 The MIF table establishes the available named **fault causes**. In particular, \`Sumcheck Fault\` is MIF07 and \`Access Violation\` is MIF18.
 
-**C(S) entry boundary:** the fault/startup reconstruction establishes that the serious processor fault/check-out path enters through C(S), but this Pocket Reference table by itself does **not** state that every named MIF bit causes that path. The exact mapping from individual MIF causes to C(S) fault start-up versus other handling must therefore be taken from the fault-sequence evidence, not inferred merely from membership of MIF. This distinction remains an evidence target.
+**Fault-interrupt provenance — keep the register generations distinct:** US 3,814,919 uses an earlier indicator-register organisation than the May 1976 Pocket Reference. In the patent, **MIP** is the primary indicator register and contains the fault indicators; **MIS** is the secondary indicator register. The patent states explicitly that setting any of **MIP bits 5 through 14** sets the **Common Fault Indicator (CFI) in MIS**, and that CFI starts the fault-interrupt microprogram regardless of other current conditions. The same patent places **FIRST ATTEMPT (F.A.T.) in MIS**.
+
+The May 1976 Pocket Reference must be described using its own later nomenclature: **MIF** is the Fault Indicator register, **MIP** is the Primary Indicator register, and **MIS** is the Secondary Indicator register. Thus Pocket Reference **MIF07 = Sumcheck Fault**, **MIF18 = Access Violation**, and **MIP07 = FIRST ATTEMPT**.
+
+The patent's MIP fault-bit numbering must not simply be relabelled as Pocket Reference MIF numbering. There is clear continuity in several named faults but also changed assignments: for example the patent has capability parity at MIP06, base/limit violation at MIP07, SUMCHECK at MIP08, interface timeout at MIP09, parity comparison at MIP10, read-data parity at MIP11, invalid operation at MIP12, power failure at MIP13 and invalid store control at MIP14; the Pocket Reference has the corresponding later fault names in MIF, with SUMCHECK at MIF07 and Base/Limit Fault at MIF08. Therefore the documented historical statement is **patent MIP05–MIP14 -> patent MIS.CFI -> fault-interrupt microprogram**. Establishing the precise correspondence of that earlier group to the later Pocket Reference MIF organisation is a separate version-mapping question.
 
 ### 12.2 MIP — Primary Indicators
 
