@@ -70,6 +70,32 @@ The patent describes:
 
 This is structurally different from the later six named `EC WC RC ED WD RD` rights.
 
+#### A→B: from operation × type to semantic access rights
+
+**DOCUMENTED FACT:** Figure 3 represents permitted access by combining a permitted store operation with a data type. `PS` distinguishes store read, store write and store read/write; `DT` distinguishes data, program/instruction words and PRSP. `RTE` separately supplies routing/administrative interpretation.
+
+**WORKING ARCHITECTURAL INTERPRETATION:** this means Generation A expresses ordinary authority primarily as **what store operation may be performed on what type of segment**:
+
+```text
+PS:  READ | WRITE | READ/WRITE
+              ×
+DT:  DATA | PROGRAM | PRSP
+```
+
+The important limitation of this representation is what it does **not** express as first-class access semantics. Program-ness is a segment type; there is no separately named `EXECUTE DATA` access in Figure 3. Likewise PRSP identifies the reserved-segment-pointer-table type; Figure 3 does not contain a separately named `ENTER CAPABILITY` access.
+
+By Generation B the six named rights are instead:
+
+```text
+EC  WC  RC   ED  WD  RD
+```
+
+This is therefore not merely a different packing of the same fields. The later representation makes operation-on-kind semantics themselves explicit authorities: read/write capability, read/write/execute data, and enter capability. In particular, **execute** and **enter** have emerged as access rights in their own right rather than being implicit in a typed-segment model.
+
+This is evidence for an architectural evolution from an **operation × type** model in A toward a more explicit **semantic-authority** model in B.
+
+**CAUTION:** this interpretation is based on the documented contrast between the Figure 3 `PS/DT/RTE` scheme and the later six named rights. It does not assert a particular intermediate bit mapping or that every possible `PS × DT × RTE` combination was valid.
+
 ### 4.2 Early capability class / characteristic evidence
 
 Other early patent evidence describes characteristic/class codes associated with capability use, including distinctions reconstructed as active store, passive/backing-store, resource and null/special classes.
@@ -220,6 +246,8 @@ Likely or documented continuities include:
 - hardware-supported trapping into capability-constrained software.
 
 The exact access-code encoding is **not** continuous in the evidence.
+
+The change is also semantic, not merely bit-level. Generation A's Figure 3 factors permitted access into operation (`PS`) and segment type (`DT`), whereas Generation B exposes the six operation-on-kind rights `EC WC RC ED WD RD`. The later architecture therefore contains explicit **execute** and **enter** authorities that are absent as named access semantics from the Figure 3 scheme.
 
 ### B–C
 
