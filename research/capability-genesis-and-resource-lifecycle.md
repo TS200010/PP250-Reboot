@@ -694,7 +694,7 @@ This also explains why physical relocation need not require every Inform capabil
 
 ### 19.9 Persistent object identity and SCT identity are distinct
 
-**DOCUMENTED OBSERVATION / NECESSARY INFERENCE:** an SCT index is an active-system reference, not necessarily the persistent identity of the object. The secondary-storage model permits SCT entries to be reclaimed/reallocated. The persistent object identity used in Outform permits an object to be Inform'ed later through an SCT entry that need not have the same index it previously occupied.
+**DOCUMENTED OBSERVATION / NECESSARY INFERENCE:** an SCT index is an active-system reference, not necessarily the persistent identity of the object. Converting an individual capability from Inform to Outform does **not** itself permit the corresponding SCT entry to be reclaimed: the entry must remain allocated while any Inform/active capabilities still refer to it. Only when no Inform/active references to that SCT entry remain may the slot be reclaimed/reallocated. Outform capabilities can survive such reclamation because they use the persistent object identity rather than the SCT index; if one is later Inform'ed, the object may therefore be assigned an SCT entry with a different index.
 
 ```text
 persistent object X
