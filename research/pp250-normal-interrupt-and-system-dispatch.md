@@ -538,3 +538,68 @@ ordinary execution -> protected exceptional state -> automatic CHP
 The important separation is between **protected transition** and **software policy**. The processor provides the former. Capability-constrained processes provide the latter.
 
 This architectural result should remain distinct from any later M/H/T interpretation. The M/H/T model may use this mechanism as evidence, but it is secondary to the reconstructed PP250 architecture described here.
+
+
+### Trap dispatch, IHP responsibility and process resumption
+
+The minimum coherent trap mechanism can now be stated without assuming any particular operating-system process-management structure.
+
+Consider a running process **A**, whose current Dump Stack is **DS-A**. When A incurs a trap, the processor records the trap state and dumps A into DS-A. The processor then uses `C(N)` and the Normal Interrupt Block to obtain the Interrupt Handler Process Dump Area Pointer (IDAP). Through the Master Capability Table this identifies **DS-IHP**, the Dump Stack of the Interrupt Handler Process (**IHP**). `C(D)` is changed to DS-IHP and IHP is undumped and begins execution.
+
+Thus the hardware transition is:
+
+```text
+A executing
+C(D) = DS-A
+      |
+      | trap
+      v
+record trap state
+      |
+      v
+dump A -> DS-A
+      |
+      v
+C(N) -> NIB -> IDAP
+      |
+      v
+MCT lookup -> DS-IHP
+      |
+      v
+C(D) := DS-IHP
+      |
+      v
+undump IHP
+      |
+      v
+IHP executing
+```
+
+This should be understood as a **process change**, not as a subroutine call with an implicit return to A. Once IHP has been entered, the processor has preserved A and transferred responsibility for dealing with the trap to software. The IHP may ultimately cause A to resume, or a richer operating system may select some other process.
+
+No additional hardware mechanism for passing DS-A to IHP is required by the minimum architecture. In the simplest coherent system, consisting only of A and IHP, IHP can already possess the authority needed to access DS-A. More elaborate process tables, Process Bases, scheduling structures and mappings between processes and Dump Stacks are operating-system mechanisms layered above this minimum requirement.
+
+For a recoverable trap, such as an access to a virtual-memory block which is not currently resident, IHP corrects the condition and causes A to be resumed. A resumes at the instruction which caused the trap: the saved IAR has not advanced past that instruction, so the instruction is retried after the condition has been corrected.
+
+```text
+A executing instruction X
+      |
+      | recoverable trap
+      v
+A dumped -> DS-A
+      |
+      v
+IHP entered from DS-IHP
+      |
+      | correct condition
+      v
+resume A from DS-A
+      |
+      v
+IAR -> instruction X
+      |
+      v
+instruction X retried
+```
+
+**Evidence status:** the transparent virtual-memory behaviour establishes the requirement for restart of the trapping operation. An explicit primary-source reference for the precise statement that the IAR remains at the trapping instruction, and hence that the instruction is retried on resumption, is still to be supplied.
