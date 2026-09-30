@@ -236,6 +236,65 @@ Particularly visible continuities/changes are:
 
 This pairing is architecturally significant: the change in capability representation and the change in SCT state interpretation should be studied together rather than treating `PRESENCE` as a field that can be projected backwards into B.
 
+### B–C as architectural maturation
+
+**WORKING ARCHITECTURAL INTERPRETATION:** the B→C transition appears to be more than a change of encoding or software convention. It looks like a maturation of the architecture in which concepts that Generation B mixes together are separated according to their semantics.
+
+In Generation B, the ACCESS representation carries two different kinds of information:
+
+```text
+ACCESS
+ ├── authority
+ │    EC WC RC ED WD RD
+ │
+ └── representation / system state
+      Inform / Outform
+      memory / backing-store interpretation
+```
+
+The six named rights are capability semantics: they describe what operations the holder of the capability is authorised to perform. Inform/Outform or resident/backing-store interpretation is different in kind. It concerns the representation and management state through which the referenced object is reached; it is not itself authority granted to the holder.
+
+Generation C appears to separate these concerns:
+
+```text
+CAPABILITY
+    │
+    ├── FORM
+    │     what kind of capability/reference is this?
+    │
+    ├── ACCESS
+    │     what operations does this authority permit?
+    │
+    └── PROPAGATION
+          how may this authority be transmitted/reduced?
+
+SCT
+    │
+    └── PRESENCE
+          is the represented segment presently available?
+```
+
+This division is architecturally coherent because presence is a property of the represented segment, not of each individual authority referring to that segment. Multiple capabilities may designate the same segment while sharing one residence/presence state in its SCT entry.
+
+Conversely, propagation is naturally a property of a capability: it constrains what may be done with that particular authority when it is transmitted or derived.
+
+On this interpretation, Generation C separates **capability-local semantic properties** from **object/segment-management state**:
+
+```text
+Capability-local semantics        SCT / represented-object state
+
+FORM                              GARBAGE
+ACCESS                            PRESENCE
+PROPAGATION                       BASE
+                                  LIMIT
+```
+
+The `VISITED → PRESENCE` change should therefore not be regarded merely as reuse of SCT bit 22. Together with the revised capability representation, it is evidence of a broader architectural reorganisation in which the SCT becomes a clearer locus for state of the represented segment, while the capability representation becomes a clearer locus for the semantics of authority.
+
+This interpretation also cautions against describing COS/POS-era ACCESS layouts as mere conventions. Their mixed semantics may instead represent an earlier stage in the architectural development that Generation C subsequently disentangles.
+
+**STATUS:** the individual B and C bit layouts and mechanisms are documented; the interpretation of their relationship as deliberate semantic separation and architectural maturation is a reconstruction from those documented changes, not an explicit historical statement by the designers.
+
 ### A–C
 
 Any apparent A–C similarity must be checked through B rather than treated as proof of uninterrupted implementation. Later patents frequently describe an evolved machine while retaining old architectural names.
