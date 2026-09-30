@@ -121,6 +121,45 @@ This is structurally different from the later `EC WC RC ED WD RD` representation
 
 The relationship between the Figure 3 fields and the later COS/POS access bits remains to be established.
 
+### Architectural evolution from Figure 3 to the six-right model
+
+**DOCUMENTED FACT:** the Figure 3 scheme factors permitted access into two distinct dimensions before routing is considered:
+
+```text
+PS   what store operation is permitted?
+     ST R | ST W | ST R/W
+
+DT   what type of segment is it?
+     D | P | PRSP
+```
+
+Thus program/instruction status is represented as a **type** (`P`), not as a separately named execute authority. Likewise PRSP is a segment type; Figure 3 contains no separately named `ENTER CAPABILITY` access.
+
+The later COS/POS material instead names six access semantics directly:
+
+```text
+EC  WC  RC   ED  WD  RD
+```
+
+**WORKING ARCHITECTURAL INTERPRETATION:** this is a substantive architectural development, not simply a recoding. The earlier model asks, in effect, **what store operation may be performed on what kind of segment?** The later model promotes meaningful operation-on-kind combinations to explicit authority bits. In that development, `ED` makes execution an access right and `EC` makes entering through capability structure an access right.
+
+This gives the A→B transition a clear semantic direction:
+
+```text
+Generation A
+operation × segment type
+PS × DT
+    |
+    v
+Generation B
+explicit semantic authorities
+EC WC RC ED WD RD
+```
+
+The Figure 3 representation's limitation is therefore architectural: it has no first-class named **execute** or **enter** access semantics. Those appear in the later six-right model.
+
+This interpretation must remain separate from any attempted bit-for-bit derivation of the later encoding. The corpus currently establishes the two endpoint representations, not the exact intermediate design history.
+
 ## Reconstruction rule
 
 For reconstruction and emulator work:
