@@ -405,6 +405,122 @@ This suggests that Generation B may be the point at which the distinctive System
 
 That interpretation also offers a possible motivation for the redesign: once a substantial system is constructed from capabilities, **type is not the same thing as authority**. Different holders may need different permitted relationships with the same underlying object; capability manipulation itself needs controlled operations; and crossing a protection boundary is better represented as an authorised transition than as a special consequence of accessing an object of a particular type.
 
+#### Why might Generation A have become inadequate?
+
+The endpoint comparison above does not by itself explain the redesign. The following argument records the architectural pressures that could plausibly have led from A to B. These are **reconstructed motivations**, not statements presently attributed to the designers.
+
+**1. PRSP may expose the weakness of type-based authority most clearly.**
+
+In Generation A, `PRSP` is a data/segment type. Yet the interesting property of such a structure is not merely *what kind of storage object it is*. Possession of the appropriate relationship to it permits a controlled transition through capability structure into another protection/authority environment.
+
+The two formulations are therefore conceptually different:
+
+```text
+Generation A
+this is a PRSP-type object and particular operations on that type
+have special architectural consequences
+
+Generation B
+the holder possesses authority to ENTER
+```
+
+Once the operation is understood as a security-relevant transition, representing **ENTER** directly as `EC` is cleaner than deriving it from the type of object being accessed. PRSP may therefore have been one of the cases that made the limitations of the A model especially visible.
+
+**2. Program type and execute authority expose the same distinction.**
+
+`DT=P` says something about **what the referenced segment is**. `ED` says something different: **what this particular holder is authorised to do with it**.
+
+That distinction matters because object identity/type and authority need not coincide. Conceptually, different capabilities can designate the same underlying object while conferring different operations on it. B's explicit rights make this relationship natural; A's operation × type formulation couples it more tightly to classification.
+
+The same conceptual change therefore appears twice:
+
+```text
+A: P     is a type          B: ED is authority to execute
+A: PRSP  is a type          B: EC is authority to enter
+```
+
+This parallel is one of the strongest reasons to treat A→B as a redesign of the authority abstraction rather than merely a revised encoding.
+
+**3. Independent rights make attenuation and delegation cleaner.**
+
+A capability system becomes substantially more useful when one holder can be given less authority than another over the same underlying object. With independently represented semantic rights, the intended reduction is straightforward to express: for example, retain read authority while withholding write, execute, capability-write or enter authority.
+
+In A, permitted behaviour is more tightly entangled with the object's `DT` classification and the `PS` operation field. B's six-right model instead makes authority resemble a set of independently meaningful permissions. That gives the architecture a much cleaner basis for **delegation with reduced authority**.
+
+This does not establish the exact B propagation rules; it identifies a design pressure that the B representation is intrinsically better able to express.
+
+**4. RTE suggests a possible conflation of authority, mechanism and policy in A.**
+
+Generation A's access structure includes `RTE` distinctions such as normal-store operation, queue, dump and internal-register segment. These are not all naturally descriptions of authority held by the capability possessor. Some describe special architectural treatment or system-management role.
+
+Thus A's access/type code appears to carry several kinds of information at once:
+
+```text
+what store operation is permitted?       PS
+what kind of information/object is it?   DT
+how is this special segment treated?     RTE
+```
+
+As the system became more complex, this mixture could have become difficult to extend coherently. B's explicit semantic access rights can be read as movement toward separating **what authority the holder possesses** from **what the referenced system object is and how the machine/OS manages it**. Generation C's later separation of ACCESS, FORM, PROPAGATION and SCT state would continue that direction.
+
+**5. Building a substantial operating system may have changed what a capability was understood to be for.**
+
+The Wilkes-derived starting point is readily understood as protected addressing: a capability defines a segment and constrains access to it. But an operating system constructed extensively from capabilities encounters relationships that go beyond ordinary memory protection:
+
+```text
+authority to read data
+authority to modify data
+authority to execute code
+authority to read or write capability structures
+authority to enter a service/protection environment
+authority to pass reduced authority elsewhere
+```
+
+If practical System 250 software increasingly used capabilities to construct protected services and relationships between components, a descriptor organised primarily around storage operation and segment type would become a poor description of what the architecture was actually enforcing.
+
+On this hypothesis, experience with A did not show that the **capability idea** was wrong. It showed that **protected typed-segment access was too narrow a realisation of it**.
+
+**6. The changing register vocabulary is parallel evidence of abstraction maturing.**
+
+The A→B change in access semantics does not occur in isolation. The register vocabulary also moves away from implementation-oriented names such as Workspace Capability Register, Dump Area Capability Register, Master Capability Register and Local Start-up Capability Register toward architectural objects and roles such as `C(D)`, `C(C)`, `C(N)`, `C(S)`, with ordinary capability registers becoming `C0`–`C7`.
+
+Some of those changes are more than renaming: the early Local Start-up structure appears to develop into more differentiated normal-interrupt and start-up/fault structures, while the capability-table and process/code roles become increasingly explicit.
+
+This parallel does not prove a common design motivation, but it is consistent with the same broad transition: **from an implementation-oriented realisation of protected capability registers toward a machine whose architectural vocabulary directly describes authority-bearing objects and operations.**
+
+#### Reconstructed motivation
+
+Taken together, these observations suggest the following possible history:
+
+```text
+Wilkes model
+capability register = protected segment descriptor
+base + limit + type/permitted access
+        |
+        v
+Generation A
+a practical hardware realisation
+PS × DT × RTE
+        |
+        | experience constructing a real capability-based system may reveal:
+        |
+        |-- type is not authority
+        |-- program type is not execute authority
+        |-- PRSP type is not enter authority
+        |-- capability manipulation needs its own controlled rights
+        |-- delegation benefits from independently reducible rights
+        |-- system-object treatment should not be conflated with holder authority
+        |
+        v
+Generation B
+authority-centred capability semantics
+EC WC RC | ED WD RD
+```
+
+The central historical hypothesis is therefore stronger than “the access encoding was improved”:
+
+> **Generation A may have demonstrated the Wilkes capability-register idea in a real machine, while experience with that machine led Plessey to recast the architectural boundary around explicit semantic authority. Generation B may be the result of that conceptual step.**
+
 **STATUS:** the Wilkes→early-Plessey documentary connection and the A/B endpoint encodings are documented. The proposition that operational experience with Generation A caused or motivated the authority-centred Generation B redesign is **HYPOTHESIS**, not presently established by documentary evidence. The exact Wilkes pages cited by the patent should be recovered and compared directly before attributing finer semantic distinctions to Wilkes himself.
 
 ### B→C: possible high-level-language / compiler influence
