@@ -352,6 +352,61 @@ This interpretation also cautions against describing COS/POS-era ACCESS layouts 
 
 **STATUS:** the individual B and C bit layouts and mechanisms are documented; the interpretation of their relationship as deliberate semantic separation and architectural maturation is a reconstruction from those documented changes, not an explicit historical statement by the designers.
 
+### A→B: from the Wilkes capability-register model toward explicit authority
+
+**DOCUMENTED SOURCE CONNECTION:** the early Plessey capability patent explicitly cites M. V. Wilkes, *Time-Sharing Computer Systems* (1968), Chapter 4, and describes Wilkes's capability registers as holding segment descriptors consisting of **base, limit and type code**, with the type code specifying the permitted mode of access. The patent then states that the Plessey invention contemplates the use of such capability registers.
+
+The surviving evidence therefore supports a direct intellectual connection from the Wilkes capability-register model to the earliest Plessey architecture. It does **not** by itself establish the designers' reasons for the subsequent A→B redesign.
+
+A useful conceptual comparison is:
+
+| Concept | Wilkes model as described by the early Plessey patent | Generation A | Generation B |
+|---|---|---|---|
+| Designation | base + limit | base + limit | base + limit |
+| Permitted access | type/access code | `PS × DT × RTE` | `EC WC RC ED WD RD` |
+| Data read/write | permitted mode of access | `PS` applied with data type | explicit `RD`, `WD` |
+| Execute | program is represented through segment/type information | `DT=P`; no separately named execute right | explicit `ED` |
+| Capability read/write | not separately identified in the cited Wilkes formulation | capability structures represented through type/mechanism | explicit `RC`, `WC` |
+| **Enter capability** | **no equivalent yet identified in the cited Wilkes formulation** | **`DT=PRSP`, but no independent ENTER authority** | **`EC`: ENTER CAPABILITY is a first-class authority** |
+
+**WORKING HISTORICAL HYPOTHESIS:** Generation A may be a relatively direct Plessey realisation and extension of the capability-register model described by Wilkes: protected segment descriptors combining designation with type/permitted access. Experience building and using that machine may then have exposed a more fundamental abstraction: **the capability should express the semantic authority held by its possessor, rather than primarily classify a segment and the store operations applicable to that type.**
+
+On this reading, the A→B transition is:
+
+```text
+Wilkes capability-register model
+base + limit + type/permitted access
+        |
+        v
+Generation A
+protected typed segments
+PS × DT × RTE
+        |
+        |  possible conceptual re-evaluation
+        v
+Generation B
+explicit semantic authority
+EC WC RC | ED WD RD
+```
+
+The six Generation B rights have an important conceptual symmetry:
+
+```text
+DATA / CODE              CAPABILITY
+
+RD  read                 RC  read capability
+WD  write                WC  write capability
+ED  execute              EC  enter capability
+```
+
+**WORKING ARCHITECTURAL INTERPRETATION:** the `ED ↔ EC` pair is especially significant. Read and write are ordinary access operations; **execute** and **enter** are controlled transitions. `ED` authorises transition into execution of code. `EC` authorises entry through a capability structure into another protected authority context. Thus `EC` is difficult to explain merely as improved segmented-memory protection: it expresses an operation on the capability/authority structure itself.
+
+This suggests that Generation B may be the point at which the distinctive System 250 authority architecture crystallised. In A, PRSP is a **type of protected object**. In B, ENTER is an **authority possessed by the holder**. Similarly, program-ness in A is expressed through type, whereas B exposes EXECUTE as authority.
+
+That interpretation also offers a possible motivation for the redesign: once a substantial system is constructed from capabilities, **type is not the same thing as authority**. Different holders may need different permitted relationships with the same underlying object; capability manipulation itself needs controlled operations; and crossing a protection boundary is better represented as an authorised transition than as a special consequence of accessing an object of a particular type.
+
+**STATUS:** the Wilkes→early-Plessey documentary connection and the A/B endpoint encodings are documented. The proposition that operational experience with Generation A caused or motivated the authority-centred Generation B redesign is **HYPOTHESIS**, not presently established by documentary evidence. The exact Wilkes pages cited by the patent should be recovered and compared directly before attributing finer semantic distinctions to Wilkes himself.
+
 ### B→C: possible high-level-language / compiler influence
 
 **DOCUMENTED GENERATION C EVIDENCE:** the later architecture adds a cluster of local-store machinery rather than merely a single stack pointer:
