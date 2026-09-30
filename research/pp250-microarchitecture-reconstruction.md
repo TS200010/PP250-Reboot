@@ -318,7 +318,227 @@ Maintain unresolved internal names rather than silently expanding them.
 
 This ledger should grow as patents, logic material, self-test descriptions and further manuals expose additional state.
 
-## 13. Immediate research method
+## 13. Patent-derived implementation evidence
+
+### 13.1 US3879712 / GB1422952 — microprogram and diagnostic interface
+
+This early PP250 patent is unusually valuable because it describes implementation-level processor structures directly.
+
+**DOCUMENTED:** the processor data area contains:
+
+- register block `REGBLOCK`;
+- instruction register `INSTREG`;
+- arithmetic and logic unit `MILL`;
+- processor-module bus-interface logic `BI/FL`;
+- bus-interface/output register `OUTREG`.
+
+The data area is controlled by **data-area manipulation signals (DAMS)** produced by microbits `UPB`. The microprogram area sets/resets the UPB microbits and microprogram-address toggles `UPA`.
+
+**DOCUMENTED:** the microprogram area `μPROG` contains:
+
+- a register of roughly 150 bits for UPA/UPB state;
+- decoder `DEC`;
+- slot matrix `SM`;
+- microbit matrix `MBM`;
+- combinational logic `CCL` producing data-area condition signals `DACS`;
+- microprogram slot-control clock `CLK`.
+
+The patent states that processor instructions are implemented by microprograms consisting of sequential microinstructions or **slots**. `CLK` advances slots; `UPA` selects the next slot through `SM`; `DACS` conditions slot selection; and the resulting microbits condition execution of the microinstruction.
+
+This supplies a concrete first-order control model:
+
+```text
+architectural instruction in INSTREG
+              |
+              v
+          microprogram
+              |
+       UPA --> SM <--- DACS
+              |
+              v
+             MBM
+              |
+              v
+          UPB microbits
+              |
+             DAMS
+              |
+              v
+            data area
+ REGBLOCK / MILL / BI/FL / OUTREG
+```
+
+The diagram is a synthesis of the patent description, not a reproduced patent figure.
+
+#### H0 identification
+
+The same patent's diagnostic mechanism refers to forcing diagnostic data onto **H0**. Together with the Pocket Reference display entries `LS H0`, `MS H0`, this is strong evidence that historical `H0` is an internal data highway rather than an unexplained architectural register.
+
+This historical `H0` remains completely unrelated to the project's modern symbol **H** for the authority machine.
+
+#### Diagnostic controls
+
+The patent independently explains the Pocket Reference controls:
+
+- single slot = one clock pulse;
+- single instruction = run to completion of current instruction;
+- inhibit microprogram decode = inhibit decode for the next slot from current UPA;
+- stop after N slots;
+- stop at fault when UPA reaches the fault-entry condition;
+- stop at a specified slot by comparing current UPA with slot register `SR`;
+- repeat by inhibiting sequencing of the instruction address/control register.
+
+Additional diagnostic names include `MREG`, `REG1`, `REG2`, slot register `SR`, instruction-address comparator `IAC`, slot comparator `SC`, miscellaneous logic `ML`, and diagnostic interface `DI/F`.
+
+This patent should be treated as a priority source for reconstructing the control unit and for interpreting Pocket Reference pages 9–10.
+
+### 13.2 US3814919 — fault microprogram controls
+
+The earlier fault-detection patent explicitly names a microprogram unit `μPROG`.
+
+**DOCUMENTED:** it says the instruction register `IR` holds instruction control-bit fields and applies them to microprogram control. The microprogram unit issues timed/sequenced microprogram control signals `μPGCS` controlling:
+
+- register input/output gates;
+- arithmetic unit `MILL` through `AUμS`;
+- comparator `COMP` through `CμS`;
+- primary-indicator fault bits in `MIP` through `FIS`;
+- secondary-indicator condition bits in `MIS` through `SIμCS`.
+
+It can also select registers using `RSEL` and `CRSEL`, step a historical-register address selector using `INC`, increment memory-input register `SDIREG` using `+1S`, and generate memory-access control codes on `SIHCS` according to segment-descriptor type.
+
+Elsewhere this patent describes fault-entry microsequence steps including `S2`, `S10`, `S16` and `S17`. These are potentially our first surviving named fragments of an actual PP250 microprogram flow and should be reconstructed separately against the patent rather than inferred from architectural CHP effects.
+
+### 13.3 US4383297 — later processor datapath and Internal Mode
+
+**VERSION WARNING:** US4383297 is later Wheatley/Andrews material. Its implementation names are valuable evidence about the evolved System 250 processor family but must not automatically be backdated to the May 1976 Pocket Reference processor.
+
+The patent explicitly says the instruction function code `FC` accesses the microprogram unit and other instruction fields condition it.
+
+Its documented instruction-input path includes:
+
+```text
+CPU input bus CBI
+       |
+     BR&T
+       |
+       +---- SI ----> BFI
+       |
+      DBIN
+       |
+      IDM
+       |
+      BII
+       |
+      IBL
+       |
+       +---- FC ----> microprogram unit
+       |
+     IREG  (address/offset information)
+```
+
+Names exposed here include:
+
+- `CBI` — processor input bus;
+- `BR&T` — bus receivers and terminators;
+- `SI` — status information;
+- `BFI` — bus fault indicators;
+- `DBIN` — input-data leads/path;
+- `IDM` — input data multiplexer;
+- `BII` — internal input-bus path;
+- `IBL` — instruction buffer;
+- `IREG` — instruction register;
+- `FC` — instruction function code.
+
+The address/output side includes:
+
+```text
+capability/address formation
+          |
+         MAR
+          |
+      ACC / BCC
+          |
+         BIO
+          |
+         BIF
+          |
+        BS&C
+          |
+        BD&T
+          |
+         CBO
+```
+
+where the patent names `MAR` as the address register, `ACC` and `BCC` as capability-related comparators/checking logic, `BIO` as a highway, `BIF` as the bus interface, `BS&C` as bus sequence/control, `BD&T` as bus drivers/terminators, and `CBO` as the processor output bus.
+
+For address formation the patent further names:
+
+- `IMUX` — input multiplexer;
+- `BM` — bit manipulator;
+- `ALU` — arithmetic unit;
+- `BCB` — capability base file;
+- `CAPMUX` — capability multiplexer.
+
+For Internal Mode the patent gives an especially useful documented sequence. After forming an Internal Mode address, the address offset is looped back and conveyed to microprogram control through arithmetic-unit condition signals `ALUCS`. The patent then describes register-read transfer paths using `MDOR`, `BIO`, `BII`, `MDIN`, `ALU`, and duplicated data files `ADF` and `BDF`.
+
+This demonstrates that the later processor's Internal Mode is implemented through the ordinary protected address/data machinery plus a microprogram-conditioned internal loopback, rather than by an unrelated privileged instruction path.
+
+### 13.4 Cross-source correlations
+
+The patents now allow several previously isolated Pocket Reference/self-test names to be connected:
+
+| Pocket Reference / self-test clue | Patent correlation | Status |
+|---|---|---|
+| H0 | US3879712 diagnostic data forced onto H0 | strong identification as internal highway |
+| UPB0–UPB9 | US3879712 UPB microbits controlling data-area manipulation | strong functional correlation |
+| UPAN/UPA | US3879712 UPA microprogram-address toggles | strong functional correlation; exact Pocket Reference suffixing still to check |
+| SINGLE SLOT | US3879712 one clock pulse | documented |
+| SINGLE INSTRUCTION | US3879712 run current instruction to completion | documented |
+| INHIBIT MICROPROG. DECODE | US3879712 inhibits next-slot decode from current UPA | documented |
+| STOP ON SLOT N | US3879712 compares UPA with slot register SR | documented |
+| microprogram/slot distinction | US3879712 + processor self-test | independently corroborated |
+| MIP/MIS control | US3814919 μPROG directly controls named MIP/MIS signals | documented for that processor generation |
+
+This materially changes the research position: several entries previously retained as opaque engineering names now have direct implementation descriptions in primary patent material.
+
+## 14. Expanded vocabulary ledger
+
+The following patent names should be tracked in addition to the earlier unresolved ledger.
+
+| Name | Evidence-qualified meaning |
+|---|---|
+| μPROG | microprogram unit/area |
+| UPA | microprogram address toggles/state |
+| UPB | microbits controlling data-area manipulation |
+| SM | slot matrix |
+| MBM | microbit matrix |
+| CCL | combinational logic producing DACS |
+| DACS | data-area condition signals |
+| DAMS | data-area manipulation control signals |
+| REGBLOCK | processor register block |
+| INSTREG / IR | instruction register terminology in early patents; generation/context must be retained |
+| MILL | arithmetic and logic unit in early patents |
+| BI/FL | processor-module bus-interface logic |
+| OUTREG | output/bus-interface register |
+| RSEL / CRSEL | register-selection controls from μPROG |
+| SDIREG | memory-input register named in US3814919 |
+| SIHCS | memory-access control-signal highway |
+| MAR | address register in later US4383297 processor |
+| BIO | later internal highway |
+| BIF | later bus interface |
+| IDM | later input data multiplexer |
+| IBL | later instruction buffer |
+| IREG | later instruction register |
+| IMUX | later input multiplexer |
+| BM | later bit manipulator |
+| CAPMUX | later capability multiplexer |
+| BCB | later capability base file |
+| ALUCS | later arithmetic-unit condition signals |
+| MDIN / MDOR | later internal data registers/paths |
+| ADF / BDF | later duplicated data files |
+| ACC / BCC | later capability/access checking comparators; exact individual roles to retain from patent figures/text |
+
+## 15. Immediate research method
 
 When a new internal name or control appears:
 
