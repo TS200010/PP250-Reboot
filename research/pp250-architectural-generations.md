@@ -352,6 +352,56 @@ This interpretation also cautions against describing COS/POS-era ACCESS layouts 
 
 **STATUS:** the individual B and C bit layouts and mechanisms are documented; the interpretation of their relationship as deliberate semantic separation and architectural maturation is a reconstruction from those documented changes, not an explicit historical statement by the designers.
 
+### B→C: possible high-level-language / compiler influence
+
+**DOCUMENTED GENERATION C EVIDENCE:** the later architecture adds a cluster of local-store machinery rather than merely a single stack pointer:
+
+- `C(L)` designates the **Local Store Stack Block**;
+- `LNR` is the **Level Number and Local Store Stack Pointer Register**;
+- `LCCR` is the **Local Capability Count and Local Store Clear Count Register**.
+
+These names are documented in the later internal-register-addressing patent material.
+
+**FIRST-HAND RECOLLECTION (Anthony Stanners):** the Generation-B-era CORAL compiler had to solve conventional high-level-language calling and activation problems in software/compiler convention. Parameters could be passed in registers or on the stack; register preservation across calls therefore required an ABI/compiler convention; and the compiler implementation maintained its own local-store/stack mechanism rather than relying on an architectural local-store facility.
+
+This recollection is recorded as historical evidence from a participant in the CORAL compiler project, not as a claim established by the surviving processor documentation.
+
+**WORKING HISTORICAL/ARCHITECTURAL HYPOTHESIS:** some Generation C additions may have been influenced by practical experience compiling high-level procedural languages for Generation B. This is particularly worth investigating because Martyn Andrews, associated with the CORAL compiler project, is also associated with the later architectural work.
+
+The compiler problem can be framed as:
+
+```text
+Generation B
+
+processor CALL/process machinery
+        +
+compiler/runtime convention
+        ├── register parameter convention
+        ├── register preservation across calls
+        ├── stacked parameters
+        ├── local-variable storage/stack
+        └── activation-record management
+
+Generation C
+
+processor CALL/process machinery
+        +
+architectural local-store machinery
+        ├── C(L)
+        ├── LNR: level + local-store-stack pointer
+        └── LCCR: local-capability / local-store-clear counts
+        +
+compiler/runtime convention
+```
+
+On this hypothesis, B→C is not simply processor optimisation. At least some of its refinements may move mechanisms that a Generation B compiler/runtime had to construct by convention into an architecturally defined facility.
+
+There is a potentially deeper capability issue. A conventional compiler-maintained local stack defines language-level activation and lifetime in software. Architectural local-store levels, particularly in combination with a **Local Capability Count**, may have allowed local capability state to track procedure activation more directly. This possibility is **UNRESOLVED**: the name `Local Capability Count` is not sufficient evidence for its precise semantics, and no claim about capability lifetime or automatic revocation should be made until the patent description is examined in detail.
+
+This gives a specific research programme for the Generation C material: for each new C mechanism, ask not only **what changed from B?**, but also **what compiler/runtime problem present on B would this mechanism remove or simplify?** The Local Store Stack is the strongest current candidate.
+
+**STATUS:** the Generation C register machinery is documented; the Generation-B CORAL implementation experience above is first-hand recollection; the causal connection between compiler experience and the Generation C design is a research hypothesis and is not yet established by documentary evidence.
+
 ### A–C
 
 Any apparent A–C similarity must be checked through B rather than treated as proof of uninterrupted implementation. Later patents frequently describe an evolved machine while retaining old architectural names.
