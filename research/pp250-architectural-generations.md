@@ -147,9 +147,9 @@ Generation B evidence supports the mature Inform/Outform model:
 - capability-containing blocks are converted as they move between primary and secondary storage;
 - an SCT slot cannot be reclaimed merely because one capability becomes Outform; it remains required while Inform/active references to that SCT entry survive.
 
-**KEY UNRESOLVED QUESTION:** what exact Generation B hardware condition causes an already-existing Inform capability to become unusable when its target segment is no longer resident in main store?
+In Generation B, residence/form is represented in the capability ACCESS encoding rather than by a `PRESENCE` state in the SCT. An Inform/active capability uses the active-store form and an SCT index; an Outform/passive capability uses the backing-store form and persistent backing-store identity. The processor therefore distinguishes the nonresident/passive representation from the ACCESS/type information and does not interpret its pointer as an ordinary usable SCT reference.
 
-The later Generation C `PRESENCE` answer must not be projected backwards.
+This is a defining difference from Generation C. Generation B does **not** require the later SCT `PRESENCE` bit to encode this distinction.
 
 ## 6. Generation C — Andrews/Wheatley development
 
@@ -197,7 +197,7 @@ The change from `VISITED` to `PRESENCE` occurs in the same broad later architect
 | 8-bit `PS/DT/RTE` access/type | documented | not assumed | not assumed |
 | Six `EC WC RC ED WD RD` rights | not backdated | documented | retained/reworked in later representation |
 | Nine-bit COS/POS layouts | no evidence | documented | not assumed |
-| Inform/Outform virtual-store representation | early conceptual/characteristic evidence; exact encoding unresolved | documented mature mechanism | passive/FORM machinery revised |
+| Inform/Outform virtual-store representation | early conceptual/characteristic evidence; exact encoding unresolved | documented; residence/form represented through ACCESS | passive/FORM machinery revised |
 | GARBAGE SCT bit | not yet established | documented | documented |
 | VISITED SCT bit | not yet established | documented | not in currently reconstructed C layout |
 | PRESENCE SCT bit | no evidence | **do not assume** | documented |
@@ -231,7 +231,10 @@ Particularly visible continuities/changes are:
 - GARBAGE remains in bit 23;
 - the 16-bit LIMIT field remains;
 - bit 22 changes from documented B use as VISITED to documented C use as PRESENCE;
-- capability access/form semantics are redesigned.
+- capability access/form semantics are redesigned;
+- in B, the active/passive (Inform/Outform) distinction is represented through ACCESS; in C, the revised representation includes explicit FORM semantics while SCT `PRESENCE` carries segment-presence state.
+
+This pairing is architecturally significant: the change in capability representation and the change in SCT state interpretation should be studied together rather than treating `PRESENCE` as a field that can be projected backwards into B.
 
 ### A–C
 
@@ -240,15 +243,14 @@ Any apparent A–C similarity must be checked through B rather than treated as p
 ## 9. Current research questions
 
 1. What exact mechanism detects ordinary non-residence in Generation A?
-2. What exact mechanism detects ordinary non-residence in Generation B for an existing Inform capability whose target has been moved to backing store?
-3. What are Generation B SCT bits 21..16?
-4. What do the three non-right positions in the COS and POS nine-bit ACCESS diagrams mean?
-5. Why are the six named rights displaced by one position between COS and POS?
-6. Can one processor decode both COS and POS representations, and if so how is the convention selected or recognised?
-7. What is the exact relationship between Generation A's Figure 3 `PS/DT/RTE` encoding and the separate early characteristic/class-code evidence?
-8. At what exact revision were the Generation C FORM, propagation and PRESENCE mechanisms introduced?
-9. Which mechanisms currently attributed to B can be proved to have existed already in A?
-10. Which B mechanisms survived unchanged into C?
+2. What are Generation B SCT bits 21..16?
+3. What do the three non-right positions in the COS and POS nine-bit ACCESS diagrams mean, including the exact encoding of the active/passive distinction?
+4. Why are the six named rights displaced by one position between COS and POS?
+5. Can one processor decode both COS and POS representations, and if so how is the convention selected or recognised?
+6. What is the exact relationship between Generation A's Figure 3 `PS/DT/RTE` encoding and the separate early characteristic/class-code evidence?
+7. At what exact revision were the Generation C FORM, propagation and PRESENCE mechanisms introduced?
+8. Which mechanisms currently attributed to B can be proved to have existed already in A?
+9. Which B mechanisms survived unchanged into C?
 
 ## 10. Research consequence
 
