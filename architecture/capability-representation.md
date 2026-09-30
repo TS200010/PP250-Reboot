@@ -160,6 +160,19 @@ The Figure 3 representation's limitation is therefore architectural: it has no f
 
 This interpretation must remain separate from any attempted bit-for-bit derivation of the later encoding. The corpus currently establishes the two endpoint representations, not the exact intermediate design history.
 
+### Structural note: ENTER as evidence of the A→B authority redesign
+
+The Generation B six-right model is usefully read as two semantic triples:
+
+```text
+DATA / CODE              CAPABILITY
+RD  read                 RC  read capability
+WD  write                WC  write capability
+ED  execute              EC  enter capability
+```
+
+In particular, `EC` is not present as an independent named authority in the Generation A Figure 3 representation, where `PRSP` is instead a segment type. The move from **PRSP as type** to **ENTER as explicit authority**, together with `P` to `ED`, is structural evidence that A→B was an authority-semantic redesign rather than a bit-layout revision. The historical interpretation and possible Wilkes→A→B motivation are developed in `research/pp250-architectural-generations.md`.
+
 ## Reconstruction rule
 
 For reconstruction and emulator work:
