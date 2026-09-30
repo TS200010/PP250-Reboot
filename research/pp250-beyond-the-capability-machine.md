@@ -137,6 +137,14 @@ That matters to the M<H,T> reconstruction. M need not be large, nor need it unde
 
 This is a **working reconstruction**, not an identification of MIS with M. M is an architectural/theoretical concept; MIS is a documented processor register. The useful observation is narrower: the implementation exposes transient semantic control state of exactly the sort a small M-level mechanism would require.
 
+### Architectural instructions and the lower-level microprogram machine
+
+**Documented observation:** Pocket Reference CPU-display controls distinguish `SINGLE SLOT` from `SINGLE INSTRUCTION`, permit stopping after or on a selected slot, and permit inhibition of microprogram decode. Page 8 separately names `Microprogram O/F` and `Inhibit Slot Decode`. The processor self-test paper independently describes execution and simulation at microprogram level, including slot-to-slot conditional timing, and distinguishes tracing after every slot from tracing after every instruction.
+
+**Architectural inference:** the PP250 architectural instruction set is implemented by a lower-level, explicitly observable microprogrammed execution machine organised into slots. This gives concrete implementation evidence for machinery below the H/T architectural state and identifies the microprogram as an important place to investigate how M-level governing transitions are realised.
+
+This does **not** identify M with the microprogram. M is the architectural/theoretical governing relation over legitimate H/T transitions; the microprogram is an implementation mechanism and also implements ordinary instruction-level work. The justified claim is therefore narrower: **some of the mechanisms reconstructed as M may be realised in microprogram state, sequencing and gating, and the surviving engineering material provides a route for reconstructing that implementation.**
+
 ### Normal interrupt entry: a callback from M into software
 
 The reconstructed PP250 normal-interrupt path adds an important refinement:
