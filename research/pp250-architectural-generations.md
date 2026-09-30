@@ -94,6 +94,35 @@ This is therefore not merely a different packing of the same fields. The later r
 
 This is evidence for an architectural evolution from an **operation × type** model in A toward a more explicit **semantic-authority** model in B.
 
+#### Architectural significance of A→B
+
+**WORKING ARCHITECTURAL INTERPRETATION:** A→B is best treated as an **architectural redesign**, particularly in the representation of authority, rather than merely as maturation or repacking of the Generation A mechanism.
+
+Generation B retains the fundamental capability objective, but changes the organising abstraction. Generation A asks, in effect, what store operation may be performed on a segment of a particular type, with routing/administrative interpretation alongside it. Generation B instead makes the semantically meaningful operations themselves the rights:
+
+```text
+Generation A                         Generation B
+
+PS × DT × RTE                        EC WC RC | ED WD RD
+operation × type × routing     ->    explicit semantic authorities
+```
+
+The appearance of `EC` and `ED` is especially significant. ENTER and EXECUTE are no longer consequences implicit in the treatment of PRSP/program-typed segments; they are independently represented authorities. READ and WRITE are similarly divided according to whether they apply to capability or data content.
+
+The other A→B changes — including the movement from `WCR` terminology to `C` registers and the reorganisation of the special-register architecture — should therefore be examined as parts of this broader redesign rather than assumed to be isolated renamings.
+
+This contrasts with B→C. Generation C preserves the six-right semantic-authority structure introduced in B and refines the architecture around it: FORM, propagation and represented-object state become more explicitly separated, and the reserved-register/system structures are extended. Thus the present reconstruction is:
+
+```text
+A -> B    substantial architectural redesign,
+          especially of capability/access semantics
+
+B -> C    refinement and decomposition of the B architecture,
+          preserving its basic semantic-authority model
+```
+
+This distinction is about the *kind* of architectural change, not its historical cause. The surviving sources do not yet establish that the designers themselves described A→B as a redesign, nor that particular operational experience caused the changes.
+
 **CAUTION:** this interpretation is based on the documented contrast between the Figure 3 `PS/DT/RTE` scheme and the later six named rights. It does not assert a particular intermediate bit mapping or that every possible `PS × DT × RTE` combination was valid.
 
 ### 4.2 Early capability class / characteristic evidence
@@ -264,9 +293,9 @@ Particularly visible continuities/changes are:
 
 This pairing is architecturally significant: the change in capability representation and the change in SCT state interpretation should be studied together rather than treating `PRESENCE` as a field that can be projected backwards into B.
 
-### B–C as architectural maturation
+### B–C as architectural refinement
 
-**WORKING ARCHITECTURAL INTERPRETATION:** the B→C transition appears to be more than a change of encoding or software convention. It looks like a maturation of the architecture in which concepts that Generation B mixes together are separated according to their semantics.
+**WORKING ARCHITECTURAL INTERPRETATION:** the B→C transition appears to be more than a change of encoding or software convention. It looks like a refinement of the Generation B architecture in which concepts that B mixes together are separated according to their semantics. Unlike A→B, the six-right semantic-authority model is retained rather than replaced.
 
 In Generation B, the ACCESS representation carries two different kinds of information:
 
