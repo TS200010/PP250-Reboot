@@ -53,14 +53,26 @@ normal interrupt condition
 Normal Interrupt Block
         |
         v
-incoming-process Dump Stack capability/pointer
+IDAP + permitted access code
+(Interrupt Handler Process Dump Area Pointer)
         |
         v
-automatic CHP
+Master Capability Table lookup
+        |
+        v
+incoming-handler Dump Area / Dump Stack
+        |
+        v
+DCR loaded for the handler process
+        |
+        v
+automatic CHP / handler process undumped
         |
         v
 Normal Interrupt process
 ```
+
+US3771146A / GB1410631A supplies this additional detail: the Normal Interrupt Block provides the Interrupt Handler Process Dump Area Pointer (IDAP), together with its permitted access code. The automatic process-change machinery uses IDAP through the Master Capability Table to obtain the handler process's Dump Area descriptor and load DCR before the handler process is undumped. This describes how the incoming handler Dump Stack is located; it does not by itself establish how the handler subsequently accesses the suspended process's Dump Stack.
 
 This distinction matters. **`C(N)` is not itself a C6/C7 process image.** It designates the NIB. The NIB leads to the Dump Stack. The Dump Stack contains the state from which the normal interrupt process is entered.
 
