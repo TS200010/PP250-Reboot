@@ -327,7 +327,91 @@ This interpretation also cautions against describing COS/POS-era ACCESS layouts 
 
 Any apparent A–C similarity must be checked through B rather than treated as proof of uninterrupted implementation. Later patents frequently describe an evolved machine while retaining old architectural names.
 
-## 9. Current research questions
+## 9. Special-register terminology and genealogy
+
+The names of the processor's reserved/special capability registers change across the surviving generations. These changes must not be normalised away: in several cases they expose a change in architectural decomposition rather than a simple renaming.
+
+### 9.1 Generation A — early hidden capability registers
+
+US3757307A (priority 1970) uses the following early register terminology:
+
+| Generation A register | Source description |
+|---|---|
+| `DCR` | Dump Area Capability Register |
+| `ICR` | capability defining the storage area containing the System Interrupt Word (SIW) |
+| `MCR` | capability defining the Master Capability Table |
+| `LSCR` | capability defining the processor's Dedicated Local Start-up Area |
+
+The programmer-addressable set is called the **workspace capability registers**, `WCR0`–`WCR7`. `WCR6` conventionally defines the main reserved-segment-pointer table and `WCR7` the current instruction segment.
+
+### 9.2 Generation B — named special-purpose registers
+
+Halton's 1972 System 250 description uses:
+
+| Register | Function |
+|---|---|
+| `C(D)` | Process Dump Stack |
+| `C(I)` | System Interrupt Word |
+| `C(C)` | System Capability Table |
+| `C(N)` | Normal Interrupt Block |
+| `C(S)` | Start-up / check-out block |
+
+The May 1976 Pocket Reference calls these **Special Purpose CPU Registers** and gives:
+
+| Pocket Reference register | Name |
+|---|---|
+| `C10` | `C(D)` DUMPSTACK |
+| `C11` | `C(I)` INTERVAL TIMER |
+| `C12` | `C(C)` SCT |
+| `C13` | `C(N)` NORMAL INTERRUPT BLOCK |
+| separate | `C(S)` FAULT START-UP BLOCK |
+
+This exposes an important version-sensitive point: Halton's 1972 description associates `C(I)` with the System Interrupt Word, while the 1976 Pocket Reference labels `C(I)` INTERVAL TIMER. The name `C(I)` therefore cannot be assigned one timeless function without a source/version qualifier.
+
+### 9.3 Generation C — expanded special-purpose set
+
+US4383297 gives the later special-purpose capability-register set:
+
+| Generation C register | Function |
+|---|---|
+| `C(D)` | Process Dumpstack |
+| `C(I)` | Interval Timer Word |
+| `C(C1)` | System Capability Table 1 |
+| `C(N)` | Normal Interrupt Block |
+| `C(L)` | Local Store Stack Block |
+| `C(P)` | present in the special-register set; function must be taken from the patent text before assigning one here |
+| `C(C2)` | System Capability Table 2 |
+| `C(S)` | Special Start Up Block |
+
+Thus the later architecture expands the named set and splits the System Capability Table register function into `C(C1)` and `C(C2)`.
+
+### 9.4 Working genealogy
+
+| Generation A | Generation B | Generation C | Status / interpretation |
+|---|---|---|---|
+| `DCR` Dump Area Capability Register | `C(D)` Process Dump Stack | `C(D)` Process Dumpstack | **Strong functional continuity** |
+| `MCR` Master Capability Table | `C(C)` System Capability Table | `C(C1)`, `C(C2)` System Capability Tables | **Strong functional lineage**, with MCT→SCT terminology change and later split |
+| `ICR` System Interrupt Word area | `C(I)` SIW in Halton 1972; `C(I)` Interval Timer in 1976 | `C(I)` Interval Timer Word | **Function/name evolves**; not safe to state simply `ICR = C(I)` across versions |
+| `LSCR` Dedicated Local Start-up Area | `C(N)` Normal Interrupt Block plus distinct `C(S)` Fault Start-up Block | `C(N)` Normal Interrupt Block and `C(S)` Special Start Up Block | **Probable architectural decomposition**, not a proved one-to-one rename |
+| — | — | `C(L)` Local Store Stack | **Later addition evidenced** |
+| — | — | `C(P)` | **Later addition evidenced; exact function separately to be verified** |
+| `WCR0`–`WCR7` workspace capability registers | `C0`–`C7` general-purpose capability registers | `C0`–`C7` retained | **Terminology simplification/standardisation**; detailed role continuity remains source-sensitive |
+| `WCR6` reserved-segment-pointer-table capability | `C6` process capability-pointer block/context role | `C6` retained | **Likely lineage with terminology/mechanism evolution** |
+| `WCR7` current instruction segment | `C7` current code block | `C7` retained | **Strong functional continuity** |
+
+### 9.5 Architectural significance
+
+The register vocabulary appears to mature in parallel with the access vocabulary.
+
+Generation A describes implementation-oriented register roles — Dump Area Capability Register, Master Capability Register, Local Start-up Capability Register — and workspace registers `WCRn`. Generation B increasingly names reserved registers by the architectural object or service they designate: `C(D)`, `C(C)`, `C(N)`, `C(S)`, while the ordinary set becomes `C0`–`C7`.
+
+More importantly, the change is not wholly cosmetic. The early Dedicated Local Start-up Area participates directly in normal interrupt entry, whereas later evidence has separate `C(N)` and `C(S)` authorities for normal-interrupt and fault/start-up structures. Likewise the single capability-table register lineage eventually becomes `C(C1)` and `C(C2)`.
+
+The special-register genealogy should therefore be used as an additional discriminator when assigning an otherwise ambiguous source to an architectural generation. A familiar function under an early register name is evidence of lineage, but not by itself proof that the surrounding register architecture is identical.
+
+**CAUTION:** register names and functions must be quoted with source/version provenance. In particular, `C(I)` demonstrably changes description between the 1972 Halton material and the 1976 Pocket Reference, so later meanings must not be projected backwards.
+
+## 10. Current research questions
 
 1. What exact mechanism detects ordinary non-residence in Generation A?
 2. What are Generation B SCT bits 21..16?
@@ -339,7 +423,7 @@ Any apparent A–C similarity must be checked through B rather than treated as p
 8. Which mechanisms currently attributed to B can be proved to have existed already in A?
 9. Which B mechanisms survived unchanged into C?
 
-## 10. Research consequence
+## 11. Research consequence
 
 The PP250-Reboot reconstruction should no longer speak casually of **the** PP250 capability encoding or **the** SCT layout without a generation qualifier when the distinction matters.
 
