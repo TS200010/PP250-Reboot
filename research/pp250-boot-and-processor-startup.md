@@ -402,6 +402,27 @@ virgin initial Dump Stack -> CHP
 
 Thus a one-instruction SECOND GROUP is sufficient: the bootstrap receives a fresh one-instruction grant on successive transitions rather than attempting the entire setup in one grant.
 
+#### LC source addressing remains ordinary
+
+A necessary refinement is that SECOND GROUP cannot sensibly be modelled as globally replacing every C0-C7 reference in the selected `LC` with C10-C17. `LC` has distinct roles for the capability register used to address the stored source capability and for the capability register that receives the loaded capability. The working reconstruction is therefore that SECOND GROUP redirects the **LC destination-register selection** to the corresponding second/special C register, while the ordinary C-register bank remains available for addressing the stored source capability.
+
+Conceptually:
+
+```text
+ordinary Cx -> addresses prepared block of stored capabilities
+                         |
+                         v
+                    LC reads capability
+                         |
+              SECOND GROUP redirects
+              LC destination selection
+                         |
+                         v
+                 corresponding C1x
+```
+
+This distinction is required for the bootstrap hypothesis to be operational: otherwise setting SECOND GROUP would remove access to the ordinary capability needed to reach the prepared source block, leaving the one-shot `LC` with no usable authority from which to fetch C(I), C(C) or C(N). The later SPECIAL description is consistent with destination redirection: it permits `LC` to load the corresponding special-purpose capability register in place of the ordinary destination. The identification of early SECOND GROUP with later SPECIAL remains a hypothesis; this refinement states how that hypothesis must operate if the identification is correct.
+
 ### 11.2 Candidate completion logic
 
 A simple candidate implementation is:
