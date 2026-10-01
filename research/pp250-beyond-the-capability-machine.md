@@ -254,6 +254,112 @@ This provides a bootstrap for a configurable M/software boundary without introdu
 
 It also reinforces the orthogonality of capability to H/T/M. Capabilities occur as ordinary H authority, as candidate M-state in C(S), as the protected callback designation C(N), and as Dump Stack capabilities defining process-transition targets.
 
+
+### H as binding as well as authority: a lambda-calculus/closure correspondence
+
+The software-evolution investigation adds a potentially important refinement to the meaning of H.
+
+Until now H has primarily been described as the **authority machine**: the protected capability environment within which T executes. The resource and process model suggests that this is incomplete. H also supplies the **bindings** through which a computation acquires its particular objects, services, code and other resources.
+
+Abstractly, the same reentrant computation may execute with different environments:
+
+```
+H_A = {
+    x -> X_A,
+    y -> Y_A,
+    ...
+}
+
+H_B = {
+    x -> X_B,
+    y -> Y_B,
+    ...
+}
+```
+
+The T-level code need not contain an absolute reference to either `X_A` or `X_B`; the relationship is supplied through the capability environment.
+
+This has a genuine structural resemblance to environment-based accounts of lambda-calculus evaluation, in which the meaning of a variable is supplied by a binding environment. It also resembles a closure, conventionally understood as callable code together with an environment.
+
+A PP250 protected callable object has a suggestive shape:
+
+```
+Enter capability
+      |
+      v
+capability block
+      |
+      +--> executable operations
+      |
+      +--> protected state/resources
+```
+
+The important additional PP250 property is **authority**. A conventional environment binding can be written conceptually as:
+
+```
+x -> A
+```
+
+whereas a PP250 capability binding is closer to:
+
+```
+x -> (A, permitted authority)
+```
+
+The binding not only identifies an object; it carries machine-enforced authority over that object. H may therefore be better understood, provisionally, as an **authority-and-binding environment/graph**, rather than merely a protection environment.
+
+This observation does **not** establish that PP250 is a lambda-calculus machine, nor that its designers implemented a particular formal lambda-calculus evaluator. The comparison is structural and should be tested against formal environment and closure models before any stronger claim is made.
+
+#### ENTER as a protected environment transition
+
+This refinement also sharpens the interpretation of protected CALL/ENTER.
+
+A cross-domain call does not merely transfer control to another instruction address. It establishes the called capability environment and called code context while preserving the previous context for return.
+
+At the M/H/T level this can be represented:
+
+```
+<H1,T1>
+    |
+   ENTER
+    |
+    v
+<H2,T2>
+```
+
+This is therefore naturally interpretable as a transition between **protected computational environments**.
+
+The closure analogy is again useful but deliberately limited: callable code is associated with an environment, while M enforces the legitimate transition into that environment. Unlike an ordinary language-level closure, possession of the ability to invoke the protected object does not imply arbitrary inspection, fabrication or modification of its environment.
+
+A concise working formulation is:
+
+> **H supplies protected bindings carrying authority; T computes within those bindings; M enforces legitimate transitions between H/T environments.**
+
+#### Consequence for coexistence and software evolution
+
+This interpretation arose while considering online software evolution.
+
+If H contributes the bindings that give a process instance its effective world, then a new software generation need not necessarily transform an existing `H_A<T_A>` into `H_B<T_B>`. Distinct environments may coexist:
+
+```
+H_A<T_A1>  -----> terminates
+H_A<T_A2>  ----------> terminates
+
+             changeover for new instances
+
+H_B<T_B1>  ---------------->
+H_B<T_B2>  -------------------->
+```
+
+Old instances can retain their old bindings and representations while new instances are born with new bindings. This provides a theoretical explanation for how generational/draining software replacement could fit naturally into M/H/T, but **there is not yet primary evidence that ROS actually used this update mechanism**.
+
+The stronger and more general M/H/T insight does not depend on that historical hypothesis:
+
+> **H is not only the answer to “what may this computation access?” It also contributes the answer to “which objects and services constitute this computation's world?”**
+
+That distinction moves H beyond a simple memory-protection interpretation and provides a more precise theoretical reason for retaining the Church side of the M/H/T model.
+
+
 ---
 
 ## 4. Why later capability systems can encourage the misreading
