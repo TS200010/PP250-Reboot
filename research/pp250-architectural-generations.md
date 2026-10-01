@@ -693,3 +693,27 @@ Andrews/Wheatley FORM/propagation/PRESENCE architecture
 ```
 
 This is a framework for organising evidence, not a claim that only three physical processor revisions existed. Additional intermediate revisions may emerge as the patent and software corpus is reconstructed.
+
+
+## Addendum — C(S) fault-address evolution as a Generation B→C discriminator
+
+The fault/start-up register provides another concrete difference between the earlier and later architectural evidence.
+
+**DOCUMENTED ENDPOINTS:** the early SSCR fault mechanism uses an alterable store-module selector together with a hard-wired corresponding within-store Fault Block address; on retry the store-module-number field is incremented. In the later US4383297 architecture, C(S) defines the Special Start Up Block and the **twelve most significant bits of its Base** are the fault-sequence increment field. Those same twelve Base bits, and only those bits of C(S), are alterable through Internal Mode; the module number itself remains an eight-bit Base-address field.
+
+Schematically:
+
+```text
+earlier:
+[ module : 8 ][ fixed corresponding within-store address ]
+
+later:
+[ module : 8 ][ high within-module : 4 ][ fixed low offset : 12 ]
+|<----------- twelve alterable / incremented bits ----------->|
+```
+
+**RECONSTRUCTION / HYPOTHESIS:** the extra four variable address bits may reflect the transition from an early homogeneous 32K-store implementation to an architecture accommodating larger and potentially heterogeneous store modules. They would permit a recovery structure to occupy a store-size-appropriate high region rather than forcing a historical 32K-era reserved location to remain embedded within a larger module. Internal Mode would then give trusted configuration/reconfiguration software a controlled way to establish the preferred C(S) recovery address while the machine is healthy, leaving the fault microsequence able to operate autonomously later.
+
+This explanation is not yet documented as designer intent. The exact original Fault Block address, the software that writes C(S)[23:12], and the exact arithmetic meaning of the later twelve-bit increment remain unresolved.
+
+Alternative explanations evaluated during reconstruction — replicated 4K-spaced Start-Up Blocks, a 4K physical store/SAU unit, blind 4K search as the primary mechanism, and a fixed-address per-store record that first loads C(S) — are unsupported or weakened by the evidence inspected so far. The detailed reasoning and status of each hypothesis are preserved in [pp250-boot-and-processor-startup.md](pp250-boot-and-processor-startup.md).
