@@ -553,3 +553,148 @@ The detailed capability-genesis consequences are recorded in \`capability-genesi
 - **[G1] PRIMARY EVIDENCE, next research target:** [Plessey System 250 General Information (1972)](../sources/1972/1972-Plessey-System-250-General-Information.pdf). Initial loading and commissioning procedures remain to be established from suitable contemporary material.
 
 Prepared from the referenced discussion and repository state at commit `88e9f4bc13d8ba63606bcd6e61f4249610abeab6`. No original source or transcription was modified.
+
+## Addendum — evolution of C(S) fault-block addressing: 8-bit to 12-bit retry field
+
+**Status:** working historical reconstruction. This section preserves both the documentary observations and the hypotheses evaluated while trying to explain the later C(S) addressing rule. It does not promote the current leading explanation to established architecture.
+
+### Documented endpoints
+
+**Earlier fault mechanism — PRIMARY EVIDENCE, [P1], as reported above:** the Special Block Capability Register (SSCR) directly selects the processor's four-word area in the Special Fault Block. The within-store address is established by a hard-wired strapping field; the alterable part selects the store module. On a further fault the store-module-number field is incremented and the corresponding location in another store module is tried. Thus the early mechanism can be represented schematically as:
+
+```text
+[ store module number ][ hard-wired corresponding location ]
+       alterable                 fixed
+```
+
+This is a direct address. No preliminary memory lookup is required to discover where SSCR itself should point.
+
+**Later mechanism — PRIMARY EVIDENCE, [P2], as reported above:** C(S) defines the four-word Special Start-Up Block. The twelve most significant bits of its Base are incremented during the fault sequence. Internal Mode permits only those same twelve Base bits of C(S) to be altered, although all bits can be read. The patent separately describes the module number as the eight most significant Base-address bits.
+
+The later split is therefore potentially:
+
+```text
+23              16 15          12 11               0
++----------------+---------------+-------------------+
+| module : 8     | high location | low offset : 12   |
+|                |    : 4        |                   |
++----------------+---------------+-------------------+
+|<----- twelve alterable / fault-sequence bits ---->|
+```
+
+The reason for widening the mutable/fault-sequence field from the earlier module selector to twelve Base bits is not explicitly stated in the evidence so far inspected.
+
+### Store-size pressure — current leading reconstruction
+
+Early implementation evidence includes 32K store modules, while System 250 descriptions allow store modules up to 64K and do not require every fitted store module to have the same capacity. Intermediate or heterogeneous module sizes must therefore not be reduced to a simple 32K-versus-64K choice.
+
+A plausible evolutionary pressure is the placement of the Special Fault/Start-Up Block. If the original 32K implementation placed the corresponding recovery structure at a convenient reserved position associated with that store size, retaining the same absolute within-module location in a larger store could leave a permanently reserved hole inside otherwise allocatable storage. Moving the recovery structure to a suitable boundary region for the actual store size would instead require some high within-module address bits to vary as well as the module number.
+
+On this reconstruction, the later twelve-bit field generalises:
+
+```text
+early:  [ module : 8 ]
+
+later:  [ module : 8 ][ high within-module position : 4 ]
+```
+
+while retaining a fixed twelve-bit low-order offset. A 32K, 48K and 64K store could consequently place the same small recovery structure at the same low-order offset in different high address regions.
+
+**HYPOTHESIS:** this variable-store-size/recovery-placement problem is the reason the later C(S) mechanism makes twelve rather than eight Base bits alterable and subject to fault-sequence incrementing.
+
+**UNRESOLVED:** no primary source yet inspected states that this was the designers' motivation, and the exact historical location of the early Special Fault Block within a 32K store has not yet been established. In particular, placement at or near the upper boundary of the original 32K store remains a reconstruction, not a documented fact.
+
+### Likely software use of the new writable field
+
+The later Internal Mode facility is significant because it gives suitably authorised software controlled access to processor-internal state without making C(S) an arbitrary writable capability. All of C(S) can be read, but only the twelve most significant Base bits can be altered.
+
+**Strong reconstruction:** system configuration/reconfiguration software is a natural consumer of this facility. While the system is healthy, such software can know the installed physical-store configuration and establish an appropriate preferred recovery location in C(S). Fault microcode can subsequently use that already prepared state without depending on the configuration software still being executable.
+
+Conceptually:
+
+```text
+healthy configuration/reconfiguration software
+        |
+        | controlled Internal Mode authority
+        v
+set C(S) high twelve Base bits
+        |
+        v
+preferred Special Start-Up Block location
+        |
+        | later processor fault
+        v
+fault machinery uses C(S) autonomously
+```
+
+This division of responsibility would let software supply configuration knowledge while retaining a hardware-rooted recovery path.
+
+**UNRESOLVED:** the specific historical software process or routine that writes C(S)[23:12] has not yet been identified. Store allocator, system configuration and reconfiguration material should be searched for such use before assigning the function to a named component.
+
+### Hypotheses considered and weakened or rejected
+
+#### Multiple replicated Start-Up Blocks at 4K intervals
+
+The twelve/twelve address split initially suggested that a store might contain multiple copies of the Start-Up Block, perhaps one in each 4K region.
+
+**Status: unsupported and currently rejected as the leading explanation.** No evidence has been found for sixteen replicated recovery blocks per module. The early material instead describes corresponding fault structures in different store modules.
+
+#### Blind 4K search as the primary purpose
+
+If the high twelve bits are incremented as an ordinary binary field while the low twelve bits remain fixed, successive candidate addresses would be 4K apart. This suggested a hardware search through candidate regions until a valid recovery block was encountered.
+
+**Status: mechanically plausible but weakened as an intended normal mechanism.** No evidence has been found that the architecture deliberately searches 4K regions in this way. Controlled software configuration of the writable twelve-bit field would provide a much cleaner normal path. Increment/search could still be a fallback consequence of the hardware arithmetic, but that has not been established.
+
+#### A 4K physical bank, SAU unit or redundancy quantum
+
+The twelve low fixed bits also suggested that 4K might be a physical storage-bank, SAU-decoding, allocation or redundancy unit.
+
+**Status: unsupported.** Searches so far have found no evidence that System 250 physical store organisation used a 4K unit of this kind. The address split alone is insufficient evidence for such a physical organisation.
+
+#### Fixed-address per-store indirection that loads C(S)
+
+A further hypothesis proposed two stages: hardware first reads a permanently fixed bootstrap location in a selected store module; that location contains a store-specific C(S) value; C(S) then points to the actual Special Start-Up Block.
+
+**Status: rejected by the evidence currently inspected.** The early SSCR directly contains the hard-wired within-store Fault Block address, and the later C(S) directly defines the four-word Special Start-Up Block. No intermediate per-store record supplying a replacement C(S) address has been found. This hypothesis should not be used unless new primary evidence requires it.
+
+### Provisional historical reconstruction
+
+The current best explanatory chain is:
+
+```text
+homogeneous early 32K implementation
+        |
+        v
+corresponding Fault Block location in every store
+        |
+        v
+fault retry need alter only the 8-bit module selector
+        |
+        v
+larger / potentially heterogeneous store modules
+        |
+        v
+fixed 32K-era recovery position becomes undesirable
+        |
+        v
+C(S) variable address extended to
+[module : 8][high within-module position : 4]
+        |
+        v
+Internal Mode permits trusted software to configure
+those twelve Base bits while the system is healthy
+        |
+        v
+fault hardware retains autonomous increment/retry
+```
+
+The first three stages are grounded in early fault-mechanism evidence. The proposed causal connection from variable store sizes to the widened C(S) field, and the proposed configuration-software use, are **RECONSTRUCTION / HYPOTHESIS** pending direct documentary confirmation.
+
+### Questions that would discriminate the hypothesis
+
+1. Where exactly was the original Special Fault Block located within a 32K store?
+2. Does the later statement that the twelve most significant Base bits are “incremented” mean an ordinary binary increment of C(S) Base[23:12], including carry between the four high within-module bits and the eight module bits?
+3. Which system software writes C(S)[23:12], and under what events: power-up configuration, store addition/removal, fault isolation, or general reconfiguration?
+4. Do surviving configuration or store-allocation documents reserve differently located Fault Start-Up Blocks for differently sized store modules?
+5. Was widening the variable field from eight to twelve bits explicitly motivated by larger or heterogeneous store modules?
+6. If differently sized modules coexist, is C(S) merely a preferred first recovery location with incrementing as fallback, or is there another documented rule for choosing the next module?
