@@ -82,7 +82,7 @@ This is the detailed hypothesis already explored elsewhere in the repository.
 
 The start-up transition enters a native process with SECOND GROUP already set. SECOND GROUP need not be consumed by the immediately following instruction and need not be re-established by software.
 
-Instead, SECOND GROUP remains active across arbitrary intervening instructions. When an LC occurs while SECOND GROUP is active, that LC addresses the corresponding second-group capability register. The LC microcode then tests whether the required bootstrap special-capability state is complete. If it is incomplete, SECOND GROUP remains set; when completion is reached, SECOND GROUP is cleared.
+Instead, each relevant LC gets the normal one-instruction use of SECOND GROUP. The LC consumes/clears SECOND GROUP in the normal way after addressing the corresponding second-group capability register. The LC microcode then tests whether the required bootstrap special-capability state is complete. If it is incomplete, the microcode deliberately **sets SECOND GROUP again**, thereby granting a later LC another one-instruction access to the second group. When completion is reached, SECOND GROUP is left clear.
 
 Thus the significant sequence is not necessarily three consecutive instructions. It is three relevant **LC events**, potentially separated by arbitrary non-LC bootstrap work:
 
@@ -92,22 +92,22 @@ startup / CS
 
     ... arbitrary non-LC work ...
     LC -> first required special capability register
-         required state incomplete -> retain SECOND GROUP
+         LC clears SECOND GROUP; state incomplete -> microcode sets SECOND GROUP again
 
     ... arbitrary non-LC work ...
     LC -> second required special capability register
-         required state incomplete -> retain SECOND GROUP
+         LC clears SECOND GROUP; state incomplete -> microcode sets SECOND GROUP again
 
     ... arbitrary non-LC work ...
     LC -> third required special capability register
-         required state complete -> clear SECOND GROUP
+         LC clears SECOND GROUP; state complete -> leave SECOND GROUP clear
 
     -> normal execution
 ```
 
 The exact registers, their order, and the hardware test for "complete" remain to be established. C(I), C(C) and C(N) are the present candidates because they are the three identified normal special capability registers requiring establishment in the 1976 register set.
 
-This hypothesis does **not** require software to manufacture or re-arm SECOND GROUP, and it remains compatible with an ordinary later rule in which SPECIAL is consumed by an LC: the exceptional retention behaviour would belong specifically to the incomplete bootstrap state.
+This hypothesis does **not** require software to manufacture or re-arm SECOND GROUP, and it remains compatible with the later one-instruction SPECIAL rule. The exceptional bootstrap behaviour is not persistence: LC consumes the one-instruction grant normally, after which microcode issues another one-instruction grant only while the fixed bootstrap-completion condition remains false.
 
 ### C. Chain of preconstructed Dump Stacks or processes
 
@@ -223,7 +223,7 @@ Statements such as "hardware creates C(S)" or "power-up presets the system capab
 
 PP250 microcode should be reconstructed as a stepped, tightly bounded and deterministic sequence of architectural operations: register transfers, fixed tests, selections and fixed control transitions. A hypothesis should be strongly disfavoured if it requires microcode to contain the sort of algorithmic or policy logic that would normally belong in PP250 program code — for example, walking arbitrary structures, searching tables, interpreting configurable data structures, making extended decision sequences, or orchestrating a general bootstrap algorithm — unless primary evidence explicitly documents such behaviour.
 
-This does not exclude small fixed conditions within an instruction's microcode. For example, the bootstrap-completion SECOND GROUP hypothesis can satisfy this principle if LC performs a fixed completion test and either retains or clears SECOND GROUP. That is a bounded architectural state transition, not a bootstrap program implemented in microcode.
+This does not exclude small fixed conditions within an instruction's microcode. For example, the bootstrap-completion SECOND GROUP hypothesis can satisfy this principle if LC clears SECOND GROUP normally, performs a fixed completion test, and re-sets SECOND GROUP only when bootstrap state remains incomplete. That is a bounded architectural state transition, not a bootstrap program implemented in microcode.
 
 A useful working distinction is:
 
@@ -287,7 +287,7 @@ O therefore remains an important generation-sensitive alternative, not an indepe
 #### Sequencing the required loads
 
 - **A/C/D — prepared-process / Dump-Stack sequencing family.** Restored process state supplies SECOND GROUP at the required moments. The variants differ over whether this is repeated prepared entries, a chain of synthetic processes/Dump Stacks, or repeated entry of one advancing process state.
-- **B — bootstrap-completion SECOND GROUP.** The initial process begins with SECOND GROUP active. Arbitrary non-LC instructions may intervene between the relevant LC operations. After each LC, microcode retains SECOND GROUP while the required bootstrap special-capability state remains incomplete and clears it when completion is reached.
+- **B — bootstrap-completion SECOND GROUP.** The initial process begins with SECOND GROUP active. Arbitrary non-LC instructions may intervene between the relevant LC operations. Each relevant LC consumes/clears SECOND GROUP normally. After the LC, microcode tests the fixed bootstrap-completion condition and, while it remains incomplete, sets SECOND GROUP again to grant the next relevant LC one-instruction access. On completion, SECOND GROUP is left clear.
 
 A, C and D are retained as one family until evidence about the sequencing mechanism distinguishes them.
 
