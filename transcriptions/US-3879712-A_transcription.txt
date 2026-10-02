@@ -483,3 +483,45 @@ combination:
   a plurality of diagnostic interface units one for each processor module and each having a unique identity and incorporating one of said second access units and including an address decoder and a plurality of address-decoder selectable monitor, control and data injection points internal to the processing equipment of the said processor module and said address decoder is responsive to part of said address information accompanying the unique identity code particular to a diagnostic interface, a processor module having a fault being diagnosed by another processor module of said digital data processing system.
 
 *  *  *  *  *
+
+
+FIGURE 1 — TEXTUAL CAPTURE
+
+Figure 1 is a block diagram of the multiprocessor system incorporating the diagnostic-interface arrangement described by the patent.
+
+The system contains three processor modules labelled CPUA, CPUB and CPUC. Each processor has its own unique processor data-communication path or bus: PBA for CPUA, PBB for CPUB and PBC for CPUC.
+
+Three storage modules are shown, SM1, SM2 and SM3. Each storage module is associated with a storage access unit, respectively SA1, SA2 and SA3. The processor buses terminate individually at these storage access units, providing each processor with access to the storage modules through its own bus.
+
+Two multiplexors, MPXM and MPXN, connect the processor/store side of the system to peripheral data-communication paths. The peripheral buses are labelled PDM and PDN.
+
+Peripheral equipment is connected through peripheral access units. The peripherals identified in the figure and accompanying description are:
+- PD — disc equipment;
+- PM — diagnostic monitor/typewriter equipment;
+- PP — page printer.
+
+Their corresponding peripheral access units are identified as PAD, PAM and PAP.
+
+Peripheral bus PDN is additionally extended to the diagnostic interfaces associated with the processor modules. These diagnostic interfaces are labelled DI/FA, DI/FB and DI/FC, corresponding respectively to CPUA, CPUB and CPUC.
+
+Thus the drawing shows the diagnostic interfaces as addressable units reached through the ordinary system communication structure: a functioning processor can communicate through the system buses and PDN to the diagnostic interface belonging to another processor.
+
+The principal connectivity represented by the figure is therefore:
+
+CPUA → PBA
+CPUB → PBB
+CPUC → PBC
+
+PBA/PBB/PBC → storage access units SA1/SA2/SA3 → storage modules SM1/SM2/SM3
+
+PBA/PBB/PBC → multiplexors MPXM/MPXN → peripheral buses PDM/PDN → peripheral access units → peripheral equipment
+
+PDN → DI/FA, DI/FB, DI/FC → corresponding processor modules
+
+The figure establishes at system level that the diagnostic interface is not a separate external test computer. It is incorporated into each processor module and is made accessible through the same addressable communication structure used by the multiprocessor system.
+
+Source distinction: the component labels and overall system topology are those of Figure 1; the identification of the processor buses as unique communication paths, the storage-access-unit function, the peripheral identities, and the statement that PDN is extended to the processor diagnostic interfaces are explicitly stated in the patent text accompanying Figure 1.
+
+INTERPRETIVE NOTE
+
+Figure 1 makes the architectural role of the diagnostic interface particularly clear: diagnostic access is integrated into the normal PP250 interconnection architecture. A good processor can therefore execute diagnostic software and reach the diagnostic interface of the processor under test through an ordinary addressable system path. The diagnostic mechanism consequently reuses the processing and communication resources of the multiprocessor system rather than introducing a separate special-purpose diagnostic processor.
