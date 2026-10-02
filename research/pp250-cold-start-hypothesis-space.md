@@ -219,6 +219,16 @@ A fixed architectural route to a configurable stored description is PP250-like. 
 
 Statements such as "hardware creates C(S)" or "power-up presets the system capabilities" cannot be used as premises unless the source explicitly establishes capability creation rather than merely presetting start-up addressing/control information.
 
+### P8. Microcode implements bounded mechanism, not normal programming logic
+
+PP250 microcode should be reconstructed as a stepped, tightly bounded and deterministic sequence of architectural operations: register transfers, fixed tests, selections and fixed control transitions. A hypothesis should be strongly disfavoured if it requires microcode to contain the sort of algorithmic or policy logic that would normally belong in PP250 program code — for example, walking arbitrary structures, searching tables, interpreting configurable data structures, making extended decision sequences, or orchestrating a general bootstrap algorithm — unless primary evidence explicitly documents such behaviour.
+
+This does not exclude small fixed conditions within an instruction's microcode. For example, the bootstrap-completion SECOND GROUP hypothesis can satisfy this principle if LC performs a fixed completion test and either retains or clears SECOND GROUP. That is a bounded architectural state transition, not a bootstrap program implemented in microcode.
+
+A useful working distinction is:
+
+> **Microcode provides architectural mechanism and fixed state transitions; PP250 instructions provide algorithms and policy.**
+
 ## 6. First pruning step
 
 The principles immediately make one **family** of explanations strongly disfavoured:
