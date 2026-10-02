@@ -647,3 +647,106 @@ The composite figure shows that the diagnostic interface operates below the ordi
 This is stronger than a conventional register-level debug port. The diagnosing processor can observe internal highways and micro-state, inject data onto HO, impose UPA/UPB state, and control execution at slot or instruction granularity. The faulty processor can therefore be treated as a state machine whose internal state is established, advanced by controlled clocking, and then inspected.
 
 Architecturally, the diagnostic mechanism remains external to the normal execution semantics of the processor: DI/F is an addressable maintenance interface attached to internal implementation points. The drawing does not imply that ordinary PP250 software can directly manipulate these internal signals; access is through the diagnostic-interface mechanism described by the patent.
+
+
+FIGURE 3 — TEXTUAL CAPTURE
+
+Figure 3 is a block diagram of the diagnostic-monitor software and its relationship to the diagnostic interface of the processor under test.
+
+The diagram consists essentially of three code blocks and three data/interface blocks.
+
+CODE BLOCKS
+
+1. CONTROL BLOCK
+
+The CONTROL BLOCK forms the interface between the diagnostic monitor and its external environment. The accompanying patent text identifies that environment as the operating system and the maintenance engineer. It provides the input/output facilities through which the engineer controls and observes the diagnostic activity.
+
+2. COMMON FUNCTIONS BLOCK
+
+The COMMON FUNCTIONS BLOCK contains the generally applicable diagnostic-monitor functions. Its principal role is to establish and manipulate information in the INTERFACE BUFFER. These functions are common to diagnostic operation rather than specific to one particular type of equipment under test.
+
+3. SPECIAL FUNCTIONS BLOCK
+
+The SPECIAL FUNCTIONS BLOCK contains diagnostic-monitor functions specific to the type of equipment being tested. Different equipment types may therefore require different versions of this block.
+
+DATA AND INTERFACE BLOCKS
+
+4. TEST AREA
+
+The TEST AREA contains the diagnostic sub-test currently being interpreted/executed by the diagnostic monitor.
+
+5. INTERFACE BUFFER
+
+The INTERFACE BUFFER is the software data structure interposed between the diagnostic test and the physical DIAGNOSTIC INTERFACE. It contains the processor-state values, micro-program state, control values and buffers which are transferred to or obtained from the diagnostic interface.
+
+6. DIAGNOSTIC INTERFACE
+
+The DIAGNOSTIC INTERFACE is the hardware interface belonging to the faulty processor module. It is the mechanism through which the diagnostic software running on the good processor gains read, force and execution-control access to selected internal points of the processor under test.
+
+FUNCTIONAL RELATIONSHIP
+
+Read as a whole, Figure 3 shows a layered diagnostic path.
+
+The CONTROL BLOCK manages interaction with the operating-system/maintenance environment.
+
+The diagnostic test held in the TEST AREA is interpreted using facilities supplied by the COMMON FUNCTIONS BLOCK and, where equipment-specific operations are required, by the SPECIAL FUNCTIONS BLOCK.
+
+Those software functions operate on the INTERFACE BUFFER.
+
+The INTERFACE BUFFER in turn mediates transfers to and from the DIAGNOSTIC INTERFACE in the faulty processor.
+
+The resulting conceptual path is:
+
+maintenance engineer / operating system
+        ↕
+CONTROL BLOCK
+        ↕
+diagnostic monitor functions
+   ↙                 ↘
+COMMON FUNCTIONS   SPECIAL FUNCTIONS
+        ↕
+     TEST AREA
+        ↕
+ INTERFACE BUFFER
+        ↕
+DIAGNOSTIC INTERFACE
+        ↕
+faulty processor internal state and controls
+
+The arrows above express the functional relationships described by the figure and accompanying prose; they should not be read as an assertion that every connection in the printed drawing is a simple bidirectional data path.
+
+The patent states that transfers between the diagnosing processor and the diagnostic interface are performed as though the diagnostic interface were another module of store. The diagnostic interface is addressed through a range of addresses whose module-number field identifies the particular processor interface.
+
+The INTERFACE BUFFER provides the software representation of the accessible diagnostic state. The accompanying text identifies entries for, among other things, HO, MO, M1, SCR, OUT, miscellaneous-register state, last/current/next micro-program slot, micro-bits UPB, the miscellaneous-register buffer MRB and the clock buffer CB.
+
+The diagnostic tests do not therefore operate directly upon arbitrary processor hardware structures. They manipulate the defined Interface Buffer representation, and monitor software transfers the appropriate portions of that representation through the addressable diagnostic interface.
+
+PROCESSOR MODEL USED BY THE DIAGNOSTIC MONITOR
+
+The prose immediately introducing Figure 3 gives the conceptual machine model used by the diagnostic software.
+
+For diagnostic purposes the processor is treated as:
+- one large data register; and
+- one large block of combinational logic.
+
+The diagnostic-interface registers and processor-module registers collectively provide the “large data register” function.
+
+The processor manipulative logic and micro-program areas collectively provide the “combinational logic” function.
+
+A diagnostic test establishes a required state in the register portion, thereby applying selected input conditions to the combinational logic. The relevant part of the state is then clocked and the resulting state read back for comparison with the expected result.
+
+Thus Figure 3 is the software organisation supporting the state-setting, controlled-execution and state-observation facilities shown at hardware level in Figures 2a and 2b.
+
+Source distinction: the six named blocks and their functions are explicitly identified in the patent text describing Figure 3. The description of the diagnostic interface as part of the faulty processor, the low-priority execution of the monitor on a known-good processor, the store-like addressing of the interface, and the “large data register plus combinational logic” diagnostic model are also explicit statements in the accompanying patent prose.
+
+INTERPRETIVE NOTE
+
+Figure 3 completes the architectural picture provided by Figures 1 and 2a/2b.
+
+Figure 1 shows how a good processor can reach the diagnostic interface of another processor through the system communication structure. Figures 2a/2b show the hardware observation, forcing and execution-control points exposed by that interface. Figure 3 shows the software architecture that converts those primitive facilities into a diagnostic system.
+
+A significant feature is the clean separation between generic diagnostic machinery and equipment-specific knowledge. COMMON FUNCTIONS implements reusable mechanisms for manipulating the interface representation, while SPECIAL FUNCTIONS supplies knowledge peculiar to the equipment being tested. The TEST AREA supplies the particular diagnostic procedure.
+
+The INTERFACE BUFFER is consequently an important abstraction boundary: diagnostic tests operate on a software representation of processor diagnostic state, while the monitor machinery translates between that representation and the addressable hardware diagnostic interface.
+
+The patent's explicit “large data register plus combinational logic” model also explains why such extensive micro-state access was provided. The intention is not merely to inspect a failed processor after it stops; it is to place the processor into controlled internal states, advance selected state transitions, observe the results, and use those observations for fault diagnosis.
