@@ -78,11 +78,36 @@ A Dump Stack restores SECOND GROUP; the first relevant instruction loads one of 
 
 This is the detailed hypothesis already explored elsewhere in the repository.
 
-### B. One process re-establishes SECOND GROUP in software
+### B. Bootstrap-completion SECOND GROUP
 
-A single start-up process executes several special-register loads, explicitly restoring or setting SECOND GROUP before each operation.
+The start-up transition enters a native process with SECOND GROUP already set. SECOND GROUP need not be consumed by the immediately following instruction and need not be re-established by software.
 
-This requires a software-accessible mechanism for re-establishing MIP04 that has not yet been demonstrated.
+Instead, SECOND GROUP remains active across arbitrary intervening instructions. When an LC occurs while SECOND GROUP is active, that LC addresses the corresponding second-group capability register. The LC microcode then tests whether the required bootstrap special-capability state is complete. If it is incomplete, SECOND GROUP remains set; when completion is reached, SECOND GROUP is cleared.
+
+Thus the significant sequence is not necessarily three consecutive instructions. It is three relevant **LC events**, potentially separated by arbitrary non-LC bootstrap work:
+
+```text
+startup / CS
+    -> initial process entered with SECOND GROUP set
+
+    ... arbitrary non-LC work ...
+    LC -> first required special capability register
+         required state incomplete -> retain SECOND GROUP
+
+    ... arbitrary non-LC work ...
+    LC -> second required special capability register
+         required state incomplete -> retain SECOND GROUP
+
+    ... arbitrary non-LC work ...
+    LC -> third required special capability register
+         required state complete -> clear SECOND GROUP
+
+    -> normal execution
+```
+
+The exact registers, their order, and the hardware test for "complete" remain to be established. C(I), C(C) and C(N) are the present candidates because they are the three identified normal special capability registers requiring establishment in the 1976 register set.
+
+This hypothesis does **not** require software to manufacture or re-arm SECOND GROUP, and it remains compatible with an ordinary later rule in which SPECIAL is consumed by an LC: the exceptional retention behaviour would belong specifically to the incomplete bootstrap state.
 
 ### C. Chain of preconstructed Dump Stacks or processes
 
@@ -252,7 +277,7 @@ O therefore remains an important generation-sensitive alternative, not an indepe
 #### Sequencing the required loads
 
 - **A/C/D — prepared-process / Dump-Stack sequencing family.** Restored process state supplies SECOND GROUP at the required moments. The variants differ over whether this is repeated prepared entries, a chain of synthetic processes/Dump Stacks, or repeated entry of one advancing process state.
-- **B — one running bootstrap process re-establishes SECOND GROUP.** The initial process itself performs the sequence, provided a legitimate mechanism exists for re-establishing MIP04 between loads.
+- **B — bootstrap-completion SECOND GROUP.** The initial process begins with SECOND GROUP active. Arbitrary non-LC instructions may intervene between the relevant LC operations. After each LC, microcode retains SECOND GROUP while the required bootstrap special-capability state remains incomplete and clears it when completion is reached.
 
 A, C and D are retained as one family until evidence about the sequencing mechanism distinguishes them.
 
@@ -275,7 +300,7 @@ SEQUENCING
     |
     +-- A/C/D: prepared process / Dump Stack / CHP driven
     |
-    +-- B: running bootstrap code re-establishes SECOND GROUP
+    +-- B: bootstrap-completion SECOND GROUP
     |
     v
 NORMAL C(C), C(I), C(N) STATE
