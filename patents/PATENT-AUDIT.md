@@ -4,6 +4,16 @@
 **Audit date:** 25 September 2026  
 **Project:** PP250-Reboot
 
+## Holdings update — 2 October 2026
+
+The holdings and acquisition assessments below record the 25 September audit state. They are preserved as that record; this update supplies the current transcription status rather than rewriting the historical audit.
+
+Ten RTF files were added at commit `44f1260476a6d0710a778f02651a2009defb9a07`: US3757307A, US3771146A, US3787818A, US3814919A, US4041460A, US4050059A, US4121286A, US4383297A, US4408274A and US4486831A, under `transcriptions/`. The associated original patents are now held in the repository; the earlier acquisition list is not a current missing-source list.
+
+**Provenance defect:** US4121286A.rtf is byte-identical to US4050059A.rtf and internally identifies the read-and-hold patent. The batch contains nine distinct texts and does not independently transcribe the allocation/deallocation patent. Both files are preserved unchanged. Conclusions drawn from the original US4121286A PDF are not invalidated, but must not cite this duplicate as corroboration.
+
+See the [completed ten-file review](../research/pp250-patent-transcriptions-review-2026-10-02.md) for the per-source evidence, locators and architectural consequences.
+
 ## Purpose
 
 This document identifies the patent corpus relevant to reconstruction of Plessey PP250 / System 250. The audit deliberately goes beyond patents whose titles contain `PP250` or `System 250`: the contemporary patents usually describe the machine generically as a data-processing system.
