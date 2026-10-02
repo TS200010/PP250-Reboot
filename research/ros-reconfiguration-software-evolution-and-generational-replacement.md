@@ -428,3 +428,11 @@ What remains missing is the historical **changeover mechanism**.
 The strongest current hypothesis is that for finite-lived activities such as telephone calls there may have been no migration of live instances at all: old instances could continue under their original software generation while new instances were created under a replacement generation, allowing the old generation to drain naturally.
 
 This is an attractive architectural explanation, but it is **not yet the endpoint** and must not be recorded as established System 250 behaviour without further primary evidence.
+
+## Evidence update — 2 October 2026: loaded capabilities during relocation
+
+**DOCUMENTED OBSERVATION:** US3771146A, Description 121, explicitly addresses capabilities expanded before a relocation decision. The relocating process interrupts the affected processors; entry into the handler and return to the interrupted process reload workspace capabilities through the saved Dump Stack pointers. A zeroed MCT sumcheck causes an unusable register to be loaded. The canonical mechanism is recorded in [System Capability Table](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
+
+This resolves the earlier question about whether there is a documented mechanism affecting live loaded capabilities during relocation. It does **not** resolve whether ROS used SCT retargeting for semantic software replacement, how acknowledgements/quiescence were coordinated, or when old code and table identities could safely be reclaimed. Section 4's uncertainty and section 15's loaded-register question now apply to those remaining boundaries rather than to the existence of a relocation refresh mechanism.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

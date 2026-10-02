@@ -57,6 +57,8 @@ This is recorded as **reconstructed architecture** under the repository's observ
 
 This does not mean ordinary normal interrupts traverse the destructive C(S)/checkout path. C(S) establishes the initial trusted running state; C(N), once established, is the normal operational entry path.
 
+**Evidence qualification, 2 October 2026:** US3814919A confirms the early fault-block/root and automatic CHP sequence; its subsequent-fault branch bypasses the outgoing dump (Description 132). This supplies a documented recovery precedent for restoration without a further outgoing dump, but does not establish the virgin cold-start path. US3771146A saves early SECOND GROUP bit 4 with primary state; US4486831A documents saved/restored PIR and one-instruction SPECIAL selection (53, 58). The prepared-process/SPECIAL bootstrap above remains a reconstruction combining version-sensitive observations, not a directly documented universal microsequence. Automatic detection of incomplete special registers and repeated CHP grants is a competing speculative explanation. Initial memory/SCT population and primordial authority provenance remain unresolved. See the [startup evidence update](../research/pp250-boot-and-processor-startup.md#evidence-update--2-october-2026-verified-fault-roots-and-startup-alternatives).
+
 ### Trap discrimination and storage management
 
 The Normal Interrupt process can recover information about the capability/reference responsible for the suspended operation from the saved process state/dump stack and use its form/type to discriminate the required software action.

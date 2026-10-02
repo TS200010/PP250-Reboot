@@ -603,3 +603,11 @@ instruction X retried
 ```
 
 **Evidence status:** the transparent virtual-memory behaviour establishes the requirement for restart of the trapping operation. An explicit primary-source reference for the precise statement that the IAR remains at the trapping instruction, and hence that the instruction is retried on resumption, is still to be supplied.
+
+## Evidence update — 2 October 2026: relocation-triggered normal interruption
+
+**DOCUMENTED OBSERVATION:** US3771146A, Description 121, explicitly uses interruption followed by process restoration to refresh capability registers expanded before relocation. This is an additional use of the existing normal interrupt/CHP path, not evidence for a second general dispatcher. See [canonical SCT refresh mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
+
+US3757307A, Description 40, 46–48, 49–65 and 68–78, corroborates completion of the current instruction before polling, transient operand/control state at that boundary, atomic interrupt-word handling and automatic CHP restoration. It does not change the conclusions of the completed [normal-interrupt source review](../transcriptions/US3757307A-program-interrupt-facilities-source-notes.md). That record is retained unchanged.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

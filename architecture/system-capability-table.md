@@ -80,6 +80,12 @@ stored active capability (11)
 
 This is more precise than saying simply that "LC page-faults": capability loading establishes the protected state that causes the later attempted use to trap.
 
+### Already-expanded capabilities during relocation
+
+**DOCUMENTED OBSERVATION:** US3771146A, Description 121, identifies the hazard of a processor retaining a capability expanded before the relocation decision. The relocating process interrupts the affected processors. Entering the interrupt handler and returning to the interrupted process reloads the workspace capability registers through the reserved pointers in its Dump Stack. While the MCT sumcheck is zero, those loads produce unusable capability registers; attempted use then traps.
+
+Thus an SCT update alone does not invalidate previously expanded registers. The described relocation mechanism coordinates process transitions to refresh them. The complete acknowledgement/barrier protocol, active-channel coordination, software-version replacement and safe SCT identity reuse are not established by this passage. See the [batch source review](../research/pp250-patent-transcriptions-review-2026-10-02.md).
+
 ### Active versus passive representation
 
 Do not equate "segment is not currently resident" with "every reference to it has type `10`." An active (`11`) reference identifies an SCT entry and can remain meaningful while the SCT entry is unavailable. A passive (`10`) representation instead carries backing-store identity/address information and is used when authority itself has been converted to its backing-store/outform representation.

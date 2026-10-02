@@ -121,6 +121,12 @@ This is structurally different from the later `EC WC RC ED WD RD` representation
 
 The relationship between the Figure 3 fields and the later COS/POS access bits remains to be established.
 
+### Evidence correction — early six-right representation
+
+**DOCUMENTED OBSERVATION:** US3814919A, Description 48, explicitly assigns bits 16–21 to `RD WD ED RC WC EC`, with bits 22–23 spare. Its priority is 4 March 1971 and US filing 1 March 1972. Six rights therefore occur in the early patent corpus; their first implementation date is not established by the priority date.
+
+This corrects the chronology implied by “earlier” and “later” in the structural comparison below. The Figure 3 scheme remains distinct, but the comparison cannot establish that six-right authority first appeared in Generation B. References below to A→B preserve the previous interpretation; its temporal claim is superseded by this observation. The relationship and implementation ordering of the two early representations remain **UNKNOWN**. Later propagation and attenuation are separate evidence and are not backdated. See the [batch source review](../research/pp250-patent-transcriptions-review-2026-10-02.md).
+
 ### Architectural evolution from Figure 3 to the six-right model
 
 **DOCUMENTED FACT:** the Figure 3 scheme factors permitted access into two distinct dimensions before routing is considered:

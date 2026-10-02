@@ -27,6 +27,7 @@ The working architecture reconstruction has been split by subject into the follo
 - [System Capability Table](system-capability-table.md) — SCT role and entry structure, descriptor validation, unavailable segments, and active/passive representation.
 - [Process Model](process-model.md) — process data and capability register state.
 - [Processor Control](processor-control.md) — special-purpose CPU registers and indicator/fault registers.
+- [I/O and Interconnect](io-and-interconnect.md) — protected channel transfer, access-unit read-and-hold, and bus diagnostic evidence.
 - [Faults, Interrupts and Startup](faults-interrupts-startup.md) — C(N), Normal Interrupt Block, automatic CHP, SPECIAL/C(S)-rooted startup, and trap/storage-management paths.
 
 This file is the navigation index for the current working PP250 architectural reconstruction. Use the subject documents above for substantive architecture.

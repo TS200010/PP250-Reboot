@@ -418,3 +418,11 @@ The main outstanding research questions are the mixed-access anti-forgery mechan
 - **[L1] SECONDARY EVIDENCE:** Henry M. Levy, *Capability-Based Computer Systems*, Digital Press, 1984, [chapter 4, “The Plessey System 250”](https://homes.cs.washington.edu/~levy/capabook/Chapter4.pdf), especially sections 4.2–4.5 and Figure 4-1. Read as corroboration and for terminology; it does not override the pocket reference or resolve version conflicts.
 
 Prepared against repository commit `43547b29cbd426a3dfda6f8dce464f4653cb3252`. This note adds a research reconstruction only; no architecture document, original source, transcription or previous research note was modified.
+
+## Evidence update — 2 October 2026: restoration is capability rematerialisation
+
+**DOCUMENTED OBSERVATION:** US3771146A, Description 75, 81 and 121, saves compact capability pointers and reloads workspace capability registers through the master table on process restoration. The relocation case deliberately uses a handler transition and return to replace previously expanded bounds with the table's current unavailable state. Thus a process dump does not freeze physical capability bounds independently of the table. This supports the existing capability-mediated process model; it constrains any reading of “restore” as a bit-for-bit resurrection of old expanded descriptors. See [canonical SCT mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
+
+The earlier statement that US3814919A was not archived is now superseded by its [repository PDF](../patents/US-3814919-A.pdf) and [new transcription](../transcriptions/US3814919A.rtf). Its subsequent-fault restore path bypasses the outgoing dump (Description 132); generalising this to cold start remains reconstruction, as discussed in the startup note.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

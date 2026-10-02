@@ -510,3 +510,11 @@ The current working proposition is:
 > **PP250 was certainly a capability machine, but “capability machine” may describe its protected authority mechanism rather than its deepest architecture. The emerging reconstruction is a sovereign governing relation M over an authority machine H and a computational machine T, with capability orthogonal to those roles. M need not contain system policy: C(N) shows how it can invoke T under an H-defined authority environment when policy is required. The C(S)-rooted startup establishes the first legitimate state from which C(N) can be configured; thereafter C(N) provides the normal protected callback from M into software. If correct, CALL/RETURN, CHP, fault recovery, power-up, C(S), C(N), capability genesis and the absence of supervisor mode are parts of one coherent architecture.**
 
 This proposition should be preserved as a reconstruction to be tested, not promoted to historical fact until the evidence and literature comparison justify doing so.
+
+## Evidence update — 2 October 2026: process transition and current capability state
+
+**DOCUMENTED OBSERVATION:** US3771146A, Description 121, explicitly uses an interrupt/restore cycle to rematerialise workspace capability registers through the master table after a relocation decision. The operation restores computational state while obtaining capability bounds/state afresh rather than reviving stale expanded descriptors.
+
+For the existing M⟨H,T⟩ investigation this supplies a further concrete observation of machinery acting on combined process and capability state. It supports testing the abstraction against restoration and relocation. It does not establish M as historical terminology, a third peer machine, or a particular mathematical formulation. No new mechanism is proposed here; the addition is historical evidence constraining the existing theory.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

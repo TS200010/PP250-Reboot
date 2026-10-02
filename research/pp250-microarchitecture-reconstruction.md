@@ -550,3 +550,11 @@ When a new internal name or control appears:
 6. retain contradictions and version differences explicitly.
 
 The aim is eventually to recover enough of the internal machine to explain *how* architectural operations and protected transitions are implemented, while preserving the boundary between documented hardware, reconstruction and hypothesis.
+
+## Evidence update — 2 October 2026: transfer and bus microarchitecture
+
+**DOCUMENTED OBSERVATION:** US3787818A, Description 48–50 and 63–90, describes channel transfer-stack pointer pairs, channel-owned source/destination capability registers, SCT sumcheck/bounds validation and repeated bounds checks. Special channel registers are processor-writable through a backdoor while offline. This extends the reconstruction to protected autonomous transfer; it does not settle live channel relocation or all permission checks. The canonical account is [I/O and interconnect](../architecture/io-and-interconnect.md).
+
+US4050059A, Description 13 and 16–21, gives the whole-access-unit READ-AND-HOLD, same-bus WRITE/RESET release, 10-microsecond timeout and parity-based hold-integrity check. US4041460A, Description 17–19, adds received-address/inverse monitoring for bus diagnosis. These observations constrain atomic-transfer and diagnostic microsequences; they do not establish a lock covering a whole software relocation transaction. Reset-code wording differs between sources and must remain version-sensitive.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

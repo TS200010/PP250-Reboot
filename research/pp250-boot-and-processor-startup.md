@@ -1,5 +1,7 @@
 # PP250 boot and processor startup: research reconstruction
 
+**New evidence, 2 October 2026:** the dated evidence update at the end records which earlier claims are superseded; the original reasoning is preserved.
+
 Status: research note, 19 September 2026. This is not an emulator specification or a verified cold-start microprogram.
 
 ## Scope and evidence
@@ -719,3 +721,15 @@ The first three stages are grounded in early fault-mechanism evidence. The propo
 4. Do surviving configuration or store-allocation documents reserve differently located Fault Start-Up Blocks for differently sized store modules?
 5. Was widening the variable field from eight to twelve bits explicitly motivated by larger or heterogeneous store modules?
 6. If differently sized modules coexist, is C(S) merely a preferred first recovery location with incrementing as fallback, or is there another documented rule for choosing the next module?
+
+## Evidence update — 2 October 2026: verified fault roots and startup alternatives
+
+The supplied [US3814919A](../transcriptions/US3814919A.rtf), [US4383297A](../transcriptions/US4383297A.rtf) and [US4486831A](../transcriptions/US4486831A.rtf) texts now permit direct textual checking of the patent findings previously marked “reported”. The earlier verification boundary and source-inventory statements describe the repository at preparation time. US3814919A is now held as both [PDF](../patents/US-3814919-A.pdf) and transcription. This update does not certify figures or reconcile every microsequence discrepancy.
+
+**DOCUMENTED OBSERVATION:** US3814919A's fault steps S2, S10 and S16 confirm the parity-invalidated old capability state, four-word fault-block descriptor/RSPC-0 root, checkout Dump Stack pointer and automatic CHP. Description 125–134, especially 132, further documents a subsequent-fault path that bypasses the outgoing dump and restores a process through another module. **WORKING RECONSTRUCTION:** this makes entry without a valid outgoing process plausible for cold start; it does not prove that cold start uses this recovery branch.
+
+**DOCUMENTED OBSERVATION:** US3771146A saves primary indicators including SECOND GROUP bit 4 with process state; US4486831A saves/restores PIR (53) and makes SPECIAL bit 4 redirect capability loading for one instruction (58). **WORKING RECONSTRUCTION:** a prepared initial Dump Stack could therefore supply relevant primary state as part of restoration. This competes with, rather than establishes, the hypothesis of automatic detection of incomplete special registers and repeated CHP grants. Early SECOND GROUP and later SPECIAL cannot be assumed identical without version-specific reconciliation.
+
+The root chain is better supported, but virgin-memory population, initial SCT/primordial capability provenance, and the complete inert-to-first-process sequence remain **UNKNOWN**. Nothing here proves arbitrary capability manufacture or resolves the existing CHP store/direct-mode hypotheses. Details and source discrepancies are recorded in the batch review.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

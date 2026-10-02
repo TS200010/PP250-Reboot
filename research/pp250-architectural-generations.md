@@ -1,5 +1,7 @@
 # PP250 / System 250 Architectural Generations
 
+**New evidence, 2 October 2026:** the dated evidence update at the end records which earlier claims are superseded; the original reasoning is preserved.
+
 ## Status
 
 **RESEARCH NOTE — WORKING RECONSTRUCTION**
@@ -250,7 +252,7 @@ The change from `VISITED` to `PRESENCE` occurs in the same broad later architect
 | BASE | documented | documented | documented |
 | 16-bit LIMIT concept | documented in loaded CR; SCT details source-sensitive | documented | documented |
 | 8-bit `PS/DT/RTE` access/type | documented | not assumed | not assumed |
-| Six `EC WC RC ED WD RD` rights | not backdated | documented | retained/reworked in later representation |
+| Six `EC WC RC ED WD RD` rights | documented in US3814919A; relationship to Figure 3 unresolved | documented | retained/reworked in later representation |
 | Nine-bit COS/POS layouts | no evidence | documented | not assumed |
 | Inform/Outform virtual-store representation | early conceptual/characteristic evidence; exact encoding unresolved | documented; residence/form represented through ACCESS | passive/FORM machinery revised |
 | GARBAGE SCT bit | not yet established | documented | documented |
@@ -258,7 +260,7 @@ The change from `VISITED` to `PRESENCE` occurs in the same broad later architect
 | PRESENCE SCT bit | no evidence | **do not assume** | documented |
 | FORM discriminator | no | no evidence for later meaning | documented |
 | Propagation/access reduction | no evidence | no evidence for later mechanism | documented |
-| Zero-SUMCHECK temporary SCT unavailability | not yet established | documented | continuity not assumed without source check |
+| Zero-SUMCHECK temporary SCT unavailability | documented in US3771146A | documented | continuity not assumed without source check |
 
 ## 8. Features shared by groups of generations
 
@@ -717,3 +719,15 @@ later:
 This explanation is not yet documented as designer intent. The exact original Fault Block address, the software that writes C(S)[23:12], and the exact arithmetic meaning of the later twelve-bit increment remain unresolved.
 
 Alternative explanations evaluated during reconstruction — replicated 4K-spaced Start-Up Blocks, a 4K physical store/SAU unit, blind 4K search as the primary mechanism, and a fixed-address per-store record that first loads C(S) — are unsupported or weakened by the evidence inspected so far. The detailed reasoning and status of each hypothesis are preserved in [pp250-boot-and-processor-startup.md](pp250-boot-and-processor-startup.md).
+
+## Evidence update — 2 October 2026: early six rights and documented local lifetime
+
+**DOCUMENTED OBSERVATION:** US3814919A, Description 48, explicitly assigns RD, WD, ED, RC, WC and EC to bits 16–21, leaving bits 22–23 spare. The patent has 4 March 1971 priority and a 1 March 1972 US filing. This places the six-right representation in the early patent evidence; it does not date its first delivered implementation.
+
+This **supersedes the chronology assumed in the A→B interpretations above**, including the suggestion that named execute/enter authority first crystallised in Generation B. The Figure 3 PS/DT/RTE representation remains documented and structurally distinct. The earlier comparison and its causal hypotheses are preserved as the reasoning that led to the question; they can no longer establish a clean A→B redesign date or attribute its motivation to experience with Generation A. The early corpus contains both representations. Their implementation ordering and exact relationship remain **UNKNOWN**. Later LOU, propagation and local-store machinery still require their own later evidence.
+
+US3771146A, Description 111–121, also establishes zero-SUMCHECK temporary unavailability and process-restoration refresh in the early corpus, correcting the matrix's former uncertainty for A.
+
+**DOCUMENTED OBSERVATION, Generation C:** US4486831A, Background/Summary 16–18 and Description 291–297, expressly documents procedure-associated local descriptors, automatic deallocation on return, invalidation of expired local capabilities and restrictions on storage into lower levels. This answers the earlier local-lifetime question: the evidence is now the description, not the name “Local Capability Count”. Whether compiler experience motivated these features remains **HYPOTHESIS**.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

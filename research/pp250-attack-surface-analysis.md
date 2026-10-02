@@ -350,3 +350,11 @@ Those mechanisms should be the focus of the continuing security analysis.
 No claim should yet be made that the PP250 is free of authority-escalation paths. The stronger and more useful claim at this stage is simply:
 
 > **No such path has yet been demonstrated in the reconstructed architecture, and the remaining candidates can now be identified and investigated explicitly.**
+
+## Evidence update — 2 October 2026: relocation and channel protection
+
+**DOCUMENTED OBSERVATION:** US3771146A, Description 121, supplies the refresh mechanism missing from section 12: interrupt the affected processors and restore their processes, thereby reloading workspace capabilities through the table. Changing the SCT alone is insufficient. The documented relocation case narrows the unresolved assessment; software replacement, full cross-processor coordination and SCT reuse remain unresolved. See [canonical SCT mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
+
+**DOCUMENTED OBSERVATION:** US3787818A, Description 48–50 and 63–90, supplies independent channel protection relevant to section 13: channel-owned source/destination capabilities, descriptor sumcheck validation and repeated bounds checks constrain autonomous transfers. Processor backdoor writes to the special channel capabilities require the channel to be offline. The remaining attack-surface questions concern configuration authority, active-channel relocation and the exact rights checks, rather than whether the described channel has capability/bounds machinery at all. See [channel architecture](../architecture/io-and-interconnect.md).
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.

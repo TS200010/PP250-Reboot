@@ -948,3 +948,13 @@ ordinary resource/capability genesis
 ```
 
 These classifications are provisional research judgements. Any should be reopened if primary evidence materially changes the constraints.
+
+## Evidence update — 2 October 2026: relocation and later local lifetimes
+
+**DOCUMENTED OBSERVATION:** US3771146A, Description 121, refreshes already-expanded capabilities during relocation by interrupting affected processors and restoring their processes through the table. This is evidence for relocation control, not general revocation, safe SCT identity reuse or the creation of primordial authority. See [canonical SCT mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
+
+**DOCUMENTED OBSERVATION, later architecture:** US4486831A, Background/Summary 16–18 and Description 291–297, ties local descriptors to nesting levels, automatically deallocates RLS allocations on return, invalidates registers designating expired local storage and restricts storing capabilities into a lower associated level. Protected Return's D(0) null mask is separate from the saved call descriptor used for restoration (249–251). These rules support procedure-local lifetime enforcement, not a claim that every system capability uses that lifecycle or that the 1976 processor implemented it.
+
+The supplied US4121286A.rtf duplicates US4050059A.rtf. It adds no allocation/deallocation evidence and cannot independently confirm the existing GARBAGE/VISITED or table-reuse reconstruction. Existing original-source findings remain separate evidence. The batch review records the provenance issue without altering either supplied file.
+
+See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.
