@@ -525,3 +525,125 @@ Source distinction: the component labels and overall system topology are those o
 INTERPRETIVE NOTE
 
 Figure 1 makes the architectural role of the diagnostic interface particularly clear: diagnostic access is integrated into the normal PP250 interconnection architecture. A good processor can therefore execute diagnostic software and reach the diagnostic interface of the processor under test through an ordinary addressable system path. The diagnostic mechanism consequently reuses the processing and communication resources of the multiprocessor system rather than introducing a separate special-purpose diagnostic processor.
+
+
+FIGURES 2a AND 2b — COMPOSITE TEXTUAL CAPTURE
+
+Figures 2a and 2b are the left and right halves of a single processor/diagnostic-interface block diagram and are to be read side-by-side, with Figure 2a on the left and Figure 2b on the right. The boundary between the printed figures is therefore not an architectural boundary. Only the paths which happen to cross the page join need to be mentally reconnected.
+
+The composite drawing is divided horizontally by line Z—Z. The processor module is above Z—Z and the diagnostic interface DI/F is below it.
+
+PROCESSOR MODULE — ABOVE Z—Z
+
+The processor is divided functionally into a micro-program area, μPROG, and a data area, DA.
+
+The micro-program area μPROG contains:
+- the micro-program address toggles/register UPA;
+- the micro-bit toggles/register UPB;
+- decoder DEC;
+- slot matrix SM;
+- micro-bit matrix MBM;
+- combinational logic CCL;
+- processor micro-program slot clock CLK.
+
+UPA supplies the micro-program slot address to the slot-selection mechanism. The slot matrix SM is also conditioned by data-area condition signals DACS produced through combinational logic CCL. The selected slot produces a micro-bit pattern through MBM/UPB. The resulting data-area manipulation signals DAMS control operations in the data area. CLK advances the processor from one micro-program slot to the next.
+
+The data area DA contains:
+- register block REGBLOCK;
+- instruction register INSTREG;
+- arithmetic and logic unit MILL;
+- processor bus-interface logic BI/FL;
+- output/bus-interface register OUT-REG;
+- the processor internal highways, including HO, MO and M1.
+
+REGBLOCK includes the accumulator-register stack and the capability base and limit register stacks. The sequence control register SCR is included in the accumulator-register stack and contains the absolute store address of the current instruction.
+
+The data paths shown interconnect the register block, instruction register, MILL, OUT-REG and bus-interface logic. Although the drawing represents these as single lines for clarity, the patent explicitly states that the processor uses parallel paths.
+
+DIAGNOSTIC INTERFACE — BELOW Z—Z
+
+The diagnostic interface DI/F is connected externally to peripheral bus PDN.
+
+Its bus-access portion contains:
+- address register AR;
+- address decoder AD;
+- bus-control signal circuit BC.
+
+AR receives diagnostic-interface addressing information from PDN. AD recognises the processor/diagnostic-interface identity and decodes the remaining address together with the read/write control information. It produces two groups of selection signals:
+- ARS — read-selection signals;
+- AWS — write-selection signals.
+
+These selection signals operate the individual diagnostic read, write and control gates.
+
+READ/MONITOR PATHS FROM PROCESSOR TO DIAGNOSTIC INTERFACE
+
+Eight monitor gate groups GR1–GR8 connect selected internal processor states to the diagnostic interface for return over PDN:
+
+- GR1 / 1AR — reads OUT-REG;
+- GR2 / 2AR — reads the current instruction address, SCR;
+- GR3 / 3AR — reads highway HO;
+- GR4 / 4AR — reads highway MO;
+- GR5 / 5AR — reads highway M1;
+- GR6 / 6AR — reads INSTREG;
+- GR7 / 7AR — reads the micro-bit register UPB;
+- GR8 / 8AR — reads the micro-program address register UPA.
+
+Thus the composite figure shows diagnostic observation points in both the processor data area and the micro-program area.
+
+WRITE/FORCING PATHS FROM DIAGNOSTIC INTERFACE INTO PROCESSOR
+
+The principal forcing paths are:
+
+- GW1 / 1AW — permits diagnostic information to be forced onto processor highway HO;
+- GW2 / 2AW — permits diagnostic conditioning/forcing of the UPA and UPB micro-program state.
+
+The interface therefore does not merely observe the processor. It can inject a chosen data value into the main data path and can impose chosen micro-program control state.
+
+DIAGNOSTIC CONTROL REGISTERS AND LOGIC
+
+The lower diagnostic-interface portion also contains:
+- miscellaneous register MREG;
+- REG1;
+- REG2;
+- slot register SR;
+- miscellaneous logic ML;
+- instruction-address comparator IAC;
+- slot comparator SC;
+- associated gates including GX, GY and GW3–GW6.
+
+GW3 provides write access to MREG.
+GW4 provides write access to slot register SR.
+GW5 provides write access to REG2.
+
+REG1 is used in connection with forcing a value onto HO. When the relevant miscellaneous-control condition is established, signal MLS2 activates GW6 so that the value associated with REG1 is driven onto HO.
+
+REG2 holds an SCR value at which processor execution may be stopped. Comparator IAC compares that value with the current SCR value, supplied through gates GX.
+
+SR holds either a number of micro-program slots to execute or a particular slot address at which execution is to stop. Comparator SC compares SR with the current UPA value supplied through gates GY.
+
+MREG controls miscellaneous diagnostic functions through ML. These include enabling CLK, executing a single slot, executing a single instruction, stopping at selected SCR values, forcing HO, inhibiting normal micro-program decoding, repeating an instruction, executing a specified number of slots, stopping on entry to the fault-interrupt micro-program, and stopping at a selected micro-program slot.
+
+COMPOSITE SIGNAL RELATIONSHIPS ACROSS FIGURES 2a/2b
+
+When the two printed halves are placed side-by-side, the few lines crossing their join are continuations of processor or diagnostic signals and not interfaces between separate units. The important functional relationships across the complete drawing are:
+
+1. The processor data area supplies condition information DACS to the micro-program selection logic.
+2. The micro-program area returns DAMS/micro-bit control to the data area.
+3. Internal processor data highways connect the register/instruction/arithmetic/bus-interface portions across the composite drawing.
+4. Diagnostic read paths GR1–GR8 converge on the diagnostic-interface return path to PDN.
+5. Diagnostic write/control paths selected by AD extend upward across Z—Z to the appropriate processor data or micro-program points.
+6. SCR is brought to the diagnostic control logic for instruction-address comparison through GX/IAC.
+7. UPA is brought to the diagnostic control logic for slot comparison through GY/SC.
+8. ML controls processor clocking and selected micro-program/data-area behaviour while the diagnostic interface is active.
+
+The printed 2a/2b division should therefore be ignored when interpreting the architecture: together the figures describe one processor module penetrated at selected observation, injection and control points by one addressable diagnostic interface.
+
+Source distinction: the identities and functions of the labelled blocks, gates and signals above are explicitly described by the patent text accompanying Figures 2a and 2b. The reconstruction of 2a and 2b as one left-to-right composite follows the patent's explicit instruction that the figures “should be placed side-by-side with FIG. 2b on the right.”
+
+INTERPRETIVE NOTE
+
+The composite figure shows that the diagnostic interface operates below the ordinary instruction-set level. It exposes selected processor datapath state, micro-program state and clock/control state to another processor through an addressable system interface.
+
+This is stronger than a conventional register-level debug port. The diagnosing processor can observe internal highways and micro-state, inject data onto HO, impose UPA/UPB state, and control execution at slot or instruction granularity. The faulty processor can therefore be treated as a state machine whose internal state is established, advanced by controlled clocking, and then inspected.
+
+Architecturally, the diagnostic mechanism remains external to the normal execution semantics of the processor: DI/F is an addressable maintenance interface attached to internal implementation points. The drawing does not imply that ordinary PP250 software can directly manipulate these internal signals; access is through the diagnostic-interface mechanism described by the patent.
