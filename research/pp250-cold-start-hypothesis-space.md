@@ -208,7 +208,84 @@ This is **not yet recorded as a formal rejection of hypothesis N**. N remains av
 
 The distinction matters because the investigation is intended to show why alternatives were eliminated rather than retrofitting a preferred answer.
 
-## 7. Evaluation method
+## 7. Result of first architectural pruning
+
+Applying P1–P7 as an actual pruning pass reduces the active mechanism search space. This is architectural pruning, not a claim that every removed hypothesis has been independently contradicted by a primary source.
+
+### Removed from the active mechanism set
+
+- **N — hardware directly presets normal special capabilities.** Removed. Its defining mechanism requires the processor to manufacture configuration-dependent normal-system authority. There is no positive evidence for this, and it conflicts with P1, P2, P6 and P7. It can be reinstated only by direct evidence.
+- **H — capability operation with hidden bootstrap side effects.** Removed. It adds undocumented authority-changing behaviour to otherwise architectural capability operations and conflicts with P3 and P5 unless direct evidence is found.
+- **G — CHANGE PROCESS restores C(I), C(C), C(N).** Removed in its strong form. The documented Dump Stack does not contain these special capability registers, and treating CHP as secretly restoring them conflicts with P4. A genuinely documented start-up-specific CHP extension would constitute new evidence and would reopen the question.
+- **J — controlled interrupt/fault manufactures normal roots.** Removed. It requires an undocumented exceptional authority-creation path when ordinary capability mechanisms are available.
+- **I — C(C) automatically causes C(I) and C(N) to appear.** Removed in its original automatic form. A weaker proposition — that ordinary code, once given legitimate authority through C(C), can obtain capabilities subsequently loaded into C(I) and C(N) — is not a separate hypothesis and remains compatible with the surviving families.
+
+These removals are deliberately stronger than "possible but unsupported": under the working PP250 architectural principles they are no longer active reconstruction candidates. They remain recorded above so that new primary evidence can reinstate them.
+
+### Set aside: relevant, but answering a different question
+
+- **K — another processor prepares state.** Relevant to processor addition/rejoin, not a complete explanation of first-processor cold start.
+- **L — maintenance/loading equipment supplies primordial state.** Relevant to how stored bootstrap structures may initially be populated, but does not by itself explain the processor's architectural authority transition.
+- **M — retained/preloaded memory.** Relevant to restart/rejoin, not an explanation of first start from an uninitialised system.
+
+These are not rejected. They are environmental or system-initialisation cases and should not be mixed with the processor mechanism currently being reconstructed.
+
+### Active hypotheses after first pruning
+
+The remaining hypotheses are better treated as choices along three largely orthogonal dimensions rather than as competing complete narratives.
+
+#### Authority entering native execution
+
+- **E/F — restricted SCT environment / transition to normal C(C).** The exceptional start-up/fault path may already have established a restricted capability-table environment before the first native instruction. Bootstrap then replaces or transitions this into the normal SCT and establishes the remaining normal roots.
+
+E and F are retained as one family until the relationship between the early MCR/special table and the 1976 C(C) can be established more precisely.
+
+#### Access to the special capability registers
+
+The documented **SECOND GROUP** state is the principal candidate mechanism.
+
+- **later-SPECIAL-like interpretation** — SECOND GROUP redirects an LC to the corresponding special capability register for the relevant instruction;
+- **O — broader early SECOND GROUP semantics** — the earlier mechanism may select a wider alternate register or microcode environment than the later documented one-instruction SPECIAL mechanism.
+
+O therefore remains an important generation-sensitive alternative, not an independent source of primordial authority.
+
+#### Sequencing the required loads
+
+- **A/C/D — prepared-process / Dump-Stack sequencing family.** Restored process state supplies SECOND GROUP at the required moments. The variants differ over whether this is repeated prepared entries, a chain of synthetic processes/Dump Stacks, or repeated entry of one advancing process state.
+- **B — one running bootstrap process re-establishes SECOND GROUP.** The initial process itself performs the sequence, provided a legitimate mechanism exists for re-establishing MIP04 between loads.
+
+A, C and D are retained as one family until evidence about the sequencing mechanism distinguishes them.
+
+### Reduced search space
+
+```text
+AUTHORITY
+    |
+    +-- E/F: restricted SCT environment
+    |
+    v
+SPECIAL-REGISTER ACCESS
+    |
+    +-- SECOND GROUP with later-SPECIAL-like semantics
+    |
+    +-- O: broader early SECOND GROUP semantics
+    |
+    v
+SEQUENCING
+    |
+    +-- A/C/D: prepared process / Dump Stack / CHP driven
+    |
+    +-- B: running bootstrap code re-establishes SECOND GROUP
+    |
+    v
+NORMAL C(C), C(I), C(N) STATE
+```
+
+A likely eventual reconstruction may therefore be a **combination**, not one lettered hypothesis: E/F supplies legitimate initial authority, SECOND GROUP supplies access to the special capability registers, and either A/C/D or B supplies sequencing.
+
+This reduced set is the starting point for the next evidential pruning pass.
+
+## 8. Evaluation method
 
 Each hypothesis should now be tested against the complete corpus and assigned one of:
 
