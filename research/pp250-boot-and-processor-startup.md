@@ -622,7 +622,7 @@ The patent's MIP fault-bit numbering must not simply be relabelled as Pocket Ref
 | 07 | 1st Attempt |
 | 08 | Inhibit Interrupts |
 
-This corrects an earlier conversational conflation: **FIRST ATTEMPT is MIP07**, not MIS. MIP04 is SECOND GROUP, already discussed in Section 11.
+**Generation distinction:** the 1976 Pocket Reference identifies **MIP07 = 1st Attempt**, and US3771146A likewise places **First Attempt at primary-indicator bit 7**, alongside **Second Group at bit 4**, with the primary indicators retained in process state. The earlier fault-recovery embodiment in US3814919A instead describes its **F.A.T. in MIS** as internal fault-microprogram state. These statements should not be collapsed into a single register assignment: they document different implementations/generations of the fault machinery. For the 1976 architecture reconstructed here, FIRST ATTEMPT is MIP07; Repton remains valid evidence for the earlier fault/checkout mechanism on its own terms. MIP04 is SECOND GROUP, already discussed in Section 11.
 
 ### 12.3 MIS — Secondary Indicators
 
