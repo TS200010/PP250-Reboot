@@ -202,6 +202,58 @@ Three situations must remain distinct:
 
 **UNKNOWN:** whether cold-start and fault-start microsequences are identical. Shared architectural machinery does not prove identical entry conditions, parity handling, outgoing-state treatment or microinstruction order.
 
+## 8.1 Hypothesis: C(S) is a common cold-start and fault-entry root
+
+**HYPOTHESIS / strong reconstruction.** The processor's special capability register **C(S)** identifies the same architectural Start-Up/Fault Block during bare-metal cold startup as it subsequently identifies during fault handling. There is not a distinct startup object which is later replaced by a fault object.
+
+**Documented evidence.** C(S) is a special-purpose capability register separate from the ordinary numbered capability-register set. Its contents are preset by processor hardware following power-up. The fault mechanism uses C(S) to address a four-word special block containing the information required to establish the Special Capability Table and a reserved segment pointer identifying a Dump Stack. Software cannot arbitrarily replace C(S)'s capability definition. The exceptional mutable portion is the high-order part of its Base address, which the fault mechanism itself can alter/increment.
+
+**Reasoning.** If C(S) initially designated one structure for cold startup and subsequently had to designate a different structure for fault handling, some mechanism would have to transform C(S) between those two roles. No such mechanism has been identified. More importantly, the documented restrictions on modification of C(S) appear not to permit such an arbitrary transformation.
+
+The mutable high-order Base bits instead have a natural explanation in the documented fault-recovery mechanism: they select another storage module containing another copy of the same special fault/startup information. Thus the modification changes the **physical copy selected**, rather than the **architectural object selected**.
+
+This interpretation becomes particularly clear for configurations using 32K storage modules. If alteration of those high-order bits has no effect on the address within a 32K module, they cannot be being used to transform a startup-block address into a different fault-block address within that module. Their purpose is consistent with storage-module selection/redundancy.
+
+Therefore the simplest reconstruction consistent with the evidence is:
+
+```text
+                         power-up
+                            |
+                     hardware presets
+                           C(S)
+                            |
+                            v
+                 Start-Up / Fault Block
+                            |
+                +-----------+-----------+
+                |                       |
+          cold-start use           fault-entry use
+                |                       |
+                v                       v
+          Dump Stack /             Dump Stack /
+        native PP250 process     native PP250 process
+```
+
+The documented fault-tolerant system uses the fault path to enter a **checkout process**, but checkout is software/system policy layered on the processor mechanism. At the raw PP250 architectural level the evidence establishes only that the structure can identify a Dump Stack from which **PP250 native execution** is entered; it does not require checkout, ROS, PDOS, or any other particular software component.
+
+The diagram deliberately does **not** assert that cold startup and fault entry necessarily use identical microcode, nor that they necessarily select the same Dump Stack. The hypothesis concerns the **root structure addressed by C(S)**.
+
+A fault retry may alter the permitted high-order C(S) Base bits:
+
+```text
+C(S) -> copy of Start-Up/Fault Block in SM0
+
+                 fault/retry
+                      |
+                      v
+
+C(S) -> corresponding copy in SM1
+```
+
+That is a change of **replica**, not a change from "startup meaning" to "fault meaning."
+
+**Remaining uncertainty.** We still lack primary evidence describing the complete cold-power-up microsequence. Consequently, we should not yet state as fact that power-up automatically traverses C(S) in exactly the manner used by fault entry. What we can say is that **if C(S) is the cold-start root, the architecture gives us no evidence of a separate startup version of it that is subsequently converted into the fault root; the available evidence instead strongly supports a single persistent Start-Up/Fault structure.**
+
 ## 9. Ground zero: establishing the first executable authority state
 
 This section records the central reasoning that emerges when the documented fault/startup mechanism is considered as an architectural bootstrap mechanism rather than merely as ROS/PDOS checkout policy.
