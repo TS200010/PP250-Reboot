@@ -254,6 +254,57 @@ That is a change of **replica**, not a change from "startup meaning" to "fault m
 
 **Remaining uncertainty.** We still lack primary evidence describing the complete cold-power-up microsequence. Consequently, we should not yet state as fact that power-up automatically traverses C(S) in exactly the manner used by fault entry. What we can say is that **if C(S) is the cold-start root, the architecture gives us no evidence of a separate startup version of it that is subsequently converted into the fault root; the available evidence instead strongly supports a single persistent Start-Up/Fault structure.**
 
+## 8.2 Hypothesis: initial native code must establish the normal-system roots
+
+**HYPOTHESIS / strong architectural deduction.** C(S) provides the hardware-established authority root from which the processor can enter its first native PP250 execution context. That initial execution context does not, by itself, constitute a normally operating processor. Before normal system operation can begin, three further special capability registers must be established:
+
+- **C(C)** — the normal System Capability Table root, required for normal capability-pointer resolution.
+- **C(I)** — the system interrupt/interval mechanism root, required for normal interrupt polling.
+- **C(N)** — the Normal Interrupt Block root, required for normal interrupt entry.
+
+C(S) is not one of these because it is preset by the processor following power-up and provides the bootstrap root itself. C(D) is not one of them because the Dump Stack capability is established as part of entering the initial process.
+
+The reconstructed cold-start sequence therefore extends one stage beyond the C(S) common-root hypothesis:
+
+```text
+POWER UP
+   |
+   v
+hardware establishes C(S)
+   |
+   v
+C(S) -> Start-Up Block
+   |
+   v
+special startup capability environment
+   |
+   v
+initial Dump Stack
+   |
+   v
+automatic CHANGE PROCESS
+   |
+   v
+FIRST NATIVE PP250 EXECUTION
+   |
+   |  initial native code must establish:
+   |
+   +---- C(C)  normal System Capability Table
+   |
+   +---- C(I)  interrupt/interval mechanism
+   |
+   +---- C(N)  Normal Interrupt Block
+   |
+   v
+NORMAL PP250 PROCESSOR OPERATION
+```
+
+**Reasoning.** These three registers represent persistent machine state required for normal processor operation but which cannot simply be assumed to exist at bare-metal power-up. C(C) is required for the normal capability environment: without the normal System Capability Table root, ordinary reserved-segment-pointer/capability resolution cannot operate normally. C(I) is required for the normal interrupt/interval polling machinery. C(N) is required for normal interrupt entry.
+
+Conversely, none of these three need be assumed merely to explain the exceptional transition from power-up into the first native PP250 process. That transition is rooted in hardware-established C(S), uses the special startup capability environment, identifies a Dump Stack, and enters its process through CHANGE PROCESS. The Dump Stack transition supplies C(D) as part of the process context, while C(S) already exists as the exceptional hardware root.
+
+The resulting architectural boundary is therefore: **C(S) gets the processor into native PP250 execution; establishment of C(C), C(I), and C(N) is what is then required to move from that bootstrap execution environment to normal processor operation.**
+
 ## 9. Ground zero: establishing the first executable authority state
 
 This section records the central reasoning that emerges when the documented fault/startup mechanism is considered as an architectural bootstrap mechanism rather than merely as ROS/PDOS checkout policy.
