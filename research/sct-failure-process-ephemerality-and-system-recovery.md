@@ -507,6 +507,44 @@ How that is implemented is a separate research problem. Possible replicated SCT 
 
 ---
 
+### 15.1 Recovering H rather than merely recovering the SCT
+
+The stronger modern conclusion is that the recovery target is not the SCT as a particular data structure. It is the **H-level authority/object world that the SCT helps M represent**.
+
+In the historical reconstruction, catastrophic loss of the SCT may destroy the current Inform capability epoch. A modern descendant need not accept that fault-containment boundary. If the specified hardware fault set includes loss of a storage module, then failure of the physical structure holding SCT state should not by itself destroy the logical authority relationships represented through it.
+
+This suggests a modern requirement:
+
+> **For faults within the machine's specified fault-containment envelope, M should preserve or reconstruct H so that surviving Inform capabilities continue to denote the same logical objects with the same authority.**
+
+The concrete SCT problem then separates into three different recovery problems:
+
+```text
+capability namespace / object identity
+        |
+        +-- preserve the coupling between active capability references
+        |   and the logical objects they denote
+        |
+physical residency
+        |
+        +-- reconstruct current placement/residency after hardware loss
+        |
+latest object contents
+        |
+        +-- preserve dirty state by whatever redundancy, logging or
+            persistence mechanism the fault model requires
+```
+
+These must not be conflated.
+
+A PP250-like implementation could, for example, preserve the association between an active SCT reference and persistent object identity redundantly. If a store module containing an object's current primary-store copy failed, the object's SCT state could become non-resident rather than ceasing to denote the object. The ordinary virtual-store machinery could then restore the object while existing Inform capabilities retained their SCT references.
+
+That is a **design direction, not a settled mechanism**. Replicated SCTs, generations, update protocols, commit ordering and dirty-block redundancy all raise their own consistency problems and have not yet been designed. In particular, merely keeping two copies of the SCT does not by itself solve H recovery: the replicas must preserve one coherent authority/object relationship across updates and failover.
+
+The division of responsibility with applications also remains important. Recovering H and hiding physical machine faults does not give M knowledge of application semantics. The system can preserve objects, authority and execution infrastructure, but it still cannot infer that, for example, a debit and a credit form one indivisible business transaction. Application-level semantic atomicity remains an application or higher-level service responsibility.
+
+Thus the modern direction is more accurately described as **H recovery** than **SCT recovery**. The SCT is one possible M-level representation through which that requirement might be implemented.
+
 ## 16. Current conclusion
 
 The SCT may indeed have been a physical single point whose destruction brought the current normal capability environment to its knees.
