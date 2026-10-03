@@ -332,3 +332,206 @@ Each hypothesis should now be tested against the complete corpus and assigned on
 For every rejection or promotion, record the specific evidence and the exact dependency being tested.
 
 The objective is not necessarily to force a unique answer. If several mechanisms survive all available evidence, a faithful PP250 reconstruction should preserve that uncertainty explicitly.
+
+
+## 9. Preferred surviving hypothesis — prepared process chain and one-way C(C) transition
+
+The subsequent investigation has materially strengthened the **A/C prepared-process / Dump-Stack sequencing family**. It is now the preferred reconstruction. This section does not remove the earlier hypothesis-space or pruning record; it records why one surviving family has become substantially better supported than the alternatives.
+
+### 9.1 New evidence: SECOND GROUP is prepared process state
+
+The Pocket Reference identifies **MIP04 as SECOND GROUP**, and MIP is saved in the process Dump Stack. Contemporary process documentation establishes that CHANGE PROCESS restores process state from the incoming Dump Stack.
+
+This changes the sequencing problem. SECOND GROUP need not be manufactured by microcode, asserted by an undocumented privileged instruction, or re-armed by a special bootstrap rule. A process with legitimate authority to construct the incoming Dump Stack can prepare that process to begin with SECOND GROUP set.
+
+```text
+control/start-up process
+        |
+        | constructs target Dump Stack
+        | target MIP04 = SECOND GROUP
+        v
+       CHP
+        |
+        v
+target begins with SECOND GROUP set
+        |
+        v
+LC can address the corresponding special capability register
+```
+
+The exact primary-source statement that the creator explicitly writes the initial MIP word has not yet been found. The reconstruction is therefore a **supported architectural inference**, not a directly documented bootstrap algorithm. It follows from the documented facts that the Dump Stack contains MIP, CHANGE PROCESS restores the incoming process state, and process Dump Stacks are allocated at process inception.
+
+This evidence substantially weakens hypothesis **B**, because its proposed microcode re-assertion of SECOND GROUP is no longer needed to explain repeated special-register loads.
+
+### 9.2 C(C) must be established first
+
+The normal System Capability Table root **C(C)** must be installed before normal capabilities intended for C(I) or C(N) are resolved through the runtime capability-table environment. Otherwise those capability references would be interpreted relative to the wrong SCT.
+
+The preferred ordering is therefore:
+
+```text
+first special load   -> C(C)
+later special load   -> C(I)
+later special load   -> C(N)
+```
+
+The ordering of C(I) and C(N) relative to each other is not yet established by this reasoning; the important constraint is that **C(C) is first**.
+
+### 9.3 The transition process deliberately loses its startup path
+
+A subtle consequence of changing C(C) initially appeared to be a problem and is now an important part of the hypothesis.
+
+Suppose process B's Dump Stack is created and made reachable while the **startup/special SCT** is active. CHANGE PROCESS into B expands that Dump-Stack capability into **C(D)**. B therefore executes with:
+
+```text
+C(D) -> B Dump Stack        [expanded capability]
+C(C) -> startup/special SCT
+MIP04 = SECOND GROUP
+```
+
+B then uses its SECOND GROUP opportunity to install the normal runtime SCT:
+
+```text
+LC -> C(C) = runtime SCT
+```
+
+Changing C(C) does not invalidate the already-expanded C(D): the Dump Stack's real base, limit and access information are resident in the processor capability register. B can therefore continue to execute.
+
+What disappears is the **stored capability path through the startup SCT by which B's Dump Stack was reached**. Once C(C) has changed, the runtime capability universe need not contain any route back to B's Dump Stack.
+
+```text
+STARTUP AUTHORITY WORLD
+
+startup SCT
+    |
+    +----> B Dump Stack
+              |
+             CHP
+              |
+              v
+       C(D) = expanded B DS
+
+B: LC -> C(C) = runtime SCT
+
+================================
+        AUTHORITY BOUNDARY
+================================
+
+RUNTIME AUTHORITY WORLD
+
+C(C) -> runtime SCT
+
+C(D) -> B Dump Stack
+        remains usable while B runs
+
+runtime SCT ----X----> B Dump Stack
+```
+
+This is not a stranded-process defect. It provides a natural **one-way authority transition**. When B eventually performs CHANGE PROCESS, C(D) is replaced by the incoming process's Dump-Stack capability. If the runtime SCT has no path back to B's Dump Stack, B then becomes deliberately inaccessible.
+
+No explicit revocation operation, memory clearing, hidden CHP privilege, or microcode bootstrap-completion test is required. Authority to the startup world disappears because the new capability-table root provides no path back to it.
+
+### 9.4 Successive prepared processes supply subsequent SECOND GROUP opportunities
+
+Once B has installed the runtime C(C), subsequent process construction can take place in the runtime capability environment. B can prepare or select an incoming process C whose Dump Stack contains MIP04 SECOND GROUP, then CHANGE PROCESS to it. C can perform the next special load and similarly prepare or select a further process.
+
+The minimal conceptual chain is:
+
+```text
+startup process A
+    |
+    | prepare B Dump Stack with SECOND GROUP
+    v
+   CHP B
+
+B:
+    LC -> C(C) = runtime SCT
+    |
+    | startup authority is now cut off
+    | prepare/select C under runtime authority
+    v
+   CHP C
+
+C:
+    LC -> C(I)
+    |
+    | prepare/select D with SECOND GROUP
+    v
+   CHP D
+
+D:
+    LC -> C(N)
+    |
+    v
+normal online state
+```
+
+The labels A/B/C/D denote architectural roles, not documented PP250 process names. The corpus has not yet established that exactly four separately named software processes were used, nor that the three LC operations were consecutive instructions.
+
+### 9.5 Processor rejoin uses the same mechanism
+
+This mechanism also provides a coherent explanation for processor rejoin after successful checkout.
+
+The fault/checkout environment is deliberately restricted and is rooted independently of the normal runtime SCT. The fault patent documents successful checkout progressing through a **rejoin/start-up process** before the processor returns to the online system. A returning processor must re-establish the normal processor-global capability state before normal scheduling can resume.
+
+The prepared-process chain provides that transition without requiring a separate privileged "rejoin setup" operation:
+
+```text
+fault / checkout environment
+        |
+        v
+rejoin/start-up process state
+        |
+        | prepared SECOND GROUP
+        v
+install normal C(C)
+        |
+        v
+runtime-prepared state
+        |
+        | prepared SECOND GROUP
+        v
+install C(I)
+        |
+        v
+runtime-prepared state
+        |
+        | prepared SECOND GROUP
+        v
+install C(N)
+        |
+        v
+normal online processor
+```
+
+The important architectural point is that passing checkout does not by itself grant normal-system authority. The normal system can control the prepared rejoin state and thereby control the transition into the runtime capability universe.
+
+### 9.6 Status of the surviving alternatives
+
+The present evidential position is:
+
+- **A/C — prepared process / preconstructed Dump-Stack chain:** **PREFERRED SUPPORTED INFERENCE.** It uses documented Dump-Stack MIP state, ordinary CHANGE PROCESS restoration and the documented SECOND GROUP mechanism without requiring additional hidden bootstrap behaviour.
+- **D — repeated entry of one advancing Dump Stack:** still architecturally possible, but there is currently no need for it and the one-way loss of the first transition process favours a chain of prepared states.
+- **B — bootstrap-completion SECOND GROUP:** now **strongly disfavoured**. It requires an otherwise undocumented LC/microcode rule to re-assert SECOND GROUP, whereas prepared incoming MIP state supplies the required opportunities using ordinary process machinery.
+- **E/F — restricted SCT environment transitioning to normal C(C):** retained as the authority context in which the preferred sequence begins. The precise generation-dependent relationship between the early MCR/special table and the 1976 C(C) remains unresolved.
+- **O — broader early SECOND GROUP semantics:** remains generation-sensitive and unresolved, but the preferred sequence does not require broader semantics than the ability to select the relevant special capability register for the LC.
+
+### 9.7 Relationship to the reported three-instruction boot
+
+Hamer-Hodges's recollection that **"three instructions booted the machine"** is striking in light of the three special-register establishments:
+
+```text
+LC -> C(C)
+LC -> C(I)
+LC -> C(N)
+```
+
+This correspondence is **not evidence that these were the remembered three instructions**. The recollection may refer to a different boundary or sequence, and the three special loads need not have been consecutive. It is retained as a research clue only.
+
+### 9.8 Current preferred reconstruction
+
+The preferred reconstruction is therefore:
+
+> **A privileged startup/rejoin context constructs or selects an incoming process Dump Stack whose saved MIP has SECOND GROUP set. CHANGE PROCESS restores that state. The first transition process uses its one SECOND GROUP opportunity to install the normal C(C). Because its own C(D) is already expanded, it can continue after the SCT root changes, while the stored capability path back into the startup world disappears. Subsequent process states, now constructed or selected under the runtime SCT, provide further SECOND GROUP opportunities to establish C(I) and C(N). The transition is consequently implemented by ordinary PP250 capability and process mechanisms and is naturally one-way.**
+
+This is a reconstruction, not yet a fully documented historical instruction trace. Its strength is that it now explains cold-start normalisation and processor rejoin with the same small set of documented architectural mechanisms while eliminating several previously necessary undocumented bootstrap behaviours.
