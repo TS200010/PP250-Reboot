@@ -362,6 +362,68 @@ That distinction moves H beyond a simple memory-protection interpretation and pr
 
 ---
 
+### Fault recovery as preservation or reconstruction of H
+
+The SCT-failure investigation exposes a further consequence of treating H as an architectural object rather than identifying it with any one capability representation.
+
+H is the authority-and-binding world within which T computes. Structures such as the SCT are mechanisms by which M realises parts of that world; they are not H itself. It therefore does not follow that destruction of one physical representation must imply destruction of the authority/object relationships it represented.
+
+For a modern M<H,T> descendant, this suggests a general fault-containment principle:
+
+> **Within the machine's specified fault model, M should preserve or reconstruct a valid representation of H so that the logical authority/object relationships survive failure of their particular physical representation.**
+
+This is stronger and more general than a requirement to replicate the SCT. Replication is only one possible implementation technique. The architectural invariant concerns H: surviving capabilities and bindings should continue to denote the same logical objects with the same authority after an admissible hardware fault.
+
+Schematically:
+
+```text
+before fault
+
+        H
+   authority/object graph
+          |
+          | represented by
+          v
+      M structures
+   SCT / residency / state
+          |
+       physical M
+          X  hardware fault
+
+             M recovery
+                 |
+                 v
+
+        H'
+   recovered representation
+          |
+          +-- same surviving logical objects
+          +-- same surviving authority relationships
+          +-- physical placement may differ
+```
+
+The desired relation is therefore not necessarily bit-for-bit preservation of implementation state:
+
+```text
+physical representation before fault
+        !=
+physical representation after recovery
+```
+
+but preservation of the relevant H-level semantics:
+
+```text
+authority/object relationship before fault
+        ==
+authority/object relationship after recovery
+```
+
+This also clarifies the boundary between system and application recovery. M can preserve H-level identity, authority, bindings and the machinery needed to continue or reconstruct execution. It cannot infer application-specific semantic transactions. Those remain properties of software or higher-level services.
+
+The historical PP250 may not have provided this guarantee: the current SCT-failure reconstruction allows catastrophic SCT loss to terminate the current Inform/process epoch and rebuild a fresh one. The modern principle is therefore a **design consequence of the M<H,T> model**, not a claim about historical System 250 behaviour.
+
+The detailed derivation and the SCT-specific design questions are recorded in `sct-failure-process-ephemerality-and-system-recovery.md`.
+
 ## 4. Why later capability systems can encourage the misreading
 
 Modern discussion can make the historical classification still more misleading. A later architecture may employ sophisticated capabilities for memory safety, provenance, bounds, permissions, compartmentalisation or protected invocation and therefore naturally be compared with PP250 as another member of the broad family of “capability machines”.
