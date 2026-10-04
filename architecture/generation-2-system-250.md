@@ -31,6 +31,14 @@ Before going any further, it is useful to introduce a few definitions and import
 - **Capability** — a reference to a structure, together with an access (authority) over that structure.
 - Different capabilities may refer to the same structure with different access (authorities) over it.
 
+**Using these defined primitives, we can construct a protected structure representing an object.** The object consists of executable code structures or segments representing functions that operate upon data structures representing the state of the object. Capabilities provide the required access to each of these structures: execution access to the code, and whatever data access each data structure requires — for example read-only, write-only, or read-write access.
+
+The capabilities defining the object are **assembled into a capability block**. The capabilities within that block therefore define both the functions that may operate upon the object and the data upon which those functions operate.
+
+**We now need a new class of capability through which this capability block can itself be referenced in a protected way.** Such a capability must not allow its holder to read or modify the capabilities contained within the block. It must permit only the invocation of one of the functions represented within the block, without exposing the capabilities from which the object is constructed.
+
+**Armed with an instance of this new capability, all its holder can do is invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, and the accesses required to perform those operations remain within the protected structure. The holder cannot bypass those functions to obtain access to the underlying code, data or capabilities. That restriction is enforced by the hardware.
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
