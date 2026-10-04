@@ -119,13 +119,13 @@ The patent describes `PS` as selecting store read, store write, or store read/wr
 
 This is structurally different from the later `EC WC RC ED WD RD` representation. It should therefore be treated as an **earlier architectural access-code scheme**, rather than interpreted retrospectively using the later access-right definitions.
 
-The relationship between the Figure 3 fields and the later COS/POS access bits remains to be established.
+The Figure 3 `PS/DT/RTE` fields and the COS/POS six-right access codes are treated as **generation-specific representations**. No bit-for-bit mapping between them is required for the architectural reconstruction unless future evidence shows that the two representations coexisted within one implementation.
 
 ### Evidence correction — early six-right representation
 
 **DOCUMENTED OBSERVATION:** US3814919A, Description 48, explicitly assigns bits 16–21 to `RD WD ED RC WC EC`, with bits 22–23 spare. Its priority is 4 March 1971 and US filing 1 March 1972. Six rights therefore occur in the early patent corpus; their first implementation date is not established by the priority date.
 
-This corrects the chronology implied by “earlier” and “later” in the structural comparison below. The Figure 3 scheme remains distinct, but the comparison cannot establish that six-right authority first appeared in Generation B. References below to A→B preserve the previous interpretation; its temporal claim is superseded by this observation. The relationship and implementation ordering of the two early representations remain **UNKNOWN**. Later propagation and attenuation are separate evidence and are not backdated. See the [batch source review](../research/pp250-patent-transcriptions-review-2026-10-02.md).
+This corrects the chronology implied by “earlier” and “later” in the structural comparison below. The Figure 3 scheme remains distinct, while the six-right scheme is also evidenced in the early patent corpus. The reconstruction therefore treats these as **different generation/version-specific representations** and does not require an exact mapping or implementation ordering between them. References below to A→B preserve the earlier comparative reasoning, but its temporal claim is superseded. Later propagation and attenuation are separate evidence and are not backdated. See the [batch source review](../research/pp250-patent-transcriptions-review-2026-10-02.md).
 
 ### Architectural evolution from Figure 3 to the six-right model
 
