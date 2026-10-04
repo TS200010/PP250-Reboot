@@ -41,6 +41,10 @@ The capabilities defining the object are **assembled into a capability block**. 
 
 An **unforgeable token** is an architectural entity representing a reference to a bounded structure together with the access permitted through that reference. The token may have different representations during its lifetime, but those representations do not alter the **access or bounds of the structure represented by the token**.
 
+**At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of unforgeable tokens: tokens giving access to the functions that implement its operations and to the data upon which those functions operate. A further unforgeable token provides controlled access to the object without exposing the tokens from which its protected space is constructed.
+
+This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
