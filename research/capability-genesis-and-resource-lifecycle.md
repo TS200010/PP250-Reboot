@@ -573,7 +573,7 @@ The exact subdivision of the ACCESS field and SCT-reference field must be taken 
 
 ### 19.3 The SCT is object-side state, not another capability representation
 
-**DOCUMENTED OBSERVATION:** material examined so far describes an SCT entry as three 24-bit words containing BASE, LIMIT, a 24-bit checksum and additional flag bits. Later patent material identifies examples including `GARBAGE`, `VISITED` and `PRESENCE`; their chronology matters and later fields must not automatically be projected backwards into every PP250 version.
+**DOCUMENTED OBSERVATION:** material examined so far describes an SCT entry as three 24-bit words containing BASE, LIMIT, a 24-bit checksum and additional flag bits. Later patent material identifies examples including `GARBAGE`, `VISITED` and `PRESENCE`. These are **generation/version-specific SCT representations**: later fields must not be projected backwards, and no cross-generation bit-for-bit continuity is assumed or required.
 
 `LIMIT` is retained as the architectural term. It must not be casually renamed `LENGTH`: evidence describing it as a limiting offset must be reconciled with sources using looser descriptions such as size/length when the exact comparison semantics are reconstructed.
 
@@ -727,7 +727,7 @@ The following remain open:
 - exact Outform physical width and encoding;
 - exact bit layout of the Inform ACCESS field and SCT reference for each relevant PP250 version/OS;
 - exact LIMIT comparison semantics, including inclusive/exclusive boundary behaviour;
-- exact chronology and meaning of SCT flag bits across PP250 revisions;
+- exact meaning of SCT state/flag bits **within any generation where that meaning affects reconstruction**; cross-generation bit continuity or chronology is not itself an architectural requirement;
 - exact architectural mechanism that creates a new legitimate stored capability or changes/attenuates ACCESS associated with an existing object reference;
 - exact mechanism by which Outform persistent identity is resolved to an SCT entry when capability-containing material returns to primary store.
 
