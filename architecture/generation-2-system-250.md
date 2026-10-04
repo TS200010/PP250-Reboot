@@ -1,0 +1,386 @@
+# System 250 Generation 2 — Recovered Architecture
+
+## Status
+
+**WORKING ARCHITECTURAL RECONSTRUCTION**
+
+This document gives a coherent architectural description of the mature System 250 represented by the c. 1975–76 evidence, especially the May 1976 *System 250 Pocket Reference Book*. The repository calls this **Generation 2** (Generation B in some research notes).
+
+The purpose is to describe the machine on its own terms. It is not a source review, an evolutionary history, or a catalogue of every unresolved implementation detail. Where surviving evidence leaves a detail open but that detail is not required to explain architectural behaviour, it is deliberately left unspecified.
+
+The principal evidence base is the 1976 Pocket Reference, the contemporary England and Halton descriptions of System 250, and the relevant Plessey patent evidence. Detailed provenance and the reasoning trail remain in the repository's research and transcription material.
+
+## 1. Architectural character
+
+Generation 2 is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
+
+Its central separation is:
+
+- **data and instruction computation** uses the ordinary data path and data registers;
+- **authority and protected naming** are represented by capabilities;
+- **microprogrammed processor mechanisms** enforce capability use and perform transitions that ordinary software cannot legitimately manufacture for itself.
+
+A useful reconstruction is therefore the repository's M⟨H,T⟩ model: T describes ordinary von-Neumann computation, H describes capability-mediated protected computation, and M is the processor mechanism that implements and coordinates transitions involving both. M is reconstruction terminology, not a historical System 250 name.
+
+## 2. Programmer-visible state
+
+The ordinary register set consists of:
+
+- eight 24-bit data registers, D0–D7;
+- eight capability registers, C0–C7.
+
+A loaded capability register contains the information needed to address and protect a store block: a base, a limit and access authority.
+
+C0–C5 are general capability registers.
+
+C6 and C7 have defined execution roles:
+
+- **C6** identifies the principal capability block of the currently executing node or protected domain;
+- **C7** identifies the currently executing code block.
+
+The Instruction Address Register selects the current instruction relative to the code capability in C7.
+
+## 3. Instruction addressing and protection
+
+Generation 2 has Store and Direct instruction forms.
+
+In Store mode an effective store address is constructed from the base of the selected capability, the instruction's address offset and, where selected, a data-register modifier. Conceptually:
+
+```text
+effective address = C[n].BASE + offset + modifier
+```
+
+Before access, the processor verifies that the address lies within the capability bounds and that the requested operation is permitted by its access field. An invalid access enters the protected fault machinery rather than merely producing an unchecked physical address.
+
+Direct mode supplies a literal or register operand and does not require a normal store reference.
+
+There are no separate unrestricted I/O instructions. Devices can be represented through the same protected addressing machinery, allowing ordinary load, store and block-transfer operations to interact with device registers where suitable authority has been supplied.
+
+## 4. Capability authority
+
+The mature architecture names six semantic access rights:
+
+```text
+EC   Enter Capability
+WC   Write Capability
+RC   Read Capability
+
+ED   Execute Data
+WD   Write Data
+RD   Read Data
+```
+
+The distinction between capability operations and data/code operations is architectural. A capability may therefore grant authority to manipulate protected references without necessarily granting ordinary data access to the represented block, and conversely.
+
+The Pocket Reference records COS and POS access-field layouts containing these six rights. Their surrounding representation differs. Generation 2 reconstruction preserves those source-specific layouts without requiring a universal interpretation of every surrounding bit.
+
+## 5. Stored and loaded capabilities
+
+A capability stored in memory is a compact protected reference. For an active System Store capability its essential architectural information is:
+
+```text
+access authority + SCT identity
+```
+
+It does not need to contain the current physical base and limit.
+
+Loading a capability resolves its System Capability Table identity and obtains the corresponding descriptor information. The processor can then construct the expanded capability-register state:
+
+```text
+stored capability
+  ACCESS + SCT identity
+             |
+             v
+          SCT entry
+       BASE / LIMIT
+             |
+             v
+      capability register
+   BASE / LIMIT / ACCESS
+```
+
+The System Capability Table therefore separates stable protected reference identity from the current physical location and bounds of the represented object.
+
+Capability loading is protected by hardware checks including descriptor sumcheck and capability integrity checking.
+
+## 6. System Capability Table
+
+The SCT is reached through the special capability C(C).
+
+A Generation 2 SCT entry is a three-word descriptor family containing the information required to validate and expand an active capability, including:
+
+- SUMCHECK;
+- BASE;
+- LIMIT;
+- Generation-2 object-management state.
+
+The access authority exercised by a program originates in the capability being loaded; the SCT does not independently grant arbitrary rights to the holder.
+
+Generation 2 evidence also establishes SCT state used by the garbage-collection and allocation machinery, including **GARBAGE** and **VISITED**.
+
+Changing an SCT descriptor does not by itself rewrite capability registers that have already been expanded. Where such state must be refreshed, the architecture can use protected process interruption/restoration so that saved compact identities are resolved again through the current SCT.
+
+## 7. LDP
+
+LDP exposes the compact pointer associated with a capability as ordinary data.
+
+For example:
+
+```text
+LDP D2 C3
+```
+
+in direct form loads D2 with the compact capability pointer associated with C3.
+
+This implies that the processor retains sufficient association between an expanded capability and its compact protected identity for that pointer to be recovered. No later pointer-register architecture is required to explain the Generation 2 instruction.
+
+The historical software uses of LDP are not required to define its architectural operation.
+
+## 8. Protected CALL and RETURN
+
+Protected invocation is built into the capability architecture.
+
+A caller may possess an Enter Capability to another node's principal capability block. A CALL through that capability, with an offset selecting an executable entry, establishes the called execution domain.
+
+Conceptually:
+
+```text
+Enter Capability
+       |
+       +---- offset ----> Execute capability
+```
+
+The processor then establishes:
+
+```text
+C6 = called node's principal capability block
+C7 = selected executable code capability
+IAR = called entry point
+```
+
+and preserves the caller's:
+
+```text
+C6
+C7
+return IAR
+```
+
+on the Process Dump Stack.
+
+C0–C5 are not replaced by this transition. They can therefore carry data authority and parameters across the protected interface. Data registers likewise remain ordinary call-visible state.
+
+RETURN restores the saved C6, C7 and IAR.
+
+CALL is consequently a protected call, not a complete process-context replacement.
+
+## 9. Process Dump Stack
+
+Each active process has a Process Dump Stack identified by C(D).
+
+The 1976 format has a common fixed process-state area containing:
+
+```text
+0–5       C0–C5
+6–15      D0–D7
+16        pushdown pointer for CALL stack
+17        watchdog timer
+20        MIP
+```
+
+Beyond that fixed state, the format contains system-dependent process information and the C6/C7/IAR execution frames used by protected calls.
+
+The same protected structure therefore supports two related requirements:
+
+1. preservation/restoration of process architectural state;
+2. the nested C6/C7/IAR stack required by CALL and RETURN.
+
+The operating systems differ in their additional Dump Stack fields and initial layouts; those differences are not part of the processor definition.
+
+## 10. Process change
+
+**CHP (Change Process)** is distinct from CALL.
+
+CALL changes protected execution domain while remaining within the same process and Process Dump Stack.
+
+CHP performs a process transition: the outgoing process state is preserved and an incoming process state is established from its protected process-state structure.
+
+The architectural distinction is:
+
+```text
+CALL / RETURN
+    same process
+    same Process Dump Stack
+    push/pop C6, C7, IAR
+
+CHP
+    process transition
+    preserve outgoing process state
+    establish incoming process state
+    change active Dump Stack
+```
+
+Generation 2 provides both Store and Direct forms of CHP. The processor architecture does not require us to assign those forms to a particular operating-system process-creation policy in order to explain process switching.
+
+## 11. Special processor state
+
+Generation 2 defines a second group of special-purpose processor registers.
+
+The documented special capability registers are:
+
+```text
+C10   C(D)   Process Dump Stack
+C11   C(I)   Interval Timer / system interrupt structure
+C12   C(C)   System Capability Table
+C13   C(N)   Normal Interrupt Block
+```
+
+C(S), the Fault Start-Up capability, is a separate special capability.
+
+Documented special data registers include:
+
+```text
+D10   absolute Dump Stack pushdown pointer
+D11   watchdog timer
+D12   first-fault MIF copy
+D15   interrupt accept register
+D17   instruction address register
+```
+
+The Primary, Secondary and Fault Indicator registers contain processor control and fault state.
+
+These structures allow protected system mechanisms to operate without introducing a conventional unrestricted supervisor address space.
+
+## 12. Normal interrupts
+
+Normal system interrupts are capability-mediated.
+
+C(I) provides access to the system interrupt information and C(N) identifies the Normal Interrupt Block. The processor periodically examines the interrupt state, selects an eligible request and enters the corresponding protected system handling path.
+
+Normal interrupt handling can cause a process transition using the same protected process-state machinery used elsewhere by the architecture.
+
+The important architectural point is that an interrupt does not simply install an arbitrary privileged program counter. The destination and its authority are represented by protected system structures.
+
+## 13. Fault and start-up path
+
+Fault handling is distinct from normal interrupt handling.
+
+C(S) identifies the Fault Start-Up Block and provides the protected root for fault/start-up execution. The startup/fault root is established by architectural hard-wired or preset processor state rather than being authority that ordinary software must manufacture. Contemporary descriptions show this mechanism being used to enter restricted checkout/recovery code following detected processor or capability failures.
+
+Thus Generation 2 has two deliberately different exceptional roots:
+
+```text
+C(N)   normal interrupt/system dispatch
+C(S)   fault/start-up/recovery
+```
+
+They may ultimately use common process-state machinery, but they are not the same entry mechanism. Exact generation-specific cold-load and microinstruction sequencing is an implementation/documentary matter rather than an unresolved authority mechanism.
+
+## 14. Virtual storage and Inform/Outform
+
+Virtual storage is integrated with the capability/object architecture rather than being a separate conventional virtual-address translation layer.
+
+An active or **Inform** capability identifies an object through the System Capability Table. A passive or **Outform** representation carries the persistent backing-store identity needed while capability-containing material is represented outside primary store.
+
+Conceptually:
+
+```text
+Inform
+active protected reference
+SCT identity
+       |
+       | virtual-store management
+       |
+       v
+Outform
+persistent backing-store identity
+```
+
+When capability-containing blocks move between primary and secondary storage, their contained protected references can be converted between the appropriate representations by the virtual-storage machinery.
+
+Nonresident access and materialisation are handled through the established trap/storage-management mechanism. Generation 2 does not require a later SCT PRESENCE mechanism to explain this behaviour.
+
+## 15. Resource creation
+
+Ordinary software does not need the ability to fabricate capabilities.
+
+System resource-allocation services are themselves reached through capability-protected interfaces. Contemporary System 250 material describes a Common Facilities Block exposing services such as store, process, flag, stream, text-file, directory and job allocation.
+
+An allocator creates the appropriate resource and returns a capability giving the caller the permitted authority over it.
+
+Thus new authority enters an ordinary process through an already-authorised protected operation rather than by constructing an arbitrary capability bit pattern.
+
+## 16. Object lifetime and garbage collection
+
+The capability system forms a graph of protected references.
+
+Generation 2 includes background garbage-collection machinery capable of traversing capability-containing blocks and identifying reachable SCT objects. GARBAGE and VISITED state in the SCT supports this process.
+
+At the architectural level:
+
+```text
+roots
+  |
+  v
+capability-containing blocks
+  |
+  v
+contained capability references
+  |
+  v
+referenced SCT objects
+```
+
+Objects not reachable under the collection rules can eventually become eligible for reclamation. Explicit release is a distinct operation and can invalidate existing references to the released resource.
+
+This mechanism depends on the architectural distinction between capability-containing storage and ordinary data; the collector does not need to guess which arbitrary data words might be capabilities.
+
+## 17. Multiprocessor and I/O model
+
+System 250 is a symmetric multiprocessor architecture. CPUs share system work rather than having permanently assigned operating-system roles.
+
+Store modules and device-access structures are connected through the system bus architecture. Store Access Units arbitrate concurrent access and participate in integrity checking.
+
+I/O is deliberately integrated into the normal protected addressing model. Device registers can appear as addressed resources, while CPU processes perform polling and block transfers. System interrupts communicate system events without binding a device permanently to a particular CPU.
+
+This model allows processors, stores and peripheral modules to be added or removed within a capability-constrained system structure.
+
+## 18. Architectural invariants
+
+The recovered Generation 2 architecture is characterised by the following invariants:
+
+1. **Ordinary store access is capability-relative.** A program does not generate an unrestricted physical address.
+2. **Authority accompanies the protected reference.** The SCT supplies object representation, not arbitrary authority.
+3. **Stored capability identity is distinct from expanded physical addressing state.**
+4. **C6 and C7 define the current protected execution context.**
+5. **CALL changes domain, not process.**
+6. **CHP changes process.**
+7. **The Process Dump Stack is protected architectural state, not an ordinary language stack.**
+8. **Normal interrupt and fault/start-up entry are capability-rooted.**
+9. **Resource creation returns capabilities through already-authorised services; ordinary programs need not fabricate them.**
+10. **Virtual storage preserves protected object identity across physical movement.**
+11. **Capability-containing storage is distinguishable from ordinary data, enabling capability-aware lifecycle management.**
+12. **No conventional unrestricted supervisor mode is required to explain normal system operation.**
+
+Together these properties explain the surviving programmer-visible, operating-system and protection behaviour without importing later architectural mechanisms.
+
+## 19. Deliberately unspecified details
+
+The following details are not required to make the Generation 2 architecture internally coherent and are therefore not invented here:
+
+- a universal interpretation of every non-right bit in the COS and POS access diagrams;
+- functions for undocumented C14–C17 and blank special data-register entries;
+- exact microinstruction sequencing of the architectural operations;
+- operating-system-specific process-construction policy;
+- exact cold-load/commissioning details beneath the documented hard-wired/preset startup root;
+- bit-for-bit correspondence with earlier or later System 250 generations.
+
+These are implementation, representation, system-policy or historical-evolution questions unless further evidence shows that one of them changes Generation 2 architectural behaviour.
+
+## 20. Reconstruction conclusion
+
+On the current repository evidence, Generation 2 forms an internally consistent architecture.
+
+The processor has documented protected roots for ordinary capability resolution, process state, normal interrupt handling and fault/start-up. Stored capability identity, SCT-mediated expansion, C6/C7 protected invocation, Process Dump Stack state, CHP process transitions, virtual storage, resource allocation and capability-aware object lifetime fit together without requiring an additional undocumented privilege mechanism.
+
+There are currently **no identified unresolved architectural blockers** meeting the repository's open-question admission rule. Further source work may refine encodings, microsequences and operating-system policy without changing that conclusion.
