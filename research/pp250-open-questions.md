@@ -23,15 +23,11 @@ Generation-specific representations are allowed to differ. There is no requireme
 
 ## Current open questions
 
-### 1. Cold start and primordial authority
+**None presently identified that meet the admission rule.**
 
-**Status: OPEN — subject to continuing audit.**
+The current corpus is sufficient to account for the architectural mechanisms presently under reconstruction. Missing documentary details, generation-specific encodings, software policy and exact microcode sequencing may remain research targets, but they are not architectural blockers unless a future audit demonstrates a specific behaviour that cannot be reconstructed.
 
-The remaining substantive question is the evidence-backed chain from inert/power-on state to the first legitimate ordinary process: how sufficient valid system structures and protected authority are initially established without assuming an already functioning capability system.
-
-This includes the first-process/CHP boundary and the provenance of any special initial Dump Stack authority such as the `666` link where that provenance is genuinely required by the startup reconstruction.
-
-This item must itself be periodically re-audited against the startup, fault and process-establishment evidence. Do not split subsidiary details into separate open questions unless they independently block reconstruction.
+Do not invent a replacement open question merely because this list is empty.
 
 ## Resolved, demoted or deliberately parked issues
 
@@ -45,6 +41,7 @@ The following must **not** be resurfaced as current architectural unknowns merel
 - **LDP:** accepted architectural meaning is loading the compact capability pointer associated with its operand into a D register. Historical software uses are deliberately parked pending naturally arising evidence.
 - **CALL / Enter Capability / RETURN:** reconstructed. CALL saves C6/C7/IAR, establishes the entered C6/C7 context, and RETURN restores it; other general registers survive the call boundary as documented.
 - **Exact bit encodings or chronology:** an undocumented generation-specific encoding is a documentary gap, not automatically an architectural open question. Promote it only if the missing encoding prevents reconstruction of behaviour.
+- **Cold start / primordial authority:** the startup root is architectural hardware/preset state, not an authority that ordinary software must manufacture. The corpus documents the hard-wired early SSCR/Fault-Block route and the later processor-preset `C(S)`/Special Start-Up Block route, leading through the special capability environment, reserved pointer/Dump Stack and process entry. Exact generation-specific microsequence or physical loading/commissioning details are documentary/implementation questions, not a missing architectural authority mechanism.
 
 ## Research-record rule
 
