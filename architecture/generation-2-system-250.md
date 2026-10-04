@@ -4,56 +4,59 @@
 
 **WORKING ARCHITECTURAL RECONSTRUCTION**
 
-This document gives a coherent architectural description of the mature System 250 represented by the c. 1975–76 evidence, especially the May 1976 *System 250 Pocket Reference Book*. The repository calls this **Generation 2** (Generation B in some research notes).
+This document gives a coherent architectural description of the mature System 250 represented by the c. 1975–76 evidence. The purpose is to describe the machine on its own terms. It is not a source review, an evolutionary history, or a catalogue of every unresolved implementation detail. Where surviving evidence leaves a detail open but that detail is not required to explain architectural behaviour, it is left unspecified.
 
-The purpose is to describe the machine on its own terms. It is not a source review, an evolutionary history, or a catalogue of every unresolved implementation detail. Where surviving evidence leaves a detail open but that detail is not required to explain architectural behaviour, it is deliberately left unspecified.
-
-The principal evidence base is the 1976 Pocket Reference, the contemporary England and Halton descriptions of System 250, and the relevant Plessey patent evidence. Detailed provenance and the reasoning trail remain in the repository's research and transcription material.
+Detailed provenance and the reasoning trail remain in the repository's research and transcription material.
 
 ## 1. Architectural character
 
-Generation 2 is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
+[Generation 2][Is it Generation. 2 or B- we should call it either PP250-G2 or PP250-B]  is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
 
 - **data and instruction computation** uses the ordinary data path and data registers;
 - **authority and protected naming** are represented by capabilities;
-- **microprogrammed processor mechanisms** enforce capability use and perform transitions that ordinary software cannot legitimately manufacture for itself.
+- **microprogrammed processor mechanisms** enforce capability use and perform transitions that ordinary software cannot manufacture for itself.
 
-A useful reconstruction is therefore the repository's M⟨H,T⟩ model: T describes ordinary von-Neumann computation, H describes capability-mediated protected computation, and M is the processor mechanism that implements and coordinates transitions involving both. M is reconstruction terminology, not a historical System 250 name.
+A useful reconstruction is a model denoted by M⟨H,T⟩: T describes ordinary von-Neumann computation, H describes capability-mediated protected computation, and M is the processor mechanism that implements and coordinates transitions involving both. M is reconstruction terminology, not an historical System 250 name.
 
 ## 2. Programmer-visible state
+
+[ There is more than just registers]
 
 The ordinary register set consists of:
 
 - eight 24-bit data registers, D0–D7;
 - eight capability registers, C0–C7.
 
-A loaded capability register contains the information needed to address and protect a store block: a base, a limit and access authority.
+A loaded capability register contains the information needed to address and protect a store block: a base, a limit and an access authority.
 
 C0–C5 are general capability registers.
 
 C6 and C7 have defined execution roles:
 
-- **C6** identifies the principal capability block of the currently executing node or protected domain;
+- **C6** identifies the principal capability block of the currently executing process;
 - **C7** identifies the currently executing code block.
 
 The Instruction Address Register selects the current instruction relative to the code capability in C7.
 
 ## 3. Instruction addressing and protection
 
-Generation 2 has Store and Direct instruction forms.
+[Generation 2] has Store and Direct instruction forms.
 
 In Store mode an effective store address is constructed from the base of the selected capability, the instruction's address offset and, where selected, a data-register modifier. Conceptually:
 
 ```text
-effective address = C[n].BASE + offset + modifier
+effective address = C[n].BASE + offset + modifier data-register value
 ```
 
-Before access, the processor verifies that the address lies within the capability bounds and that the requested operation is permitted by its access field. An invalid access enters the protected fault machinery rather than merely producing an unchecked physical address.
+[Can we add pictures]
+
+Before access, the processor verifies that the address lies within the capability bounds and that the requested operation is permitted by its access field. An invalid access enters the fault machinery rather than merely producing an unchecked physical address.
 
 Direct mode supplies a literal or register operand and does not require a normal store reference.
 
+[The following does not belong in this section]
 There are no separate unrestricted I/O instructions. Devices can be represented through the same protected addressing machinery, allowing ordinary load, store and block-transfer operations to interact with device registers where suitable authority has been supplied.
 
 ## 4. Capability authority
