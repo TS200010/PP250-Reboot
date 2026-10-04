@@ -1,6 +1,6 @@
 # PP250 cold-start hypothesis space
 
-**Status:** working research note, 2 October 2026.
+**Status:** historical hypothesis-space note, superseded as a statement of current open architecture. Retained to preserve the investigation path. Current status is governed by `pp250-open-questions.md`.
 
 This note records the hypothesis space for reconstructing PP250 cold start where the surviving corpus does not yet describe the complete sequence. Its purpose is to preserve alternatives before evidence-driven pruning. It is not an emulator specification and does not select a preferred cold-start sequence.
 
@@ -16,15 +16,13 @@ The current reconstruction gets the processor from exceptional start-up/fault ma
 
 The Pocket Reference identifies these as C11, C12 and C13 respectively. C10 is C(D), the Dump Stack capability register. MIP bit 4 is named SECOND GROUP, and MIP is part of the saved/restored Dump Stack state.
 
-The unresolved question addressed here is: **by what mechanism does cold-start execution establish the normal special-purpose capability state without violating the PP250 capability model?**
+**Superseded framing:** this was the question being investigated when the note was written. Subsequent corpus review establishes that startup authority is rooted in architectural hard-wired/preset startup state and structures. The remaining sequencing and generation-specific details in this note are documentary/implementation questions, not a current primordial-authority problem.
 
-## 2. Important correction: do not assume hardware creates C(S)
+## 2. Historical caution, now superseded by the consolidated startup evidence
 
 An earlier line of reasoning treated C(S) itself as a capability fabricated or preset by hardware at power-up. That is stronger than the evidence presently warrants.
 
-The evidence supports hardware preset/start-up information associated with the Start-Up/Fault Block. It does **not yet establish that hardware manufactures a valid C(S) capability at power-up**.
-
-The reconstruction must therefore preserve the primordial transition explicitly:
+At this stage of the investigation the distinction between preset startup addressing/control information and a hardware-established capability root was deliberately left open. The consolidated corpus now supports the architectural conclusion that the processor's exceptional startup state provides the legitimate root; ordinary software is not required to manufacture it. The following diagram is retained as historical reasoning, not as a current unresolved transition:
 
 ```text
 POWER UP
@@ -32,7 +30,7 @@ POWER UP
     v
 hardware-established start-up/fault information
     |
-    ?       primordial authority/capability transition unresolved
+    ?       [historical question; no longer a current architectural blocker]
     |
     v
 restricted/special capability environment
@@ -44,7 +42,7 @@ Dump Stack
 native PP250 execution
 ```
 
-Any future statement that hardware "creates", "presets", or "fabricates" C(S) as a capability requires direct evidence.
+Current reconstruction should instead follow the documented generation-specific startup mechanisms: early SSCR/Fault-Block hard-wiring and later processor-preset C(S)/Special Start-Up Block state. Do not generalise one generation's exact representation into another.
 
 ## 3. Decompose the problem before selecting a narrative
 
