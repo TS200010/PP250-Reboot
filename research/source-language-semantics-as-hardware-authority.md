@@ -256,7 +256,7 @@ construct Account within it
 return/delegate authority
 ```
 
-The important unresolved architectural question is capability genesis: exactly which authority permits creation/allocation of the new bounded storage capability?
+**Current reconstruction:** ordinary runtime capability/resource creation is provided through the protected allocator mechanism: an allocator creates the resource and returns the appropriate capability. This is not a current architectural unknown. The separate cold-start question is the provenance of the initial authority from which a functioning system begins.
 
 The compiler must not introduce an operation equivalent to:
 
