@@ -45,6 +45,8 @@ An **unforgeable token** is an architectural entity representing a reference to 
 
 This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
 
+**A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
+
 **For such a system to exist, the architecture must both maintain an authoritative record of the unforgeable tokens that exist and provide protected representations of those tokens wherever they are required.** A token may need to be represented in memory, in backing store, or in an active processor context. These representations may differ, but each must remain unforgeable and preserve the access and bounds of the structure to which the token refers.
 
 **These two requirements can initially be considered separately: the token record and the token representation.**
