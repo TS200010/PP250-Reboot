@@ -192,3 +192,19 @@ The immediate documentary questions are:
 10. Which parts of this were hardware, microcode, COS/POS/ROS software, or cooperation between them?
 
 Until those questions are answered, modern incremental-GC ideas should remain clearly labelled as hypotheses rather than descriptions of PP250.
+
+## Research aside: forgery of outform capabilities on backing store
+
+A separate question arises if an attacker can write arbitrary raw data to backing store. The attacker might manufacture a bit pattern resembling an outform capability, including one intended to behave as an Enter Capability associated with malicious code and a fabricated protected environment.
+
+An isolated forged representation is not necessarily useful. To become callable, it must somehow become part of the existing protected capability graph: a legitimate protected structure must acquire a capability edge through which the fabricated object can be reached. Creating or substituting that edge may itself require existing valid authority.
+
+The historical PP250 mechanism needs to be established rather than inferred. In particular:
+
+1. What exactly validates an outform capability when it is informed or otherwise returned to active use?
+2. Can arbitrary raw backing-store writes manufacture a representation that Inform would accept as a valid capability?
+3. What prevents substitution of one otherwise-valid outform reference for another within an existing capability-bearing structure?
+4. Is authenticity derived from persistent object metadata, sequence numbers, the capability graph, storage-manager state, or some combination of these?
+5. At what point does a representation read from backing store acquire protected capability status, and what authority is required to make that transition?
+
+This is deliberately left as a research question. The SCT is an active-system structure and should not be assumed to be the ultimate persistent record of capability validity.
