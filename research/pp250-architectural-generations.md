@@ -256,7 +256,7 @@ The change from `VISITED` to `PRESENCE` occurs in the same broad later architect
 | 8-bit `PS/DT/RTE` access/type | documented | not assumed | not assumed |
 | Six `EC WC RC ED WD RD` rights | documented in US3814919A; distinct from the Figure 3 generation/version representation | documented | retained/reworked in later representation |
 | Nine-bit COS/POS layouts | no evidence | documented | not assumed |
-| Inform/Outform virtual-store representation | early conceptual/characteristic evidence; exact encoding unresolved | documented; residence/form represented through ACCESS | passive/FORM machinery revised |
+| Inform/Outform virtual-store representation | early conceptual/characteristic evidence; encoding generation-specific | documented; residence/form represented through ACCESS and managed by VM/storage machinery | passive/FORM machinery revised |
 | GARBAGE SCT bit | not yet established | documented | documented |
 | VISITED SCT bit | not yet established | documented | not in currently reconstructed C layout |
 | PRESENCE SCT bit | no evidence | **do not assume** | documented |
