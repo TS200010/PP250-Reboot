@@ -28,6 +28,8 @@ The dates describe the evidence, not necessarily exact hardware release dates. A
 
 A feature documented in one generation must not automatically be used to fill an unexplained field or mechanism in another.
 
+The same rule applies specifically to the SCT. Each generation may use a different SCT entry representation and different state/flag bits. Reconstruction should establish the semantics required **within that generation**; it should not treat cross-generation bit positions, flag continuity, or a precise evolutionary mapping as an unresolved architectural problem. A missing Generation-A encoding detail remains worth recording only where it prevents reconstruction of Generation-A behaviour.
+
 In particular:
 
 - do not use the later Andrews/Wheatley `PRESENCE` bit to explain Generation B virtual store without independent evidence;
