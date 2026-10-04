@@ -24,6 +24,13 @@ The protected structure and its semantics are defined by software. It may repres
 
 Conceptually, a protected structure combines state with a defined set of operations upon that state. It is readily recognisable as the encapsulated abstraction represented in modern programming languages by objects, classes and other structured types.
 
+Before going any further, it is useful to introduce a few definitions and important concepts:
+
+- **Structure** — a block of memory with defined bounds, to which a capability refers.
+- **Access (authority)** — a subset of the hardware-enforced access rights over that structure.
+- **Capability** — a reference to a structure, together with an access (authority) over that structure.
+- Different capabilities may refer to the same structure with different access (authorities) over it.
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
