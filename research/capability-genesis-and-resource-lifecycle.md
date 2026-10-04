@@ -509,9 +509,9 @@ The research position is therefore:
 - **Transition to an executable process:** substantially explained by special SCT state, `RSPC-0`, the Dump Stack and automatic `CHANGE PROCESS`.
 - **Installation of running special capability state such as `C(N)`:** substantially explained by legitimate stored capabilities plus MIP/`SPECIAL`/`LC`.
 - **Arbitrary data-to-capability conversion:** no evidence found; the architecture continues to argue against it.
-- **General creation of the first ordinary capability representing newly admitted/allocated resource authority:** **still unresolved and now the central capability-genesis hole.**
+- **General runtime creation of capabilities for newly allocated resources:** **resolved at the architectural level** by the protected allocator/resource mechanism: the allocator creates the resource and returns its capability. Exact generation-specific implementation details do not constitute a separate capability-genesis hole.
 
-Future work on capability genesis should begin from that narrowed question rather than reopening the already substantially reconstructed `C(S)` bootstrap chain, unless new primary evidence contradicts the reconstruction.
+Future capability-genesis work should therefore remain confined to the genuine cold-start/primordial-authority boundary unless new primary evidence contradicts the reconstruction.
 
 ---
 
