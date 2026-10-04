@@ -390,7 +390,7 @@ Fault/interrupt mechanisms may cause comparable whole-process transitions throug
 
 The Dump Stack is capability-addressed but represents resumable computation.
 
-Access/form semantics may be the mechanism by which the architecture controls legitimate operations on protected objects, but the exact relationship among the 1972 architecture, the 1976 Pocket Reference layouts and the later Andrews/Wheatley FORM scheme remains unresolved.
+Access/form semantics may be the mechanism by which the architecture controls legitimate operations on protected objects. The differing 1972, 1976 and later Andrews/Wheatley representations are treated as **generation/version-specific**; the conceptual evolution remains relevant, but an exact cross-generation bit mapping is not required by this model.
 
 ## 16. Evidence status
 
@@ -416,7 +416,7 @@ Access/form semantics may be the mechanism by which the architecture controls le
 6. Establish whether CHP validates or reconstructs saved capability state through the SCT and how this prevents arbitrary fabrication of authority.
 7. Separate the mechanisms for explicit CHP, normal interrupt, interval-timer event, watchdog expiry and fault interrupt. Identify which genuinely share the same process-state transition machinery.
 8. Revisit Hamer-Hodges's original Church/Turing terminology after the access/form evidence is assembled. Was “Church” describing protected naming/binding, capability manipulation, or a broader semantic division?
-9. Resolve, rather than paper over, the mismatch between the 1976 Pocket Reference COS/POS nine-bit layouts and the later Andrews/Wheatley F-P-six-rights-F layout.
+9. Keep the 1976 Pocket Reference COS/POS layouts and the later Andrews/Wheatley `F-P-six-rights-F` layout explicitly versioned; do not force a cross-generation bit mapping unless a concrete reconstruction need arises.
 
 ## 18. Why this line of reasoning matters
 
