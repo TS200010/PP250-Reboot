@@ -22,6 +22,7 @@ Primary sources used for this revision include:
 
 The working architecture reconstruction has been split by subject into the following documents:
 
+- [Generation 2 Recovered Architecture](generation-2-system-250.md) — canonical integrated reconstruction of the mature c. 1975–76 System 250 architecture.
 - [Instruction Set](instruction-set.md) — architectural word size, instruction formats, addressing, assembler syntax, programmer-visible instructions, and the existing Church/Turing interpretation.
 - [Capability Representation](capability-representation.md) — capability access rights and stored capability type/form representation.
 - [System Capability Table](system-capability-table.md) — SCT role and entry structure, descriptor validation, unavailable segments, and active/passive representation.
