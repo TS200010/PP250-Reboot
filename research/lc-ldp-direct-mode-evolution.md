@@ -164,7 +164,7 @@ Questions include:
 6. Is there a relationship to later pointer-register, SCT, capability propagation or access-reduction mechanisms described in patents?
 7. Can code from Checkout, ROS/COS/POS, the processor self-test material, or surviving Plessey listings demonstrate actual LC/LDP operand usage?
 
-## 7. Unresolved capability attenuation question
+## 7. Historical capability-attenuation question — not a current reconstruction blocker
 
 A separate but closely related reconstruction problem is how the original PP250 could pass or derive a capability to an existing object with **reduced access rights**.
 
@@ -178,7 +178,7 @@ This is **speculation, not documented PP250 behaviour**. It arose as a reconstru
 
 There is also evidence that may weigh against the hypothesis. A later Andrews/Wheatley Plessey patent explicitly describes access-reduction facilities, including masked capability loading, as an enhancement to the capability mechanism. If this facility was genuinely new, that would suggest that equivalent general attenuation may **not** have existed in the original PP250. The later patent must not be projected backwards onto the early machine without corroboration.
 
-The unresolved question is therefore:
+The historical question recorded here was:
 
 > **Could the original PP250 derive a reduced-rights capability from an existing capability, and if so, by what mechanism?**
 
