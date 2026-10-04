@@ -47,11 +47,7 @@ This construction is deliberately general. Such protected objects can represent 
 
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
 
-**For such a system to exist, the architecture must both maintain an authoritative record of the unforgeable tokens that exist and provide protected representations of those tokens wherever they are required.** A token may need to be represented in memory, in backing store, or in an active processor context. These representations may differ, but each must remain unforgeable and preserve the access and bounds of the structure to which the token refers.
-
-**These two requirements can initially be considered separately: the token record and the token representation.**
-
-**The token record must ultimately be persistent.** The existence of an unforgeable token, the structure to which it refers, and the access it grants cannot depend upon that structure being resident in main memory or upon the continued existence of any particular processor state. The complete token relationship — the referenced structure together with the access permitted through that reference — must therefore survive on persistent storage.
+**An unforgeable token must have a persistent representation.** The existence of the token, the structure to which it refers, and the access it grants cannot depend upon that structure being resident in main memory or upon the continued existence of any particular processor state. **Its representation on persistent storage is therefore the enduring record of the token.**
 
 **A persistent token must be capable of being brought into an active form without changing what it represents.** Its representation may change as the referenced structure moves between persistent storage and main memory, and again when the token is being used by a processor, but its essential meaning — the structure to which it refers and the access permitted through it — must remain invariant.
 
