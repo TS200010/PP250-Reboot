@@ -252,7 +252,7 @@ The change from `VISITED` to `PRESENCE` occurs in the same broad later architect
 | BASE | documented | documented | documented |
 | 16-bit LIMIT concept | documented in loaded CR; SCT details source-sensitive | documented | documented |
 | 8-bit `PS/DT/RTE` access/type | documented | not assumed | not assumed |
-| Six `EC WC RC ED WD RD` rights | documented in US3814919A; relationship to Figure 3 unresolved | documented | retained/reworked in later representation |
+| Six `EC WC RC ED WD RD` rights | documented in US3814919A; distinct from the Figure 3 generation/version representation | documented | retained/reworked in later representation |
 | Nine-bit COS/POS layouts | no evidence | documented | not assumed |
 | Inform/Outform virtual-store representation | early conceptual/characteristic evidence; exact encoding unresolved | documented; residence/form represented through ACCESS | passive/FORM machinery revised |
 | GARBAGE SCT bit | not yet established | documented | documented |
@@ -724,7 +724,7 @@ Alternative explanations evaluated during reconstruction — replicated 4K-space
 
 **DOCUMENTED OBSERVATION:** US3814919A, Description 48, explicitly assigns RD, WD, ED, RC, WC and EC to bits 16–21, leaving bits 22–23 spare. The patent has 4 March 1971 priority and a 1 March 1972 US filing. This places the six-right representation in the early patent evidence; it does not date its first delivered implementation.
 
-This **supersedes the chronology assumed in the A→B interpretations above**, including the suggestion that named execute/enter authority first crystallised in Generation B. The Figure 3 PS/DT/RTE representation remains documented and structurally distinct. The earlier comparison and its causal hypotheses are preserved as the reasoning that led to the question; they can no longer establish a clean A→B redesign date or attribute its motivation to experience with Generation A. The early corpus contains both representations. Their implementation ordering and exact relationship remain **UNKNOWN**. Later LOU, propagation and local-store machinery still require their own later evidence.
+This **supersedes the chronology assumed in the A→B interpretations above**, including the suggestion that named execute/enter authority first crystallised in Generation B. The Figure 3 `PS/DT/RTE` representation remains documented and structurally distinct. The earlier comparison and its causal hypotheses are preserved as the reasoning that led to the question; they can no longer establish a clean A→B redesign date or attribute its motivation to experience with Generation A. For reconstruction purposes the two schemes are now treated as **generation/version-specific representations**. Their exact mapping and implementation ordering are not active architectural questions unless evidence later shows that such a mapping is required. Later LOU, propagation and local-store machinery still require their own later evidence.
 
 US3771146A, Description 111–121, also establishes zero-SUMCHECK temporary unavailability and process-restoration refresh in the early corpus, correcting the matrix's former uncertainty for A.
 
