@@ -39,6 +39,12 @@ Do not repeatedly demand documentary wording for synthesized conclusions. Search
 
 Before discarding apparently conflicting sources, consider machine version, operating system, abstraction level, terminology, viewpoint and implementation versus architecture. When new evidence conflicts with the reconstruction, identify the statements, evidence and provenance, investigate explanations, and create or propose a research issue if unresolved, within the authorised scope. Do not silently alter the architecture.
 
+### Current-open-question gate
+
+`research/pp250-open-questions.md` is the canonical current-status index for unresolved historical architecture. Before describing, proposing or pursuing an architectural issue as open, check that file and reconcile any older `UNKNOWN`, `HYPOTHESIS`, “unresolved” or “open question” wording against the current architecture and later research. Historical research-state labels do **not** automatically remain current.
+
+Do not create an open question merely because representations differ between generations, operating systems or capability forms. Cross-generation bit mapping, chronology or exact encoding is not an architectural requirement unless the missing detail prevents reconstruction of observed behaviour. If a genuinely new blocker is found, state the missing behaviour/mechanism precisely and update the canonical open-question index as part of the authorised research update.
+
 ## Bootstrap boundary and authority
 
 The immediate objective is an evidence-backed chain from inert/power-on state to the first legitimate execution of ordinary PP250 software, not recreation of ROS/POS or the whole historical OS.
