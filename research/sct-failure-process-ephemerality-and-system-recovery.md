@@ -483,7 +483,7 @@ In particular, the following remain unresolved:
 6. the exact state after the automatic process change before the first ordinary instruction;
 7. where the recollection that "three instructions booted the machine" fits into this sequence.
 
-These questions belong with the existing startup reconstruction and should remain explicitly unresolved.
+These are startup implementation/documentary questions. They must not be promoted to current architectural blockers unless a missing detail demonstrably prevents reconstruction of behaviour; the canonical status is maintained in `pp250-open-questions.md`.
 
 ---
 
