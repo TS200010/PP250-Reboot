@@ -1,4 +1,4 @@
-# System 250 Generation 2 — Recovered Architecture
+# PP250-G2 — Recovered System 250 Architecture
 
 ## Status
 
@@ -10,7 +10,7 @@ Detailed provenance and the reasoning trail remain in the repository's research 
 
 ## 1. Architectural character
 
-[Generation 2][Is it Generation. 2 or B- we should call it either PP250-G2 or PP250-B]  is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
+**PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
 
@@ -22,9 +22,9 @@ A useful reconstruction is a model denoted by M⟨H,T⟩: T describes ordinary v
 
 ## 2. Programmer-visible state
 
-[ There is more than just registers]
+The programmer-visible execution state is more than a register file. It includes the current instruction stream and addressing context, the ordinary data and capability registers, condition/indicator state, and the protected execution context established by C6 and C7. Some additional processor-control state is visible only through the special/internal mechanisms described later.
 
-The ordinary register set consists of:
+The ordinary general-purpose register set consists of:
 
 - eight 24-bit data registers, D0–D7;
 - eight capability registers, C0–C7.
@@ -42,7 +42,7 @@ The Instruction Address Register selects the current instruction relative to the
 
 ## 3. Instruction addressing and protection
 
-[Generation 2] has Store and Direct instruction forms.
+PP250-G2 has Store and Direct instruction forms.
 
 In Store mode an effective store address is constructed from the base of the selected capability, the instruction's address offset and, where selected, a data-register modifier. Conceptually:
 
@@ -50,14 +50,15 @@ In Store mode an effective store address is constructed from the base of the sel
 effective address = C[n].BASE + offset + modifier data-register value
 ```
 
-[Can we add pictures]
+The contemporary processor description shows the two instruction formats directly:
+
+![PP250-G2 Store and Direct instruction formats](../transcriptions/assets/halton/figure-6.png)
+
+*Figure: Store and Direct instruction formats from Halton, “Hardware of the System 250 for Communication Control”.*
 
 Before access, the processor verifies that the address lies within the capability bounds and that the requested operation is permitted by its access field. An invalid access enters the fault machinery rather than merely producing an unchecked physical address.
 
 Direct mode supplies a literal or register operand and does not require a normal store reference.
-
-[The following does not belong in this section]
-There are no separate unrestricted I/O instructions. Devices can be represented through the same protected addressing machinery, allowing ordinary load, store and block-transfer operations to interact with device registers where suitable authority has been supplied.
 
 ## 4. Capability authority
 
@@ -75,7 +76,7 @@ RD   Read Data
 
 The distinction between capability operations and data/code operations is architectural. A capability may therefore grant authority to manipulate protected references without necessarily granting ordinary data access to the represented block, and conversely.
 
-The Pocket Reference records COS and POS access-field layouts containing these six rights. Their surrounding representation differs. Generation 2 reconstruction preserves those source-specific layouts without requiring a universal interpretation of every surrounding bit.
+The Pocket Reference records COS and POS access-field layouts containing these six rights. Their surrounding representation differs. PP250-G2 reconstruction preserves those source-specific layouts without requiring a universal interpretation of every surrounding bit.
 
 ## 5. Stored and loaded capabilities
 
@@ -110,7 +111,7 @@ Capability loading is protected by hardware checks including descriptor sumcheck
 
 The SCT is reached through the special capability C(C).
 
-A Generation 2 SCT entry is a three-word descriptor family containing the information required to validate and expand an active capability, including:
+A PP250-G2 SCT entry is a three-word descriptor family containing the information required to validate and expand an active capability, including:
 
 - SUMCHECK;
 - BASE;
@@ -119,7 +120,7 @@ A Generation 2 SCT entry is a three-word descriptor family containing the inform
 
 The access authority exercised by a program originates in the capability being loaded; the SCT does not independently grant arbitrary rights to the holder.
 
-Generation 2 evidence also establishes SCT state used by the garbage-collection and allocation machinery, including **GARBAGE** and **VISITED**.
+PP250-G2 evidence also establishes SCT state used by the garbage-collection and allocation machinery, including **GARBAGE** and **VISITED**.
 
 Changing an SCT descriptor does not by itself rewrite capability registers that have already been expanded. Where such state must be refreshed, the architecture can use protected process interruption/restoration so that saved compact identities are resolved again through the current SCT.
 
@@ -135,7 +136,7 @@ LDP D2 C3
 
 in direct form loads D2 with the compact capability pointer associated with C3.
 
-This implies that the processor retains sufficient association between an expanded capability and its compact protected identity for that pointer to be recovered. No later pointer-register architecture is required to explain the Generation 2 instruction.
+This implies that the processor retains sufficient association between an expanded capability and its compact protected identity for that pointer to be recovered. No later pointer-register architecture is required to explain the PP250-G2 instruction.
 
 The historical software uses of LDP are not required to define its architectural operation.
 
@@ -223,11 +224,11 @@ CHP
     change active Dump Stack
 ```
 
-Generation 2 provides both Store and Direct forms of CHP. The processor architecture does not require us to assign those forms to a particular operating-system process-creation policy in order to explain process switching.
+PP250-G2 provides both Store and Direct forms of CHP. The processor architecture does not require us to assign those forms to a particular operating-system process-creation policy in order to explain process switching.
 
 ## 11. Special processor state
 
-Generation 2 defines a second group of special-purpose processor registers.
+PP250-G2 defines a second group of special-purpose processor registers.
 
 The documented special capability registers are:
 
@@ -270,7 +271,7 @@ Fault handling is distinct from normal interrupt handling.
 
 C(S) identifies the Fault Start-Up Block and provides the protected root for fault/start-up execution. The startup/fault root is established by architectural hard-wired or preset processor state rather than being authority that ordinary software must manufacture. Contemporary descriptions show this mechanism being used to enter restricted checkout/recovery code following detected processor or capability failures.
 
-Thus Generation 2 has two deliberately different exceptional roots:
+Thus PP250-G2 has two deliberately different exceptional roots:
 
 ```text
 C(N)   normal interrupt/system dispatch
@@ -301,7 +302,7 @@ persistent backing-store identity
 
 When capability-containing blocks move between primary and secondary storage, their contained protected references can be converted between the appropriate representations by the virtual-storage machinery.
 
-Nonresident access and materialisation are handled through the established trap/storage-management mechanism. Generation 2 does not require a later SCT PRESENCE mechanism to explain this behaviour.
+Nonresident access and materialisation are handled through the established trap/storage-management mechanism. PP250-G2 does not require a later SCT PRESENCE mechanism to explain this behaviour.
 
 ## 15. Resource creation
 
@@ -317,7 +318,7 @@ Thus new authority enters an ordinary process through an already-authorised prot
 
 The capability system forms a graph of protected references.
 
-Generation 2 includes background garbage-collection machinery capable of traversing capability-containing blocks and identifying reachable SCT objects. GARBAGE and VISITED state in the SCT supports this process.
+PP250-G2 includes background garbage-collection machinery capable of traversing capability-containing blocks and identifying reachable SCT objects. GARBAGE and VISITED state in the SCT supports this process.
 
 At the architectural level:
 
@@ -350,7 +351,7 @@ This model allows processors, stores and peripheral modules to be added or remov
 
 ## 18. Architectural invariants
 
-The recovered Generation 2 architecture is characterised by the following invariants:
+The recovered PP250-G2 architecture is characterised by the following invariants:
 
 1. **Ordinary store access is capability-relative.** A program does not generate an unrestricted physical address.
 2. **Authority accompanies the protected reference.** The SCT supplies object representation, not arbitrary authority.
@@ -369,7 +370,7 @@ Together these properties explain the surviving programmer-visible, operating-sy
 
 ## 19. Deliberately unspecified details
 
-The following details are not required to make the Generation 2 architecture internally coherent and are therefore not invented here:
+The following details are not required to make the PP250-G2 architecture internally coherent and are therefore not invented here:
 
 - a universal interpretation of every non-right bit in the COS and POS access diagrams;
 - functions for undocumented C14–C17 and blank special data-register entries;
@@ -378,11 +379,11 @@ The following details are not required to make the Generation 2 architecture int
 - exact cold-load/commissioning details beneath the documented hard-wired/preset startup root;
 - bit-for-bit correspondence with earlier or later System 250 generations.
 
-These are implementation, representation, system-policy or historical-evolution questions unless further evidence shows that one of them changes Generation 2 architectural behaviour.
+These are implementation, representation, system-policy or historical-evolution questions unless further evidence shows that one of them changes PP250-G2 architectural behaviour.
 
 ## 20. Reconstruction conclusion
 
-On the current repository evidence, Generation 2 forms an internally consistent architecture.
+On the current repository evidence, PP250-G2 forms an internally consistent architecture.
 
 The processor has documented protected roots for ordinary capability resolution, process state, normal interrupt handling and fault/start-up. Stored capability identity, SCT-mediated expansion, C6/C7 protected invocation, Process Dump Stack state, CHP process transitions, virtual storage, resource allocation and capability-aware object lifetime fit together without requiring an additional undocumented privilege mechanism.
 
