@@ -39,6 +39,8 @@ The capabilities defining the object are **assembled into a capability block**. 
 
 **Armed with an instance of this new capability, all its holder can do is invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, and the accesses required to perform those operations remain within the protected structure. The holder cannot bypass those functions to obtain access to the underlying code, data or capabilities. That restriction is enforced by the hardware.
 
+An **unforgeable token** is an architectural entity representing a reference to a bounded structure together with the access permitted through that reference. The token may have different representations during its lifetime, but those representations do not alter the **access or bounds of the structure represented by the token**.
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
