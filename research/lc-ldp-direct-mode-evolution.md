@@ -120,7 +120,7 @@ In this interpretation an LDP result may be analogous to an object/capability id
 
 ### Later Andrews/Wheatley evidence for the meaning of `pointer`
 
-US 4,408,274, *Memory protection system using capability registers* (Nigel J. Wheatley and Martyn P. Andrews; priority 29 September 1979), provides strong later evidence for what Plessey meant by a **capability pointer**. The patent explicitly describes the capability pointer as a 24-bit value comprising **capability form, access, and identity**. For System Store capabilities, the identity selects the relevant entry relative to the System Capability Table (SCT) base; elsewhere the patent describes capability pointers as containing an access code and an offset selecting the corresponding Base/Limit information in the SCT. The later implementation adds associated pointer registers `P(0)`–`P(7)`, paired with capability registers `C(0)`–`C(7)`, while the C register holds the expanded operational Base/Limit/access form.
+US 4,408,274, *Memory protection system using capability registers* (Nigel J. Wheatley and Martyn P. Andrews; priority 29 September 1979), provides strong later evidence for what Plessey meant by a **capability pointer**. The patent explicitly describes the capability pointer as a 24-bit value comprising **capability form, access, and identity**. For System Store capabilities, the identity selects the relevant entry relative to the System Capability Table (SCT) base; elsewhere the patent describes capability pointers as containing an access code and an offset selecting the corresponding Base/Limit information in the SCT. The patent presents the capability-pointer/SCT structure as **existing System 250 architecture**. Its enhancement is to add associated pointer registers `P(0)`–`P(7)`, paired with capability registers `C(0)`–`C(7)`, and load-on-use machinery so that expansion through the SCT can be deferred. Thus the capability pointer itself is not the Andrews/Wheatley invention: the new hardware retains the pre-existing compact pointer in processor state while the C register holds, when required, the expanded operational Base/Limit/access form.
 
 This substantially strengthens the interpretation of the earlier Checkout description:
 
@@ -139,8 +139,8 @@ This is nevertheless **retrospective evidence, not direct proof of the exact 197
 Accordingly the present evidence level is:
 
 - **Documented in 1972:** LDP is called *Load capability pointer* and produces `D := Pointer associated with A`.
-- **Documented later by Andrews/Wheatley:** a capability pointer is the compact form/access/identity representation; for System Store capabilities the identity is tied to the SCT, and the expanded C-register form contains Base/Limit/access.
-- **Strong reconstruction for the early machine:** the LDP result is the compact capability pointer—principally access/form plus SCT identity/offset for a System Store capability—presented as ordinary data.
+- **Documented as prior System 250 architecture by Andrews/Wheatley:** capability pointers already exist as the compact access/identity representation, with System Store identity tied to the SCT. The patent's innovation adds associated pointer registers and load-on-use handling; it does not introduce the underlying capability-pointer concept.
+- **Accepted architectural conclusion:** the earlier LDP operates on this pre-existing compact capability-pointer structure and returns the pointer associated with its operand as ordinary data in a D register. For a System Store capability, the essential pointer content is access plus SCT identity/offset. The exact 1972 bit allocation remains separately unresolved.
 - **Still unresolved:** the exact bit-level representation returned by LDP in the 1972 implementation and whether it is identical to the later patent format.
 
 ## 6. Why LC and LDP should now be investigated together
@@ -225,7 +225,7 @@ LC and LDP acquired direct forms as part of an architectural development in capa
 
 - Exact semantics of direct LC.
 - Exact semantics of direct LDP.
-- Exact **1972 bit-level representation** of `Pointer associated with A`; the later Andrews/Wheatley evidence now makes its interpretation as the compact capability-pointer representation very strong.
+- Exact **1972 bit-level allocation** of the compact capability pointer. The identity of the LDP result as the pre-existing capability-pointer structure is treated as established; what remains unresolved is the precise early encoding and any generation-specific form bits.
 - Why LDP changes LT/EQ.
 - Whether the source difference is chronological evolution, variant difference, or documentation discrepancy.
 - Whether and how the original PP250 could derive a reduced-rights capability from an existing capability.
