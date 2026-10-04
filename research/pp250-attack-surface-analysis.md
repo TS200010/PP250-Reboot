@@ -313,8 +313,8 @@ Examples include retaining or passing capabilities through C0–C4 and corruptin
 **Security-critical architectural mechanisms.**  
 Examples include protected calling, SCT management, process change, interrupt handling, fault recovery and Internal Mode. These are attack surfaces because they control authority, but their existence does not imply that they are vulnerable.
 
-**Mechanisms whose protection is not yet sufficiently reconstructed.**  
-The most important currently include capability derivation, the exact pointer/LDP relationship, SCT identity reuse and garbage-collection synchronization, expanded-capability behaviour during reconfiguration, and some aspects of I/O authority.
+**Mechanisms whose protection merits further analysis.**  
+Do not treat this historical list as the current open-question index. In particular, LDP's architectural pointer meaning is established, ordinary runtime capability creation is allocator-mediated, and generation-specific representation differences are not architectural blockers. Current unresolved architecture is governed by `pp250-open-questions.md`; this attack-surface note may still investigate security properties of established mechanisms.
 
 This distinction should be maintained as reconstruction proceeds.
 
