@@ -1,6 +1,6 @@
 # SCT garbage collection, object lifetime and lazy traversal
 
-> Status: research note preserving an exploratory discussion. The historical PP250 garbage-collection mechanism is not yet fully reconstructed. Statements about a modern implementation are hypotheses until checked against original System 250 documentation.
+> Status: historical mechanism now substantially documented from England and the 1975-priority Venton/Blench/Sutherland/Hamer-Hodges allocation/deallocation patent family. Remaining questions concern implementation detail, roots/outform handling, and exact generation differences. Modern extensions remain hypotheses.
 
 ## The problem was initially framed incorrectly
 
@@ -38,31 +38,50 @@ The system has to establish that the SCT identity is no longer reachable through
 
 ## This is the SCT garbage-collection problem
 
-The PP250 architecture contains garbage-collection support associated with SCT entries. The discussion recalled bits in SCT entries used while walking and marking the capability structure.
+This is now supported by direct documentary evidence rather than reconstruction alone.
 
-The broad model is a reachability traversal:
+England, *Architectural Features of System 250*, §30(4), states that a background **"garbage collection program"** seeks out and destroys invalid capabilities and blocks severed from the main capability network. Explicit release is a distinct operation: backing-store space is made reusable by invalidating existing capabilities referring to it, using a disk-sector sequence-number mechanism.
+
+The 1975-priority Venton/Blench/Sutherland/Hamer-Hodges allocation/deallocation patent family (GB1548401A / US4121286A) documents the SCT/MCT-side reachability mechanism. SCT entries contain **GARBAGE** and **VISITED** state. During collection, capability-pointer blocks are traversed and the capabilities they contain are loaded. Loading a capability causes the referenced SCT entry's GARBAGE state to be set, thereby recording that the object is live/referenced. VISITED supports traversal of capability-containing blocks so that the capability graph can be walked without treating ordinary data as possible capabilities.
+
+The broad documented model is therefore:
 
     roots
       |
-      +--> SCT A [mark]
-      |      |
-      |      +--> capability -> SCT C [mark]
-      |
-      +--> SCT B [mark]
-             |
-             +--> capability -> SCT D [mark]
+      +--> capability-pointer block
+                 |
+                 +-- LC(pointer) --> referenced SCT entry [GARBAGE set]
+                 |
+                 +-- if referenced object is itself a capability block
+                         -> visit/traverse it
+                         -> LC its contained capability pointers
+                         -> mark their SCT entries
 
-An allocated SCT entry not demonstrated reachable after the required traversal can eventually become eligible for reclamation.
+This also supplies the historical answer to an important concurrency question. Normal execution that loads a capability participates in setting the referenced SCT entry's GARBAGE state. The marking operation is therefore integrated with ordinary capability use rather than depending solely on a stop-the-world scan.
+
+An SCT entry that remains unmarked after the collection rules have been satisfied can become eligible for reclamation/reuse. This is the security-critical operation: an SCT identity must not be reassigned while a live capability pointer can still confer authority through that identity.
 
 This separates two kinds of reclamation that should not be conflated:
 
-    physical storage reclamation
-        - a VM/backing-store concern
+    backing/physical storage reclamation
+        - storage-management and explicit-release concern
 
     SCT identity reclamation
-        - a capability reachability concern
+        - capability reachability concern
 
-The second is the security-critical issue for stale capabilities.
+### Relationship to LDP
+
+Capability pointers are central to this garbage-collection mechanism, but the evidence found so far does **not** show LDP being used by the collector.
+
+The documented traversal uses **LC** on capability pointers. LC interprets the compact pointer through the SCT and, as part of that machinery, causes the referenced entry to be marked live. The collector therefore does not need to use LDP merely to extract the SCT index into a data register and mark the entry in software.
+
+This is an important negative result:
+
+- capability pointers: **documented as fundamental to GC traversal**;
+- LC: **documented as participating in GC marking**;
+- LDP: **no documented GC role found so far**.
+
+The purpose of LDP must therefore remain a separate architectural question unless further primary evidence connects it to lifecycle management.
 
 ## Capability blocks, not arbitrary data, are traversed
 
@@ -98,21 +117,11 @@ This means the historical GC algorithm cannot have been a naive in-memory mark p
 
 This is an important target for documentary reconstruction.
 
-## The concurrency question
+## Concurrency: historical mechanism now identified
 
-A subtler question arose: can the SCT collection be lazy or concurrent with ordinary execution?
+The patent evidence shows that collection was designed to coexist with ordinary capability use: loading a capability marks its referenced SCT entry. This is the key historical mechanism that prevents a capability actively used during collection from remaining invisible merely because the collector has already passed another part of the graph.
 
-Imagine that the collector has already traversed capability block A. While collection continues elsewhere, a running process copies a capability to previously unmarked segment X into A.
-
-    A [already traversed]
-      |
-      +---- newly copied capability ----> X [not yet marked]
-
-If the collector never revisits A and has no other way to learn about this new edge, it could incorrectly conclude that X is unreachable and recycle its SCT identity.
-
-This is the classic problem of mutating a graph while a reachability collector is traversing it.
-
-## A modern answer is easy to imagine, but should not be substituted for the historical answer
+## Modern extensions must remain distinct from the historical mechanism
 
 Because PP250 capability operations are architecturally distinguished from ordinary data writes, a modern implementation could maintain a collector invariant whenever a capability is stored or copied.
 
