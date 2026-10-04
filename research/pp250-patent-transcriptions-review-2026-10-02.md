@@ -31,7 +31,7 @@ Locators below refer to the numbered **Description** paragraphs unless otherwise
 
 **DOCUMENTED OBSERVATION:** US3814919A paragraph 48 assigns bit 16 RD, 17 WD, 18 ED, 19 RC, 20 WC and 21 EC; bits 22 and 23 are spare. Its priority is 4 March 1971 and US filing 1 March 1972. This is early patent-family evidence for six independently named rights, not proof of a delivered implementation on the priority date.
 
-The distinct PS(2)/DT(2)/RTE(4) Figure 3 representation in US3787813 remains evidence. However, the proposed clean Generation A-to-B chronology in which explicit execute/enter rights first emerge in 1975–76 is no longer supported. Structural comparison remains useful; a dated redesign, causal explanation from operational experience, and the mapping between these early representations remain **UNKNOWN/HYPOTHESIS**. Later LOU, propagation and local-store lifetime mechanisms remain later evidence.
+The distinct PS(2)/DT(2)/RTE(4) Figure 3 representation in US3787813 remains evidence. However, the proposed clean Generation A-to-B chronology in which explicit execute/enter rights first emerge in 1975–76 is no longer supported. Structural comparison remains useful, but the two schemes are treated as **generation/version-specific representations**; an exact mapping between them is not required by the current reconstruction and is no longer an active unresolved question. Later LOU, propagation and local-store lifetime mechanisms remain later evidence.
 
 ## Startup and fault roots
 
