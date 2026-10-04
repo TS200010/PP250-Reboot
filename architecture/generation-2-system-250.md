@@ -55,6 +55,8 @@ This construction is deliberately general. Such protected objects can represent 
 
 **A persistent token must be capable of being brought into an active form without changing what it represents.** Its representation may change as the referenced structure moves between persistent storage and main memory, and again when the token is being used by a processor, but its essential meaning — the structure to which it refers and the access permitted through it — must remain invariant.
 
+**Transformation between token representations must preserve the access and bounds of the token.** The architecture must enforce these invariants across every representation.
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
