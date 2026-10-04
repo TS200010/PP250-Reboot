@@ -555,7 +555,7 @@ already legitimate stored capability
 special processor capability register
 ```
 
-General capability genesis therefore remains a separate unresolved problem.
+**Superseded:** general runtime capability genesis is not a separate unresolved problem. Protected allocator/resource mechanisms create resources and return their capabilities. The remaining genesis issue is the cold-start provenance of the initial legitimate authority/state.
 
 ### 11.4 Evidence tests
 
