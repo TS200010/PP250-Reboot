@@ -146,7 +146,7 @@ physical resource + free SCT entry
 
 Published descriptions associate the Store Allocator with allocating storage, obtaining an SCT entry, populating it with the physical segment description, and producing the corresponding capability.
 
-Thus there are two resource pools: **physical resources** and **naming resources (SCT entries)**. The origin and representation of the initial free-SCT pool is part of the genesis problem.
+Thus there are two resource pools: **physical resources** and **naming resources (SCT entries)**. How a running allocator manages those pools is ordinary resource-management architecture; only their provenance at genuine cold start belongs to the remaining bootstrap question.
 
 ## 9. Why SCT entries cannot simply be reused
 
@@ -248,7 +248,7 @@ This is a key data-structure question.
 
 Internal Mode should not be treated as a conventional supervisor mode. Current understanding is that it provides capability-controlled access/inspection of processor-internal registers, with important restrictions on modification. It is not an arbitrary capability-manufacturing backdoor.
 
-Capability genesis remains a separate problem.
+Ordinary runtime capability creation is supplied by the protected allocator/resource mechanism. The remaining genesis issue is confined to cold-start provenance of the initial authority.
 
 ## 15. Provisional architectural picture
 
@@ -403,11 +403,11 @@ Internal Mode is not a hidden supervisor mode and is not the discovered capabili
 
 Neither mechanism, as presently understood, gives ordinary software a general capability-forging operation.
 
-### 18.4 The remaining capability-genesis hole
+### 18.4 Runtime capability creation versus the remaining cold-start question
 
-The central unresolved problem is now much narrower:
+Subsequent evidence and reconstruction close the earlier runtime-genesis question: once legitimate capability-controlled execution exists, protected resource allocators create resources, establish the required SCT/resource state, and return capabilities for them. This is ordinary system resource management, not an unexplained capability-forging operation.
 
-> **Once legitimate capability-controlled execution exists, by what architectural mechanism can authority over a previously unrepresented physical resource first enter the ordinary SCT-backed capability universe?**
+The remaining genesis question is therefore **cold-start provenance**: how the initial valid authority and structures required to start that already-legitimate allocator/process environment are established from inert state.
 
 For storage, the unresolved transition can be represented as:
 
@@ -720,18 +720,18 @@ The earlier genesis model must now distinguish several operations that had somet
 
 This substantially sharpens the remaining genesis question. Rather than asking only how hardware is 'turned into a capability', the investigation must identify separately how System 250 establishes an object representation and how it creates a legitimate, unforgeable stored capability carrying a particular ACCESS to that object.
 
-### 19.11 Current unresolved representation questions
+### 19.11 Remaining documentary/representation details
 
 The following remain open:
 
-- exact Outform physical width and encoding;
-- exact bit layout of the Inform ACCESS field and SCT reference for each relevant PP250 version/OS;
+- exact Outform physical width and encoding where useful for a particular generation;
+- exact bit layout of the Inform ACCESS field and SCT reference for a particular generation/OS where needed for faithful emulation;
 - exact LIMIT comparison semantics, including inclusive/exclusive boundary behaviour;
 - exact meaning of SCT state/flag bits **within any generation where that meaning affects reconstruction**; cross-generation bit continuity or chronology is not itself an architectural requirement;
 - exact architectural mechanism that creates a new legitimate stored capability or changes/attenuates ACCESS associated with an existing object reference;
-- exact mechanism by which Outform persistent identity is resolved to an SCT entry when capability-containing material returns to primary store.
+- implementation details of a particular generation's VM/storage-manager handling, where needed for faithful emulation. Inform/Outform conversion itself belongs to the established VM/storage-management and VM-trap mechanism.
 
-These questions should remain labelled unresolved until the evidence or reconstruction constraints discriminate between the alternatives.
+These are documentary or generation-specific implementation details, not automatically current architectural open questions. Promote one only if its absence prevents reconstruction of observed behaviour; see `pp250-open-questions.md`.
 
 
 ---
