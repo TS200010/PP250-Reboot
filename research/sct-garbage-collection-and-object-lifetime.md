@@ -1,6 +1,6 @@
 # SCT garbage collection, object lifetime and lazy traversal
 
-> Status: historical mechanism now substantially documented from England and the 1975-priority Venton/Blench/Sutherland/Hamer-Hodges allocation/deallocation patent family. Remaining questions concern implementation detail, roots/outform handling, and exact generation differences. Modern extensions remain hypotheses.
+> Status: historical mechanism now substantially documented from England and the 1975-priority Venton/Blench/Sutherland/Hamer-Hodges allocation/deallocation patent family. Inform/Outform belongs to the VM/storage-management path and exact SCT/representation details are generation-specific; neither is treated as a current architectural blocker. Modern extensions remain hypotheses.
 
 ## The problem was initially framed incorrectly
 
