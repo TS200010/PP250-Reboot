@@ -22,6 +22,8 @@ PP250 enforces a software-defined protected structure in hardware: once authorit
 
 The protected structure and its semantics are defined by software. It may represent a file, process, device, directory, allocator, operating-system service or application object. Such structures can themselves hold and expose authority, allowing them to be composed recursively into complete software systems.
 
+Conceptually, a protected structure combines state with a defined set of operations upon that state. It is readily recognisable as the encapsulated abstraction represented in modern programming languages by objects, classes and other structured types.
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
