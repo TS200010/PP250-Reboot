@@ -477,7 +477,7 @@ In particular, the following remain unresolved:
 
 1. the exact protected/special-register state at power-up;
 2. whether cold power-up follows the same C(S) -> special environment -> automatic process-change path as fault recovery;
-3. how the Start-Up Block, special capability structures, initial Dump Stack and first normal code are populated in a completely cold machine;
+3. exact historical loading/commissioning details for the Start-Up Block, special capability structures, initial Dump Stack and first normal code, where required for implementation fidelity rather than architectural authority provenance;
 4. how the first normal C(C)/SCT is established;
 5. how store management and process management are first made available;
 6. the exact state after the automatic process change before the first ordinary instruction;
