@@ -51,6 +51,10 @@ This construction is deliberately general. Such protected objects can represent 
 
 **These two requirements can initially be considered separately: the token record and the token representation.**
 
+**The token record must ultimately be persistent.** The existence of an unforgeable token, the structure to which it refers, and the access it grants cannot depend upon that structure being resident in main memory or upon the continued existence of any particular processor state. The complete token relationship — the referenced structure together with the access permitted through that reference — must therefore survive on persistent storage.
+
+**A persistent token must be capable of being brought into an active form without changing what it represents.** Its representation may change as the referenced structure moves between persistent storage and main memory, and again when the token is being used by a processor, but its essential meaning — the structure to which it refers and the access permitted through it — must remain invariant.
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
