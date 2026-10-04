@@ -263,53 +263,47 @@ Dump Stack
 
 [P3] also extends links with local-store and optional saved-register information. Those extensions are not inserted into the 1976 table above.
 
-## 8. C6, C7 and execution domains
+## 8. C6, C7, CALL, Enter Capability and RETURN
 
-**Documented, [E1], paragraphs 21–26:** C6 supplies the current node's main capability block, while C7 supplies its code block. This is the capability environment through which the code can reach authorized objects. The term **Central Capability Block** is also used in [L1, sections 4.3–4.4, SECONDARY EVIDENCE].
+**Documented, [E1], paragraphs 21–26, and independently described by [H1]:** C6 identifies the current node's main capability block/domain and C7 identifies the currently executing code block.
+
+For an ordinary CALL within the current domain, C6 remains the current domain while C7 identifies the called code.
+
+For a CALL through an **Enter Capability**, the instruction specifies the Enter Capability and an offset within the entered capability block. The processor loads **C6 with the entered capability block** (supplying read-capability access) and **C7 with the executable capability selected by the offset**. The previous C6, C7 and return IAR are preserved on the Process Dump Stack.
+
+**Documented, [E1], paragraph 25:** the remaining general capability registers C0–C5 may carry parameters across the interface between nodes. A protected CALL is therefore not a complete register-context replacement: it changes the protected execution context represented by C6/C7 while allowing other register state to cross the boundary.
+
+**Documented, [R1], p. 6:** the Process Dump Stack contains successive **C6/C7/IAR triples**, confirming the three-word CALL frame. `RETURN` restores the saved execution context. CALL frames occupy the variable stacked part of the same Process Dump Stack whose fixed area is used to preserve process state; they are not a second stack.
+
+**FIRST-HAND EVIDENCE, [S1]:** Anthony J. Stanners independently recalled this CALL/Enter/RETURN mechanism from his 1975–77 CORAL 250 work, including the C6/C7/IAR frame and the fact that the other capability registers survive the domain transition. Stanners also recalls unintended capabilities left in those registers on return as a known security weakness.
+
+**SECONDARY CORROBORATION, [L2]:** Levy later identifies surviving capability-register contents across protected CALL as an authority-leakage weakness. Thus the mechanism itself is established by contemporary primary sources; Stanners's recollection supplies independent participant evidence and the remembered security significance, with Levy independently corroborating the latter.
 
 ```text
-C6 --> current capability environment --> accessible segments
-C7 --> current code segment
-IAR --> current instruction position within that code context
+caller                         callee
+C6 -> caller domain            C6 -> entered domain
+C7 -> caller code     CALL     C7 -> selected code
+IAR -> return point   ---->    IAR -> callee execution
+C0-C5 ------------ survive across boundary ------------>
+
+Process Dump Stack:
+    ... | saved C6 | saved C7 | saved IAR | ...
+                                      ^
+                              restored by RETURN
 ```
 
-**Documented, [P2]:** the live IAR contains an absolute instruction address within the C7-defined block. [P3] describes a relativized saved instruction address. These are different representations of execution position; this note does not prescribe an unverified 1976 encoding or increment order.
-
-C6 is **not inherently an OS Process Base pointer**. A particular management domain may use its C6 environment to reach a Process Base or may arrange for that block itself to be the current capability block. That is a structure and calling-context question, not the definition of C6. C0–C5 can carry capabilities across a domain call [E1, paragraph 25], so describing C6 as the current environment must not imply that all other held authority disappears on CALL.
+C6 is **not inherently an OS Process Base pointer**. A particular management domain may use its C6 environment to reach a Process Base or may arrange for that block itself to be the current capability block.
 
 ## 9. CALL versus CHP
 
 | Operation | Execution entity | Dump Stack | State transition |
 |---|---|---|---|
-| CALL | Same process | Same process's stack | Enter another procedure/domain and preserve a return context |
+| CALL | Same process | Same process's stack | Enter another procedure/domain; push C6/C7/IAR return frame |
 | CHP (Change Process) | Outgoing process suspended; incoming process activated | Outgoing and incoming stacks | Transfer the resumable process context |
 
-**Documented, [E1], paragraphs 24–26:** CALL uses an enter capability and an offset selecting code, establishes the called domain's C6/C7, and preserves the caller's context for RETURN. [R1] records the C6/C7/IAR frames; [P3] explicitly distinguishes stack updates by CALL from a process change involving two Dump Stacks. CALL does not itself create another hardware process.
+**Documented, [E1], paragraphs 24–26, [H1], and [R1]:** CALL uses an Enter Capability and offset to establish the called C6/C7 context and pushes the C6/C7/IAR return frame. CALL does not itself create another hardware process. CHP is the distinct heavyweight process-state transition.
 
-The user's concrete instruction is:
-
-```text
-CHP 3 0 C6
-```
-
-**Provenance:** this exact assembly example is supplied by the user's investigation, not printed in the inspected pocket-reference pages. [R1], p. 3, establishes CHP's name and opcodes; its instruction list is not a full operand or microsequence specification.
-
-**Strong inference / current working interpretation:** C6 plus offset `3` locates the stored capability designating the incoming Dump Stack in the ROS/PDOS arrangement:
-
-```text
-C6 in the calling management context
-             |
-        offset 3
-             v
-   stored Dump Stack capability
-             |
-             v
-            CHP --> incoming C(D) --> incoming execution state
-```
-
-[P1], the discussion after fault step S17, independently says normal CHANGE PROCESS uses an instruction-supplied offset down a reserved segment pointer table to obtain the incoming dump area through the master capability table. This supports the pointer-to-Dump-Stack interpretation, while using earlier terminology.
-
-Use C6 for this mechanism, as in the supplied example; an arbitrary C2 example would contradict the investigation. However, the inspected evidence does not prove whether every alternative CAP-field encoding is illegal. The exact role of `0`, effective-address checks, direct-mode CHP semantics, accepted capability forms, failures and microinstruction order remain **UNKNOWN**. The C6 used to find the operand is outgoing state; incoming C6 is restored from the incoming context and may be different.
+The exact operand semantics of CHP remain under investigation. An earlier recalled example, `CHP 3 0 C6`, was subsequently withdrawn by Stanners as unreliable and **must not be used as evidence** [S1]. Any occurrence of offset 3 in the ROS/PDOS reconstruction derives instead from the documented Process Base diagram and must be treated as an OS-specific structural observation.
 
 ## 10. C(D) and process switching
 
@@ -409,7 +403,7 @@ The main outstanding research questions are the mixed-access anti-forgery mechan
 
 - **[R1] PRIMARY EVIDENCE via repository transcription:** user's Plessey *System 250 Pocket Reference Book / Instruction Codes*, Issue 1, May 1976. [Title/contents transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg0-pg2%20transcription.txt); [pp. 3–4 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg3-pg4.pdf); [pp. 5–7 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg5-pg7%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg5-pg7.pdf). Locators: p. 3 instruction codes, p. 4 access-code diagrams, p. 5 ROS/PDOS structures/state word, p. 6 Dump Stack, p. 7 Special Purpose CPU Registers/Internal Mode. Transcriptions checked; scans not independently rechecked here.
 - **[E1] PRIMARY EVIDENCE:** D. M. England, *Architectural Features of System 250* (1972), [repository paper](../sources/1972/1972-England-Architectural-Features-of-System-250.pdf). Paragraphs 4–9: topology; 16–20: rights, integrity and SCT; 21–26: domains/CALL/Dump Stack; 30: virtual store and disk capabilities; 31: process management and CPU independence. PDF text inspected; diagram bit boundaries not treated as verified from extraction.
-- **[E2] PRIMARY EVIDENCE, contextual research lead:** D. M. England, *Operating System of System 250*, International Switching Symposium, June 1972, in the [repository ISS collection](../sources/1972/1972-06-System-250-ISS-Papers-MIT.pdf). Detailed OS claims above rely on [E1], not an assumed reading of this collection.
+- **[H1] PRIMARY EVIDENCE:** D. Halton, *Hardware of the System 250 for Communication Control* (1972), [repository transcription](../transcriptions/hardware-of-the-system-250-for-communication-control.md). Enter mechanism: C7 receives selected executable capability, C6 the called node capability block, old C6/C7 are stacked and restored by RETURN.\n- **[S1] FIRST-HAND EVIDENCE:** Anthony J. Stanners, consolidated [System 250 first-hand recollections](../sources/anthony-stanners-first-hand-recollections.md), including CALL/Enter/RETURN recollection and evidence status.\n- **[L2] SECONDARY EVIDENCE:** Henry M. Levy, System 250 discussion of capability-register leakage across protected CALL; repository analysis in [levy-chapter4-call-register-leakage.md](levy-chapter4-call-register-leakage.md).\n- **[E2] PRIMARY EVIDENCE, contextual research lead:** D. M. England, *Operating System of System 250*, International Switching Symposium, June 1972, in the [repository ISS collection](../sources/1972/1972-06-System-250-ISS-Papers-MIT.pdf). Detailed OS claims above rely on [E1], not an assumed reading of this collection.
 - **[E3] PRIMARY EVIDENCE, research lead:** D. M. England, *Capability Concept Mechanism and Structure in System 250*, International Workshop on Protection in Operating Systems, August 1974. Bibliographic reference in [Levy's bibliography](https://homes.cs.washington.edu/~levy/capabook/Bibliography.pdf); no copy in the inspected repository tree. Not used as proof of an unverified mechanism.
 - **[P1] PRIMARY EVIDENCE:** Plessey, US 3,814,919, *Fault detection and isolation in a data processing system*, [patent text](https://patents.google.com/patent/US3814919A/en). Locators: capability parity fault; fault microsequence S2/S10/S16/S17; automatic and normal CHANGE PROCESS discussion immediately afterwards. Retrieved directly and read for this note; not archived in the inspected repository.
 - **[P2] PRIMARY EVIDENCE:** US 4,383,297, *Data processing system including internal register addressing arrangements*, [repository PDF](../patents/US4383297-internal-register-addressing.pdf), [patent text](https://patents.google.com/patent/US4383297A/en). Locators: illustrative embodiment/Figure 1 description; special data and capability registers; Internal Mode Operation General and restrictions. Text read; later register map kept distinct from [R1].
