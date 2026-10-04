@@ -12,6 +12,10 @@ Detailed provenance and the reasoning trail remain in the repository's research 
 
 **PP250 provides an unforgeable authority substrate from which software can construct and enforce arbitrary programmer-defined authorities. It enables an authority-structured hardware and software system built recursively upon that substrate: authority protects computation and resources, contains faults and supports recovery from them, while the mechanisms that manage, protect and recover the system are themselves governed by authority from that very same substrate.**
 
+There is no kernel, no separately protected operating system, and no privileged instruction set or supervisor mode. The entire system is built recursively from unforgeable authority primitives. System software does not stand above the authority architecture: it is constructed within it and is governed by it.
+
+Authority is not confined to hardware-defined operations such as reading, writing or executing store. The architectural authority primitives in PP250 provide the foundation from which software can construct higher-level authorities with arbitrary software-defined semantics.
+
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
 Its central separation is:
