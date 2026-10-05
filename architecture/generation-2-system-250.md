@@ -61,21 +61,23 @@ This construction is deliberately general. Such protected objects can represent 
 
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
 
-### 2.5 Enduring tokens
-
-**An unforgeable token has an enduring existence independent of its immediate use by a processor.** The segment it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
-
 ## 3. Creation and propagation of access
 
-### 3.1 Creation of a resource and its initial token
+### 3.1 Enduring tokens
 
-*To be developed.*
+An unforgeable token has an enduring existence independent of its immediate use by a processor. The segment it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
 
-### 3.2 Creation and transfer of access
+### 3.2 Creation of unforgeable tokens
 
-*To be developed.*
+Unforgeable tokens are created only by the **protected mechanisms of the system** (described later). Users and programs may request the creation of new tokens, but an unforgeable token cannot be created by ordinary computation.
 
-### 3.3 The protected system as a graph of access
+### 3.3 Transfer of access
+
+An unforgeable token may be passed to another protected object, thereby giving that object the access represented by the token.
+
+Different tokens may give different access to the same protected object.
+
+### 3.4 The protected system as a graph of access
 
 *To be developed.*
 
