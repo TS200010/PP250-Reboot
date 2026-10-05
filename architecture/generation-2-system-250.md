@@ -32,40 +32,36 @@ Conceptually, a protected structure combines state with a defined set of operati
 
 ## 2. The protected-object model
 
-### 2.1 Structure, access and capability
+### 2.1 Structure, access and unforgeable token
 
 Before going any further, it is useful to introduce a few definitions and important concepts:
 
-- **Structure** — a block of memory with defined bounds, to which a capability refers.
-- **Access (authority)** — a subset of the hardware-enforced access rights over that structure.
-- **Capability** — a reference to a structure, together with an access (authority) over that structure.
-- Different capabilities may refer to the same structure with different access (authorities) over it.
+- **Structure** — a block of memory with defined bounds.
+- **Access (authority)** — the operations permitted upon that structure.
+- **Unforgeable token** — a reference to a bounded structure together with the access permitted through that reference.
+- Different unforgeable tokens may refer to the same structure while granting different access to it.
 
 ### 2.2 Constructing a protected object
 
-**These primitives are combined to form a protected structure representing an object.** The object consists of executable code structures or segments representing functions that operate upon data structures representing the state of the object. Capabilities provide the required access to each of these structures: execution access to the code, and whatever data access each data structure requires — for example read-only, write-only, or read-write access.
+**These primitives are combined to form a protected structure representing an object.** The object consists of executable code structures or segments representing functions that operate upon data structures representing the state of the object. Unforgeable tokens provide the required access to each of these structures: execution access to the code, and whatever data access each data structure requires — for example read-only, write-only, or read-write access.
 
-The capabilities defining the object are **assembled into a capability block**. The capabilities within that block therefore define both the functions that may operate upon the object and the data upon which those functions operate.
+Together, these tokens define the object's **protected space**: both the functions that may operate upon the object and the data upon which those functions operate.
 
 ### 2.3 Controlled access to an object
 
-**A further class of capability provides protected access to the capability block itself.** It does not allow its holder to read or modify the capabilities contained within the block. It permits invocation of one of the functions represented within the block without exposing the capabilities from which the object is constructed.
+**A further unforgeable token provides controlled access to the protected object itself.** It does not expose the tokens from which the object's protected space is constructed. Instead, it permits invocation of the functions made available through the object.
 
-**Possession of this capability permits its holder only to invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, and the accesses required to perform those operations remain within the protected structure. The holder cannot bypass those functions to obtain access to the underlying code, data or capabilities. That restriction is enforced by the hardware.
-
-### 2.4 Unforgeable tokens
-
-An **unforgeable token** is an architectural entity representing a reference to a bounded structure together with the access permitted through that reference. Its identity includes the **access and bounds of the structure represented by the token**.
+**Possession of this token permits its holder only to invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, and the accesses required to perform those operations remain within the protected structure. The holder cannot bypass those functions to obtain access to the underlying code, data or tokens. That restriction is enforced by the hardware.
 
 **At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of unforgeable tokens: tokens giving access to the functions that implement its operations and to the data upon which those functions operate. A further unforgeable token provides controlled access to the object without exposing the tokens from which its protected space is constructed.
 
 This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
 
-### 2.5 Different access to the same object
+### 2.4 Different access to the same object
 
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
 
-### 2.6 Enduring tokens
+### 2.5 Enduring tokens
 
 **An unforgeable token has an enduring existence independent of its immediate use by a processor.** The structure it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
 
@@ -146,6 +142,8 @@ This construction is deliberately general. Such protected objects can represent 
 *To be developed.*
 
 ## 7. Realisation in PP250-G2
+
+PP250-G2 realises the unforgeable tokens of the architectural model as **capabilities**.
 
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
