@@ -263,55 +263,21 @@ The first structure to reconstruct is a **process**. Its persistent computationa
 
 PP250-G2 realises the unforgeable tokens of the architectural model as **capabilities**.
 
-**PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
+### 7.1 The Dump Stack
 
-Its central separation is:
+A **Dump Stack** is a segment managed by **M**. Crucially, it is not part of either **H** or **T**; it belongs to the encompassing microprogram computation.
 
-- **data and instruction computation** uses the ordinary data path and data registers;
-- **authority and protected naming** are represented by capabilities;
-- **microprogrammed processor mechanisms** enforce capability use and perform transitions that ordinary software cannot manufacture for itself.
+The Dump Stack holds the processor state of a process when that process is not executing. It contains C0–C5, D0–D7, the Pushdown Pointer, Watchdog Timer and MIP, together with the C6/C7/IAR execution state and saved CALL contexts.
 
-A useful reconstruction is a model denoted by M⟨H,T⟩: T describes ordinary von-Neumann computation, H describes capability-mediated protected computation, and M is the processor mechanism that implements and coordinates transitions involving both. M is reconstruction terminology, not an historical System 250 name.
+Thus the state from which both H and T computation can subsequently resume is preserved outside both of them, under M.
 
-### 7.1 Programmer-visible state
+### 7.2 Loading and dumping a process
 
-The programmer-visible execution state is more than a register file. It includes the current instruction stream and addressing context, the ordinary data and capability registers, condition/indicator state, and the protected execution context established by C6 and C7. Some additional processor-control state is visible only through the special/internal mechanisms described later.
+**M** transfers process state between a Dump Stack and the processor registers.
 
-The ordinary general-purpose register set consists of:
+**CHP (Change Process)** is an instruction of **M**. It causes the current process state to be dumped and another process state to be restored from its Dump Stack.
 
-- eight 24-bit data registers, D0–D7;
-- eight capability registers, C0–C7.
-
-A loaded capability register contains the information needed to address and protect a store block: a base, a limit and an access authority.
-
-C0–C5 are general capability registers.
-
-C6 and C7 have defined execution roles:
-
-- **C6** identifies the principal capability block of the currently executing process;
-- **C7** identifies the currently executing code block.
-
-The Instruction Address Register selects the current instruction relative to the code capability in C7.
-
-### 7.2 Instruction addressing and protection
-
-PP250-G2 has Store and Direct instruction forms.
-
-In Store mode an effective store address is constructed from the base of the selected capability, the instruction's address offset and, where selected, a data-register modifier. Conceptually:
-
-```text
-effective address = C[n].BASE + offset + modifier data-register value
-```
-
-The contemporary processor description shows the two instruction formats directly:
-
-![PP250-G2 Store and Direct instruction formats](../transcriptions/assets/halton/figure-6.png)
-
-*Figure: Store and Direct instruction formats from Halton, “Hardware of the System 250 for Communication Control”.*
-
-Before access, the processor verifies that the address lies within the capability bounds and that the requested operation is permitted by its access field. An invalid access enters the fault machinery rather than merely producing an unchecked physical address.
-
-Direct mode supplies a literal or register operand and does not require a normal store reference.
+Process change therefore takes place entirely within M. Neither H nor T performs the transfer; both cease in one process and are re-established from the state of the process entered.
 
 ### 7.3 Capability access
 
