@@ -32,18 +32,18 @@ Conceptually, a protected structure combines state with a defined set of operati
 
 ## 2. The protected-object model
 
-### 2.1 Structure, access and unforgeable token
+### 2.1 Segment, access and unforgeable token
 
 Before going any further, it is useful to introduce a few definitions and important concepts:
 
-- **Structure** — a block of memory with defined bounds.
-- **Access (authority)** — the operations permitted upon that structure.
-- **Unforgeable token** — a reference to a bounded structure together with the access permitted through that reference.
-- Different unforgeable tokens may refer to the same structure while granting different access to it.
+- **Segment** — a block of storage with defined bounds.
+- **Access (authority)** — the operations permitted upon that segment.
+- **Unforgeable token** — a reference to a segment together with the access permitted through that reference.
+- Different unforgeable tokens may refer to the same segment while granting different access to it.
 
 ### 2.2 Constructing a protected object
 
-**These primitives are combined to form a protected structure representing an object.** The object consists of executable code structures or segments representing functions that operate upon data structures representing the state of the object. Unforgeable tokens provide the required access to each of these structures: execution access to the code, and whatever data access each data structure requires — for example read-only, write-only, or read-write access.
+**These primitives are combined to form a protected structure representing an object.** The object consists of executable code segments representing functions that operate upon data segments representing the state of the object. Unforgeable tokens provide the required access to each of these segments: execution access to the code, and whatever data access each data structure requires — for example read-only, write-only, or read-write access.
 
 Together, these tokens define the object's **protected space**: both the functions that may operate upon the object and the data upon which those functions operate.
 
@@ -63,7 +63,7 @@ This construction is deliberately general. Such protected objects can represent 
 
 ### 2.5 Enduring tokens
 
-**An unforgeable token has an enduring existence independent of its immediate use by a processor.** The structure it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
+**An unforgeable token has an enduring existence independent of its immediate use by a processor.** The segment it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
 
 ## 3. Creation and propagation of access
 
