@@ -140,11 +140,19 @@ The protected structure of the system confines software faults within protected 
 
 ### 5.4 Recovery
 
-*To be developed.*
+Exceptional conditions are distinguished according to their severity. Some permit the affected computation to be suspended, the condition handled, and computation subsequently resumed. More serious faults render the affected computational state unviable and invoke the system's fault-recovery mechanisms.
+
+A condition that would normally be recoverable may itself become a fault when safe recovery cannot be performed.
+
+***ASCENT: Program Trap and normal interrupt path; Fault Interrupt and fault/start-up path; Trap Fault escalation; MIF/MIP; fault invalidation and recovery mechanisms.***
 
 ### 5.5 Resource lifetime
 
-*To be developed.*
+Protected objects may be created and may cease to exist. Their lifetime is independent of the lifetime of any particular process using them.
+
+When an object is no longer required, the resources from which it was constructed may be recovered for reuse.
+
+***ASCENT: resource allocators; object lifetime; capability reachability and garbage collection.***
 
 ## 6. The complete architectural model
 
