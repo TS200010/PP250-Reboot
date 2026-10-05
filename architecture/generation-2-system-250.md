@@ -47,11 +47,7 @@ This construction is deliberately general. Such protected objects can represent 
 
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
 
-**An unforgeable token must have a persistent representation.** The existence of the token, the structure to which it refers, and the access it grants cannot depend upon that structure being resident in main memory or upon the continued existence of any particular processor state. **Its representation on persistent storage is therefore the enduring record of the token.**
-
-**A persistent token must be capable of being brought into an active form without changing what it represents.** Its representation may change as the referenced structure moves between persistent storage and main memory, and again when the token is being used by a processor, but its essential meaning — the structure to which it refers and the access permitted through it — must remain invariant.
-
-**Transformation between token representations must preserve the access and bounds of the token.** The architecture must enforce these invariants across every representation.
+**An unforgeable token has an enduring existence independent of any particular processor state.** It continues to refer to the same bounded structure and to grant the same access when neither the token nor the structure is currently being used by a processor. The token's access and bounds remain properties of that token throughout its lifetime.
 
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
