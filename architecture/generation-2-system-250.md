@@ -39,19 +39,20 @@ Before going any further, it is useful to introduce a few definitions and import
 - **Segment** — a block of storage with defined bounds.
 - **Access (authority)** — the operations permitted upon that segment.
 - **Unforgeable token** — a reference to a segment together with the access permitted through that reference.
+- **Protected-token segment** — a segment containing unforgeable tokens.
 - Different unforgeable tokens may refer to the same segment while granting different access to it.
 
 ### 2.2 Constructing a protected object
 
-**These primitives are combined to form a protected structure representing an object.** The object consists of executable code segments representing functions that operate upon data segments representing the state of the object. Unforgeable tokens provide the required access to each of these segments: execution access to the code, and whatever data access each data structure requires — for example read-only, write-only, or read-write access.
+A protected object is defined by a **protected-token segment** containing unforgeable tokens. Those tokens give access to the code and data segments from which the object is constructed.
 
-Together, these tokens define the object's **protected space**: both the functions that may operate upon the object and the data upon which those functions operate.
+The segments accessible through those tokens constitute the object's **protected space**.
 
 ### 2.3 Controlled access to an object
 
-**A further unforgeable token provides controlled access to the protected object itself.** It does not expose the tokens from which the object's protected space is constructed. Instead, it permits invocation of the functions made available through the object.
+**A further unforgeable token provides controlled access through the protected-token segment.** It does not expose the tokens contained within that segment. Instead, it permits invocation of the functions made available through the object.
 
-**Possession of this token permits its holder only to invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, and the accesses required to perform those operations remain within the protected structure. The holder cannot bypass those functions to obtain access to the underlying code, data or tokens. That restriction is enforced by the hardware.
+**Possession of this token permits its holder only to invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, and the accesses required to perform those operations remain within the protected space. The holder cannot bypass those functions to obtain access to the underlying code, data or tokens. That restriction is enforced by the hardware.
 
 **At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of unforgeable tokens: tokens giving access to the functions that implement its operations and to the data upon which those functions operate. A further unforgeable token provides controlled access to the object without exposing the tokens from which its protected space is constructed.
 
@@ -85,7 +86,7 @@ Different tokens may give different access to the same protected object.
 
 ### 3.4 The protected system as a graph of access
 
-Protected objects form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. An object has no access outside its own protected space except through unforgeable tokens.
+Protected spaces form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. An object has no access outside its own protected space except through unforgeable tokens.
 
 The islands and the tokens connecting them therefore form a **directed graph of access**.
 
