@@ -247,7 +247,7 @@ Their use can be understood as three interacting forms of computation:
 
 **H — Church computation** — computation expressed through capabilities and protected functional structures.
 
-**M — microprogram computation** — everything that executes under the control of the processor microprogram.
+**M — microprogram computation** — everything that executes under the control of the processor microprogram. M can execute system-designer-supplied code through protected callbacks whose entry is owned exclusively by M.
 
 The resulting computational structure can therefore be represented as:
 
