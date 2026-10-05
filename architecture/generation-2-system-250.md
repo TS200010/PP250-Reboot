@@ -146,7 +146,19 @@ A condition that would normally be recoverable may itself become a fault when sa
 
 ***ASCENT: Program Trap and normal interrupt path; Fault Interrupt and fault/start-up path; Trap Fault escalation; MIF/MIP; fault invalidation and recovery mechanisms.***
 
-### 5.5 Resource lifetime
+### 5.5 Fault recovery
+
+When a fault makes the current computational state unusable, recovery begins from protected state established independently of the affected computation. This permits the faulty computation or hardware to be isolated and execution to be re-established without depending upon the state that has failed.
+
+***ASCENT: fault/start-up root; C(S); capability invalidation; checkout; automatic CHP and restoration of a viable process.***
+
+### 5.6 Cold bootstrap
+
+At initial start-up there is no existing process from which the protected system can be entered. The processor therefore begins with a protected root established by the hardware itself. From this root the initial protected execution environment is constructed and the first process entered.
+
+***ASCENT: preset C(S); Special Start-Up Block; initial Dump Stack and process entry.***
+
+### 5.7 Resource lifetime
 
 Protected objects may be created and may cease to exist. Their lifetime is independent of the lifetime of any particular process using them.
 
