@@ -187,7 +187,7 @@ The machine provides shared primary storage in which instructions, data, process
 The ordinary processor state contains two register sets:
 
 - **D0–D7** — eight 24-bit data registers.
-- **C0–C7** — eight capability registers.
+- **C0–C7** — eight 48-bit capability registers.
 
 These are the principal working registers available during ordinary execution. Their architectural use will be reconstructed on the ascent.
 
