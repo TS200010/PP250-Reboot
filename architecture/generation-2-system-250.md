@@ -8,6 +8,14 @@ This document gives a coherent architectural description of the mature System 25
 
 Detailed provenance and the reasoning trail remain in the repository's research and transcription material.
 
+## The proposition
+
+**System 250 was not just a capability machine; it was a pure capability machine. No machine like it existed at the time, and none has been created since.**
+
+System 250 has usually been understood and described through its most visible architectural feature: capabilities. That description is correct, but incomplete. It obscures a deeper structure which appears never to have been fully described outside the relatively small community that designed, implemented and programmed the machine. This reconstruction attempts to recover that structure.
+
+We will begin with the architecture as it appeared to the programmer and, in particular, with the unusual mechanism at its heart: the **Enter Capability**. Understanding what an Enter Capability actually does provides the key to understanding System 250. From there we can ask the questions that naturally follow: where do capabilities come from, what establishes and protects a process, and what lies beneath the capability architecture itself? Following those questions down into the processor reveals a structure considerably more interesting than the conventional description of System 250 as an early capability machine suggests.
+
 ## Method of reconstruction
 
 This reconstruction proceeds in two directions.
