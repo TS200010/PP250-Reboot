@@ -100,19 +100,27 @@ A process is an executing computation defined by its protected space.
 
 ***ASCENT: process state; PDS; C6/C7 and the current execution environment.***
 
-### 4.2 The process's protected space
+### 4.2 Process state
+
+A process has computational state sufficient for its execution to be suspended and subsequently resumed. That state includes its working state, its current protected environment, and its point of execution.
+
+The state exists independently of whether the process is currently executing on a processor.
+
+***ASCENT: Dump Stack; saved processor state; suspension and restoration of a process.***
+
+### 4.3 The process's protected space
 
 The protected space defines the code that a process may execute and the data and other objects it may access. The process cannot operate outside that space except through another unforgeable token.
 
 ***ASCENT: C6 and the capability block defining the process's accessible environment.***
 
-### 4.3 Execution within a protected object
+### 4.4 Execution within a protected object
 
 A process executes code within its protected space. That code can operate only upon the data and objects accessible within that space.
 
 ***ASCENT: C7, instruction execution and hardware capability enforcement.***
 
-### 4.4 Invocation of another protected object
+### 4.5 Invocation of another protected object
 
 A process may invoke another protected object through an unforgeable token possessed by the invoking object. The invoked code then executes within the protected space of the invoked object.
 
