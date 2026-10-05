@@ -180,68 +180,132 @@ At this point the architectural descent reaches the machine resources from which
 
 ### 6.1 Store
 
-The machine provides shared primary storage in which instructions, data, process state and stored protected references can reside. Store is addressed and transferred as machine words; the protected interpretation placed upon stored state is enforced by the processor mechanisms described on the ascent.
+The machine provides shared primary storage for **data (including instructions) and capabilities**.
 
 ### 6.2 Ordinary processor registers
 
-The ordinary processor state contains two register sets:
+The processor provides two sets of ordinary working registers:
 
 - **D0–D7** — eight 24-bit data registers.
 - **C0–C7** — eight 48-bit capability registers.
 
-These are the principal working registers available during ordinary execution. Their architectural use will be reconstructed on the ascent.
+### 6.3 Special data registers
 
-### 6.3 Special-purpose processor registers
-
-A second register bank provides processor state used by the system mechanisms. It comprises **D10–D17 and C10–C17**, together with the separately identified **C(S)**.
-
-The documented special data registers are:
+The processor provides a second bank of data registers, **D10–D17**:
 
 - **D10** — absolute Dump Stack pushdown pointer.
 - **D11** — watchdog timer.
 - **D12** — first-fault MIF copy.
+- **D13** — unassigned in the Pocket Reference.
+- **D14** — unassigned in the Pocket Reference.
 - **D15** — interrupt accept register.
+- **D16** — unassigned in the Pocket Reference.
 - **D17** — instruction address register (IAR).
 
-D13, D14 and D16 are present in the bank but are not assigned functions by the Pocket Reference.
+### 6.4 Special capability registers
 
-The documented special capability registers are:
+The processor provides a second bank of capability registers, **C10–C17**:
 
 - **C10 / C(D)** — Dump Stack.
 - **C11 / C(I)** — interval timer.
 - **C12 / C(C)** — System Capability Table.
 - **C13 / C(N)** — Normal Interrupt Block.
+- **C14** — unassigned in the Pocket Reference.
+- **C15** — unassigned in the Pocket Reference.
+- **C16** — unassigned in the Pocket Reference.
+- **C17** — unassigned in the Pocket Reference.
 
-C14–C17 are present but unnamed in the Pocket Reference. **C(S)**, the Fault Start-Up Block capability, is separately identified special processor state rather than being assigned one of those register numbers.
+The processor also contains **C(S)** — the Fault Start-Up Block capability. C(S) lies outside the address space of the C registers and its value is hardwired into the processor.
 
-### 6.4 Processor indicator and internal state
+### 6.5 Primary Indicator Register — MIP
 
-The processor also maintains control and exceptional-condition state in the **Primary Indicator Register (MIP)**, **Fault Indicator Register (MIF)** and **Secondary Indicator Register (MIS)**.
+The **Primary Indicator Register (MIP)** contains:
 
-The documented Internal Mode addressing mechanism allows defined processor mechanisms to address this internal register state, including the ordinary and special D and C registers, indicators and C(S).
+- **MIP00** — =0.
+- **MIP01** — <0.
+- **MIP02** — Overflow.
+- **MIP03** — Spare.
+- **MIP04** — Second Group.
+- **MIP05** — Inhibit Interface Faults.
+- **MIP06** — Odd Data Parity.
+- **MIP07** — First Attempt.
+- **MIP08** — Inhibit Interrupts.
+- **MIP09–MIP23** — unassigned in the Pocket Reference.
 
-### 6.5 Timers
+### 6.6 Fault Indicator Register — MIF
 
-The processor provides two distinct timing resources:
+The **Fault Indicator Register (MIF)** contains:
 
-- **Interval timer** — associated with **C11 / C(I)** and used for timed system activity.
-- **Watchdog timer** — **D11**, providing detection of failure to make expected progress; expiry is recorded as a fault condition.
+- **MIF00** — Bus Corrupt.
+- **MIF01** — unassigned.
+- **MIF02** — Interrupt Timeout.
+- **MIF03** — unassigned.
+- **MIF04** — Spare.
+- **MIF05** — Slave Timeout.
+- **MIF06** — Capability Parity Fault.
+- **MIF07** — Sumcheck Fault.
+- **MIF08** — Base/Limit Fault.
+- **MIF09** — Interface Timeout.
+- **MIF10** — Parity Comparison.
+- **MIF11** — Read Data Parity.
+- **MIF12** — Invalid Operation.
+- **MIF13** — Power Failure.
+- **MIF14** — Invalid Control Code.
+- **MIF15** — Trap with MIP08.
+- **MIF16** — Hardware Fault 1.
+- **MIF17** — Watchdog Timer Expired.
+- **MIF18** — Access Violation.
+- **MIF19** — Hardware Fault 2.
+- **MIF20–MIF23** — capability register on which failure occurred, from least-significant bit at MIF20 to most-significant bit at MIF23.
 
-### 6.6 Initial and restart state
+### 6.7 Secondary Indicator Register — MIS
 
-The processor has hardware-established state available when ordinary process execution does not already provide a viable starting context. This includes the Fault Start-Up capability C(S) and the processor mechanisms used at power-up, fault start-up and restart.
+The processor also contains the **Secondary Indicator Register (MIS)**.
 
-### 6.7 Change Process
+Its bits describe internal microprogram execution state rather than the architectural state from which H and T are constructed. Its detailed contents are therefore left at the microprogram level.
 
-**CHP (Change Process)** is an instruction of **M**. It provides the processor mechanism for dumping the state of one process and restoring the state of another through their Dump Stacks.
+### 6.8 Internal Mode
 
-### 6.8 Microprogrammed control
+**Internal Mode** allows processor-internal state to be addressed using the processor's normal instruction and addressing machinery.
 
-Below the instruction-visible architecture, processor operations are sequenced and enforced by microprogrammed control. The microprogram operates upon the store interface, register banks, indicators and other processor state, and implements both ordinary instruction execution and the protected transitions that will be reconstructed on the ascent.
+In Internal Mode the module address selects the processor itself rather than an external module, and the offset selects processor-internal state.
+
+The internally addressable state includes:
+
+- the ordinary and special **D registers**;
+- the ordinary and special **C registers**;
+- **MIP**;
+- **MIF**;
+- **MIS**; and
+- **C(S)**.
+
+Access through Internal Mode is capability controlled.
+
+### 6.9 Interval timer
+
+The processor provides an **interval-timer mechanism**. **C11 / C(I)** identifies the protected structure associated with interval-timer operation.
+
+### 6.10 Watchdog timer
+
+**D11** is the **watchdog timer**. Expiry of the watchdog timer is recorded by **MIF17 — Watchdog Timer Expired**.
+
+### 6.11 Change Process
+
+**CHP (Change Process)** is an instruction of **M**. It provides the mechanism for dumping the processor state of one process and restoring that of another through their Dump Stacks.
+
+### 6.12 Initial and fault start-up
+
+**C(S)** provides the hardwired capability used by M for initial processor start-up and fault start-up.
+
+### 6.13 Microprogrammed execution
+
+Processor operations are executed under microprogram control.
+
+The microprogram operates the store interface, processor registers, indicators and the other internal processor mechanisms described above. Its internal execution state, including the detailed state represented by MIS, lies below the architectural level considered here.
 
 This is the bottom of the architectural descent.
 
-### 6.9 The turn: M⟨H,T⟩
+### 6.14 The turn: M⟨H,T⟩
 
 The resources described above are the raw material from which PP250-G2 constructs the protected architecture.
 
