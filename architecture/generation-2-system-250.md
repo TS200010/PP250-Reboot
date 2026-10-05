@@ -8,6 +8,18 @@ This document gives a coherent architectural description of the mature System 25
 
 Detailed provenance and the reasoning trail remain in the repository's research and transcription material.
 
+## Method of reconstruction
+
+This reconstruction proceeds in two directions.
+
+It begins at the highest architectural level and **descends through the architecture**, identifying the hierarchy of concepts from which the PP250-G2 system is constructed. At this stage the concern is what the architecture means, rather than how the processor implements it.
+
+At the bottom of the descent, the processor mechanisms and state available to realise that architecture are **inventoried explicitly**.
+
+The reconstruction then reverses direction. In the **ascent**, those mechanisms are taken one by one and combined from the bottom upward, showing how the processor realises the architectural structures established during the descent.
+
+The descent therefore establishes **what the architecture is**; the inventory establishes **what machinery is available**; and the ascent shows **how that machinery constructs the architecture**.
+
 ## 1. Architectural character
 
 ### 1.1 System 250 as a protected system
