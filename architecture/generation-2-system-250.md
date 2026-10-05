@@ -212,11 +212,18 @@ The processor also maintains control and exceptional-condition state in the **Pr
 
 The documented Internal Mode addressing mechanism allows defined processor mechanisms to address this internal register state, including the ordinary and special D and C registers, indicators and C(S).
 
-### 6.5 Initial and restart state
+### 6.5 Timers
+
+The processor provides two distinct timing resources:
+
+- **Interval timer** — associated with **C11 / C(I)** and used for timed system activity.
+- **Watchdog timer** — **D11**, providing detection of failure to make expected progress; expiry is recorded as a fault condition.
+
+### 6.6 Initial and restart state
 
 The processor has hardware-established state available when ordinary process execution does not already provide a viable starting context. This includes the Fault Start-Up capability C(S) and the processor mechanisms used at power-up, fault start-up and restart.
 
-### 6.6 Microprogrammed control
+### 6.7 Microprogrammed control
 
 Below the instruction-visible architecture, processor operations are sequenced and enforced by microprogrammed control. The microprogram operates upon the store interface, register banks, indicators and other processor state, and implements both ordinary instruction execution and the protected transitions that will be reconstructed on the ascent.
 
