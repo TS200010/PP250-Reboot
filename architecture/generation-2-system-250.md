@@ -178,6 +178,8 @@ When an object is no longer required, the resources from which it was constructe
 
 At this point the architectural descent reaches the machine resources from which the protected system is constructed. These resources do not themselves describe the protected-object architecture developed above; they are the processor and storage substrate available to realise it.
 
+Much of this machinery will at first appear obscure. The objective of the following sections is to show how this substrate is used to realise the architecture established on the descent.
+
 ### 6.1 Store
 
 The machine provides shared primary storage for **data (including instructions) and capabilities**.
