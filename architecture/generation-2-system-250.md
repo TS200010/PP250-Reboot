@@ -279,7 +279,23 @@ Thus the state from which both H and T computation can subsequently resume is pr
 
 Process change therefore takes place entirely within M. Neither H nor T performs the transfer; both cease in one process and are re-established from the state of the process entered.
 
-### 7.3 Interval timer and M callback
+### 7.3 Capability access
+
+A capability identifies a segment and specifies what operations may be performed upon that segment. PP250-G2 distinguishes access to **data** from access to **capabilities stored within the segment**.
+
+**RD — Read Data** permits ordinary data to be read from the segment.  
+**WD — Write Data** permits ordinary data to be written into the segment.  
+**ED — Execute Data** permits instructions held in the segment to be executed.
+
+**RC — Read Capability** permits a capability stored in the segment to be loaded into a capability register.  
+**WC — Write Capability** permits a capability to be stored into the segment.  
+**EC — Enter Capability** permits the segment to be entered as a protected capability block rather than exposing its contained capabilities to the caller.
+
+These distinctions are fundamental. **RD does not provide RC**: being able to read the data in a segment does not allow a program to obtain capabilities stored there. Similarly, the ability to invoke a protected object through **EC** does not expose the capabilities from which that object is constructed.
+
+**M enforces these access rights in hardware whenever a capability is used.** This is the primitive hardware protection mechanism from which the protected spaces described on the architectural descent are constructed.
+
+### 7.4 Interval timer and M callback
 
 The **interval timer is a mechanism of M**. It runs independently of computation in H or T.
 
@@ -290,53 +306,6 @@ The callback entry is owned exclusively by M and is inaccessible from H and T. F
 The token held in C(I) is protected in exactly the same way as every other protected token in the system. M has no separate protection mechanism for its callbacks. The integrity of the callback is therefore enforced by the same capability machinery from which the protected H and T structures are constructed.
 
 When the interval timer matures, M uses C(I) to invoke the callback and perform the associated process transition.
-
-### 7.4 Capability access
-
-The mature architecture names six semantic access rights:
-
-```text
-EC   Enter Capability
-WC   Write Capability
-RC   Read Capability
-
-ED   Execute Data
-WD   Write Data
-RD   Read Data
-```
-
-The distinction between capability operations and data/code operations is architectural. A capability may therefore grant authority to manipulate protected references without necessarily granting ordinary data access to the represented block, and conversely.
-
-The Pocket Reference records COS and POS access-field layouts containing these six rights. Their surrounding representation differs. PP250-G2 reconstruction preserves those source-specific layouts without requiring a universal interpretation of every surrounding bit.
-
-### 7.4 Stored capabilities and capability registers
-
-A capability stored in memory is a compact protected reference. For an active System Store capability its essential architectural information is:
-
-```text
-access authority + SCT identity
-```
-
-It does not need to contain the current physical base and limit.
-
-Loading a capability resolves its System Capability Table identity and obtains the corresponding descriptor information. The processor can then construct the expanded capability-register state:
-
-```text
-stored capability
-  ACCESS + SCT identity
-             |
-             v
-          SCT entry
-       BASE / LIMIT
-             |
-             v
-      capability register
-   BASE / LIMIT / ACCESS
-```
-
-The System Capability Table therefore separates stable protected reference identity from the current physical location and bounds of the represented object.
-
-Capability loading is protected by hardware checks including descriptor sumcheck and capability integrity checking.
 
 ### 7.5 System Capability Table
 
