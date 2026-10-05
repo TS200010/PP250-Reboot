@@ -287,6 +287,8 @@ The special capability register **C(I)** provides a protected callback from M to
 
 The callback entry is owned exclusively by M and is inaccessible from H and T. For the moment, assume that the appropriate Enter Capability has already been installed in C(I). How it is established will be explained later.
 
+The token held in C(I) is protected in exactly the same way as every other protected token in the system. M has no separate protection mechanism for its callbacks. The integrity of the callback is therefore enforced by the same capability machinery from which the protected H and T structures are constructed.
+
 When the interval timer matures, M uses C(I) to invoke the callback and perform the associated process transition.
 
 ### 7.4 Capability access
