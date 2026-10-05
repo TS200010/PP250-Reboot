@@ -47,7 +47,7 @@ This construction is deliberately general. Such protected objects can represent 
 
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
 
-**An unforgeable token has an enduring existence independent of any particular processor state.** It continues to refer to the same bounded structure and to grant the same access when neither the token nor the structure is currently being used by a processor. The token's access and bounds remain properties of that token throughout its lifetime.
+**An unforgeable token has an enduring existence independent of its immediate use by a processor.** The structure it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
 
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
