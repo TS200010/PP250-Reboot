@@ -166,23 +166,61 @@ When an object is no longer required, the resources from which it was constructe
 
 ***ASCENT: resource allocators; object lifetime; capability reachability and garbage collection.***
 
-## 6. The complete architectural model
+## 6. Raw machine resources
 
-### 6.1 Recursive construction of the system
+At this point the architectural descent reaches the machine resources from which the protected system is constructed. These resources do not themselves describe the protected-object architecture developed above; they are the processor and storage substrate available to realise it.
 
-*To be developed.*
+### 6.1 Store
 
-### 6.2 System services as protected objects
+The machine provides shared primary storage in which instructions, data, process state and stored protected references can reside. Store is addressed and transferred as machine words; the protected interpretation placed upon stored state is enforced by the processor mechanisms described on the ascent.
 
-*To be developed.*
+### 6.2 Ordinary processor registers
 
-### 6.3 No privileged escape from the model
+The ordinary processor state contains two register sets:
 
-*To be developed.*
+- **D0–D7** — eight 24-bit data registers.
+- **C0–C7** — eight capability registers.
 
-### 6.4 Architectural summary
+These are the principal working registers available during ordinary execution. Their architectural use will be reconstructed on the ascent.
 
-*To be developed.*
+### 6.3 Special-purpose processor registers
+
+A second register bank provides processor state used by the system mechanisms.
+
+The documented special data registers are:
+
+- **D10** — absolute Dump Stack pushdown pointer.
+- **D11** — watchdog timer.
+- **D12** — first-fault MIF copy.
+- **D15** — interrupt accept register.
+- **D17** — instruction address register (IAR).
+
+D13, D14 and D16 are present in the bank but are not assigned functions by the Pocket Reference.
+
+The documented special capability registers are:
+
+- **C10 / C(D)** — Dump Stack.
+- **C11 / C(I)** — interval timer.
+- **C12 / C(C)** — System Capability Table.
+- **C13 / C(N)** — Normal Interrupt Block.
+
+C14–C17 are present but unnamed in the Pocket Reference. **C(S)**, the Fault Start-Up Block capability, is separately identified special processor state rather than being assigned one of those register numbers.
+
+### 6.4 Processor indicator and internal state
+
+The processor also maintains control and exceptional-condition state in the **Primary Indicator Register (MIP)**, **Fault Indicator Register (MIF)** and **Secondary Indicator Register (MIS)**.
+
+The documented Internal Mode addressing mechanism allows defined processor mechanisms to address this internal register state, including the ordinary and special D and C registers, indicators and C(S).
+
+### 6.5 Initial and restart state
+
+The processor has hardware-established state available when ordinary process execution does not already provide a viable starting context. This includes the Fault Start-Up capability C(S) and the processor mechanisms used at power-up, fault start-up and restart.
+
+### 6.6 Microprogrammed control
+
+Below the instruction-visible architecture, processor operations are sequenced and enforced by microprogrammed control. The microprogram operates upon the store interface, register banks, indicators and other processor state, and implements both ordinary instruction execution and the protected transitions that will be reconstructed on the ascent.
+
+This is the bottom of the architectural descent. The next section turns upward and shows how PP250-G2 uses these resources to construct the protected architecture described in Sections 1–5.
 
 ## 7. Realisation in PP250-G2
 
