@@ -235,7 +235,29 @@ The processor has hardware-established state available when ordinary process exe
 
 Below the instruction-visible architecture, processor operations are sequenced and enforced by microprogrammed control. The microprogram operates upon the store interface, register banks, indicators and other processor state, and implements both ordinary instruction execution and the protected transitions that will be reconstructed on the ascent.
 
-This is the bottom of the architectural descent. The next section turns upward and shows how PP250-G2 uses these resources to construct the protected architecture described in Sections 1–5.
+This is the bottom of the architectural descent.
+
+### 6.8 The turn: M⟨H,T⟩
+
+The resources described above are the raw material from which PP250-G2 constructs the protected architecture.
+
+Their use can be understood as three interacting forms of computation:
+
+**T — Turing computation** — conventional instruction execution upon data.
+
+**H — Church computation** — computation expressed through capabilities and protected functional structures.
+
+**M — microprogram computation** — everything that executes under the control of the processor microprogram.
+
+The resulting computational structure can therefore be represented as:
+
+**M⟨H,T⟩**
+
+This is not three separate processors. It is one processor in which the Church and Turing forms of computation are realised within the encompassing microprogram computation.
+
+The architectural descent is now complete. We can reverse direction. Starting with the raw machine resources and M⟨H,T⟩, we can reconstruct PP250-G2 from the bottom upward and show how the protected architecture described above emerges.
+
+The first structure to reconstruct is a **process**. Its persistent computational state is represented by the **Dump Stack**.
 
 ## 7. Realisation in PP250-G2
 
