@@ -67,9 +67,13 @@ This construction is deliberately general. Such protected objects can represent 
 
 An unforgeable token has an enduring existence independent of its immediate use by a processor. The segment it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
 
+***ASCENT: stored capabilities; Inform/Outform; loaded capability registers.***
+
 ### 3.2 Creation of unforgeable tokens
 
 Unforgeable tokens are created only by **identically protected mechanisms of the system** (described later). Users and programs may request the creation of new unforgeable tokens, but such a token cannot be created by ordinary computation.
+
+***ASCENT: the protected mechanisms that create capabilities.***
 
 ### 3.3 Transfer of access
 
@@ -77,11 +81,15 @@ An unforgeable token may be passed to another protected object, thereby giving t
 
 Different tokens may give different access to the same protected object.
 
+***ASCENT: passing capabilities; capability blocks providing different access to the same protected object.***
+
 ### 3.4 The protected system as a graph of access
 
 Protected objects form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. An object has no access outside its own protected space except through unforgeable tokens.
 
 The islands and the tokens connecting them therefore form a **directed graph of access**.
+
+***ASCENT: capability blocks and Enter Capabilities form the protected graph; hardware capability checks enforce its boundaries.***
 
 ## 4. Computation within the protected system
 
