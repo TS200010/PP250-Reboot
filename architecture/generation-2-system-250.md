@@ -193,7 +193,7 @@ These are the principal working registers available during ordinary execution. T
 
 ### 6.3 Special-purpose processor registers
 
-A second register bank provides processor state used by the system mechanisms.
+A second register bank provides processor state used by the system mechanisms. It comprises **D10–D17 and C10–C17**, together with the separately identified **C(S)**.
 
 The documented special data registers are:
 
@@ -231,13 +231,17 @@ The processor provides two distinct timing resources:
 
 The processor has hardware-established state available when ordinary process execution does not already provide a viable starting context. This includes the Fault Start-Up capability C(S) and the processor mechanisms used at power-up, fault start-up and restart.
 
-### 6.7 Microprogrammed control
+### 6.7 Change Process
+
+**CHP (Change Process)** is an instruction of **M**. It provides the processor mechanism for dumping the state of one process and restoring the state of another through their Dump Stacks.
+
+### 6.8 Microprogrammed control
 
 Below the instruction-visible architecture, processor operations are sequenced and enforced by microprogrammed control. The microprogram operates upon the store interface, register banks, indicators and other processor state, and implements both ordinary instruction execution and the protected transitions that will be reconstructed on the ascent.
 
 This is the bottom of the architectural descent.
 
-### 6.8 The turn: M⟨H,T⟩
+### 6.9 The turn: M⟨H,T⟩
 
 The resources described above are the raw material from which PP250-G2 constructs the protected architecture.
 
