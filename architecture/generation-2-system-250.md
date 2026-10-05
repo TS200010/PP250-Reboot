@@ -10,9 +10,15 @@ Detailed provenance and the reasoning trail remain in the repository's research 
 
 ## 1. Architectural character
 
+### 1.1 System 250 as a protected system
+
 **PP250 provides an unforgeable authority substrate from which software can construct and enforce arbitrary programmer-defined authorities. It enables an authority-structured hardware and software system built recursively upon that substrate: authority protects computation and resources, contains faults and supports recovery from them, while the mechanisms that manage, protect and recover the system are themselves governed by authority from that very same substrate.**
 
+### 1.2 No privileged operating system
+
 There is no kernel, no separately protected operating system, and no privileged instruction set or supervisor mode. The entire system is built recursively from unforgeable authority primitives. System software does not stand above the authority architecture: it is constructed within it and is governed by it.
+
+### 1.3 Hardware-enforced software structure
 
 Authority is not confined to hardware-defined operations such as reading, writing or executing store. The architectural authority primitives in PP250 provide the foundation from which software can construct higher-level authorities with arbitrary software-defined semantics.
 
@@ -24,6 +30,10 @@ The protected structure and its semantics are defined by software. It may repres
 
 Conceptually, a protected structure combines state with a defined set of operations upon that state. It is readily recognisable as the encapsulated abstraction represented in modern programming languages by objects, classes and other structured types.
 
+## 2. The protected-object model
+
+### 2.1 Structure, access and capability
+
 Before going any further, it is useful to introduce a few definitions and important concepts:
 
 - **Structure** — a block of memory with defined bounds, to which a capability refers.
@@ -31,13 +41,19 @@ Before going any further, it is useful to introduce a few definitions and import
 - **Capability** — a reference to a structure, together with an access (authority) over that structure.
 - Different capabilities may refer to the same structure with different access (authorities) over it.
 
+### 2.2 Constructing a protected object
+
 **These primitives are combined to form a protected structure representing an object.** The object consists of executable code structures or segments representing functions that operate upon data structures representing the state of the object. Capabilities provide the required access to each of these structures: execution access to the code, and whatever data access each data structure requires — for example read-only, write-only, or read-write access.
 
 The capabilities defining the object are **assembled into a capability block**. The capabilities within that block therefore define both the functions that may operate upon the object and the data upon which those functions operate.
 
+### 2.3 Controlled access to an object
+
 **A further class of capability provides protected access to the capability block itself.** It does not allow its holder to read or modify the capabilities contained within the block. It permits invocation of one of the functions represented within the block without exposing the capabilities from which the object is constructed.
 
 **Possession of this capability permits its holder only to invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, and the accesses required to perform those operations remain within the protected structure. The holder cannot bypass those functions to obtain access to the underlying code, data or capabilities. That restriction is enforced by the hardware.
+
+### 2.4 Unforgeable tokens
 
 An **unforgeable token** is an architectural entity representing a reference to a bounded structure together with the access permitted through that reference. Its identity includes the **access and bounds of the structure represented by the token**.
 
@@ -45,9 +61,91 @@ An **unforgeable token** is an architectural entity representing a reference to 
 
 This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
 
+### 2.5 Different access to the same object
+
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
 
+### 2.6 Enduring tokens
+
 **An unforgeable token has an enduring existence independent of its immediate use by a processor.** The structure it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
+
+## 3. Creation and propagation of access
+
+### 3.1 Creation of a resource and its initial token
+
+*To be developed.*
+
+### 3.2 Creation and transfer of access
+
+*To be developed.*
+
+### 3.3 The protected system as a graph of access
+
+*To be developed.*
+
+## 4. Computation within the protected system
+
+### 4.1 The process
+
+*To be developed.*
+
+### 4.2 The process's protected space
+
+*To be developed.*
+
+### 4.3 Execution within a protected object
+
+*To be developed.*
+
+### 4.4 Invocation of another protected object
+
+*To be developed.*
+
+### 4.5 Return to the invoking object
+
+*To be developed.*
+
+## 5. System activity and change
+
+### 5.1 Processes and concurrent computation
+
+*To be developed.*
+
+### 5.2 Events and interruption
+
+*To be developed.*
+
+### 5.3 Fault containment
+
+*To be developed.*
+
+### 5.4 Recovery
+
+*To be developed.*
+
+### 5.5 Resource lifetime
+
+*To be developed.*
+
+## 6. The complete architectural model
+
+### 6.1 Recursive construction of the system
+
+*To be developed.*
+
+### 6.2 System services as protected objects
+
+*To be developed.*
+
+### 6.3 No privileged escape from the model
+
+*To be developed.*
+
+### 6.4 Architectural summary
+
+*To be developed.*
+
+## 7. Realisation in PP250-G2
 
 **PP250-G2** is a 24-bit capability computer in which ordinary computation, protected naming, protected invocation, process state, virtual storage and system control form one architecture.
 
@@ -59,7 +157,7 @@ Its central separation is:
 
 A useful reconstruction is a model denoted by M⟨H,T⟩: T describes ordinary von-Neumann computation, H describes capability-mediated protected computation, and M is the processor mechanism that implements and coordinates transitions involving both. M is reconstruction terminology, not an historical System 250 name.
 
-## 2. Programmer-visible state
+### 7.1 Programmer-visible state
 
 The programmer-visible execution state is more than a register file. It includes the current instruction stream and addressing context, the ordinary data and capability registers, condition/indicator state, and the protected execution context established by C6 and C7. Some additional processor-control state is visible only through the special/internal mechanisms described later.
 
@@ -79,7 +177,7 @@ C6 and C7 have defined execution roles:
 
 The Instruction Address Register selects the current instruction relative to the code capability in C7.
 
-## 3. Instruction addressing and protection
+### 7.2 Instruction addressing and protection
 
 PP250-G2 has Store and Direct instruction forms.
 
@@ -99,7 +197,7 @@ Before access, the processor verifies that the address lies within the capabilit
 
 Direct mode supplies a literal or register operand and does not require a normal store reference.
 
-## 4. Capability authority
+### 7.3 Capability access
 
 The mature architecture names six semantic access rights:
 
@@ -117,7 +215,7 @@ The distinction between capability operations and data/code operations is archit
 
 The Pocket Reference records COS and POS access-field layouts containing these six rights. Their surrounding representation differs. PP250-G2 reconstruction preserves those source-specific layouts without requiring a universal interpretation of every surrounding bit.
 
-## 5. Stored and loaded capabilities
+### 7.4 Stored capabilities and capability registers
 
 A capability stored in memory is a compact protected reference. For an active System Store capability its essential architectural information is:
 
@@ -146,7 +244,7 @@ The System Capability Table therefore separates stable protected reference ident
 
 Capability loading is protected by hardware checks including descriptor sumcheck and capability integrity checking.
 
-## 6. System Capability Table
+### 7.5 System Capability Table
 
 The SCT is reached through the special capability C(C).
 
@@ -163,7 +261,7 @@ PP250-G2 evidence also establishes SCT state used by the garbage-collection and 
 
 Changing an SCT descriptor does not by itself rewrite capability registers that have already been expanded. Where such state must be refreshed, the architecture can use protected process interruption/restoration so that saved compact identities are resolved again through the current SCT.
 
-## 7. LDP
+### 7.6 LDP
 
 LDP exposes the compact pointer associated with a capability as ordinary data.
 
@@ -179,7 +277,7 @@ This implies that the processor retains sufficient association between an expand
 
 The historical software uses of LDP are not required to define its architectural operation.
 
-## 8. Protected CALL and RETURN
+### 7.7 Enter Capability, CALL and RETURN
 
 Protected invocation is built into the capability architecture.
 
@@ -217,7 +315,7 @@ RETURN restores the saved C6, C7 and IAR.
 
 CALL is consequently a protected call, not a complete process-context replacement.
 
-## 9. Process Dump Stack
+### 7.8 Process Dump Stack
 
 Each active process has a Process Dump Stack identified by C(D).
 
@@ -240,7 +338,7 @@ The same protected structure therefore supports two related requirements:
 
 The operating systems differ in their additional Dump Stack fields and initial layouts; those differences are not part of the processor definition.
 
-## 10. Process change
+### 7.9 Change Process
 
 **CHP (Change Process)** is distinct from CALL.
 
@@ -265,7 +363,7 @@ CHP
 
 PP250-G2 provides both Store and Direct forms of CHP. The processor architecture does not require us to assign those forms to a particular operating-system process-creation policy in order to explain process switching.
 
-## 11. Special processor state
+### 7.10 Special processor state
 
 PP250-G2 defines a second group of special-purpose processor registers.
 
@@ -294,7 +392,7 @@ The Primary, Secondary and Fault Indicator registers contain processor control a
 
 These structures allow protected system mechanisms to operate without introducing a conventional unrestricted supervisor address space.
 
-## 12. Normal interrupts
+### 7.11 Normal events and interrupts
 
 Normal system interrupts are capability-mediated.
 
@@ -304,7 +402,7 @@ Normal interrupt handling can cause a process transition using the same protecte
 
 The important architectural point is that an interrupt does not simply install an arbitrary privileged program counter. The destination and its authority are represented by protected system structures.
 
-## 13. Fault and start-up path
+### 7.12 Fault and start-up
 
 Fault handling is distinct from normal interrupt handling.
 
@@ -319,7 +417,7 @@ C(S)   fault/start-up/recovery
 
 They may ultimately use common process-state machinery, but they are not the same entry mechanism. Exact generation-specific cold-load and microinstruction sequencing is an implementation/documentary matter rather than an unresolved authority mechanism.
 
-## 14. Virtual storage and Inform/Outform
+### 7.13 Persistent storage, virtual store, Inform and Outform
 
 Virtual storage is integrated with the capability/object architecture rather than being a separate conventional virtual-address translation layer.
 
@@ -343,7 +441,7 @@ When capability-containing blocks move between primary and secondary storage, th
 
 Nonresident access and materialisation are handled through the established trap/storage-management mechanism. PP250-G2 does not require a later SCT PRESENCE mechanism to explain this behaviour.
 
-## 15. Resource creation
+### 7.14 Resource creation and allocation
 
 Ordinary software does not need the ability to fabricate capabilities.
 
@@ -353,7 +451,7 @@ An allocator creates the appropriate resource and returns a capability giving th
 
 Thus new authority enters an ordinary process through an already-authorised protected operation rather than by constructing an arbitrary capability bit pattern.
 
-## 16. Object lifetime and garbage collection
+### 7.15 Resource lifetime and garbage collection
 
 The capability system forms a graph of protected references.
 
@@ -378,7 +476,7 @@ Objects not reachable under the collection rules can eventually become eligible 
 
 This mechanism depends on the architectural distinction between capability-containing storage and ordinary data; the collector does not need to guess which arbitrary data words might be capabilities.
 
-## 17. Multiprocessor and I/O model
+### 7.16 Protected I/O and multiprocessor operation
 
 System 250 is a symmetric multiprocessor architecture. CPUs share system work rather than having permanently assigned operating-system roles.
 
@@ -388,7 +486,33 @@ I/O is deliberately integrated into the normal protected addressing model. Devic
 
 This model allows processors, stores and peripheral modules to be added or removed within a capability-constrained system structure.
 
-## 18. Architectural invariants
+## 8. The processor mechanisms
+
+*The existing PP250-G2 material above already contains processor-level detail. It will be reorganised under this heading as the implementation ascent is developed.*
+
+## 9. M⟨H,T⟩
+
+### 9.1 T — ordinary computation
+
+*To be developed.*
+
+### 9.2 H — protected computation
+
+*To be developed.*
+
+### 9.3 M — mechanisms acting upon H and T
+
+*To be developed.*
+
+### 9.4 Process transition as the conjunction of H and T
+
+*To be developed.*
+
+### 9.5 Why M is not a third peer machine
+
+*To be developed.*
+
+## 10. Architectural invariants
 
 The recovered PP250-G2 architecture is characterised by the following invariants:
 
@@ -407,7 +531,7 @@ The recovered PP250-G2 architecture is characterised by the following invariants
 
 Together these properties explain the surviving programmer-visible, operating-system and protection behaviour without importing later architectural mechanisms.
 
-## 19. Deliberately unspecified details
+## 11. Deliberately unspecified details
 
 The following details are not required to make the PP250-G2 architecture internally coherent and are therefore not invented here:
 
@@ -420,7 +544,7 @@ The following details are not required to make the PP250-G2 architecture interna
 
 These are implementation, representation, system-policy or historical-evolution questions unless further evidence shows that one of them changes PP250-G2 architectural behaviour.
 
-## 20. Reconstruction conclusion
+## 12. Reconstruction conclusion
 
 On the current repository evidence, PP250-G2 forms an internally consistent architecture.
 
