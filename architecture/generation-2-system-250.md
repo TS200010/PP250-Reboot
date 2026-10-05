@@ -178,7 +178,19 @@ When an object is no longer required, the resources from which it was constructe
 
 At this point the architectural descent reaches the machine resources from which the protected system is constructed. These resources do not themselves describe the protected-object architecture developed above; they are the processor and storage substrate available to realise it.
 
-Much of this machinery will at first appear obscure. The objective of the following sections is to show how this substrate is used to realise the architecture established on the descent.
+The relationship between these resources and the architecture can be represented as:
+
+**M⟨H,T⟩**
+
+**T — Turing computation** — conventional instruction execution upon data.
+
+**H — Church computation** — computation expressed through capabilities and protected functional structures.
+
+**M — microprogram computation** — everything that executes under the control of the processor microprogram. M can initiate protected process transitions through entry capabilities available only to M.
+
+This is not three separate processors. It is one processor in which H and T are realised within the encompassing microprogram computation M.
+
+Much of the machinery listed below will at first appear obscure. The objective of the following sections is to show how this substrate is used to realise the architecture established on the descent.
 
 ### 6.1 Store
 
@@ -193,7 +205,7 @@ M exposes two sets of working registers to H and T:
 
 ### 6.3 Special data registers
 
-The processor provides a second bank of data registers, **D10–D17**:
+The processor contains further data registers, not addressable by normal program instructions:
 
 - **D10** — absolute Dump Stack pushdown pointer.
 - **D11** — watchdog timer.
@@ -206,10 +218,10 @@ The processor provides a second bank of data registers, **D10–D17**:
 
 ### 6.4 Special capability registers
 
-The processor provides a second bank of capability registers, **C10–C17**:
+The processor contains further capability registers, not addressable by normal program instructions:
 
 - **C10 / C(D)** — Dump Stack.
-- **C11 / C(I)** — interval timer.
+- **C11 / C(I)** — contains an Enter Capability through which M initiates a protected process transition when the interval timer matures.
 - **C12 / C(C)** — System Capability Table.
 - **C13 / C(N)** — Normal Interrupt Block.
 - **C14** — unassigned in the Pocket Reference.
@@ -274,15 +286,15 @@ Access to this state is capability controlled.
 
 ### 6.9 Interval timer
 
-The processor contains an **interval timer** and the special capability register **C11 / C(I)**.
+The processor contains an **interval timer**. When the interval timer matures, M initiates a protected process transition through the Enter Capability held in C(I).
 
 ### 6.10 Watchdog timer
 
 **D11** is the **watchdog timer**. Expiry of the watchdog timer is recorded by **MIF17 — Watchdog Timer Expired**.
 
-### 6.11 Change Process
+### 6.11 Internal Change Process
 
-**CHP (Change Process)** is an instruction of **M**. It provides the mechanism for dumping the processor state of one process and restoring that of another through their Dump Stacks.
+M contains an internal Change Process mechanism through which it can dump the processor state of one process and restore the state of another through their Dump Stacks.
 
 ### 6.13 Microprogrammed execution
 
@@ -292,25 +304,7 @@ The microprogram operates the store interface, processor registers, indicators a
 
 This is the bottom of the architectural descent.
 
-### 6.14 The turn: M⟨H,T⟩
-
-The resources described above are the raw material from which PP250-G2 constructs the protected architecture.
-
-Their use can be understood as three interacting forms of computation:
-
-**T — Turing computation** — conventional instruction execution upon data.
-
-**H — Church computation** — computation expressed through capabilities and protected functional structures.
-
-**M — microprogram computation** — everything that executes under the control of the processor microprogram. M can execute system-designer-supplied code through protected callbacks whose entry is owned exclusively by M.
-
-The resulting computational structure can therefore be represented as:
-
-**M⟨H,T⟩**
-
-This is not three separate processors. It is one processor in which the Church and Turing forms of computation are realised within the encompassing microprogram computation.
-
-The architectural descent is now complete. We can reverse direction. Starting with the raw machine resources and M⟨H,T⟩, we can reconstruct PP250-G2 from the bottom upward and show how the protected architecture described above emerges.
+The following sections now reverse direction. Starting with this substrate and M⟨H,T⟩, we can reconstruct PP250-G2 from the bottom upward and show how the protected architecture established on the descent emerges.
 
 The first structure to reconstruct is a **process**. Its persistent computational state is represented by the **Dump Stack**.
 
