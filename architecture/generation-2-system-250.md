@@ -69,7 +69,7 @@ An unforgeable token has an enduring existence independent of its immediate use 
 
 ### 3.2 Creation of unforgeable tokens
 
-Unforgeable tokens are created only by the **protected mechanisms of the system** (described later). Users and programs may request the creation of new tokens, but an unforgeable token cannot be created by ordinary computation.
+Unforgeable tokens are created only by **identically protected mechanisms of the system** (described later). Users and programs may request the creation of new unforgeable tokens, but such a token cannot be created by ordinary computation.
 
 ### 3.3 Transfer of access
 
