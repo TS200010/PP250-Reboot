@@ -120,17 +120,23 @@ A process may invoke another protected object through an unforgeable token posse
 
 ## 5. System activity and change
 
-### 5.1 Processes and concurrent computation
+### 5.1 Multiple processes
 
-*To be developed.*
+Multiple processes may exist independently, each defined by its own protected space.
+
+***ASCENT: process state and the mechanisms by which processes are represented.***
 
 ### 5.2 Events and interruption
 
-*To be developed.*
+Execution of a process may be interrupted by an event. The event may cause another process to execute.
+
+***ASCENT: normal events and interrupts; process transition.***
 
 ### 5.3 Fault containment
 
-*To be developed.*
+The protected structure of the system confines software faults within protected spaces. Hardware faults that could compromise those boundaries are detected and the faulty hardware isolated, preserving the protected structure of the remaining system.
+
+***ASCENT: hardware protection checks; fault detection, isolation and reconfiguration.***
 
 ### 5.4 Recovery
 
