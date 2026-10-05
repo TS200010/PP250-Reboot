@@ -279,7 +279,17 @@ Thus the state from which both H and T computation can subsequently resume is pr
 
 Process change therefore takes place entirely within M. Neither H nor T performs the transfer; both cease in one process and are re-established from the state of the process entered.
 
-### 7.3 Capability access
+### 7.3 Interval timer and M callback
+
+The **interval timer is a mechanism of M**. It runs independently of computation in H or T.
+
+The special capability register **C(I)** provides a protected callback from M to a system-designer-supplied interval-timer handler. Although the handler is written using the same processor instruction repertoire as H and T programs, architecturally it is not an H or T program. It executes as an M-initiated callback.
+
+The callback entry is owned exclusively by M and is inaccessible from H and T. For the moment, assume that the appropriate Enter Capability has already been installed in C(I). How it is established will be explained later.
+
+When the interval timer matures, M uses C(I) to invoke the callback and perform the associated process transition.
+
+### 7.4 Capability access
 
 The mature architecture names six semantic access rights:
 
