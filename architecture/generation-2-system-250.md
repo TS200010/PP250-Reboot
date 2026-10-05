@@ -292,9 +292,11 @@ The processor contains an **interval timer**. When the interval timer matures, M
 
 **D11** is the **watchdog timer**. Expiry of the watchdog timer is recorded by **MIF17 — Watchdog Timer Expired**.
 
-### 6.11 Internal Change Process
+### 6.11 Change Process
 
-M contains an internal Change Process mechanism through which it can dump the processor state of one process and restore the state of another through their Dump Stacks.
+**CHP (Change Process)** is an instruction of **M** that causes the state of one process to be dumped and the state of another to be restored through their Dump Stacks.
+
+M also provides an **internal CHP** mechanism by which M can initiate a process change directly, without execution of the CHP instruction.
 
 ### 6.13 Microprogrammed execution
 
@@ -344,17 +346,17 @@ These distinctions are fundamental. **RD does not provide RC**: being able to re
 
 **M enforces these access rights in hardware whenever a capability is used.** This is the primitive hardware protection mechanism from which the protected spaces described on the architectural descent are constructed.
 
-### 7.4 Interval timer and M callback
+### 7.4 Interval timer and M-initiated process transition
 
 The **interval timer is a mechanism of M**. It runs independently of computation in H or T.
 
-The special capability register **C(I)** provides a protected callback from M to a system-designer-supplied interval-timer handler. Although the handler is written using the same processor instruction repertoire as H and T programs, architecturally it is not an H or T program. It executes as an M-initiated callback.
+The special capability register **C(I)** contains an Enter Capability available to M. When the interval timer matures, M uses that capability to initiate a protected process transition.
 
-The callback entry is owned exclusively by M and is inaccessible from H and T. For the moment, assume that the appropriate Enter Capability has already been installed in C(I). How it is established will be explained later.
+The process entered through C(I) then executes normally in H and T. M does not execute the handler as a separate kind of software computation.
 
-The token held in C(I) is protected in exactly the same way as every other protected token in the system. M has no separate protection mechanism for its callbacks. The integrity of the callback is therefore enforced by the same capability machinery from which the protected H and T structures are constructed.
+For the moment, assume that the appropriate Enter Capability has already been installed in C(I). How it is established will be explained later.
 
-When the interval timer matures, M uses C(I) to invoke the callback and perform the associated process transition.
+The capability held in C(I) is protected in exactly the same way as every other capability in the system. M has no separate protection mechanism for this entry.
 
 ### 7.5 System Capability Table
 
