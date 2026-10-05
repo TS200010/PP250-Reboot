@@ -184,9 +184,9 @@ Much of this machinery will at first appear obscure. The objective of the follow
 
 The machine provides shared primary storage for **data (including instructions) and capabilities**.
 
-### 6.2 Ordinary processor registers
+### 6.2 Processor registers exposed to H and T
 
-The processor provides two sets of ordinary working registers:
+M exposes two sets of working registers to H and T:
 
 - **D0–D7** — eight 24-bit data registers.
 - **C0–C7** — eight 48-bit capability registers.
@@ -268,24 +268,13 @@ Its bits describe internal microprogram execution state rather than the architec
 
 ### 6.8 Internal Mode
 
-**Internal Mode** allows processor-internal state to be addressed using the processor's normal instruction and addressing machinery.
+**Internal Mode** makes processor-internal state addressable through the normal addressing mechanism. The addressed state includes the D and C registers, MIP, MIF, MIS and C(S).
 
-In Internal Mode the module address selects the processor itself rather than an external module, and the offset selects processor-internal state.
-
-The internally addressable state includes:
-
-- the ordinary and special **D registers**;
-- the ordinary and special **C registers**;
-- **MIP**;
-- **MIF**;
-- **MIS**; and
-- **C(S)**.
-
-Access through Internal Mode is capability controlled.
+Access to this state is capability controlled.
 
 ### 6.9 Interval timer
 
-The processor provides an **interval-timer mechanism**. **C11 / C(I)** identifies the protected structure associated with interval-timer operation.
+The processor contains an **interval timer** and the special capability register **C11 / C(I)**.
 
 ### 6.10 Watchdog timer
 
@@ -294,10 +283,6 @@ The processor provides an **interval-timer mechanism**. **C11 / C(I)** identifie
 ### 6.11 Change Process
 
 **CHP (Change Process)** is an instruction of **M**. It provides the mechanism for dumping the processor state of one process and restoring that of another through their Dump Stacks.
-
-### 6.12 Initial and fault start-up
-
-**C(S)** provides the hardwired capability used by M for initial processor start-up and fault start-up.
 
 ### 6.13 Microprogrammed execution
 
