@@ -96,23 +96,27 @@ The islands and the tokens connecting them therefore form a **directed graph of 
 
 ### 4.1 The process
 
-*To be developed.*
+A process is an executing computation defined by its protected space.
+
+***ASCENT: process state; PDS; C6/C7 and the current execution environment.***
 
 ### 4.2 The process's protected space
 
-*To be developed.*
+The protected space defines the code that a process may execute and the data and other objects it may access. The process cannot operate outside that space except through another unforgeable token.
+
+***ASCENT: C6 and the capability block defining the process's accessible environment.***
 
 ### 4.3 Execution within a protected object
 
-*To be developed.*
+A process executes code within its protected space. That code can operate only upon the data and objects accessible within that space.
+
+***ASCENT: C7, instruction execution and hardware capability enforcement.***
 
 ### 4.4 Invocation of another protected object
 
-*To be developed.*
+A process may invoke another protected object through an unforgeable token possessed by the invoking object. The invoked code then executes within the protected space of the invoked object.
 
-### 4.5 Return to the invoking object
-
-*To be developed.*
+***ASCENT: Enter Capability and CALL; C6/C7 transition.***
 
 ## 5. System activity and change
 
