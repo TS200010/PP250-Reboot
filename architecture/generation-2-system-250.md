@@ -79,7 +79,9 @@ Different tokens may give different access to the same protected object.
 
 ### 3.4 The protected system as a graph of access
 
-*To be developed.*
+Protected objects form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. An object has no access outside its own protected space except through unforgeable tokens.
+
+The islands and the tokens connecting them therefore form a **directed graph of access**.
 
 ## 4. Computation within the protected system
 
