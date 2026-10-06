@@ -194,6 +194,20 @@ When an object is no longer required, the resources from which it was constructe
 
 ***ASCENT: resource allocators; object lifetime; capability reachability and garbage collection.***
 
+### 5.8 What we have established
+
+We can now return to the claim made at the beginning: **System 250 was not just a capability machine; it was a pure capability machine.**
+
+There is no privileged operating system sitting above the applications and below the hardware. There is no supervisor mode into which trusted software escapes when it needs to do something that ordinary software cannot do. Instead, the entire software system is constructed from mutually protected pieces, each able to do only what the access it has been given allows it to do.
+
+Some of those pieces provide application functions. Others provide filing, storage management, communications, device control, scheduling or other services that would conventionally be regarded as parts of an operating system. Architecturally there is no distinction. They are all software protected in the same way, and they interact through the same mechanisms.
+
+Hardware enforces the boundaries, but **software defines what those boundaries mean**. A protected structure might represent a file, a device, a process manager, an application or an entire subsystem. The hardware neither knows nor needs to know which.
+
+That is already substantially different from simply adding protected pointers to a conventional computer. But it leaves an awkward question.
+
+**If there is no privileged operating system underneath all this, what is underneath it?**
+
 ## 6. Raw machine resources
 
 At this point the architectural descent reaches the machine resources from which the protected system is constructed. These resources do not themselves describe the protected-object architecture developed above; they are the processor and storage substrate available to realise it.
