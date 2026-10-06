@@ -192,13 +192,13 @@ A condition that would normally be recoverable may itself become a fault when sa
 
 When a fault makes the current computational state unusable, recovery begins from protected state established independently of the affected computation. This permits the faulty computation or hardware to be isolated and execution to be re-established without depending upon the state that has failed.
 
-*_(PP250 implementation: fault/start-up root; C(S); capability invalidation; checkout; automatic CHP and restoration of a viable process.)_*
+*_(PP250 implementation: C(D); C(S); MIP; MIF; Internal Mode; Change Process.)_*
 
 ### 5.6 Cold bootstrap
 
 At initial start-up there is no existing process from which the protected system can be entered. The processor therefore begins with a protected root established by the hardware itself. From this root the initial protected execution environment is constructed and the first process entered.
 
-*_(PP250 implementation: preset C(S); Special Start-Up Block; initial Dump Stack and process entry.)_*
+*_(PP250 implementation: C(D); C(S); Internal Mode; Change Process.)_*
 
 ### 5.7 Resource lifetime
 
