@@ -396,6 +396,22 @@ The following sections now reverse direction. Starting with this substrate and M
 
 The first structure to reconstruct is a **process**. Its persistent computational state is represented by the **Dump Stack**.
 
+
+### Reconstruction roadmap
+
+The reconstruction from this point follows the route by which the architecture becomes intelligible to a programmer, rather than mechanically assembling the inventory item by item. The sequence below is a working guide for the sections that follow.
+
+- **Begin with the Enter Capability.** This is the unusual programmer-visible mechanism that first demands explanation: what does it mean to enter a protected software structure?
+- **Follow entry into the protected structure.** C6 establishes the capability environment and C7 the executable code; CALL and RETURN expose the relationship between controlled entry, execution and protection.
+- **Ask where capabilities come from.** If every protected structure depends upon capabilities, the next question is how authority is created and protected. This leads towards capability construction, the SCT, C(C) and storage management.
+- **Follow execution into the process mechanism.** CHP and the Process Dump Stack reveal that a process is not merely a software abstraction: M can preserve one protected execution and establish another.
+- **Ask what protects the machinery underneath.** The powerful access associated with process state and the special processor mechanisms forces the reconstruction below the ordinary programmer-visible capability architecture.
+- **Discover the absence of a conventional privileged layer.** C(D), C(I), C(C), C(N), C(S), Internal Mode, CHP and related microprogram mechanisms do not reveal a supervisor that escapes the protection architecture. They reveal protected mechanisms by which M establishes, enters and supports the software structures above it.
+- **Arrive at M⟨H,T⟩.** The distinction between M, capability-structured computation H, and conventional computation T emerges as an explanation of the architecture discovered along this route, rather than as a taxonomy imposed in advance.
+- **Return to the opening proposition.** The reconstruction can then show why describing System 250 merely as an early capability machine misses the deeper architecture: capability is the organising protection principle down to the boundary with the microprogrammed machine.
+
+These are **reconstruction breadcrumbs**, not settled section headings. They are retained here to guide the order of investigation and writing; detailed ROS/PDOS policy, such as scheduling algorithms, is pursued only where it is needed to establish this architectural path.
+
 ## 7. Realisation in PP250-G2
 
 PP250-G2 realises the unforgeable tokens of the architectural model as **capabilities**.
