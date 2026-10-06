@@ -137,80 +137,10 @@ continue interrupted computation
 
 Secondary descriptions of the System 250 architecture independently describe the same mechanism: a segment can have an SCT entry while having no primary-memory allocation, and first reference to such a segment causes a trap. The operating system then allocates or restores primary storage and updates the relevant SCT state.
 
-### DOCUMENTED — the System Interrupt Word is polled, not a conventional device interrupt
+### Process-management boundary: interrupt acceptance
 
-Halton's System Interrupt description must be distinguished from a conventional asynchronous peripheral-interrupt architecture.
+The generic SIW/D15/C(N) acceptance mechanism and its relationship to process transition are now maintained in [PP250 execution and process model](pp250-execution-and-process-model.md). This note retains the interrupt/trap-specific reconstruction built on that mechanism.
 
-Special capability register `C(I)` defines the **System Interrupt Word (SIW)**.
-
-The SIW contains 24 bits, with one bit associated with each processor and I/O channel. Pending system activity is represented by setting the corresponding bit in this shared word.
-
-The processor periodically examines this state. Using `C(I)` it accesses the SIW, and using `C(N)` it obtains the associated interrupt mask information. Pending unmasked bits are correlated and one request is selected.
-
-The selected SIW bit is cleared and its position is represented as a **correlation count**.
-
-Thus ordinary processor/I/O activity does not cause a peripheral to supply an interrupt vector or directly seize processor execution. The activity is represented in shared system state which the processor periodically examines.
-
-### DOCUMENTED — D15 records SIW correlation or Program Trap acceptance
-
-The May 1976 Pocket Reference identifies special-purpose data register `D15` as the **INTERRUPT ACCEPT REGISTER**.
-
-Direct inspection of Halton Figure 7 gives the following fields:
-
-| D15 bits | Meaning |
-|---|---|
-| 0–5 | Correlation count of System Interrupt Word |
-| 6 | Trap Accepted |
-| 7–23 | Not presently identified |
-
-For the SIW path, bits 0–5 contain the correlation count identifying the position selected from the System Interrupt Word.
-
-For the Program Trap path, bit 6 records that a trap has been accepted.
-
-The Interrupt Accept Register therefore brings two architecturally different sources of normal processor attention together:
-
-```text
-processor / I/O activity                  Program Trap
-          |                                    |
-          v                                    |
- System Interrupt Word                         |
-          |                                    |
-periodic examination                           |
-and correlation                                |
-          |                                    |
-          v                                    v
-D15[0:5] = correlation count          D15[6] = Trap Accepted
-          |                                    |
-          +----------------+-------------------+
-                           |
-                           v
-                 normal interrupt machinery
-```
-
-This should not be interpreted as evidence for conventional I/O interrupts. The SIW side is the result of processor polling/correlation of shared state. Program Trap is an internally generated processor condition.
-
-### DOCUMENTED — MIF identifies the capability register associated with the event
-
-The May 1976 Pocket Reference identifies `MIF20–23` as the **capability register on which failure occurred**.
-
-Consequently, the processor state available following the trapped reference contains at least two important pieces of information:
-
-- `D15.6` records **Trap Accepted**;
-- `MIF20–23` identifies the **capability register associated with the failure**.
-
-`MIF20–23` should not be described as directly identifying an SCT entry or an object. It identifies a capability register. The relationship from that register to the referenced segment is a separate part of the capability/SCT mechanism.
-
-### DOCUMENTED — C(N) and Internal Mode provide the handler environment
-
-Halton identifies special capability register `C(N)` as defining the **Normal Interrupt Block**.
-
-Normal interrupt entry uses this protected processor mechanism to enter the Normal Interrupt process. The process change is an architectural process change — an automatic `CHP` through the state supplied by the Normal Interrupt Block — rather than an ordinary branch or conventional interrupt-vector transfer.
-
-`C(N)` is established by the running system during startup and thereafter supplies the processor with the protected state required for normal interrupt entry.
-
-The special-purpose processor registers are not normally available to ordinary program addressing. They can, however, be accessed by code operating through the documented **Internal Mode** addressing mechanism.
-
-The Normal Interrupt process can therefore inspect the processor-generated interrupt/trap state without requiring that state to be exposed through the ordinary capability namespace.
 
 ### STRONG RECONSTRUCTION — Program Trap is the non-resident-segment mechanism
 
