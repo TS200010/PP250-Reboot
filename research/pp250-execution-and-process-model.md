@@ -370,6 +370,60 @@ The Watchdog Timer is part of process state and provides runaway-process contain
 Periodic resource discovery therefore need not require conventional device interrupts.
 
 
+
+### Synchronising flags, WAITFOR and return to the Ready List
+
+**DOCUMENTED, [E4], paragraphs 30–31:** the process-management package provides a **flag** resource for synchronisation and inter-process communication. A process may **POST** a message on a flag or **WAIT FOR** one. If WAITFOR occurs before a message has been posted, the receiving process is suspended until a POST occurs. A flag can support multiple waiting processes and multiple posted messages, and a process may wait for one of several possible events.
+
+England's process-management description [E1, paragraph 31(3)–(4)] gives the corresponding queueing model. A flag may contain either queued messages or a queue of suspended processes. A process may also wait for expiry of a time interval; such processes are held on a time-ordered chain. The time chain is serviced by **interrupt processes** in response to interval-timer interrupts. When one of several awaited events occurs, the other outstanding waits are cancelled and the process is entered in the **process Ready List**, with a parameter identifying the event that occurred.
+
+Together with the SIP fields in [R1], this establishes a substantial part of the ROS/PDOS process-state path:
+
+```text
+running process
+      |
+   WAITFOR
+      |
+      v
+suspended on flag queue / time chain
+      |
+   POST or time expiry
+      |
+      v
+other waits cancelled
+      |
+      v
+Ready List
+      |
+      v
+eligible to be scheduled
+```
+
+The SIP `s` and `x` fields therefore correspond to documented process-management states in this path rather than merely unexplained status bits.
+
+**Important separation:** expiry of a waited-for time interval is not itself evidence that the interval mechanism is the scheduler. England explicitly says **interrupt processes service the time chain**. Those processes can wake a suspended process and put it on the Ready List. Selection of a Ready-List process for execution is a separate scheduling operation.
+
+### Current scheduler reconstruction
+
+**Working reconstruction:** scheduling is required when the currently executing process ceases to continue normally — in particular when it blocks/suspends itself, or when its allocated execution interval expires. The scheduler selects an eligible process from the common Ready List and the selected process is ultimately established on a CPU through the process-change machinery.
+
+**HYPOTHESIS:** the scheduler is a single protected process rather than a separate scheduler instance permanently associated with each CPU. This fits the documented common Ready List and CPU-independent process execution, but the surviving evidence inspected so far does not yet prove the number of scheduler instances or the exact entry path.
+
+The two paths still to reconstruct explicitly are therefore:
+
+```text
+WAITFOR / blocking  -> scheduler -> CHP -> selected process
+time-slice expiry   -> scheduler -> CHP -> selected process
+```
+
+They must not yet be assumed to have identical entry sequences.
+
+### LOKK remains outside the reconstruction
+
+The Pocket Reference documents `LOKK` only as **"used by privileged system facilities"**. No process-management mechanism reconstructed above currently requires it. In particular, the existence of a common Ready List does not establish competing per-CPU scheduler instances requiring a per-process scheduler lock.
+
+`LOKK` therefore remains **UNKNOWN**. It should not be assigned a locking, scheduling, ownership or synchronisation role unless further evidence requires or documents one.
+
 ### Process-management boundary exposed by the current evidence
 
 The current evidence therefore separates:
@@ -525,7 +579,7 @@ The main outstanding research questions are the mixed-access anti-forgery mechan
 - **[R1] PRIMARY EVIDENCE via repository transcription:** user's Plessey *System 250 Pocket Reference Book / Instruction Codes*, Issue 1, May 1976. [Title/contents transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg0-pg2%20transcription.txt); [pp. 3–4 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg3-pg4.pdf); [pp. 5–7 transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg5-pg7%20transcription.txt) and [scan](../documentation/System%20250%20Pocket%20Reference%20pg5-pg7.pdf). Locators: p. 3 instruction codes, p. 4 access-code diagrams, p. 5 ROS/PDOS structures/state word, p. 6 Dump Stack, p. 7 Special Purpose CPU Registers/Internal Mode. Transcriptions checked; scans not independently rechecked here.
 - **[E1] PRIMARY EVIDENCE:** D. M. England, *Architectural Features of System 250* (1972), [repository paper](../sources/1972/1972-England-Architectural-Features-of-System-250.pdf). Paragraphs 4–9: topology; 16–20: rights, integrity and SCT; 21–26: domains/CALL/Dump Stack; 30: virtual store and disk capabilities; 31: process management and CPU independence. PDF text inspected; diagram bit boundaries not treated as verified from extraction.
 - **[H1] PRIMARY EVIDENCE:** D. Halton, *Hardware of the System 250 for Communication Control* (1972), [repository transcription](../transcriptions/hardware-of-the-system-250-for-communication-control.md). Enter mechanism: C7 receives selected executable capability, C6 the called node capability block, old C6/C7 are stacked and restored by RETURN.\n- **[S1] FIRST-HAND EVIDENCE:** Anthony J. Stanners, consolidated [System 250 first-hand recollections](../sources/anthony-stanners-first-hand-recollections.md), including CALL/Enter/RETURN recollection and evidence status.\n- **[L2] SECONDARY EVIDENCE:** Henry M. Levy, System 250 discussion of capability-register leakage across protected CALL; repository analysis in [levy-chapter4-call-register-leakage.md](levy-chapter4-call-register-leakage.md).\n- **[E2] PRIMARY EVIDENCE, contextual research lead:** D. M. England, *Operating System of System 250*, International Switching Symposium, June 1972, in the [repository ISS collection](../sources/1972/1972-06-System-250-ISS-Papers-MIT.pdf). Detailed OS claims above rely on [E1], not an assumed reading of this collection.
-- **[E3] PRIMARY EVIDENCE, research lead:** D. M. England, *Capability Concept Mechanism and Structure in System 250*, International Workshop on Protection in Operating Systems, August 1974. Bibliographic reference in [Levy's bibliography](https://homes.cs.washington.edu/~levy/capabook/Bibliography.pdf); no copy in the inspected repository tree. Not used as proof of an unverified mechanism.
+- **[E4] PRIMARY EVIDENCE via repository transcription:** D. M. England, *Operating System of System 250* (International Switching Symposium, June 1972), [repository transcription](../transcriptions/operating-system-of-system-250.md), paragraphs 30–31: synchronising flags, POST/WAITFOR, suspension and multiple waits. Read directly for the process-management reconstruction above.\n- **[E3] PRIMARY EVIDENCE, research lead:** D. M. England, *Capability Concept Mechanism and Structure in System 250*, International Workshop on Protection in Operating Systems, August 1974. Bibliographic reference in [Levy's bibliography](https://homes.cs.washington.edu/~levy/capabook/Bibliography.pdf); no copy in the inspected repository tree. Not used as proof of an unverified mechanism.
 - **[P1] PRIMARY EVIDENCE:** Plessey, US 3,814,919, *Fault detection and isolation in a data processing system*, [patent text](https://patents.google.com/patent/US3814919A/en). Locators: capability parity fault; fault microsequence S2/S10/S16/S17; automatic and normal CHANGE PROCESS discussion immediately afterwards. Retrieved directly and read for this note; not archived in the inspected repository.
 - **[P2] PRIMARY EVIDENCE:** US 4,383,297, *Data processing system including internal register addressing arrangements*, [repository PDF](../patents/US4383297-internal-register-addressing.pdf), [patent text](https://patents.google.com/patent/US4383297A/en). Locators: illustrative embodiment/Figure 1 description; special data and capability registers; Internal Mode Operation General and restrictions. Text read; later register map kept distinct from [R1].
 - **[P3] PRIMARY EVIDENCE:** US 4,486,831, *Multi-programming data processing system process suspension*, [repository PDF](../patents/US4486831-process-suspension.pdf), [patent text](https://patents.google.com/patent/US4486831A/en). Locators: background's existing two-part Dump Stack; summary's extensions; Process Dump-Stack/Figure 5 description. Text read; later local-store/extended-link facilities are not backdated to 1976.
