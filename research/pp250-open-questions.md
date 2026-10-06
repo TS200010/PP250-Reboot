@@ -23,11 +23,13 @@ Generation-specific representations are allowed to differ. There is no requireme
 
 ## Current open questions
 
-**None presently identified that meet the admission rule.**
+### M-extension sealing after One-Shot Second Group LC
 
-The current corpus is sufficient to account for the architectural mechanisms presently under reconstruction. Missing documentary details, generation-specific encodings, software policy and exact microcode sequencing may remain research targets, but they are not architectural blockers unless a future audit demonstrates a specific behaviour that cannot be reconstructed.
+**Hypothesis:** C(C), C(I) and C(N) are established from the C(S)-rooted start-up/recovery environment using **One-Shot Second Group LC**. Once that operation has been consumed, no authority accessible to H or T can replace those registers or reproduce their contents. If confirmed, the protected software reached through C(C), C(I) and C(N) is effectively sealed into M until the next C(S)-rooted recovery/start-up sequence.
 
-Do not invent a replacement open question merely because this list is empty.
+**Open question:** after C(C), C(I) and C(N) have been established, is there any surviving route by which H or T can replace them, or recreate equivalent authority, without a new C(S)-rooted start-up/recovery sequence?
+
+This matters architecturally because it determines whether the protected software entered through these registers is merely privileged system software or a protected software extension of M whose installation authority disappears after construction.
 
 ## Resolved, demoted or deliberately parked issues
 
