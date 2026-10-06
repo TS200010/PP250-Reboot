@@ -341,6 +341,45 @@ There is also direct contemporary support: **[E1], paragraph 31(2)** describes a
 
 **Documented, [R1], p. 5:** the ROS/PDOS state word records whether a process is running, its CPU number when running, priority and ready-list status. Recording the current CPU is not evidence of permanent affinity. Exact queue operations, locks, simultaneous-activation prevention, scheduling policy and fault/rejoin migration in each OS remain **UNKNOWN**. “Can resume elsewhere” must not be read as “may run the same mutable saved context concurrently on two processors.”
 
+## 11A. ROS/PDOS process-management state
+
+**Documented, [R1], p. 5:** the ROS/PDOS **State and Internal Priority Word (SIP)** records software process-management state alongside, but distinct from, the hardware execution state restored by CHP.
+
+| Field | Documented meaning |
+|---|---|
+| r | 0 = currently running on a CPU; 1 = not running |
+| cccc | CPU number when running |
+| ppppp | 23 - current priority |
+| qqqqq | 23 - standard priority |
+| x | process is on the Ready List |
+| s | suspended on WAITFOR |
+| f | process has faulted |
+| bb | 00 double unblocked; 01 unblocked; 10 blocked; 11 double blocked |
+| w | may be 0 or 1; meaning unresolved |
+
+This is direct evidence that ROS/PDOS process management distinguished **running**, **ready**, **WAITFOR-suspended**, **faulted** and **blocked** states, and maintained both current and standard priority. It also recorded which CPU was executing a running process. The exact state-transition rules, Ready List operations, WAITFOR semantics, blocking protocol and meaning of `w` remain to be reconstructed.
+
+The Pocket Reference also places **LOKK**, **Error Control**, **Process Base** and **SIP** in the ROS Dump Stack, and adds three **Ptarmigan words** in PDOS. It defines LOKK only as “used by privileged system facilities” and Error Control as the “Process Error Control Parameter from Process Template”. Their detailed semantics remain unresolved. Their presence in the OS-dependent Dump Stack area must not be mistaken for evidence that they are intrinsic CHP hardware state.
+
+### Consolidated from capability/resource-lifecycle research: Scheduling, watchdog and interval activity
+
+Known/recalled structures suggest that processes execute until a scheduling event such as blocking/waiting, yielding/change-process activity, interval timer activity, or watchdog expiry/fault.
+
+The Watchdog Timer is part of process state and provides runaway-process containment. Interval timing provides a separate source of normal system activity. System 250 processors share work through a common work list.
+
+Periodic resource discovery therefore need not require conventional device interrupts.
+
+
+### Process-management boundary exposed by the current evidence
+
+The current evidence therefore separates:
+
+- **hardware execution context** preserved/restored by CHP;
+- **M-level process transition** which chooses and restores another execution context;
+- **software process-management structures and policy**, including Process Base, SIP, Ready List state, WAITFOR, priorities, Error Control and still-unresolved LOKK/Ptarmigan state.
+
+How those layers cooperate to create, queue, block, wake, fault, schedule and destroy a process remains an active reconstruction problem.
+
 ## 12. OS Process Base versus hardware process
 
 **Documented, [R1], p. 5:** the ROS/PDOS diagram shows an EC arrow entering Process Base, a pointer beginning `666` at Process Base offset `3` directed to Dump Stack, and a Dump Stack pointer beginning `760` returning to Process Base.
