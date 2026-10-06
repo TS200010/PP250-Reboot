@@ -356,9 +356,9 @@ The processor contains an **interval timer**. When the interval timer matures, M
 
 M also provides an **internal CHP** mechanism by which M can initiate a process change directly, without execution of the CHP instruction.
 
-### 6.12 One-Shot LC Second Group
+### 6.12 One-Shot Second Group LC
 
-The processor provides **One-Shot LC Second Group**, associated with **MIP04 — Second Group**.
+The processor provides **One-Shot Second Group LC**, associated with **MIP04 — Second Group**.
 
 ### 6.13 Microprogrammed execution
 
