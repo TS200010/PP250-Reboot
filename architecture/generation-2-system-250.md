@@ -192,13 +192,13 @@ A condition that would normally be recoverable may itself become a fault when sa
 
 When a fault makes the current computational state unusable, recovery begins from protected state established independently of the affected computation. This permits the faulty computation or hardware to be isolated and execution to be re-established without depending upon the state that has failed.
 
-*_(PP250 implementation: C(D); C(S); MIP; MIF; Internal Mode; One-Shot Second Group LC; Change Process.)_*
+*_(PP250 implementation: C(D); C(S); MIP; MIF; Internal Mode; C(S) Start-Up Location Control; One-Shot Second Group LC; Change Process.)_*
 
 ### 5.6 Cold bootstrap
 
 At initial start-up there is no existing process from which the protected system can be entered. The processor therefore begins with a protected root established by the hardware itself. From this root the initial protected execution environment is constructed and the first process entered.
 
-*_(PP250 implementation: C(D); C(S); Internal Mode; One-Shot Second Group LC; Change Process.)_*
+*_(PP250 implementation: C(D); C(S); Internal Mode; C(S) Start-Up Location Control; One-Shot Second Group LC; Change Process.)_*
 
 ### 5.7 Resource lifetime
 
@@ -342,27 +342,33 @@ Its bits describe internal microprogram execution state rather than the architec
 
 Access to this state is capability controlled.
 
-### 6.9 Interval timer
+### 6.9 C(S) Start-Up Location Control
+
+**C(S) Start-Up Location Control** is the twelve-bit field **C(S)[23:12]** that can be altered through Internal Mode. The remainder of C(S) can be read but not altered through Internal Mode. These twelve bits also participate in the fault/start-up mechanism.
+
+Their precise architectural purpose is not yet established.
+
+### 6.10 Interval timer
 
 The processor contains an **interval timer**. When the interval timer matures, M initiates a protected process transition through the Enter Capability held in C(I).
 
-### 6.10 Watchdog timer
+### 6.11 Watchdog timer
 
 **D11** is the **watchdog timer**. Expiry of the watchdog timer is recorded by **MIF17 — Watchdog Timer Expired**.
 
-### 6.11 Change Process
+### 6.12 Change Process
 
 **CHP (Change Process)** is an instruction of **M** that causes the state of one process to be dumped and the state of another to be restored through their Dump Stacks.
 
 M also provides an **internal CHP** mechanism by which M can initiate a process change directly, without execution of the CHP instruction.
 
-### 6.12 One-Shot Second Group LC
+### 6.13 One-Shot Second Group LC
 
 **One-Shot Second Group LC** permits the special capability registers **C(C)**, **C(I)** and **C(N)** to be established during start-up/recovery. It is associated with **MIP04 — Second Group**.
 
 Its one-shot character raises an important architectural question: whether, once established, those registers constitute the only surviving authority by which M can enter the protected software that extends it.
 
-### 6.13 Microprogrammed execution
+### 6.14 Microprogrammed execution
 
 Processor operations are executed under microprogram control.
 
