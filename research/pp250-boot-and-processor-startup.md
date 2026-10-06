@@ -129,25 +129,7 @@ Page 7 identifies D10 as the **absolute** Dump Stack pushdown pointer. The inves
 
 ## 5. OS-dependent initial frames
 
-**Documented, [R1], p. 6; all values octal:**
-
-| OS | C6 Initial | C7 Code | IAR Block |
-|---|---:|---:|---:|
-| COS | 21 | 22 | 23 |
-| POS | 24 | 25 | 26 |
-| ROS | 26 | 27 | 30 |
-| PDOS | 31 | 32 | 33 |
-
-Do not normalise these layouts. The transcription leaves POS words 21–23 blank; that does not establish that they are zero or unused. ROS includes MIF, lock, error control, Process Base and SIP before its initial frame. PDOS additionally has three Ptarmigan words and moves error control, Process Base and SIP accordingly.
-
-```text
-fixed area: 00 ... 15 | 16 pointer | 17 watchdog | 20 MIP
-                            |
-                            +--> OS-dependent active frame
-                                 [ C6 ][ C7 ][ IAR ]
-                                               ^
-                                      saved pointer target
-```
+The complete COS/POS/ROS/PDOS Dump Stack layouts and their process-management fields are now maintained in [PP250 execution and process model](pp250-execution-and-process-model.md). They were moved there to avoid maintaining the process model in the startup note.
 
 **Strong inference:** restoring the saved pointer lets the hardware locate the active frame without selecting an OS-specific constant. A virgin stack must therefore contain both genuine initial capabilities and a correctly initialised saved pointer before its first restore. Subsequent nested frames repeat C6/C7/IAR; the initial frame is not necessarily the active one in a previously running process.
 
