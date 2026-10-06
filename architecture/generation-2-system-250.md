@@ -36,7 +36,7 @@ The descent therefore establishes **what the architecture is**; the inventory es
 
 ### 1.2 No privileged operating system
 
-There is no kernel, no separately protected operating system, and no privileged instruction set or supervisor mode. The entire system is built recursively from unforgeable authority primitives. System software does not stand above the authority architecture: it is constructed within it and is governed by it.
+**System 250 has no conventional operating system.** Software may provide services conventionally associated with an operating system—storage management, filing, communications, scheduling, device access and so forth—but those services do not collectively constitute a privileged software layer standing between applications and the machine. They are protected software structures constructed within the same architecture as everything else.
 
 ### 1.3 Hardware-enforced software structure
 
