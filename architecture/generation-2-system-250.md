@@ -34,9 +34,13 @@ The descent therefore establishes **what the architecture is**; the inventory es
 
 **PP250 provides an unforgeable authority substrate from which software can construct and enforce arbitrary programmer-defined authorities. It enables an authority-structured hardware and software system built recursively upon that substrate: authority protects computation and resources, contains faults and supports recovery from them, while the mechanisms that manage, protect and recover the system are themselves governed by authority from that very same substrate.**
 
+*_(PP250 implementation: capabilities; capability blocks; Enter Capabilities; hardware capability enforcement.)_*
+
 ### 1.2 No privileged operating system
 
 **System 250 has no conventional operating system.** Software may provide services conventionally associated with an operating system—storage management, filing, communications, scheduling, device access and so forth—but those services do not collectively constitute a privileged software layer standing between applications and the machine. They are protected software structures constructed within the same architecture as everything else.
+
+*_(PP250 implementation: system services constructed from capabilities and protected processes; no supervisor mode.)_*
 
 ### 1.3 Hardware-enforced software structure
 
@@ -50,6 +54,8 @@ The protected structure and its semantics are defined by software. It may repres
 
 Conceptually, a protected structure combines state with a defined set of operations upon that state. It is readily recognisable as the encapsulated abstraction represented in modern programming languages by objects, classes and other structured types.
 
+*_(PP250 implementation: capability access rights; capability blocks; Enter Capabilities; processor-enforced bounds and access checks.)_*
+
 ## 2. The protected-object model
 
 ### 2.1 Segment, access and unforgeable token
@@ -62,11 +68,15 @@ Before going any further, it is useful to introduce a few definitions and import
 - **Protected-token segment** — a segment containing unforgeable tokens.
 - Different unforgeable tokens may refer to the same segment while granting different access to it.
 
+*_(PP250 implementation: segments addressed through capabilities carrying BASE, LIMIT and ACCESS.)_*
+
 ### 2.2 Constructing a protected object
 
 A protected object is defined by a **protected-token segment** containing unforgeable tokens. Those tokens give access to the code and data segments from which the object is constructed.
 
 The segments accessible through those tokens constitute the object's **protected space**.
+
+*_(PP250 implementation: capability blocks containing capabilities to the code, data and other objects from which the protected object is constructed.)_*
 
 ### 2.3 Controlled access to an object
 
@@ -78,9 +88,13 @@ The segments accessible through those tokens constitute the object's **protected
 
 This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
 
+*_(PP250 implementation: Enter Capability and CALL provide controlled entry through a capability block without exposing the capabilities contained within it.)_*
+
 ### 2.4 Different access to the same object
 
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
+
+*_(PP250 implementation: different capabilities, and different capability blocks, can provide different access to the same protected object.)_*
 
 ## 3. Creation and propagation of access
 
@@ -88,13 +102,13 @@ This construction is deliberately general. Such protected objects can represent 
 
 An unforgeable token has an enduring existence independent of its immediate use by a processor. The segment it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
 
-***ASCENT: stored capabilities; Inform/Outform; loaded capability registers.***
+*_(PP250 implementation: stored capabilities; Inform/Outform; loaded capability registers.)_*
 
 ### 3.2 Creation of unforgeable tokens
 
 Unforgeable tokens are created only by **identically protected mechanisms of the system** (described later). Users and programs may request the creation of new unforgeable tokens, but such a token cannot be created by ordinary computation.
 
-***ASCENT: the protected mechanisms that create capabilities.***
+*_(PP250 implementation: the protected mechanisms that create capabilities.)_*
 
 ### 3.3 Transfer of access
 
@@ -102,7 +116,7 @@ An unforgeable token may be passed to another protected object, thereby giving t
 
 Different tokens may give different access to the same protected object.
 
-***ASCENT: passing capabilities; capability blocks providing different access to the same protected object.***
+*_(PP250 implementation: passing capabilities; capability blocks providing different access to the same protected object.)_*
 
 ### 3.4 The protected system as a graph of access
 
@@ -110,7 +124,7 @@ Protected spaces form **impenetrable islands**, isolated from one another by har
 
 The islands and the tokens connecting them therefore form a **directed graph of access**.
 
-***ASCENT: capability blocks and Enter Capabilities form the protected graph; hardware capability checks enforce its boundaries.***
+*_(PP250 implementation: capability blocks and Enter Capabilities form the protected graph; hardware capability checks enforce its boundaries.)_*
 
 ## 4. Computation within the protected system
 
@@ -118,7 +132,7 @@ The islands and the tokens connecting them therefore form a **directed graph of 
 
 A process is an executing computation defined by its protected space.
 
-***ASCENT: process state; PDS; C6/C7 and the current execution environment.***
+*_(PP250 implementation: process state; PDS; C6/C7 and the current execution environment.)_*
 
 ### 4.2 Process state
 
@@ -126,25 +140,25 @@ A process has computational state sufficient for its execution to be suspended a
 
 The state exists independently of whether the process is currently executing on a processor.
 
-***ASCENT: Dump Stack; saved processor state; suspension and restoration of a process.***
+*_(PP250 implementation: Dump Stack; saved processor state; suspension and restoration of a process.)_*
 
 ### 4.3 The process's protected space
 
 The protected space defines the code that a process may execute and the data and other objects it may access. The process cannot operate outside that space except through another unforgeable token.
 
-***ASCENT: C6 and the capability block defining the process's accessible environment.***
+*_(PP250 implementation: C6 and the capability block defining the process's accessible environment.)_*
 
 ### 4.4 Execution within a protected object
 
 A process executes code within its protected space. That code can operate only upon the data and objects accessible within that space.
 
-***ASCENT: C7, instruction execution and hardware capability enforcement.***
+*_(PP250 implementation: C7, instruction execution and hardware capability enforcement.)_*
 
 ### 4.5 Invocation of another protected object
 
 A process may invoke another protected object through an unforgeable token possessed by the invoking object. The invoked code then executes within the protected space of the invoked object.
 
-***ASCENT: Enter Capability and CALL; C6/C7 transition.***
+*_(PP250 implementation: Enter Capability and CALL; C6/C7 transition.)_*
 
 ## 5. System activity and change
 
@@ -152,19 +166,19 @@ A process may invoke another protected object through an unforgeable token posse
 
 Multiple processes may exist independently, each defined by its own protected space.
 
-***ASCENT: process state and the mechanisms by which processes are represented.***
+*_(PP250 implementation: process state and the mechanisms by which processes are represented.)_*
 
 ### 5.2 Events and interruption
 
 Execution of a process may be interrupted by an event. The event may cause another process to execute.
 
-***ASCENT: normal events and interrupts; process transition.***
+*_(PP250 implementation: normal events and interrupts; process transition.)_*
 
 ### 5.3 Fault containment
 
 The protected structure of the system confines software faults within protected spaces. Hardware faults that could compromise those boundaries are detected and the faulty hardware isolated, preserving the protected structure of the remaining system.
 
-***ASCENT: hardware protection checks; fault detection, isolation and reconfiguration.***
+*_(PP250 implementation: hardware protection checks; fault detection, isolation and reconfiguration.)_*
 
 ### 5.4 Recovery
 
@@ -172,19 +186,19 @@ Exceptional conditions are distinguished according to their severity. Some permi
 
 A condition that would normally be recoverable may itself become a fault when safe recovery cannot be performed.
 
-***ASCENT: Program Trap and normal interrupt path; Fault Interrupt and fault/start-up path; Trap Fault escalation; MIF/MIP; fault invalidation and recovery mechanisms.***
+*_(PP250 implementation: Program Trap and normal interrupt path; Fault Interrupt and fault/start-up path; Trap Fault escalation; MIF/MIP; fault invalidation and recovery mechanisms.)_*
 
 ### 5.5 Fault recovery
 
 When a fault makes the current computational state unusable, recovery begins from protected state established independently of the affected computation. This permits the faulty computation or hardware to be isolated and execution to be re-established without depending upon the state that has failed.
 
-***ASCENT: fault/start-up root; C(S); capability invalidation; checkout; automatic CHP and restoration of a viable process.***
+*_(PP250 implementation: fault/start-up root; C(S); capability invalidation; checkout; automatic CHP and restoration of a viable process.)_*
 
 ### 5.6 Cold bootstrap
 
 At initial start-up there is no existing process from which the protected system can be entered. The processor therefore begins with a protected root established by the hardware itself. From this root the initial protected execution environment is constructed and the first process entered.
 
-***ASCENT: preset C(S); Special Start-Up Block; initial Dump Stack and process entry.***
+*_(PP250 implementation: preset C(S); Special Start-Up Block; initial Dump Stack and process entry.)_*
 
 ### 5.7 Resource lifetime
 
@@ -192,7 +206,7 @@ Protected objects may be created and may cease to exist. Their lifetime is indep
 
 When an object is no longer required, the resources from which it was constructed may be recovered for reuse.
 
-***ASCENT: resource allocators; object lifetime; capability reachability and garbage collection.***
+*_(PP250 implementation: resource allocators; object lifetime; capability reachability and garbage collection.)_*
 
 ### 5.8 Peripheral devices and device control
 
@@ -202,7 +216,7 @@ Software controlling a device is itself a protected software structure. It may p
 
 Device control can therefore be structured in exactly the same way as other protected services. A program may be given access to a service that uses a device without thereby acquiring access to the device, its controller, or the other operations that controller can perform.
 
-***ASCENT: protected I/O; device capabilities; device-control services and hardware interfaces.***
+*_(PP250 implementation: protected I/O; device capabilities; device-control services and hardware interfaces.)_*
 
 ### 5.9 What we have established
 
