@@ -194,7 +194,17 @@ When an object is no longer required, the resources from which it was constructe
 
 ***ASCENT: resource allocators; object lifetime; capability reachability and garbage collection.***
 
-### 5.8 What we have established
+### 5.8 Peripheral devices and device control
+
+Peripheral devices are part of the same protected system. Access to a device does not require escape into a privileged I/O mechanism or operating system.
+
+Software controlling a device is itself a protected software structure. It may possess the access necessary to operate that device and expose selected operations to other parts of the system without exposing the device itself.
+
+Device control can therefore be structured in exactly the same way as other protected services. A program may be given access to a service that uses a device without thereby acquiring access to the device, its controller, or the other operations that controller can perform.
+
+***ASCENT: protected I/O; device capabilities; device-control services and hardware interfaces.***
+
+### 5.9 What we have established
 
 We can now return to the claim made at the beginning: **System 250 was not just a capability machine; it was a pure capability machine.**
 
