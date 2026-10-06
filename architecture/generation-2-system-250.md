@@ -34,13 +34,13 @@ The descent therefore establishes **what the architecture is**; the inventory es
 
 **PP250 provides an unforgeable authority substrate from which software can construct and enforce arbitrary programmer-defined authorities. It enables an authority-structured hardware and software system built recursively upon that substrate: authority protects computation and resources, contains faults and supports recovery from them, while the mechanisms that manage, protect and recover the system are themselves governed by authority from that very same substrate.**
 
-*_(PP250 implementation: capabilities; capability blocks; Enter Capabilities; hardware capability enforcement.)_*
+*_(PP250 implementation: Store; C0–C7; Microprogrammed execution.)_*
 
 ### 1.2 No privileged operating system
 
 **System 250 has no conventional operating system.** Software may provide services conventionally associated with an operating system—storage management, filing, communications, scheduling, device access and so forth—but those services do not collectively constitute a privileged software layer standing between applications and the machine. They are protected software structures constructed within the same architecture as everything else.
 
-*_(PP250 implementation: system services constructed from capabilities and protected processes; no supervisor mode.)_*
+*_(PP250 implementation: C0–C7; Internal Mode; Microprogrammed execution.)_*
 
 ### 1.3 Hardware-enforced software structure
 
@@ -54,7 +54,7 @@ The protected structure and its semantics are defined by software. It may repres
 
 Conceptually, a protected structure combines state with a defined set of operations upon that state. It is readily recognisable as the encapsulated abstraction represented in modern programming languages by objects, classes and other structured types.
 
-*_(PP250 implementation: capability access rights; capability blocks; Enter Capabilities; processor-enforced bounds and access checks.)_*
+*_(PP250 implementation: C0–C7; MIF; Microprogrammed execution.)_*
 
 ## 2. The protected-object model
 
@@ -68,7 +68,7 @@ Before going any further, it is useful to introduce a few definitions and import
 - **Protected-token segment** — a segment containing unforgeable tokens.
 - Different unforgeable tokens may refer to the same segment while granting different access to it.
 
-*_(PP250 implementation: segments addressed through capabilities carrying BASE, LIMIT and ACCESS.)_*
+*_(PP250 implementation: Store; C0–C7.)_*
 
 ### 2.2 Constructing a protected object
 
@@ -76,7 +76,7 @@ A protected object is defined by a **protected-token segment** containing unforg
 
 The segments accessible through those tokens constitute the object's **protected space**.
 
-*_(PP250 implementation: capability blocks containing capabilities to the code, data and other objects from which the protected object is constructed.)_*
+*_(PP250 implementation: Store; C0–C7.)_*
 
 ### 2.3 Controlled access to an object
 
@@ -88,13 +88,13 @@ The segments accessible through those tokens constitute the object's **protected
 
 This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
 
-*_(PP250 implementation: Enter Capability and CALL provide controlled entry through a capability block without exposing the capabilities contained within it.)_*
+*_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
 ### 2.4 Different access to the same object
 
 **A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
 
-*_(PP250 implementation: different capabilities, and different capability blocks, can provide different access to the same protected object.)_*
+*_(PP250 implementation: Store; C0–C7.)_*
 
 ## 3. Creation and propagation of access
 
@@ -102,13 +102,13 @@ This construction is deliberately general. Such protected objects can represent 
 
 An unforgeable token has an enduring existence independent of its immediate use by a processor. The segment it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
 
-*_(PP250 implementation: stored capabilities; Inform/Outform; loaded capability registers.)_*
+*_(PP250 implementation: Store; C0–C7; C(C).)_*
 
 ### 3.2 Creation of unforgeable tokens
 
 Unforgeable tokens are created only by **identically protected mechanisms of the system** (described later). Users and programs may request the creation of new unforgeable tokens, but such a token cannot be created by ordinary computation.
 
-*_(PP250 implementation: the protected mechanisms that create capabilities.)_*
+*_(PP250 implementation: Store; C0–C7; C(C); Microprogrammed execution.)_*
 
 ### 3.3 Transfer of access
 
@@ -116,7 +116,7 @@ An unforgeable token may be passed to another protected object, thereby giving t
 
 Different tokens may give different access to the same protected object.
 
-*_(PP250 implementation: passing capabilities; capability blocks providing different access to the same protected object.)_*
+*_(PP250 implementation: Store; C0–C7.)_*
 
 ### 3.4 The protected system as a graph of access
 
@@ -124,7 +124,7 @@ Protected spaces form **impenetrable islands**, isolated from one another by har
 
 The islands and the tokens connecting them therefore form a **directed graph of access**.
 
-*_(PP250 implementation: capability blocks and Enter Capabilities form the protected graph; hardware capability checks enforce its boundaries.)_*
+*_(PP250 implementation: Store; C0–C7; Microprogrammed execution.)_*
 
 ## 4. Computation within the protected system
 
@@ -132,7 +132,7 @@ The islands and the tokens connecting them therefore form a **directed graph of 
 
 A process is an executing computation defined by its protected space.
 
-*_(PP250 implementation: process state; PDS; C6/C7 and the current execution environment.)_*
+*_(PP250 implementation: D0–D7; C0–C7; D17; C(D); Change Process.)_*
 
 ### 4.2 Process state
 
@@ -140,25 +140,25 @@ A process has computational state sufficient for its execution to be suspended a
 
 The state exists independently of whether the process is currently executing on a processor.
 
-*_(PP250 implementation: Dump Stack; saved processor state; suspension and restoration of a process.)_*
+*_(PP250 implementation: D0–D7; C0–C7; D10; D11; D17; C(D); MIP; Change Process.)_*
 
 ### 4.3 The process's protected space
 
 The protected space defines the code that a process may execute and the data and other objects it may access. The process cannot operate outside that space except through another unforgeable token.
 
-*_(PP250 implementation: C6 and the capability block defining the process's accessible environment.)_*
+*_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
 ### 4.4 Execution within a protected object
 
 A process executes code within its protected space. That code can operate only upon the data and objects accessible within that space.
 
-*_(PP250 implementation: C7, instruction execution and hardware capability enforcement.)_*
+*_(PP250 implementation: C0–C7; D17; MIF; Microprogrammed execution.)_*
 
 ### 4.5 Invocation of another protected object
 
 A process may invoke another protected object through an unforgeable token possessed by the invoking object. The invoked code then executes within the protected space of the invoked object.
 
-*_(PP250 implementation: Enter Capability and CALL; C6/C7 transition.)_*
+*_(PP250 implementation: C0–C7; D17; Microprogrammed execution.)_*
 
 ## 5. System activity and change
 
