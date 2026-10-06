@@ -106,11 +106,7 @@ The processor acquires authority from the process state it executes rather than 
 
 ## 6. Scheduling, watchdog and interval activity
 
-Known/recalled structures suggest that processes execute until a scheduling event such as blocking/waiting, yielding/change-process activity, interval timer activity, or watchdog expiry/fault.
-
-The Watchdog Timer is part of process state and provides runaway-process containment. Interval timing provides a separate source of normal system activity. System 250 processors share work through a common work list.
-
-Periodic resource discovery therefore need not require conventional device interrupts.
+Process scheduling, watchdog and interval activity are now consolidated in [PP250 execution and process model](pp250-execution-and-process-model.md). This section was moved there on 6 October 2026 so that process-management evidence has one research home.
 
 ## 7. Peripheral removal
 
