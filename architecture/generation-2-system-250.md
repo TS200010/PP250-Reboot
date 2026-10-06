@@ -338,37 +338,53 @@ Its bits describe internal microprogram execution state rather than the architec
 
 ### 6.8 Internal Mode
 
-**Internal Mode** makes processor-internal state addressable through the normal addressing mechanism. The addressed state includes the D and C registers, MIP, MIF, MIS and C(S).
+**Internal Mode** makes processor-internal state addressable through the normal addressing mechanism. The addressed state includes the D and C registers, Historic Registers, MIP, MIF, MIS and C(S).
 
 Access to this state is capability controlled.
 
-### 6.9 C(S) Start-Up Location Control
+### 6.9 Historic Registers
+
+The processor contains **sixteen 24-bit Historic Registers** retaining recent execution information. They are accessible through Internal Mode and provide a recent history of processor execution for fault investigation.
+
+### 6.10 C(S) Start-Up Location Control
 
 **C(S) Start-Up Location Control** is the twelve-bit field **C(S)[23:12]** that can be altered through Internal Mode. The remainder of C(S) can be read but not altered through Internal Mode. These twelve bits also participate in the fault/start-up mechanism.
 
 Their precise architectural purpose is not yet established.
 
-### 6.10 Interval timer
+### 6.11 Interval timer
 
 The processor contains an **interval timer**. When the interval timer matures, M initiates a protected process transition through the Enter Capability held in C(I).
 
-### 6.11 Watchdog timer
+### 6.12 Watchdog timer
 
 **D11** is the **watchdog timer**. Expiry of the watchdog timer is recorded by **MIF17 — Watchdog Timer Expired**.
 
-### 6.12 Change Process
+### 6.13 Change Process
 
 **CHP (Change Process)** is an instruction of **M** that causes the state of one process to be dumped and the state of another to be restored through their Dump Stacks.
 
 M also provides an **internal CHP** mechanism by which M can initiate a process change directly, without execution of the CHP instruction.
 
-### 6.13 One-Shot Second Group LC
+### 6.14 One-Shot Second Group LC
 
 **One-Shot Second Group LC** permits the special capability registers **C(C)**, **C(I)** and **C(N)** to be established during start-up/recovery. It is associated with **MIP04 — Second Group**.
 
 Its one-shot character raises an important architectural question: whether, once established, those registers constitute the only surviving authority by which M can enter the protected software that extends it.
 
-### 6.14 Microprogrammed execution
+### 6.15 Unplaced reconstruction breadcrumbs
+
+The following documented structures or mechanisms are retained here as **placeholders** so that the architectural descent and machine inventory can be cross-checked in both directions. Their proper architectural placement or exact relationship to M has not yet been established.
+
+- **LOKK** — documented in ROS/PDOS Dump Stack layouts; exact role unresolved.
+- **SIP — State and Internal Priority Word** — documented in ROS/PDOS process state.
+- **Error Control** — documented Process Error Control Parameter from the Process Template.
+- **Ptarmigan words** — three words documented in the PDOS Dump Stack layout.
+- **RSPC-0** — reserved segment pointer used in the fault/start-up path to identify the checkout-process Dump Stack.
+- **Special Fault Block** — stored structure used by the fault/start-up machinery.
+- **Normal interrupt acceptance** — the M-level mechanism that decides that a normal interrupt is accepted before entry through **C(N)**. **D15 — Interrupt Accept Register** is documented processor state associated with this area; the complete acceptance mechanism and its architectural expression remain to be reconstructed.
+
+### 6.16 Microprogrammed execution
 
 Processor operations are executed under microprogram control.
 
