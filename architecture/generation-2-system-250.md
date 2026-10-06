@@ -166,19 +166,19 @@ A process may invoke another protected object through an unforgeable token posse
 
 Multiple processes may exist independently, each defined by its own protected space.
 
-*_(PP250 implementation: process state and the mechanisms by which processes are represented.)_*
+*_(PP250 implementation: C(D); Change Process.)_*
 
 ### 5.2 Events and interruption
 
 Execution of a process may be interrupted by an event. The event may cause another process to execute.
 
-*_(PP250 implementation: normal events and interrupts; process transition.)_*
+*_(PP250 implementation: D15; C(I); C(N); MIP; Interval timer; Change Process.)_*
 
 ### 5.3 Fault containment
 
 The protected structure of the system confines software faults within protected spaces. Hardware faults that could compromise those boundaries are detected and the faulty hardware isolated, preserving the protected structure of the remaining system.
 
-*_(PP250 implementation: hardware protection checks; fault detection, isolation and reconfiguration.)_*
+*_(PP250 implementation: MIP; MIF; Watchdog timer; Microprogrammed execution.)_*
 
 ### 5.4 Recovery
 
@@ -186,7 +186,7 @@ Exceptional conditions are distinguished according to their severity. Some permi
 
 A condition that would normally be recoverable may itself become a fault when safe recovery cannot be performed.
 
-*_(PP250 implementation: Program Trap and normal interrupt path; Fault Interrupt and fault/start-up path; Trap Fault escalation; MIF/MIP; fault invalidation and recovery mechanisms.)_*
+*_(PP250 implementation: D12; D15; C(N); C(S); MIP; MIF; Internal Mode; Change Process.)_*
 
 ### 5.5 Fault recovery
 
@@ -206,7 +206,7 @@ Protected objects may be created and may cease to exist. Their lifetime is indep
 
 When an object is no longer required, the resources from which it was constructed may be recovered for reuse.
 
-*_(PP250 implementation: resource allocators; object lifetime; capability reachability and garbage collection.)_*
+*_(PP250 implementation: Store; C0–C7; C(C).)_*
 
 ### 5.8 Peripheral devices and device control
 
@@ -216,7 +216,7 @@ Software controlling a device is itself a protected software structure. It may p
 
 Device control can therefore be structured in exactly the same way as other protected services. A program may be given access to a service that uses a device without thereby acquiring access to the device, its controller, or the other operations that controller can perform.
 
-*_(PP250 implementation: protected I/O; device capabilities; device-control services and hardware interfaces.)_*
+*_(PP250 implementation: Store; C0–C7; MIP; MIF; Microprogrammed execution.)_*
 
 ### 5.9 What we have established
 
