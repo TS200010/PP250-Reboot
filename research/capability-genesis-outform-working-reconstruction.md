@@ -4,6 +4,8 @@
 
 **DOWNGRADED WORKING RECONSTRUCTION — NOT THE CURRENT LEADING HYPOTHESIS.**
 
+**Backing-store reconciliation (7 October 2026):** The unassigned-backing-identity / first-access backing-store-allocation path is retained only as an **alternative implementation hypothesis**, not the preferred G2 reconstruction. England's contemporary operating-system description places disk-space allocation at block creation, before the capability is returned; first use invokes the normal nonresident-block mechanism, with the actual disk transfer short-circuited because the new block contains no useful information. Section 14 records the evidence and its effect on the earlier reasoning, which is preserved below as an audit trail.
+
 This reconstruction is retained as a plausible alternative and as a record of the reasoning that led to it. Subsequent work identified the mixed-access Inform construction model (`WD [ACCESS | fresh SCT] -> LC`) as a simpler explanation requiring fewer unsupported mechanisms. The present note should therefore not be read as the preferred reconstruction unless new evidence strengthens the Outform/`LC`-trap path.
 
 This note records the reasoning reached on 28 September 2026 about how the early System 250 Store Allocator might have manufactured the first capability for a newly created segment without requiring a general data-to-capability or capability-attenuation instruction.
@@ -325,3 +327,13 @@ This is a substantive reason for the present downgrade of the incomplete-Outform
 
 
 **Indicator-register cross-reference:** the exact Pocket Reference MIF/MIP/MIS tables and their separation are now recorded in `pp250-boot-and-processor-startup.md`, Section 12. For this investigation the relevant identities are MIF07 = SUMCHECK Fault, MIF18 = Access Violation, and MIP07 = FIRST ATTEMPT. MIS is a distinct Secondary Indicator register and must not be conflated with either.
+
+## 14. Backing-store allocation timing: contemporary G2 evidence and reconciliation
+
+**PRIMARY EVIDENCE / DOCUMENTED OBSERVATION.** D. M. England's *Operating System of System 250* (1972), paragraphs 13–15, especially paragraph 15, is the strongest contemporary G2 evidence for this ordering. See the [working transcription](../transcriptions/operating-system-of-system-250.md#virtual-memory---storage-media-to-blocks) and its linked original document. A process requests a new block by calling the Store Allocator with the required length and access. The Store Allocator allocates appropriate backing-store/disk space when the block is created and returns its capability. On first use, the normal mechanism for a block absent from main store applies: main-store space is allocated and execution can resume through the nonresident-block handling described in paragraphs 13–14. For a newly created block, however, the actual disk transfer is short-circuited because the block contains no useful information yet.
+
+**WORKING RECONSTRUCTION — PREFERRED ORDERING.** Backing-store allocation at creation and main-store allocation on first use are distinct events. The absence of an initial disk-to-main-store transfer does not imply that backing-store space or the object's backing identity remains unassigned until first access. England's account supports creation-time disk-space allocation followed by deferred residence in main store; it does not document the proposed `UNASSIGNED` encoding or first-access assignment of backing identity.
+
+**CHANGED EVIDENTIAL STATUS — ALTERNATIVE IMPLEMENTATION ONLY.** The unassigned-backing-identity and fault-assisted first backing-store allocation proposed in Sections 3–9 must therefore be demoted from the preferred reconstruction to an alternative implementation hypothesis. In particular, Section 9's earlier suggestion that creation-time disk-address assignment could be absorbed into the Store Allocator/fault protocol is retained as historical reasoning, but cannot justify preferring allocation deferred until first use over England's explicit creation-time ordering. The ordinary first-use nonresident-block mechanism explains deferred main-store allocation, not a documented act of capability manufacture or first backing-store allocation.
+
+All earlier reasoning, diagrams, rejected trap mechanisms and research questions remain intact as an audit trail of how the reconstruction developed. Their historical wording must be read under this changed evidential status; retaining the alternative does not establish that the contemporary G2 implementation used it.
