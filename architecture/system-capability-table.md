@@ -22,6 +22,31 @@ loaded capability register
 
 Consequently, relocating a segment need not require rewriting every stored capability that designates it: its SCT identity can remain stable while the SCT entry is changed.
 
+
+### Capability-pointer retention in the Process Dump Stack
+
+For workspace capability registers C0–C5, loading a capability does more than construct the expanded 48-bit register representation. Contemporary patent evidence states that the corresponding **24-bit capability pointer** is also recorded in the fixed C0–C5 location in the current Process Dump Stack whenever the capability register is loaded. The Pocket Reference confirms that each of these Dump Stack locations is one 24-bit word.
+
+The relationship is therefore:
+
+```text
+24-bit stored capability pointer
+    = form/access + SCT identity/reference
+        |
+        +----> corresponding C0–C5 Dump Stack word
+        |
+        v
+      SCT lookup
+        |
+        v
+48-bit capability register
+    = access authority + current physical base/bounds
+```
+
+The Dump Stack therefore preserves the compact logical capability state of C0–C5 rather than copies of their expanded physical descriptors. On process restoration, the saved pointers are used through the SCT to reconstruct the workspace capability registers from the SCT state then current. This is the general mechanism underlying the relocation behaviour described below: suspension and restoration do not revive stale base/limit values.
+
+The retained pointer also supplies the identity needed when the corresponding capability is stored again. The expanded register carries the access authority and physical descriptor used for execution; the associated Dump Stack word preserves the compact capability pointer from which the stored 24-bit representation can be reconstructed.
+
 ### Entry structure
 
 A normal SCT entry occupies **three 24-bit words**:
