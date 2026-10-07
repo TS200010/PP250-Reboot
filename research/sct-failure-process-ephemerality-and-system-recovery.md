@@ -63,7 +63,7 @@ Therefore:
 
 > **Changing an SCT entry does not retroactively alter already-expanded capability registers.**
 
-This is relevant to SCT failure because a processor might execute briefly using already-expanded capabilities, but normal execution cannot continue indefinitely once further capability loads or crossings require the missing SCT.
+This is relevant to SCT failure because a processor might execute briefly using already-expanded capabilities. The relocation patent now makes the process-state dependency more precise: the fixed C0–C5 locations in a process Dump Stack contain the corresponding 24-bit capability pointers rather than saved 48-bit register images. On process restoration those workspace capability registers are reconstructed from the retained pointers through the SCT. Normal execution therefore cannot continue indefinitely after SCT loss: further capability loads require the table, and once a process transition requires C0–C5 to be reconstructed from Dump Stack state, the SCT is required again.
 
 ---
 
@@ -197,7 +197,7 @@ The user program is then started and creates one process.
 
 Now assume the storage module containing the SCT fails.
 
-Because normal capability loading can no longer proceed, all processors ultimately fault. In capability terms the effect is global even though only one physical store module has failed.
+Already-expanded capability registers may remain usable temporarily, but normal capability loading can no longer proceed. A process transition that requires C0–C5 to be reconstructed from the compact capability pointers retained in its Dump Stack likewise requires the SCT. Normal execution therefore cannot remain viable, and all processors ultimately fault. In capability terms the effect is global even though only one physical store module has failed.
 
 The machine enters its independent SPECIAL/check-out environment.
 
@@ -269,6 +269,8 @@ SCT
 ```
 
 If the SCT is catastrophically lost, the current inform capability universe can be abandoned.
+
+The Dump Stack does not preserve independent 48-bit images of C0–C5 from which an old process could simply be resumed without that capability-table environment. It preserves the corresponding compact capability pointers, from which those workspace capability registers are reconstructed through the SCT on restoration.
 
 The loss is therefore catastrophic to the **execution epoch**, but not necessarily catastrophic to the **system**.
 
@@ -445,6 +447,7 @@ It is also consistent with:
 
 - SCT-protected capability loading;
 - the non-retroactive nature of SCT changes to expanded registers;
+- the retention of compact C0–C5 capability pointers in the Dump Stack and their reconstruction through the SCT on process restoration;
 - independent replicated SPECIAL/check-out structures;
 - disk-form capability identity being different from SCT reference;
 - disk-first allocation of store;
