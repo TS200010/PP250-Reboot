@@ -410,6 +410,18 @@ The reconstruction from this point follows the route by which the architecture b
   By convention, the functions made available by an object are arranged at numbered offsets. Possession of an Enter Capability for the object allows its holder to call any of those functions by specifying the appropriate offset.
 
   **That is all the Enter Capability allows.** Any attempt to use it for anything other than a legitimate entry to one of those functions is detected by the hardware and causes a fault.
+
+- **B2 — Arguments are passed to the called function in the data and capability registers, and results are returned in the same way.**
+
+- **B3 — Any attempt to do anything else other than call a legitimate function is detected by hardware and generates a fault.**
+
+  To understand what happens when a fault occurs, we first need to introduce the System 250 concept of a process.
+
+  A System 250 process is the process already encountered in the descent: an executing computation together with its protected environment and processor state.
+
+  A process executes with its protected environment in **C6** and its code in **C7**. Both form part of its execution context and are preserved across CALL and RETURN through the **Dump Stack**.
+
+  The Dump Stack holds the processor state needed to preserve and resume the process.
 - **Follow entry into the protected structure.** C6 establishes the capability environment and C7 the executable code; CALL and RETURN expose the relationship between controlled entry, execution and protection.
 - **Ask where capabilities come from.** If every protected structure depends upon capabilities, the next question is how authority is created and protected. This leads towards capability construction, the SCT, C(C) and storage management.
 - **Follow execution into the process mechanism.** CHP and the Process Dump Stack reveal that a process is not merely a software abstraction: M can preserve one protected execution and establish another.
