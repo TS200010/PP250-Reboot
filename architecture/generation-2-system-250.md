@@ -462,6 +462,14 @@ The reconstruction from this point follows the route by which the architecture b
 
 These are **reconstruction breadcrumbs**, not settled section headings. They are retained here to guide the order of investigation and writing; detailed ROS/PDOS policy, such as scheduling algorithms, is pursued only where it is needed to establish this architectural path.
 
+- **B6 — Operating-system software on PP250**
+
+  On PP250, an operating system is not a privileged layer beneath application software. It is a collection of system routines and processes using the same protection mechanisms as any other software, including user and application software.
+
+  A scheduler, storage manager, filing system or other service has only the access explicitly available to it. Calling something “operating-system software” gives it no additional privilege.
+
+  The fault handler we have just encountered is different in only one important respect: it is invoked directly by the hardware following a fault. It does not enter a special or privileged processor state. Like any other process, its processor state is defined by its Dump Stack.
+
 ## 7. Realisation in PP250-G2
 
 PP250-G2 realises the unforgeable tokens of the architectural model as **capabilities**.
