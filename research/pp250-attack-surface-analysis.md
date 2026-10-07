@@ -151,21 +151,21 @@ The historical synchronization mechanism is not yet known. Possible solutions sh
 
 ## 8. Process change and Dump Stack state
 
-`CHP` can restore a substantial portion of processor state from a Dump Stack, including capability registers.
+`CHP` restores a substantial portion of processor state from a Dump Stack, but the workspace capability registers C0–C5 are not restored as attacker-supplied 48-bit base/limit descriptors. The fixed Dump Stack locations corresponding to C0–C5 are 24-bit capability pointers. US3771146A states that these pointers are recorded when the workspace capability registers are loaded and are used through the capability table to reconstruct those registers on process restoration.
 
-The Dump Stack therefore represents security-sensitive process state.
+The Dump Stack therefore represents security-sensitive process state, but the attack surface is more constrained than a model in which arbitrary expanded capability-register images could simply be written and restored. Physical base/limit state is rematerialised through the capability table current at restoration.
 
 The important questions include:
 
 - who may create a valid Dump Stack;
-- who may modify one;
-- how its capability contents are validated;
+- who may modify its 24-bit capability-pointer state;
+- what access and validation rules prevent fabrication or amplification of authority in those pointers;
 - how a process becomes eligible for `CHP`; and
-- whether arbitrary software can cause processor state to be restored from an attacker-controlled object.
+- whether arbitrary software can cause processor state to be reconstructed from an attacker-controlled Dump Stack.
 
-The fixed Dump Stack layout itself is not a weakness. The attack surface lies in authority over the object and in the mechanism selecting it for process change.
+The fixed Dump Stack layout itself is not a weakness. The attack surface lies in authority over the object, legitimate construction or modification of its compact capability-pointer state, and the mechanism selecting it for process change.
 
-**Current assessment:** high-value control surface; protection mechanism partly reconstructed.
+**Current assessment:** high-value control surface; the C0–C5 representation/restoration mechanism is now established, while the authority and validation rules governing creation and modification of that saved pointer state remain only partly reconstructed.
 
 ---
 
@@ -352,6 +352,8 @@ No claim should yet be made that the PP250 is free of authority-escalation paths
 > **No such path has yet been demonstrated in the reconstructed architecture, and the remaining candidates can now be identified and investigated explicitly.**
 
 ## Evidence update — 2 October 2026: relocation and channel protection
+
+**Resolution — 7 October 2026:** the Pocket Reference and US3771146A together establish that the fixed C0–C5 Dump Stack words are 24-bit capability pointers rather than saved 48-bit capability-register images. This removes one candidate authority-escalation path from the attack model: process restoration does not permit stale or fabricated physical base/limit descriptors to be resurrected directly from those words. Restoration instead rematerialises the workspace capability registers through the capability table. The security question moves one level earlier, to who can create or alter valid capability pointers and the SCT state through which they are interpreted.
 
 **DOCUMENTED OBSERVATION:** US3771146A, Description 121, supplies the refresh mechanism missing from section 12: interrupt the affected processors and restore their processes, thereby reloading workspace capabilities through the table. Changing the SCT alone is insufficient. The documented relocation case narrows the unresolved assessment; software replacement, full cross-processor coordination and SCT reuse remain unresolved. See [canonical SCT mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
 
