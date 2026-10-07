@@ -632,7 +632,29 @@ ACCESS + BASE + LIMIT
 
 The loaded capability register is 48 bits. BASE denotes the System 250 module/address starting point established in the addressing reconstruction; LIMIT bounds access relative to that base; ACCESS remains the authority of the particular capability being loaded.
 
-The SCT reference needed to reconstruct the stored Inform form is retained separately in process state (the Process Dump Stack), rather than requiring it to be encoded in the 48-bit register representation itself.
+The compact identity needed to reconstruct the stored Inform form is retained separately in process state rather than requiring it to be encoded in the 48-bit register representation itself. This is now directly supported by primary evidence. The Pocket Reference shows that the fixed Process Dump Stack locations corresponding to C0–C5 are each one 24-bit word, and US3771146A identifies these as the reserved capability pointers corresponding to the workspace capability registers. It states that the corresponding pointer is recorded in the Dump Stack whenever a workspace capability register is loaded.
+
+The resulting relationship is:
+
+```text
+24-bit Inform capability pointer
+    = ACCESS/form + SCT identity/reference
+        |
+        +----> corresponding fixed C0–C5 Dump Stack word
+        |
+        v
+      SCT lookup
+        |
+        v
+48-bit workspace capability register
+    = ACCESS + current BASE + LIMIT
+```
+
+On process restoration the saved Dump Stack pointers are used through the capability table to reconstruct C0–C5. The persistent process representation therefore preserves compact capability identity and authority, while the expanded physical descriptor is transient processor state. This also explains how a restored process acquires the SCT's current mapping rather than resurrecting stale BASE/LIMIT values.
+
+### 19.5a Evidence resolution — Dump Stack pointer retention
+
+**DOCUMENTED OBSERVATION — 7 October 2026:** the earlier reconstruction that the SCT identity associated with a loaded workspace capability is retained in the Process Dump Stack is no longer dependent on secondary description alone. The one-word C0–C5 layout in the Pocket Reference and the explicit reserved-capability-pointer mechanism in US3771146A establish the representation and its restoration role directly. This does not resolve every detail of SC encoding or capability derivation, but it removes the representation of saved C0–C5 process capability state from the open genesis questions.
 
 ### 19.6 Capability representation and target-object residence are independent
 
