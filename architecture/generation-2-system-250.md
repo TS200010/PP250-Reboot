@@ -431,7 +431,7 @@ The reconstruction from this point follows the route by which the architecture b
 
   PP250 calls the structure used for this the **Process Dump Stack**, usually simply the **Dump Stack**.
 
-  The Dump Stack contains sufficient processor state for the process to be stopped and subsequently resumed. In particular, it holds the saved data and capability registers together with the other state needed to reconstruct the process's execution.
+  The Dump Stack contains sufficient processor state for the process to be stopped and subsequently resumed. The data registers are preserved as 24-bit values. For C0–C5, however, the fixed Dump Stack locations hold the corresponding 24-bit capability pointers, not copies of the expanded 48-bit capability registers. Those pointers provide the protected capability state from which the registers can be reconstructed through the System Capability Table when the process is resumed.
 
   CALL and RETURN also use the Dump Stack. When a process calls through an Enter Capability, its current **C6, C7 and return address** are preserved there so that RETURN can restore the previous protected environment and continue the caller.
 
@@ -489,13 +489,13 @@ PP250-G2 realises the unforgeable tokens of the architectural model as **capabil
 
 A **Dump Stack** is a segment managed by **M**. Crucially, it is not part of either **H** or **T**; it belongs to the encompassing microprogram computation.
 
-The Dump Stack holds the processor state of a process when that process is not executing. It contains C0–C5, D0–D7, the Pushdown Pointer, Watchdog Timer and MIP, together with the C6/C7/IAR execution state and saved CALL contexts.
+The Dump Stack holds the processor state of a process when that process is not executing. Its fixed locations for C0–C5 contain the corresponding 24-bit capability pointers rather than the expanded 48-bit register contents. It also contains D0–D7, the Pushdown Pointer, Watchdog Timer and MIP, together with the C6/C7/IAR execution state and saved CALL contexts.
 
 Thus the state from which both H and T computation can subsequently resume is preserved outside both of them, under M.
 
 ### 7.2 Loading and dumping a process
 
-**M** transfers process state between a Dump Stack and the processor registers.
+**M** transfers process state between a Dump Stack and the processor registers. This is not a bit-for-bit transfer for the capability registers: the Dump Stack retains their compact capability-pointer state, and the expanded capability-register form is reconstructed through the SCT when the process is established.
 
 **CHP (Change Process)** is an instruction of **M**. It causes the current process state to be dumped and another process state to be restored from its Dump Stack.
 
@@ -607,12 +607,14 @@ Each active process has a Process Dump Stack identified by C(D).
 The 1976 format has a common fixed process-state area containing:
 
 ```text
-0–5       C0–C5
+0–5       24-bit capability pointers corresponding to C0–C5
 6–15      D0–D7
 16        pushdown pointer for CALL stack
 17        watchdog timer
 20        MIP
 ```
+
+The labels `C0`–`C5` in the Pocket Reference identify the capability-register associations of those six 24-bit words; they are not 48-bit images of the capability registers. Contemporary patent evidence states that these Dump Stack locations hold the corresponding reserved capability pointers and are updated when a workspace capability register is loaded. On process restoration those pointers are used through the System Capability Table to reconstruct the expanded capability registers.
 
 Beyond that fixed state, the format contains system-dependent process information and the C6/C7/IAR execution frames used by protected calls.
 
