@@ -121,7 +121,7 @@ The named MIS bits strengthen that interpretation. `MIS08 Set Read Capability` a
        conceptual fields; not a universal bit allocation
 ```
 
-The compact stored pointer is not a raw physical address. Nor is saving C0 at one Dump Stack word evidence for storing all 48 register bits there. Capability identity and rights can be preserved compactly and the expanded descriptor reconstructed.
+The compact stored pointer is not a raw physical address. The Pocket Reference shows each fixed Dump Stack location corresponding to C0–C5 as a single 24-bit word, while each workspace capability register is 48 bits. US3771146A makes the relationship explicit: these locations hold the corresponding reserved capability pointers, and the appropriate pointer is recorded whenever a workspace capability register is loaded. The expanded descriptor is reconstructed through the capability table rather than being stored as a 48-bit register image in the Dump Stack.
 
 **Exact layouts available, with provenance:** [L1], Figure 4-1, labels its stored format as an 8-bit rights field and 16-bit SCT index (**SECONDARY EVIDENCE**). [R1], p. 4, instead supplies the following nine-position access/prefix diagrams; it does not establish a complete universal 24-bit layout:
 
@@ -158,7 +158,7 @@ Multiple processes can possess different rights to the same segment [P4, “Desc
 
 **Documented, [E1], paragraph 30:** virtual store extends the capability structure to disk. The store-management package moves blocks between backing store and main store, and an attempted access can trigger bringing a block into main store. A main-store capability still needs an SCT entry when its target block exists only on disk. On-disk capabilities replace the SCT offset with disk identity/address information; moving a capability block entails converting its contained capabilities.
 
-**SECONDARY EVIDENCE, [L1], sections 4.3–4.5:** the SCT is shared by processors, with synchronization required during updates. Primary-memory capabilities are called inform/active, and disk capabilities outform/passive; the latter identify the disk object rather than its current SCT slot. LC retains the SCT index in the Process Dump Stack, and SC combines that identity with register rights to reconstruct the stored capability.
+**SECONDARY EVIDENCE, [L1], sections 4.3–4.5:** the SCT is shared by processors, with synchronization required during updates. Primary-memory capabilities are called inform/active, and disk capabilities outform/passive; the latter identify the disk object rather than its current SCT slot. Levy states that LC retains the SCT index in the Process Dump Stack and that SC combines that identity with register rights to reconstruct the stored capability. The retention mechanism is now independently supported by primary evidence: US3771146A states that the corresponding reserved capability pointer is recorded in the Dump Stack whenever a workspace capability register is loaded.
 
 Thus PP250 virtual memory is **segment/capability oriented**, not a conventional separate flat paged address space for each process. Sharing follows segment identity and authority. Inform/Outform conversion belongs to the established VM/storage-management and VM-trap path; exact physical encoding is generation/version-specific and is not an architectural open question. This does not imply an INFORM or OUTFORM machine instruction, a conventional page-table mechanism, or a disk-based cold loader.
 
@@ -211,16 +211,16 @@ The process is not the physical CPU, nor just a bag of memory bytes. Its Dump St
 
 ## 7. Process Dump Stack: 1976 format
 
-**Documented, [R1], p. 6. All offsets below are octal.** The common fixed portion `0–20` contains seventeen words:
+**Documented, [R1], p. 6. All offsets below are octal.** The common fixed portion `0–20` contains seventeen 24-bit words. The entries labelled C0–C5 are therefore six 24-bit locations, not 48-bit register images. Read together with US3771146A, they are the reserved capability pointers corresponding to the six workspace capability registers:
 
 | Offset | Saved state | Offset | Saved state |
 |---:|---|---:|---|
-| 0 | C0 | 10 | D2 |
-| 1 | C1 | 11 | D3 |
-| 2 | C2 | 12 | D4 |
-| 3 | C3 | 13 | D5 |
-| 4 | C4 | 14 | D6 |
-| 5 | C5 | 15 | D7 |
+| 0 | C0 capability pointer | 10 | D2 |
+| 1 | C1 capability pointer | 11 | D3 |
+| 2 | C2 capability pointer | 12 | D4 |
+| 3 | C3 capability pointer | 13 | D5 |
+| 4 | C4 capability pointer | 14 | D6 |
+| 5 | C5 capability pointer | 15 | D7 |
 | 6 | D0 | 16 | Pushdown pointer for CALL stack |
 | 7 | D1 | 17 | Watchdog timer register |
 | | | 20 | MIP (Primary Indicator Register) |
@@ -242,7 +242,8 @@ The save layout itself provides an additional constraint on the processor-state 
 Dump Stack
 +--------------------------------------+
 | fixed process save area, 0-20 octal   |
-|   C0-C5; D0-D7; pointer; watchdog; MIP|
+|   C0-C5 capability pointers; D0-D7;     |
+|   pushdown pointer; watchdog; MIP        |
 +--------------------------------------+
 | OS-specific intervening words        |
 +--------------------------------------+
@@ -572,7 +573,7 @@ change-process restoration --> normal process execution
 
 The boot note expands `RSPC-n`; this note deliberately retains **RSPC-0** without adopting an unverified expansion. [P1] identifies its functional role as a reserved segment pointer to the checkout dump area. The inspected wording establishes that role more securely than the precise acronym expansion. SSCR/MCR/DCR and C(S)/C(C)/C(D) are compared functionally, not asserted to be identical layouts across generations.
 
-The main outstanding research questions are the mixed-access anti-forgery mechanism; version-specific capability fields; exact CHP operand/restore rules; saved-pointer and initial-frame construction; and how valid startup structures first enter memory. These remain research questions rather than implicit implementation requirements.
+The main outstanding research questions are the mixed-access anti-forgery mechanism; version-specific capability fields; exact CHP operand rules; initial-frame construction; and how valid startup structures first enter memory. The representation and restoration role of the fixed C0–C5 Dump Stack words is no longer open: they are 24-bit capability pointers used to rematerialise the workspace capability registers through the capability table. These remaining issues are research questions rather than implicit implementation requirements.
 
 ## Sources and provenance
 
@@ -590,6 +591,8 @@ The main outstanding research questions are the mixed-access anti-forgery mechan
 Prepared against repository commit `43547b29cbd426a3dfda6f8dce464f4653cb3252`. This note adds a research reconstruction only; no architecture document, original source, transcription or previous research note was modified.
 
 ## Evidence update — 2 October 2026: restoration is capability rematerialisation
+
+**Resolution — 7 October 2026:** the Pocket Reference word layout and US3771146A together resolve the representation of the fixed C0–C5 Dump Stack entries. Each is one 24-bit capability pointer corresponding to its workspace capability register, not a saved 48-bit register image. US3771146A further states that the corresponding pointer is loaded into the Dump Stack whenever the capability register is loaded and that process restoration reloads the workspace capability registers using those Dump Stack pointers through the master capability table. The persistent process state is therefore the compact capability-pointer state; the expanded base/limit register representation is transient processor state rematerialised from the current table state.
 
 **DOCUMENTED OBSERVATION:** US3771146A, Description 75, 81 and 121, saves compact capability pointers and reloads workspace capability registers through the master table on process restoration. The relocation case deliberately uses a handler transition and return to replace previously expanded bounds with the table's current unavailable state. Thus a process dump does not freeze physical capability bounds independently of the table. This supports the existing capability-mediated process model; it constrains any reading of “restore” as a bit-for-bit resurrection of old expanded descriptors. See [canonical SCT mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
 
