@@ -165,7 +165,7 @@ CHP therefore does not fit comfortably in the simple “Church instruction” bu
 
 This explains why the Dump Stack has repeatedly felt anomalous.
 
-It contains ordinary data-register state, protected capability-register state, watchdog state, indicators, a CALL-stack pushdown pointer, and C6/C7/IAR frames.
+It contains ordinary data-register state, the compact capability-pointer state corresponding to the workspace capability registers, watchdog state, indicators, a CALL-stack pushdown pointer, and C6/C7/IAR frames. The fixed C0–C5 words are 24-bit capability pointers, not copies of the expanded 48-bit capability-register contents.
 
 It is therefore not merely an ordinary program stack, nor merely a collection of capabilities.
 
@@ -189,7 +189,7 @@ The capability mechanism controls access to the object, but the meaning of the o
 
 The Dump Stack appears to have two related roles.
 
-Its fixed portion preserves process-level state such as C0–C5, D0–D7, watchdog state, indicators and other machine state.
+Its fixed portion preserves process-level state including the 24-bit capability pointers corresponding to C0–C5, D0–D7, watchdog state, indicators and other machine state. On restoration, the C0–C5 pointers are used through the capability table to reconstruct the expanded workspace capability registers.
 
 Its variable portion contains C6/C7/IAR frames associated with nested CALL/RETURN activity.
 
@@ -246,13 +246,11 @@ T ⇏ Γ
 
 Therefore at least one of the following must be constrained by the architecture:
 
-- how capability-bearing Dump Stack entries are represented;
-- who can modify them;
-- how CHP interprets them;
-- how they are validated;
+- who can modify capability-bearing Dump Stack entries;
+- what validation and access restrictions govern those modifications;
 - how the first valid instance is created.
 
-Which mechanism PP250 actually uses remains to be established.
+The representation and restoration mechanism is now established for the fixed C0–C5 process state. Each entry is a 24-bit capability pointer. US3771146A states that the corresponding pointer is recorded in the Dump Stack whenever a workspace capability register is loaded, and that process restoration reloads the workspace capability registers using those saved pointers through the master capability table. The unresolved anti-forgery question is therefore no longer how arbitrary 48-bit capability-register images are prevented from being restored: such images are not what these Dump Stack words contain. The remaining question is how authority to create or modify the compact capability-pointer state itself is constrained.
 
 This reframes the bootstrap problem. Instead of asking only “Who writes the first C6 and C7?”, ask:
 
@@ -394,10 +392,12 @@ Access/form semantics may be the mechanism by which the architecture controls le
 
 ## 16. Evidence status
 
+**Evidence resolution — 7 October 2026:** the Pocket Reference and US3771146A together resolve a question left open in the original reasoning. The fixed Dump Stack entries labelled C0–C5 are six 24-bit capability pointers corresponding to the workspace capability registers. They preserve logical capability identity/access state while the expanded 48-bit base/limit representation exists transiently in the processor. Restoration rematerialises the workspace capability registers through the capability table from those pointers. This strengthens the reification model: the Dump Stack preserves sufficient protected state to recreate the computation without preserving stale physical capability descriptors.
+
 | Status | Proposition | Comment |
 |---|---|---|
 | **Documented** | C6/C7 define current protected capability/code context; CALL establishes called context and RETURN restores prior context. | Exact wording and version details still matter. |
-| **Documented** | The Process Dump Stack saves capability registers, data registers and other process state and contains C6/C7/IAR call frames. | Pocket Reference and contemporary architecture descriptions support this. |
+| **Documented** | The fixed Process Dump Stack words corresponding to C0–C5 contain 24-bit capability pointers, while D0–D7 and other process state are also preserved; C6/C7/IAR form the CALL frames. | Pocket Reference establishes the one-word C0–C5 layout; US3771146A identifies those words as the reserved capability pointers used to reconstruct workspace capability registers through the capability table. |
 | **Documented** | C(D) designates the active process Dump Stack and is involved in process switching. | C(D) is therefore a capability even though its target has unusual semantics. |
 | **Interpretation** | P or M = (T, Γ) is a useful decomposition of process state into ordinary and protected-authority components. | Mathematical model, not PP250 source notation. |
 | **Interpretation** | The Dump Stack reifies a computation: DS = reify(M). | Explains why it is more than a conventional stack. |
@@ -413,7 +413,7 @@ Access/form semantics may be the mechanism by which the architecture controls le
 3. Collect complete access-code values from primary sources rather than decoding only the six named rights. Record the object/context associated with each value.
 4. Determine the actual access/form values carried by or used for C(D), C(C), C(N), C(I) and C(S), where evidence exists.
 5. Determine exactly what ordinary software may read or modify within a Process Dump Stack, especially saved capability entries and C6/C7/IAR frames.
-6. Establish whether CHP validates or reconstructs saved capability state through the SCT and how this prevents arbitrary fabrication of authority.
+6. Determine the remaining validation and write-authority rules governing the 24-bit capability pointers in the Dump Stack. Reconstruction of C0–C5 through the capability table on process restoration is established; the unresolved issue is how software is prevented from fabricating or improperly modifying the saved pointers themselves.
 7. Separate the mechanisms for explicit CHP, normal interrupt, interval-timer event, watchdog expiry and fault interrupt. Identify which genuinely share the same process-state transition machinery.
 8. Revisit Hamer-Hodges's original Church/Turing terminology after the access/form evidence is assembled. Was “Church” describing protected naming/binding, capability manipulation, or a broader semantic division?
 9. Keep the 1976 Pocket Reference COS/POS layouts and the later Andrews/Wheatley `F-P-six-rights-F` layout explicitly versioned; do not force a cross-generation bit mapping unless a concrete reconstruction need arises.
