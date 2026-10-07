@@ -422,6 +422,36 @@ The reconstruction from this point follows the route by which the architecture b
   A process executes with its protected environment in **C6** and its code in **C7**. Both form part of its execution context and are preserved across CALL and RETURN through the **Dump Stack**.
 
   The Dump Stack holds the processor state needed to preserve and resume the process.
+
+- **B4 — The Dump Stack**
+
+  While a process is running, its current state is held in the processor: its data registers, capability registers, instruction address and other processor state.
+
+  If the process is to stop running—for example because a fault has occurred—that state has to be preserved somewhere.
+
+  PP250 calls the structure used for this the **Process Dump Stack**, usually simply the **Dump Stack**.
+
+  The Dump Stack contains sufficient processor state for the process to be stopped and subsequently resumed. In particular, it holds the saved data and capability registers together with the other state needed to reconstruct the process's execution.
+
+  CALL and RETURN also use the Dump Stack. When a process calls through an Enter Capability, its current **C6, C7 and return address** are preserved there so that RETURN can restore the previous protected environment and continue the caller.
+
+  So the Dump Stack serves two closely related purposes: it preserves the state of the process when execution is suspended, and it preserves the sequence of **currently nested calls**, including calls within the same protected environment and calls into other protected environments.
+
+  The important point for the fault path is simple: **the processor has somewhere protected in which it can preserve the state of the faulting process before doing anything else.**
+
+- **B5 — What happens when a fault occurs?**
+
+  When the hardware detects a fault, it preserves the state of the faulting process in its Dump Stack.
+
+  The faulting process can no longer simply continue. PP250 transfers execution to another process to handle the fault.
+
+  PP250 has a machine instruction called **Change Process (CHP)**. Its operand identifies the Dump Stack of the process to be **started or resumed**. Executing CHP saves the current processor state in the outgoing Dump Stack and establishes a new processor state from the incoming Dump Stack.
+
+  The PP250 processor also has an **internal CHP instruction**. When a fault occurs, the processor executes an internal CHP instruction to enter **a fault-handling process**.
+
+  **The functionality of that fault-handling process is not defined by the PP250 architecture or hardware. It is software-defined.** A particular software architecture built on PP250 might attempt sophisticated recovery of the faulting process, or it might simply regard that process as unrecoverable and remove it from the system.
+
+  **PP250 guarantees the mechanism for containing the fault and transferring control; what recovery means is a software decision.**
 - **Follow entry into the protected structure.** C6 establishes the capability environment and C7 the executable code; CALL and RETURN expose the relationship between controlled entry, execution and protection.
 - **Ask where capabilities come from.** If every protected structure depends upon capabilities, the next question is how authority is created and protected. This leads towards capability construction, the SCT, C(C) and storage management.
 - **Follow execution into the process mechanism.** CHP and the Process Dump Stack reveal that a process is not merely a software abstraction: M can preserve one protected execution and establish another.
