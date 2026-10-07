@@ -12,7 +12,7 @@ When considering C/C++ object safety, an apparent problem was stale authority af
 
 For PP250 this is not, by itself, the important problem.
 
-The program's authority is not supposed to be a raw physical-memory address. A virtual segment has an identity mediated by the SCT and virtual-memory system. A newly created segment need not receive physical memory until first use, and when backing storage is assigned it may receive any suitable block.
+The program's authority is not supposed to be a raw physical-memory address. A virtual segment has an identity mediated by the SCT and virtual-memory system. A newly created segment need not receive main-store memory until first use. The Store Allocator allocates/reserves suitable backing-store space at creation, before returning the capability; later materialisation of useful contents and main-store realisation are distinct events (England, *Operating System of System 250*, paragraphs 13–15; see the [working transcription](../transcriptions/operating-system-of-system-250.md#virtual-memory---storage-media-to-blocks)).
 
 Therefore reuse of physical block X does not imply reuse of the old segment's authority.
 

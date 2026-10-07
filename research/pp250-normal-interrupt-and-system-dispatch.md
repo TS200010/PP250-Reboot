@@ -137,6 +137,8 @@ continue interrupted computation
 
 Secondary descriptions of the System 250 architecture independently describe the same mechanism: a segment can have an SCT entry while having no primary-memory allocation, and first reference to such a segment causes a trap. The operating system then allocates or restores primary storage and updates the relevant SCT state.
 
+**DOCUMENTED — existing nonresident blocks and virgin new blocks:** England's *Operating System of System 250*, paragraphs 13–15, applies this mechanism to both cases. For an existing nonresident block, the required contents are transferred from disk into allocated main-store space. For a virgin new block, the Store Allocator has already allocated backing-store space at creation and returned its capability; first reference uses the same nonresident-block mechanism to establish main-store residence, but the actual disk transfer is short-circuited because the block does not yet contain useful information. Thus the transfer step in the dispatch path below is conditional on useful contents being present. See the [working transcription](../transcriptions/operating-system-of-system-250.md#virtual-memory---storage-media-to-blocks).
+
 ### Process-management boundary: interrupt acceptance
 
 The generic SIW/D15/C(N) acceptance mechanism and its relationship to process transition are now maintained in [PP250 execution and process model](pp250-execution-and-process-model.md). This note retains the interrupt/trap-specific reconstruction built on that mechanism.

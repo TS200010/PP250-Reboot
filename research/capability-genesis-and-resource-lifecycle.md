@@ -967,6 +967,10 @@ ordinary resource/capability genesis
 
 These classifications are provisional research judgements. Any should be reopened if primary evidence materially changes the constraints.
 
+**Current conclusion — backing-store reconciliation (7 October 2026):** England's contemporary G2 *Operating System of System 250*, paragraphs 13–15, places backing-store space allocation at block creation, before the Store Allocator returns the capability. Later materialisation of useful contents and first-use main-store realisation are separate from that allocation and from capability genesis. For a virgin new block, the ordinary nonresident-block mechanism allocates main-store space, but the actual disk transfer is short-circuited because there are no useful contents yet. See the [working transcription](../transcriptions/operating-system-of-system-250.md#virtual-memory---storage-media-to-blocks).
+
+The remaining G2 implementation question is the exact mechanism by which the protected Store Allocator establishes a fresh SCT relationship and the corresponding legitimate capability. The allocator's architectural role is established; this is a question about its implementation, not when backing store is materialised. Mixed-access Inform construction remains the leading implementation hypothesis examined here. The unassigned-backing-identity / first-access backing-store-allocation branch is retained only as an alternative implementation hypothesis, not the preferred G2 ordering. Earlier reasoning above is preserved as the audit trail.
+
 ## Evidence update — 2 October 2026: relocation and later local lifetimes
 
 **DOCUMENTED OBSERVATION:** US3771146A, Description 121, refreshes already-expanded capabilities during relocation by interrupting affected processors and restoring their processes through the table. This is evidence for relocation control, not general revocation, safe SCT identity reuse or the creation of primordial authority. See [canonical SCT mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
