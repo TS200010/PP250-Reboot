@@ -971,6 +971,146 @@ These classifications are provisional research judgements. Any should be reopene
 
 The remaining G2 implementation question is the exact mechanism by which the protected Store Allocator establishes a fresh SCT relationship and the corresponding legitimate capability. The allocator's architectural role is established; this is a question about its implementation, not when backing store is materialised. Mixed-access Inform construction remains the leading implementation hypothesis examined here. The unassigned-backing-identity / first-access backing-store-allocation branch is retained only as an alternative implementation hypothesis, not the preferred G2 ordering. Earlier reasoning above is preserved as the audit trail.
 
+
+## 21. 7 October 2026 update — primordial authority and the first C6
+
+**Status: WORKING RECONSTRUCTION.** This section refines the earlier whole-machine/PRA reasoning using the subsequent startup, Dump Stack and mixed-access work. It does not erase Sections 1–20; those sections remain the audit trail showing why a persistent Primordial Resource Allocator was considered and later demoted.
+
+### 21.1 The earlier whole-machine insight and what was actually rejected
+
+Sections 1–3 proposed maximal primordial authority, possibly represented by a single "whole machine" capability. The later startup reconstruction displaced the **persistent PRA** as the explanation of bootstrap genesis because the processor's protected startup machinery could establish the first executable context without an ordinary allocator already running.
+
+That did **not** establish that maximal primordial authority was impossible. Two separate ideas had been conflated:
+
+1. a **persistent privileged allocator** retaining whole-machine authority throughout normal operation; and
+2. **transient genesis authority** from which the ordinary restricted authority structure is constructed.
+
+The first creates awkward lifetime, fragmentation and representation questions and is no longer the leading model. The second is reopened by the present reconstruction.
+
+### 21.2 Boundary with processor startup
+
+The processor-startup investigation owns the transition from inert/power-on state to the first executable PP250 context. The current working reconstruction is that protected startup/CHANGE PROCESS machinery can enter a prepared primordial process state without requiring an already functioning ordinary process or operating system.
+
+This note begins at the next boundary:
+
+> **Given the first executable PP250 computation, what authority does it possess, and how can the ordinary authority structure be constructed from it?**
+
+The exact inert-to-first-instruction microsequence remains in [PP250 boot and processor startup](pp250-boot-and-processor-startup.md).
+
+### 21.3 Primordial authority is the maximum case of the normal authority model
+
+The new reconstruction does not require a hidden MAKECAP instruction or an unrestricted permanent supervisor mode.
+
+At genesis, the first computation has exceptional constructive authority over the valid addressable resource universe. In capability terms, this is the limiting maximum case: the computation can read and write ordinary data and read and write capability-bearing state over the resource space available to it.
+
+The historical representation remains unresolved. A single ordinary PP250 capability may not be able to span store-module boundaries; the same semantic authority might therefore require one capability per module or another startup representation. The architectural proposition is about **authority**, not yet the exact number or encoding of capability words.
+
+Resource discovery is also distinct from authority. Probing or configuration mechanisms may determine which addresses/resources physically exist; that does not itself grant authority. It identifies the valid resource universe over which primordial authority applies.
+
+### 21.4 C6 is an authority environment, not an inventory
+
+The key conceptual refinement is the role of C6.
+
+C6 should not be understood fundamentally as an inventory of physical resources, an operating-system service table, or a privileged-kernel descriptor. Those can be higher-level uses of the structure it designates.
+
+At this level:
+
+> **C6 designates the capability environment that expresses what the current computation is authorised to do.**
+
+The primordial C6 is therefore the degenerate maximum case:
+
+> **all available authority over the valid resource universe.**
+
+This gives C6 a continuous meaning from machine genesis upward. Higher-level C6 environments are not different architectural objects; they are progressively restricted authority environments constructed from the same substrate.
+
+Conceptually:
+
+```text
+primordial authority
+        |
+        v
+first meaningful C6
+(all available authority)
+        |
+        +---- restrict rights
+        |
+        +---- partition resources
+        |
+        +---- transfer selected authority
+        |
+        v
+subordinate C6 environments
+        |
+        v
+further restriction / composition
+        |
+        v
+ordinary protected computations
+```
+
+### 21.5 Construction rather than invention of authority
+
+Sections 20.2–20.5 already identify mixed data/capability access as the leading reconstruction for ordinary capability construction: a suitably authorised computation can establish the stored representation associated with a legitimate SCT relationship and subsequently load it as capability state.
+
+The genesis case is the maximal instance of the same principle. While primordial constructive authority remains available, startup code can build the capability blocks and relationships required for its first meaningful C6. It does not need an additional magical capability-creation instruction.
+
+This changes the emphasis of the old genesis question. The machine is not repeatedly creating authority from nothing. The primordial computation begins with maximal constructive authority and builds structures that **restrict, partition and transfer** that authority.
+
+After the unrestricted genesis path becomes inaccessible, normal software is confined to the authority represented by the capability environments reachable from its C6 and other legitimate capabilities.
+
+### 21.6 Monotonic ascent from maximum authority
+
+The resulting authority model is:
+
+```text
+machine genesis
+      |
+      v
+maximum primordial authority
+      |
+      v
+construct first meaningful C6
+      |
+      v
+restrict / partition / transfer
+      |
+      v
+construct subordinate authority environments
+      |
+      v
+repeat recursively
+```
+
+The apparent direction of system construction is therefore downward in authority while upward in semantic structure: the bottom layer begins with the broadest possible authority, and increasingly sophisticated software structures are built by giving each computation only the authority it requires.
+
+This is consistent with the System 250 principle that protection is expressed by possession of capabilities rather than by permanent privileged identity.
+
+### 21.7 What becomes inaccessible
+
+The security transition is not best described as destroying a permanently privileged PRA. What must cease to be reachable is the **unrestricted genesis construction authority**.
+
+Once the normal authority structure has been constructed, no ordinary computation should retain a path back to the maximal primordial environment merely because that environment was used during genesis. The precise historical mechanism by which this transition is made one-way remains to be established. SECOND GROUP, SPECIAL, startup-table replacement and related mechanisms must be assessed from evidence rather than folded into this reconstruction prematurely.
+
+### 21.8 Consequence for the Store Allocator
+
+The Store Allocator is no longer required as an irreducible member of the machine's primordial trusted substrate.
+
+Genesis code can construct the initial authority environment from the temporary maximal authority. The Store Allocator can then exist **inside the already-constructed authority structure**, possessing only the capabilities needed to manage its assigned resources and SCT relationships.
+
+This resolves the earlier circularity in which the Store Allocator seemed to require the very capability/SCT universe it was being asked to create.
+
+### 21.9 Remaining questions
+
+1. What exact startup representation carries the maximal primordial authority?
+2. Is it literally one capability, one per store module, or another special-startup representation?
+3. Which capability register(s) initially carry the constructive authority before the first meaningful C6 has been built?
+4. What exact operations establish the first C6 capability block and its SCT relationships?
+5. How is the physically valid addressable resource universe discovered at genesis: word probing, module probing, configuration data, or another mechanism?
+6. What exact event makes the maximal genesis authority permanently inaccessible?
+7. How do SECOND GROUP, SPECIAL and the special startup capability-table environment participate in that one-way transition, if at all?
+8. How does the virgin cold-start case differ from restoration after power failure, where persistent store may already contain the established authority structure?
+
+
 ## Evidence update — 2 October 2026: relocation and later local lifetimes
 
 **DOCUMENTED OBSERVATION:** US3771146A, Description 121, refreshes already-expanded capabilities during relocation by interrupting affected processors and restoring their processes through the table. This is evidence for relocation control, not general revocation, safe SCT identity reuse or the creation of primordial authority. See [canonical SCT mechanism](../architecture/system-capability-table.md#already-expanded-capabilities-during-relocation).
