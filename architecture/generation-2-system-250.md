@@ -470,6 +470,17 @@ These are **reconstruction breadcrumbs**, not settled section headings. They are
 
   The fault handler we have just encountered is different in only one important respect: it is invoked directly by the hardware following a fault. It does not enter a special or privileged processor state. Like any other process, its processor state is defined by its Dump Stack.
 
+- **B7 — Two questions to keep in mind**
+
+  At this point we will leave two questions unanswered:
+
+  1. **How does the processor know which fault-handling process to invoke when a fault occurs?**
+  2. **Where do capabilities come from?**
+
+  We will return to both. For the moment, however, we need to go somewhere else.
+
+  **What happens when a PP250 starts from cold?**
+
 ## 7. Realisation in PP250-G2
 
 PP250-G2 realises the unforgeable tokens of the architectural model as **capabilities**.
