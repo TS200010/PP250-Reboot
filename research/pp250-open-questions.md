@@ -31,6 +31,16 @@ Generation-specific representations are allowed to differ. There is no requireme
 
 This matters architecturally because it determines whether the protected software entered through these registers is merely privileged system software or a protected software extension of M whose installation authority disappears after construction.
 
+### Software access to and garbage collection of SCT entries
+
+**Established context:** C(C) identifies the SCT used by the processor to expand compact active capability pointers into capability-register state. Stored active capabilities contain an SCT index/reference; they are not themselves capabilities to the SCT. The SCT entries themselves require lifecycle management, including garbage collection, and later evidence associates garbage-collection state such as `GARBAGE` and `VISITED` with SCT entries.
+
+**Open question:** by what capability or architectural mechanism does the software responsible for SCT garbage collection traverse and manage the SCT entries?
+
+If C(C) is the only reference that identifies the current SCT, it remains to be established whether software can use that authority directly to traverse the table, whether a separate ordinary capability to the storage containing the SCT exists, or whether some other protected mechanism provides the required access.
+
+This also bears on SCT replacement during start-up/rejoin. Replacing C(C) establishes a new SCT for processor capability expansion, but until the management path is understood we must not infer that this necessarily removes every software-accessible route to the previous SCT or establishes how its entries/storage are subsequently reclaimed.
+
 ### Fault within the fault-handling process
 
 **Open question:** what happens if the fault-handling process entered by the processor itself generates a capability fault?
