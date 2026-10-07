@@ -200,6 +200,8 @@ A current **working interpretation** elsewhere in the repository is that `Set Re
 
 The exact timing, OPP function, expansion mechanism and control sequence remain **UNKNOWN**. These names must not yet be converted directly into emulator behaviour.
 
+Subsequent source analysis does, however, establish an architectural constraint on that unknown microsequence. For workspace capability registers C0–C5, US3771146A states that the corresponding reserved capability pointer is recorded in the Process Dump Stack whenever the capability register is loaded. The Pocket Reference shows each corresponding Dump Stack location as one 24-bit word. The loaded 48-bit capability register and its associated 24-bit Dump Stack pointer must therefore be treated as related processor/process state, although the exact microprogram sequence by which LC establishes both remains unknown.
+
 ## 8. Process, interrupt and fault machinery
 
 The MIS names `Dump Process Before Int`, `Fault Toggle`, `Fault Link From B.P.W.`, `Internal Mode`, `Trap`, `Time Up` and `Cycle Intercomplete` expose candidate internal state associated with protected transitions.
@@ -267,8 +269,8 @@ Ordinary arithmetic and instruction execution also use the microprogram. The res
 As evidence accumulates, attempt evidence-qualified reconstructions of:
 
 1. architectural instruction dispatch into microprogram sequences;
-2. LC capability read and expansion;
-3. SC capability store;
+2. LC capability read, SCT expansion, and retention of the corresponding capability pointer in the Process Dump Stack;
+3. SC capability store, including use of the retained capability identity where established by evidence;
 4. LDP;
 5. CALL;
 6. RET;
