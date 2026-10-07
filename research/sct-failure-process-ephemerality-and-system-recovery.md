@@ -474,19 +474,13 @@ Equally, no source has yet been found requiring:
 - reconstruction of the previous SCT from backing store;
 - survival of all existing processes after loss of the SCT-bearing module.
 
-The most important remaining architectural gap is the exact transition from SPECIAL/check-out or genuine cold start into the first normal capability/process environment.
+The start-up/rejoin transition has since been developed substantially in the dedicated cold-start research. The current reconstruction uses prepared process state, SECOND GROUP and ordinary process transition to establish the normal special-register environment; check-out, where used, is a preceding system-policy stage rather than an intrinsic part of that architectural transition.
 
-In particular, the following remain unresolved:
+The architectural questions that remain live are maintained canonically in `pp250-open-questions.md`. They include the exact protected processor state at cold power-up, the provenance of the capability installed in C(C), bootstrap from an initially empty SCT, and coordination of simultaneous cold start in a multiprocessor system.
 
-1. the exact protected/special-register state at power-up;
-2. whether cold power-up follows the same C(S) -> special environment -> automatic process-change path as fault recovery;
-3. exact historical loading/commissioning details for the Start-Up Block, special capability structures, initial Dump Stack and first normal code, where required for implementation fidelity rather than architectural authority provenance;
-4. how the first normal C(C)/SCT is established;
-5. how store management and process management are first made available;
-6. the exact state after the automatic process change before the first ordinary instruction;
-7. where the recollection that "three instructions booted the machine" fits into this sequence.
+Several additional matters remain useful documentary research leads without presently constituting architectural blockers: exact historical loading/commissioning of the Start-Up Block, special capability structures, initial Dump Stack and first code; detailed instruction-level state at the first ordinary instruction where not already established by the process-restoration model; and the relationship of Hamer-Hodges's recollection that "three instructions booted the machine" to the reconstructed sequence.
 
-These are startup implementation/documentary questions. They must not be promoted to current architectural blockers unless a missing detail demonstrably prevents reconstruction of behaviour; the canonical status is maintained in `pp250-open-questions.md`.
+This note therefore does not maintain a separate list of canonical start-up unknowns. Current architectural status is governed by `pp250-open-questions.md`, while the dedicated start-up and cold-start research notes preserve the supporting evidence, hypotheses and documentary questions.
 
 ---
 
