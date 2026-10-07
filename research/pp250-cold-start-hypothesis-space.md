@@ -379,10 +379,11 @@ The ordering of C(I) and C(N) relative to each other is not yet established by t
 
 A subtle consequence of changing C(C) initially appeared to be a problem and is now an important part of the hypothesis.
 
-Suppose process B's Dump Stack is created and made reachable while the **startup/special SCT** is active. CHANGE PROCESS into B expands that Dump-Stack capability into **C(D)**. B therefore executes with:
+Suppose process B's Dump Stack is created and made reachable while the **startup/special SCT** is active. CHANGE PROCESS into B expands that Dump-Stack capability into **C(D)**. The fixed C0–C5 locations in B's Dump Stack contain the corresponding 24-bit capability pointers rather than 48-bit register images; on entry those pointers are resolved through the startup/special capability table to reconstruct B's expanded workspace capability registers. B therefore executes with:
 
 ```text
 C(D) -> B Dump Stack        [expanded capability]
+C0-C5                       [expanded from Dump Stack pointers through startup/special SCT]
 C(C) -> startup/special SCT
 MIP04 = SECOND GROUP
 ```
@@ -393,7 +394,7 @@ B then uses its SECOND GROUP opportunity to install the normal runtime SCT:
 LC -> C(C) = runtime SCT
 ```
 
-Changing C(C) does not invalidate the already-expanded C(D): the Dump Stack's real base, limit and access information are resident in the processor capability register. B can therefore continue to execute.
+Changing C(C) does not invalidate the already-expanded C(D): the Dump Stack's real base, limit and access information are resident in the processor capability register. Nor does the change retrospectively reinterpret B's already-expanded C0–C5 workspace capability registers. B can therefore continue to execute using the live capability state established before C(C) changed. The compact C0–C5 pointers retained in B's Dump Stack matter only if that process is subsequently restored; in this one-way transition B is not resumed after it performs CHANGE PROCESS into the runtime environment.
 
 What disappears is the **stored capability path through the startup SCT by which B's Dump Stack was reached**. Once C(C) has changed, the runtime capability universe need not contain any route back to B's Dump Stack.
 
@@ -530,6 +531,6 @@ This correspondence is **not evidence that these were the remembered three instr
 
 The preferred reconstruction is therefore:
 
-> **A privileged startup/rejoin context constructs or selects an incoming process Dump Stack whose saved MIP has SECOND GROUP set. CHANGE PROCESS restores that state. The first transition process uses its one SECOND GROUP opportunity to install the normal C(C). Because its own C(D) is already expanded, it can continue after the SCT root changes, while the stored capability path back into the startup world disappears. Subsequent process states, now constructed or selected under the runtime SCT, provide further SECOND GROUP opportunities to establish C(I) and C(N). The transition is consequently implemented by ordinary PP250 capability and process mechanisms and is naturally one-way.**
+> **A privileged startup/rejoin context constructs or selects an incoming process Dump Stack whose saved MIP has SECOND GROUP set. CHANGE PROCESS restores that state. Its fixed C0–C5 Dump Stack words are compact capability pointers, from which the workspace capability registers are reconstructed through the startup/special capability table on entry. The first transition process uses its one SECOND GROUP opportunity to install the normal C(C). Because its C(D) and C0–C5 are already expanded live capability state, it can continue after the SCT root changes, while the stored capability path back into the startup world disappears. It then CHANGE PROCESSes into the runtime environment and is not resumed. Subsequent process states, now constructed or selected under the runtime SCT, provide further SECOND GROUP opportunities to establish C(I) and C(N). The transition is consequently implemented by ordinary PP250 capability and process mechanisms and is naturally one-way.**
 
 This is a reconstruction, not yet a fully documented historical instruction trace. Its strength is that it now explains cold-start normalisation and processor rejoin with the same small set of documented architectural mechanisms while eliminating several previously necessary undocumented bootstrap behaviours.
