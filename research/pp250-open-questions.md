@@ -23,6 +23,30 @@ Generation-specific representations are allowed to differ. There is no requireme
 
 ## Current open questions
 
+### Initial protected processor state at cold power-up
+
+**Open question:** what protected and special processor state exists immediately after cold power-up, before the C(S)-rooted start-up sequence establishes the first protected process environment?
+
+The hardware/preset C(S) root accounts for primordial authority, but the exact initial state of the other protected/special registers and indicators has not yet been established. This matters because it defines the architectural starting state from which the documented start-up mechanisms operate.
+
+### Provenance of the capability installed in C(C)
+
+**Open question:** how is the legitimate capability that is ultimately installed in C(C) made available to the transition process?
+
+The present reconstruction distinguishes two cases. At genuine cold start there is no existing runtime SCT, so an empty SCT block must first be created or prepared and a legitimate capability to it supplied for installation in C(C). On processor restart/rejoin, the runtime SCT already exists in a memory module being used by the running system, so the returning processor instead needs a capability identifying that existing SCT. The transition mechanism may be the same in both cases; what remains unresolved is the provenance and delivery of the appropriate source capability.
+
+### Bootstrap from the initial empty SCT
+
+**Open question:** after cold start has installed an initially empty SCT in C(C), how are the first SCT entries and the capability structures needed to make normal store management, process management and the rest of the runtime system available established?
+
+Creating an empty SCT and installing its capability in C(C) establishes the normal capability-table root but does not by itself populate the runtime capability universe. The mechanism by which that initially empty table is bootstrapped into a usable normal-system environment remains to be reconstructed.
+
+### Multiprocessor cold-start coordination
+
+**Open question:** when a multiprocessor System 250 is powered up from cold, how are the simultaneously starting processors coordinated so that one normal runtime capability environment is established rather than independent competing start-up environments?
+
+In particular, it remains to be established whether all processors initially execute the C(S)-rooted sequence, whether one processor becomes the bootstrap processor while the others wait or remain in a restricted state, how any such processor is selected, and how the remaining processors subsequently acquire the same C(C) and join the newly established runtime system. This is distinct from processor restart/rejoin, where an existing running system and runtime SCT are already available.
+
 ### M-extension sealing after One-Shot Second Group LC
 
 **Hypothesis:** C(C), C(I) and C(N) are established from the C(S)-rooted start-up/recovery environment using **One-Shot Second Group LC**. Once that operation has been consumed, no authority accessible to H or T can replace those registers or reproduce their contents. If confirmed, the protected software reached through C(C), C(I) and C(N) is effectively sealed into M until the next C(S)-rooted recovery/start-up sequence.
