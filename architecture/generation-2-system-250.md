@@ -10,7 +10,7 @@ Detailed provenance and the reasoning trail remain in the repository's research 
 
 ## The proposition
 
-**System 250 was not just a capability machine; it was a pure capability machine. No machine like it existed at the time, and none has been created since.**
+**System 250 was not just a capability machine. It was a pure capability machine with a persistent object store. No machine like it existed at the time, and none has been created since.**
 
 System 250 has usually been understood and described through its most visible architectural feature: capabilities. That description is correct, but incomplete. It obscures a deeper structure which appears never to have been fully described outside the relatively small community that designed, implemented and programmed the machine. This reconstruction attempts to recover that structure.
 
