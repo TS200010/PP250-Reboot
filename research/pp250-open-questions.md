@@ -31,6 +31,12 @@ Generation-specific representations are allowed to differ. There is no requireme
 
 This matters architecturally because it determines whether the protected software entered through these registers is merely privileged system software or a protected software extension of M whose installation authority disappears after construction.
 
+### Fault within the fault-handling process
+
+**Open question:** what happens if the fault-handling process entered by the processor itself generates a capability fault?
+
+The architectural path for a fault arising within the fault-handling process has not yet been established.
+
 ## Resolved, demoted or deliberately parked issues
 
 The following must **not** be resurfaced as current architectural unknowns merely because older research records contain unresolved wording:
