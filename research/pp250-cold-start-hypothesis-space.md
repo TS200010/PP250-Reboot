@@ -467,43 +467,48 @@ normal online state
 
 The labels A/B/C/D denote architectural roles, not documented PP250 process names. The corpus has not yet established that exactly four separately named software processes were used, nor that the three LC operations were consecutive instructions.
 
-### 9.5 Processor rejoin uses the same mechanism
+### 9.5 Cold start and processor rejoin use the same transition mechanism
 
-This mechanism also provides a coherent explanation for processor rejoin after successful checkout.
+The prepared-process mechanism provides a common architectural transition from the restricted start-up environment into the normal runtime capability universe. A preceding **check-out process is not intrinsic to that transition**. Check-out is system policy that may precede rejoin after a fault; genuine cold start need not perform it.
 
-The fault/checkout environment is deliberately restricted and is rooted independently of the normal runtime SCT. The fault patent documents successful checkout progressing through a **rejoin/start-up process** before the processor returns to the online system. A returning processor must re-establish the normal processor-global capability state before normal scheduling can resume.
+The fault patent documents the fault-tolerant implementation progressing through check-out and then a **rejoin/start-up process** before the processor returns to the online system. The architectural role of that rejoin/start-up process is distinct from the optional check-out that preceded it. In either cold start or processor rejoin, the transition process must establish the normal processor-global capability state before normal execution can proceed.
 
-The prepared-process chain provides that transition without requiring a separate privileged "rejoin setup" operation:
+The important difference is the source of the normal SCT. At cold start no runtime SCT yet exists, so the transition must install the capability for a newly created or prepared initial SCT. On processor rejoin, the running system already has its runtime SCT, so the returning processor must install a capability identifying that existing table. How those source capabilities are provided is a current open question.
+
+Conceptually:
 
 ```text
-fault / checkout environment
-        |
-        v
-rejoin/start-up process state
-        |
-        | prepared SECOND GROUP
-        v
-install normal C(C)
-        |
-        v
-runtime-prepared state
-        |
-        | prepared SECOND GROUP
-        v
-install C(I)
-        |
-        v
-runtime-prepared state
-        |
-        | prepared SECOND GROUP
-        v
-install C(N)
-        |
-        v
-normal online processor
+cold start                         processor rejoin
+
+restricted start-up environment   fault environment
+        |                                  |
+        |                          [optional check-out]
+        |                                  |
+        +----------> transition / rejoin-start-up state
+                              |
+                              | prepared SECOND GROUP
+                              v
+                        install normal C(C)
+                              |
+                              v
+                      runtime-prepared state
+                              |
+                              | prepared SECOND GROUP
+                              v
+                          install C(I)
+                              |
+                              v
+                      runtime-prepared state
+                              |
+                              | prepared SECOND GROUP
+                              v
+                          install C(N)
+                              |
+                              v
+                      normal online processor
 ```
 
-The important architectural point is that passing checkout does not by itself grant normal-system authority. The normal system can control the prepared rejoin state and thereby control the transition into the runtime capability universe.
+Thus passing check-out, where check-out is used, does not itself grant normal-system authority. It establishes that recovery may proceed; the subsequent protected transition establishes the processor's normal runtime capability state.
 
 ### 9.6 Status of the surviving alternatives
 
