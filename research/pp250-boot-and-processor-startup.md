@@ -123,6 +123,8 @@ The OS Process Base and the hardware Dump Stack should be distinguished. The ROS
 | 17 | Watchdog timer register |
 | 20 | MIP (Primary Indicator Register) |
 
+The labels C0–C5 identify the capability registers to which these locations correspond; they do not mean that the 48-bit contents of those registers are stored in a single Dump Stack word. Each Dump Stack location is one 24-bit word. US3771146A identifies these locations as the reserved capability pointers corresponding to the workspace capability registers. The corresponding pointer is recorded when a workspace capability register is loaded, and is subsequently used through the capability table to reconstruct that register when the process is restored.
+
 Page 7 identifies D10 as the **absolute** Dump Stack pushdown pointer. The investigation reports that [P2/P3] describe DSPPR as pointing to the saved IAR when dumped during process change, whereas the running pointer identifies the next available stack location.
 
 **Important qualification:** the IAR offsets below are locations within the Dump Stack, not necessarily the literal contents of word 16. A virgin saved pointer must identify the appropriate absolute IAR location under the actual pointer encoding. Writing “word 16 = 23” for every COS stack would discard the stack's base address.
@@ -391,7 +393,7 @@ This resolves a question that had appeared circular when approached from the fir
 
 An ordinary instruction does **not** have to create C6, C7, the SCT and the authority needed to fetch itself. The documented fault machinery establishes protected capability state in microcode and then performs an **automatic CHANGE PROCESS**.
 
-The incoming Dump Stack supplies the process state consumed by that transition. As described earlier in this note, its fixed and active-frame structures provide the saved C0-C5 and D0-D7 state, pushdown state, indicators and ultimately the C6/C7/IAR execution frame.
+The incoming Dump Stack supplies the process state consumed by that transition. As described earlier in this note, its fixed and active-frame structures provide the 24-bit capability pointers corresponding to C0–C5, the saved D0–D7 values, pushdown state, indicators and ultimately the C6/C7/IAR execution frame. During restoration the C0–C5 pointers are resolved through the capability table to reconstruct the expanded workspace capability registers.
 
 The sequence is therefore:
 
@@ -431,7 +433,7 @@ The following central pieces are supported by the cited material:
 - C(S)/SSCR reaches a four-word special block [P1/P2 comparison].
 - that block contains the special-table descriptor information and RSPC-0 [P1].
 - fault microcode establishes the restricted table, resolves RSPC-0 to the checkout Dump Stack and performs automatic CHANGE PROCESS [P1].
-- a Dump Stack contains the state needed for process restoration, including the route to the C6/C7/IAR frame [R1/P3].
+- a Dump Stack contains the state needed for process restoration: its fixed C0–C5 locations retain the corresponding 24-bit capability pointers, while its pushdown structure provides the route to the C6/C7/IAR frame [R1/P3].
 
 The important **inference** is the architectural interpretation: this machinery constitutes a hardware root-of-authority transition capable of taking a processor that has no trustworthy ordinary process context into a fully capability-constrained executable process.
 
@@ -460,7 +462,7 @@ Until those are answered, the reconstruction should preserve this boundary:
 1. **Virgin memory and stored capabilities:** who initially loads the Special Fault Block, SCT, Dump Stack and checkout code? How are genuine stored capabilities established before any ordinary process can execute? Raw data bit patterns must not simply be assumed to confer capability authority.
 2. **Initial pointer and template:** which system-generation or process-template operation constructs the initial C6/C7/IAR frame and absolute saved pushdown pointer? The pocket reference mentions a Process Template in its error-control definition, but does not supply the construction algorithm.
 3. **Cold versus fault entry:** are their microsequences identical, or do they merely converge? What happens to outgoing-state saving when no valid old C(D) exists?
-4. **Capability validity:** what precise storage and instruction rules prevent capability fabrication in a Dump Stack containing both data and capabilities? The conversation considered and then questioned a per-word tag explanation; no tag implementation is established here.
+4. **Capability validity:** the fixed C0–C5 Dump Stack locations are now established as 24-bit reserved capability pointers rather than expanded capability-register images. What precise access and storage rules prevent arbitrary software from fabricating or improperly modifying those pointers remains to be established. A preconstructed initial Dump Stack therefore needs legitimate compact capability-pointer state from which C0–C5 can be reconstructed through the startup capability table; this does not by itself explain how those first legitimate pointers were created.
 5. **Version correspondence:** how do SSCR/MCR, C(S)/C(C), and C(C1)/C(C2) map across processor descriptions? Which later-patent details apply to the user's 1976 machine?
 6. **Loading equipment:** maintenance hardware, another processor, retained memory, tape/disk loading and INFORM/OUTFORM are research possibilities, not established boot mechanisms. No ROM bootstrap is established or ruled out by this note.
 
