@@ -650,6 +650,16 @@ The separation is important to the rejected fault-assisted genesis ideas:
 
 The detailed capability-genesis consequences are recorded in \`capability-genesis-outform-working-reconstruction.md\`.
 
+
+## Boundary to capability genesis
+
+This note owns the transition from inert/power-on or fault-start state to the first legitimate executable PP250 context. It does **not** require that first context already embody the final operating-system authority structure.
+
+The subsequent construction of the first meaningful C6 authority environment, the current reconstruction of transient maximal primordial authority, and the progressive restriction/partition/transfer of that authority belong to [Capability Genesis and Resource Lifecycle in System 250](capability-genesis-and-resource-lifecycle.md#21-7-october-2026-update--primordial-authority-and-the-first-c6).
+
+This boundary is deliberate: processor startup explains how execution becomes possible; capability genesis explains how that first computation constructs the ordinary authority universe.
+
+
 ## Sources and provenance
 
 - **[R1] PRIMARY EVIDENCE via transcription:** user's *System 250 Pocket Reference Book / Instruction Codes*, Issue 1, May 1976. Pages 5–7 cover Process Base, Dump Stack and special registers. [Repository transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg5-pg7%20transcription.txt); [source scan](../documentation/System%20250%20Pocket%20Reference%20pg5-pg7.pdf). Exact offsets above were checked against the transcription; its scan-verification caveat remains applicable.
