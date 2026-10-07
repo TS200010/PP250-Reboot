@@ -65,6 +65,14 @@ If C(C) is the only reference that identifies the current SCT, it remains to be 
 
 This also bears on SCT replacement during start-up/rejoin. Replacing C(C) establishes a new SCT for processor capability expansion, but until the management path is understood we must not infer that this necessarily removes every software-accessible route to the previous SCT or establishes how its entries/storage are subsequently reclaimed.
 
+### Power-failure indication in MIP
+
+**Open question:** what are the exact set/reset semantics of the power-failure indication in MIP, particularly across a power-failure/start-up CHANGE PROCESS sequence?
+
+Page 6 of the Pocket Reference shows MIP saved in the Process Dump Stack at offset `020`, while page 8 identifies a power-failure indication in MIP. It remains to be established when hardware or microcode sets that indication, whether it is present before or after MIP is saved/restored by CHANGE PROCESS, and what event or operation clears it.
+
+This matters because start-up or recovery code can only use the indication to distinguish a power-failure entry from another entry if the indication survives with defined semantics into the executing context.
+
 ### Fault within the fault-handling process
 
 **Open question:** what happens if the fault-handling process entered by the processor itself generates a capability fault?
