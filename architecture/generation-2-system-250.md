@@ -401,7 +401,15 @@ The first structure to reconstruct is a **process**. Its persistent computationa
 
 The reconstruction from this point follows the route by which the architecture becomes intelligible to a programmer, rather than mechanically assembling the inventory item by item. The sequence below is a working guide for the sections that follow.
 
-- **Begin with the Enter Capability.** This is the unusual programmer-visible mechanism that first demands explanation: what does it mean to enter a protected software structure?
+- **B1 — Begin with the Enter Capability.** This is the unusual programmer-visible mechanism that first demands explanation: what does it mean to enter a protected software structure?
+
+  On the way down we found that an object could make some of its functions available to the outside world while keeping everything else inside it inaccessible.
+
+  To use those functions, another object needed the right unforgeable token. System 250 had a name for this token: an **Enter Capability**.
+
+  By convention, the functions made available by an object are arranged at numbered offsets. Possession of an Enter Capability for the object allows its holder to call any of those functions by specifying the appropriate offset.
+
+  **That is all the Enter Capability allows.** Any attempt to use it for anything other than a legitimate entry to one of those functions is detected by the hardware and causes a fault.
 - **Follow entry into the protected structure.** C6 establishes the capability environment and C7 the executable code; CALL and RETURN expose the relationship between controlled entry, execution and protection.
 - **Ask where capabilities come from.** If every protected structure depends upon capabilities, the next question is how authority is created and protected. This leads towards capability construction, the SCT, C(C) and storage management.
 - **Follow execution into the process mechanism.** CHP and the Process Dump Stack reveal that a process is not merely a software abstraction: M can preserve one protected execution and establish another.
