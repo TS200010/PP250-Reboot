@@ -25,7 +25,7 @@ automatic CHP
 Normal Interrupt process
 ```
 
-The Dump Stack then supplies the ordinary process state restored by CHP, including the capability and data registers and the C6/C7/IAR execution context. `C(N)` does **not** itself contain C6/C7; it supplies the route to the process Dump Stack from which the process context is restored.
+The Dump Stack then supplies the process state from which CHP re-establishes execution. The data-register values are preserved directly. For workspace capability registers C0–C5, the fixed Dump Stack locations instead contain the corresponding 24-bit capability pointers; CHP uses those pointers through the System Capability Table to reconstruct the expanded capability registers. The Dump Stack also carries the C6/C7/IAR execution context. `C(N)` does **not** itself contain C6/C7; it supplies the route to the process Dump Stack from which the process context is re-established.
 
 ### Establishing C(N): SPECIAL and the C(S)-rooted startup chain
 
