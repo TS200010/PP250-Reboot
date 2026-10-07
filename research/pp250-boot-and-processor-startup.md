@@ -470,7 +470,9 @@ Priority evidence targets are the original fault-patent figures and microsequenc
 
 ## 11. SECOND GROUP and primordial special-capability completion
 
-**Status: HYPOTHESIS.** The early MIP bit 4 is named **SECOND GROUP**. The PP250 has ordinary C0–C7/D0–D7 and second/special C10–C17/D10–D17 register groups (octal). The Pocket Reference identifies C10=C(D), C11=C(I), C12=C(C) and C13=C(N); C14–C17 remain UNKNOWN and may be unused, reserved or M-internal/scratch. C(S) is separate.
+**Status: SUPERSEDED AS THE LEADING COLD-START RECONSTRUCTION (7 October 2026).** The material in Sections 11.1–11.4 is retained as the research trail. It was a useful attempt to explain primordial completion of special capability state, but the later cold-start-as-resumption reconstruction in Section 13 is simpler and no longer requires repeated CHP transitions or M to inspect whether a set of special C registers is complete. SECOND GROUP/SPECIAL remains an architectural mechanism requiring version-specific understanding; it should not currently be treated as the mechanism that gets the first PP250 computation running.
+
+**Earlier hypothesis.** The early MIP bit 4 is named **SECOND GROUP**. The PP250 has ordinary C0–C7/D0–D7 and second/special C10–C17/D10–D17 register groups (octal). The Pocket Reference identifies C10=C(D), C11=C(I), C12=C(C) and C13=C(N); C14–C17 remain UNKNOWN and may be unused, reserved or M-internal/scratch. C(S) is separate.
 
 Later Wheatley/Andrews material places SPECIAL MODE at the corresponding PIR bit 4 and describes it as lasting for one instruction, allowing `LC` to address a corresponding special-purpose capability register. Until contradicted by early evidence, we test the working hypothesis that SECOND GROUP and later SPECIAL MODE represent the same underlying second-bank selection idea, including the one-instruction lifetime.
 
@@ -649,6 +651,153 @@ The separation is important to the rejected fault-assisted genesis ideas:
 - MIS contains additional microprogram state but must not be substituted for either MIF fault causes or MIP FIRST ATTEMPT.
 
 The detailed capability-genesis consequences are recorded in \`capability-genesis-outform-working-reconstruction.md\`.
+
+
+
+## 13. 7 October 2026 — cold start as resumption of fabricated state
+
+**Status: WORKING RECONSTRUCTION.** This section records the current leading cold-start concept. It combines documented CHANGE PROCESS/Dump Stack behaviour with a deliberately minimal hypothesis about what reset microcode must do. The exact physical cold-load procedure and exact initial addresses remain unproved.
+
+### 13.1 Architectural observation: CHANGE PROCESS already knows how to start a computation
+
+A PP250 Dump Stack is the stored representation from which a computation can be resumed. CHANGE PROCESS restores processor state from the incoming Dump Stack, including the execution context required to continue the computation.
+
+That suggests a simpler genesis operation than constructing a special bootstrap process instruction by instruction:
+
+> **Fabricate in store a state that looks like a suspended computation, then make the processor resume it.**
+
+The primordial computation need never previously have executed. Cold start and process resumption can use the same architectural state transition.
+
+### 13.2 Minimal reset operation: direct/internal CHP
+
+The reconstruction uses the distinction between direct and store-mediated CHANGE PROCESS. At reset, no ordinary PP250 instruction need execute before valid process state exists. Instead, reset microcode can invoke the existing direct CHANGE PROCESS microsequence against a fixed primordial Dump Stack.
+
+Conceptually this is an internal:
+
+```text
+CHP 0
+```
+
+where `0` identifies the fixed primordial Dump Stack. This notation describes the **internal/direct CHANGE PROCESS operation**, not an architectural instruction fetched from location zero.
+
+The important constraint is microarchitectural simplicity. Reset microcode need only select a fixed source and enter the existing CHANGE PROCESS mechanism. It need not walk arbitrary tables, interpret operating-system structures, discover processes, or run a bootstrap algorithm in microcode.
+
+```text
+power on / reset
+       |
+       v
+fixed primordial Dump Stack
+       |
+       | direct/internal CHANGE PROCESS
+       v
+processor state restored
+       |
+       v
+first architectural PP250 instruction
+```
+
+### 13.3 The initial Dump Stack can be fabricated, not previously dumped
+
+The incoming state need only have the representation expected by CHANGE PROCESS. It does not have to be the product of an earlier execution.
+
+Thus the cold-load/commissioning operation may prepare:
+
+- the primordial Dump Stack;
+- the capability state needed for initial instruction fetch;
+- the initial C7 and IAR;
+- any other state CHANGE PROCESS requires;
+- the startup capability structures accessible through the protected startup mechanism.
+
+CHANGE PROCESS then treats this prepared state exactly as resumable state.
+
+This yields the central reconstruction:
+
+> **Cold start is resumption of a fabricated suspended computation.**
+
+### 13.4 C7 is irreducible; a meaningful primordial C6 need not be
+
+The first architectural instruction requires legitimate executable authority, so the restored C7/IAR path must be sufficient for instruction fetch.
+
+The same is not necessarily true of C6. CHANGE PROCESS may restore a C6 field because it restores the ordinary process representation, but no evidence identified in this reconstruction requires that field already to designate the final authority environment before the first instruction can execute.
+
+The first executable code can therefore begin with an empty, null, innocuous or otherwise non-final C6 state **provided no operation before C6 construction implicitly requires it**. The subsequent construction of the first meaningful C6 belongs to the capability-genesis reconstruction, where primordial constructive authority is used to establish the authority environment.
+
+This removes C6 from the irreducible cold-start circularity.
+
+### 13.5 The 000–033 / 034 alignment
+
+The Pocket Reference's **PDOS Process Dump Stack Format** occupies offsets `000` through `033` inclusive through its initial execution frame:
+
+```text
+031  C6 Initial
+032  C7 Code
+033  IAR Block
+```
+
+The next offset is therefore exactly `034` octal.
+
+Independently, the documented Checkout sequencing test begins its first four-instruction block at absolute octal addresses `00000034–00000037`.
+
+This gives the striking physical alignment:
+
+```text
+000–033   space occupied by a complete PDOS-format
+          Dump Stack through the initial C6/C7/IAR frame
+
+034–037   documented first Checkout instruction block
+```
+
+**Status: CIRCUMSTANTIAL EVIDENCE / RECONSTRUCTION CLUE, NOT PROOF.** The Pocket Reference labels the layout as a ROS/PDOS process structure; it does not state that the primordial Dump Stack begins at absolute zero. The Checkout paper establishes the absolute `034` entry block but does not state that the preceding words are the cold-start Dump Stack. The exact fit is nevertheless sufficiently specific to retain as an important clue when testing the fixed-zero primordial-Dump-Stack hypothesis.
+
+It must not be strengthened into a claim that Checkout itself is the primordial startup program. The cold-start reconstruction is logically prior to Checkout; the `034` evidence is relevant because it may expose the physical layout chosen for a resumable initial context.
+
+### 13.6 Relationship to C(S) and the special startup capability environment
+
+The documented fault/startup machinery still matters. C(S), the four-word startup/fault block, its restricted capability-table environment, and automatic CHANGE PROCESS provide evidence that the processor has a hardware/microcode-rooted path into legitimate stored process state.
+
+The present reconstruction does **not** require reset microcode to understand the semantics of C6, the Store Allocator, ROS/PDOS Process Base structures, or the eventual operating-system authority graph. Those belong above the first execution boundary.
+
+The exact relationship between the fixed/direct primordial Dump Stack hypothesis and the documented C(S)/RSPC-0 fault-start path remains to be reconciled from primary evidence rather than assumed.
+
+### 13.7 Virgin cold start versus power restoration
+
+A virgin cold load and restoration after power failure need not be identical cases. Persistent store may preserve an already constructed authority universe across a power interruption.
+
+The Pocket Reference records MIP in the Dump Stack at offset `020` and identifies a power-failure indication. The exact set/save/restore/clear lifetime of that indication is separately open in [PP250 open questions](pp250-open-questions.md). Until that is established, this note does not claim exactly how resumed code distinguishes virgin startup, power restoration and fault recovery.
+
+### 13.8 Current boundary
+
+The leading reconstruction now separates two questions cleanly:
+
+```text
+prepared primordial machine state
+        |
+        | direct/internal CHP of fixed Dump Stack
+        v
+first legitimate executable computation
+        |
+        | software capability construction
+        v
+first meaningful C6 / maximal primordial authority environment
+        |
+        v
+progressive restriction, partition and transfer of authority
+```
+
+The first transition belongs to this startup note. The second is developed in [Capability Genesis and Resource Lifecycle in System 250](capability-genesis-and-resource-lifecycle.md#21-7-october-2026-update--primordial-authority-and-the-first-c6).
+
+### 13.9 Evidence still required
+
+The reconstruction predicts useful primary-source targets:
+
+1. evidence that power-up/reset invokes direct CHANGE PROCESS or an equivalent fixed Dump-Stack restoration;
+2. the exact operand/address semantics of direct versus store-mode CHP;
+3. the physical location of the primordial Dump Stack;
+4. evidence that absolute store `000–033` is reserved or prepared as initial process state;
+5. the intended relationship, if any, between the `034` Checkout entry and the immediately preceding words;
+6. the minimum state CHANGE PROCESS requires before first instruction fetch;
+7. whether the restored initial C6 may be null/non-final;
+8. the exact relationship of C(S), RSPC-0 and the fixed primordial Dump Stack across cold start and fault recovery.
 
 
 ## Boundary to capability genesis
