@@ -45,6 +45,12 @@ Before discarding apparently conflicting sources, consider machine version, oper
 
 Do not create an open question merely because representations differ between generations, operating systems or capability forms. Cross-generation bit mapping, chronology or exact encoding is not an architectural requirement unless the missing detail prevents reconstruction of observed behaviour. If a genuinely new blocker is found, state the missing behaviour/mechanism precisely and update the canonical open-question index as part of the authorised research update.
 
+## Initial reconstruction configuration
+
+The immediate reconstruction target is a minimal System 250 configuration: **one processor, one store, and peripherals**. Do not make reconstruction of the complete redundant multi-processor/multi-store system a prerequisite for initial architectural understanding or the emulator workbench.
+
+Prioritise the processor, store, peripheral interfaces and mechanisms required to operate this single-processor, single-store configuration, including startup, capabilities, process execution, interrupts and I/O. Defer redundant processors and stores, failover, and multi-unit reconfiguration to later stages. Continue to record historical evidence about those features where it illuminates the basic mechanisms; deferral is a research priority, not a claim that such mechanisms did not exist or a permanent exclusion from scope.
+
 ## Bootstrap boundary and authority
 
 The immediate objective is an evidence-backed chain from inert/power-on state to the first legitimate execution of ordinary PP250 software, not recreation of ROS/POS or the whole historical OS.
