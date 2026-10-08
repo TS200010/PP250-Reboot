@@ -79,6 +79,16 @@ This matters because start-up or recovery code can only use the indication to di
 
 The architectural path for a fault arising within the fault-handling process has not yet been established.
 
+### Initial access to the Common Facilities Block (CFB)
+
+**Open question:** by what capability path did a newly constructed ordinary process initially reach the Common Facilities Block and its resource allocators, and was there a conventional location in the initial C6 capability block?
+
+**Established evidence:** D. M. England, *Architectural Features of System 250*, §35 and Fig. 11, describes a read capability to the CFB, which contains enter capabilities to seven allocators: store, process, flag, stream, textfile, directory and job. A process must receive legitimate authority through existing capabilities or authorised protected services; a symbolic name or address alone cannot grant it.
+
+**Working hypothesis (unverified):** the process constructor installs a **read capability to the CFB at `C6[0]`** in the newly created process's *initial* C6 block. This is a reconstruction convention for current reasoning, **not** an established historical offset or a claim about every protected node's C6.
+
+**Still to establish:** whether offset zero was actually used; whether all or only selected processes received CFB access; whether the path was direct or via an authorised intermediary; and precisely how the constructor obtained and passed on the relevant capability. The diagrams reviewed so far do not establish `C6[0]`.
+
 ## Resolved, demoted or deliberately parked issues
 
 The following must **not** be resurfaced as current architectural unknowns merely because older research records contain unresolved wording:
