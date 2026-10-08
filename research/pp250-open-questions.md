@@ -89,6 +89,14 @@ The architectural path for a fault arising within the fault-handling process has
 
 **Still to establish:** whether offset zero was actually used; whether all or only selected processes received CFB access; whether the path was direct or via an authorised intermediary; and precisely how the constructor obtained and passed on the relevant capability. The diagrams reviewed so far do not establish `C6[0]`.
 
+### Exclusive physical-resource admission and reconfiguration
+
+**Open question:** when a memory module or memory-mapped peripheral is first admitted, does System 250 exclusively allocate its physical address range and manufacture only the requested rights, or can an existing authority holder generate overlapping access? England's Store Allocator creates *virtual storage blocks* with requested access, which does not answer this physical-resource question.
+
+**Open question:** after physical removal, what authorised mechanism can retire the resource and admit another, potentially at the same address, without stale stored capabilities or already-expanded processor-register capabilities reaching the replacement? What authority permits subsequent admission if primordial authority was consumed, and how are SCT/object identities safely reclaimed or distinguished?
+
+See [resource-lifecycle reconstruction, section 22](capability-genesis-and-resource-lifecycle.md#22-8-october-2026--exclusive-primordial-allocation-and-dynamic-physical-reconfiguration).
+
 ## Resolved, demoted or deliberately parked issues
 
 The following must **not** be resurfaced as current architectural unknowns merely because older research records contain unresolved wording:
