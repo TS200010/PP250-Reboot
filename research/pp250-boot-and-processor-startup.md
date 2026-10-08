@@ -656,7 +656,7 @@ The detailed capability-genesis consequences are recorded in \`capability-genesi
 
 ## 13. 7 October 2026 — cold start as resumption of fabricated state
 
-**Status: WORKING RECONSTRUCTION.** This section records the current leading cold-start concept. It combines documented CHANGE PROCESS/Dump Stack behaviour with a deliberately minimal hypothesis about what reset microcode must do. The exact physical cold-load procedure and exact initial addresses remain unproved.
+**Status: STRONG WORKING HYPOTHESIS (8 October 2026).** The convergence of the documented CHANGE PROCESS restoration mechanism, the PDOS Dump Stack layout occupying octal `000–033`, and the independently documented Checkout entry block at absolute octal `034` is judged compelling circumstantial evidence for a primordial Dump Stack at absolute zero and reset microcode performing an internal/direct `CHP 0`. This is a strong architectural reconstruction, not yet a directly documented historical fact. The `034` Checkout block is not thereby proven to be the primordial first program. This section records the current leading cold-start concept. It combines documented CHANGE PROCESS/Dump Stack behaviour with a deliberately minimal hypothesis about what reset microcode must do. The exact physical cold-load procedure and exact initial addresses remain unproved.
 
 ### 13.1 Architectural observation: CHANGE PROCESS already knows how to start a computation
 
