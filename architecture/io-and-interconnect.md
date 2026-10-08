@@ -18,6 +18,12 @@ These observations establish an atomic-access facility and its integrity checks.
 
 Reset-decoder wording differs between source descriptions: US4041460A describes reset for codes other than 1, 2 and 4, while other descriptions specify a reset code. This remains a source/version discrepancy; no universal combined decoder is inferred.
 
+## Physical resource identity and capability authority
+
+**DOCUMENTED OBSERVATION:** Peripheral/control interfaces described here are memory-mapped, without requiring a distinct peripheral instruction set. Physical addressability, physical presence, software interpretation and capability authority are separate concepts.
+
+**HYPOTHESIS / UNRESOLVED:** An exclusive primordial allocator might remove an entire address range from an unallocated pool and manufacture its first capability with only the requested rights. Neither memory-mapped I/O nor the ordinary Store Allocator's length-and-access interface proves this. Removing hardware does not itself invalidate surviving capabilities; replacement at the same address requires safe handling of stale references and capabilities already expanded in processor registers. SCT indirection may help, but physical admission, revocation and identity reuse remain unresolved. See [resource-lifecycle reconstruction, section 22](../research/capability-genesis-and-resource-lifecycle.md#22-8-october-2026--exclusive-primordial-allocation-and-dynamic-physical-reconfiguration).
+
 ## Sources
 
 - [US3787818A transcription](../transcriptions/US3787818A.rtf).
