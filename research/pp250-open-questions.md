@@ -65,6 +65,14 @@ If C(C) is the only reference that identifies the current SCT, it remains to be 
 
 This also bears on SCT replacement during start-up/rejoin. Replacing C(C) establishes a new SCT for processor capability expansion, but until the management path is understood we must not infer that this necessarily removes every software-accessible route to the previous SCT or establishes how its entries/storage are subsequently reclaimed.
 
+### Loading C7 with LC during execution
+
+**Open question:** is `LC C7, …` a valid instruction form, and, if so, what are its precise execution and instruction-fetch semantics?
+
+In particular, can ordinary LC replace the currently executing C7 capability, and does the replacement take effect for the next instruction fetch, preserve the existing instruction-address offset, or require a separate control transfer? There is no established prohibition in the material reviewed so far, but neither validity nor precise behaviour is documented.
+
+**Why it matters:** Checkout's documented immediate jump from its four-instruction block at octal `034–037` to the complementary-address block raises the possibility of transferring between separately bounded executable capabilities rather than requiring a module-spanning C7. This is a candidate mechanism, **not** a claim that Checkout actually uses LC C7. The Checkout jump alone does not establish C7's bounds.
+
 ### Power-failure indication in MIP
 
 **Open question:** what are the exact set/reset semantics of the power-failure indication in MIP, particularly across a power-failure/start-up CHANGE PROCESS sequence?
