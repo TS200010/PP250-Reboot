@@ -1120,3 +1120,36 @@ This resolves the earlier circularity in which the Store Allocator seemed to req
 The supplied US4121286A.rtf duplicates US4050059A.rtf. It adds no allocation/deallocation evidence and cannot independently confirm the existing GARBAGE/VISITED or table-reuse reconstruction. Existing original-source findings remain separate evidence. The batch review records the provenance issue without altering either supplied file.
 
 See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.
+
+
+## 22. 8 October 2026 — exclusive primordial allocation and dynamic physical reconfiguration
+
+### 22.1 Exclusive allocation hypothesis
+
+**HYPOTHESIS, NOT DOCUMENTED HARDWARE BEHAVIOUR.** A possible primordial mechanism begins with an unallocated *physical address namespace*, rather than necessarily with a single omnipotent base/limit capability. A request for address range X–Y with ACCESS R would remove the **entire range** from the unallocated pool and create its first capability with only R. Unrequested rights would be unavailable for that allocation. Thus mistakenly requesting RD only for a disk-controller interface could permanently lose WD for that allocation.
+
+This is not ordinary capability derivation or attenuation: an RD child derived from a surviving RW parent is not exclusive. Nor does overwriting one capability demonstrate that no other copies or SCT-accessing routines remain. No ordinary processor instruction has been established that destructively partitions an arbitrary physical address range. The model must not be presented as established System 250 behaviour.
+
+### 22.2 Authority, presence and interpretation
+
+Distinguish the potential physical address namespace; memory modules and interfaces currently present; software knowledge of what occupies each range; and the capability authority available to processes. The primordial code need not know an inventory of memory or device types. Later configuration knowledge can identify a range as a disk interface or store. Memory-mapped peripheral interfaces and store participate in the basic capability-controlled address mechanism, subject to the exact module/address representation.
+
+Representing unallocated ranges as allocator state rather than a surviving universal capability avoids assuming that one base/limit capability can represent a remainder containing holes. It does not explain how that state is protected or how the first authority is created.
+
+### 22.3 Evidence and limits
+
+**DOCUMENTED OBSERVATION:** England, *Operating System of System 250* (1972), paragraphs 5 and 15–16 ([transcription](../transcriptions/operating-system-of-system-250.md)), describes a Store Allocator accepting requested *length and access*, allocating disk space for a **new virtual block**, and delivering its capability; capabilities can later be overwritten and the space reclaimed when no capabilities remain. This supports requested initial access and object lifecycle, **not** destructive primordial allocation of physical address ranges or destruction of omitted rights.
+
+**DOCUMENTED OBSERVATION / SOURCE LIMIT:** Later US4121286A discusses capability/SCT allocation and deallocation and surviving references; it does not prove primordial physical-address partitioning. The repository's US4121286A.rtf is a misidentified duplicate of US4050059A.rtf, not independent evidence ([patent audit](../patents/PATENT-AUDIT.md)). Multiple references and privileged SCT access limit claims that nobody else can reach an object.
+
+### 22.4 Dynamic reconfiguration constraint
+
+**RECONSTRUCTION REQUIREMENT:** The mechanism must accommodate adding, physically removing and replacing memory modules and peripheral devices during operation. Permanent exhaustion of the entire *global* physical address namespace cannot alone explain subsequent resource admission or reuse of an address.
+
+One possible distinction is irrecoverable loss of omitted rights **within an allocation/incarnation**, followed by separately authorised retirement and admission of a *new* resource at the same physical address. A capability for a removed controller must not silently authorise a replacement. SCT indirection or invalidation may be relevant, but safe treatment of stale references, already-expanded processor-register capabilities and SCT identity reuse is unproved. Physical removal is not itself capability revocation; relocation evidence does not establish general revocation.
+
+### 22.5 Assessment and discriminating tests
+
+**CURRENT STATUS: HYPOTHESIS / UNKNOWN.** Ordinary virtual-storage allocation with selected initial rights is documented. Exclusive primordial physical-address allocation, permanent loss of unrequested rights, and subsequent re-admission are **not established**. The earlier suggestion that genesis authority can simply be exhausted is incomplete without a reconfiguration mechanism.
+
+Find primary descriptions of physical module/interface admission; determine whether rights are consumed or copied; identify the authority to retire/re-admit a range; and establish how stale stored and expanded capabilities are invalidated and how replacement resources obtain safe identities. See [open questions](pp250-open-questions.md) and [I/O and interconnect](../architecture/io-and-interconnect.md).
