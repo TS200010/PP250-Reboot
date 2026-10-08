@@ -749,7 +749,7 @@ This gives the striking physical alignment:
 
 **Status: CIRCUMSTANTIAL EVIDENCE / RECONSTRUCTION CLUE, NOT PROOF.** The Pocket Reference labels the layout as a ROS/PDOS process structure; it does not state that the primordial Dump Stack begins at absolute zero. The Checkout paper establishes the absolute `034` entry block but does not state that the preceding words are the cold-start Dump Stack. The exact fit is nevertheless sufficiently specific to retain as an important clue when testing the fixed-zero primordial-Dump-Stack hypothesis.
 
-It must not be strengthened into a claim that Checkout itself is the primordial startup program. The cold-start reconstruction is logically prior to Checkout; the `034` evidence is relevant because it may expose the physical layout chosen for a resumable initial context.
+The alignment now supports a **strong candidate single-Checkout-process cold-start reconstruction** (Section 13.6): the Dump Stack at absolute zero and the executable block at `034` may belong to the *same* Checkout process. This is a proposed identification, not a statement explicitly made by the Pocket Reference or Checkout paper.
 
 ### 13.6 Relationship to C(S) and the special startup capability environment
 
@@ -757,7 +757,23 @@ The documented fault/startup machinery still matters. C(S), the four-word startu
 
 The present reconstruction does **not** require reset microcode to understand the semantics of C6, the Store Allocator, ROS/PDOS Process Base structures, or the eventual operating-system authority graph. Those belong above the first execution boundary.
 
-The exact relationship between the fixed/direct primordial Dump Stack hypothesis and the documented C(S)/RSPC-0 fault-start path remains to be reconciled from primary evidence rather than assumed.
+A strong candidate reconciliation is now set out in Section 13.6a: the initial direct CHP and the C(S)-driven automatic CHANGE PROCESS enter the **same** Checkout Dump Stack, with an intervening capability fault. This remains to be tested against primary evidence.
+
+### 13.6a Strong candidate: cold start enters Checkout twice through the same Dump Stack (8 October 2026)
+
+**Status: STRONG WORKING HYPOTHESIS — architectural reconstruction, not directly documented historical sequence.** This refines the direct/internal `CHP 0` hypothesis and the `000–033 / 034` alignment; it does not introduce a second primordial process.
+
+1. On reset, microcode performs a **successful** direct/internal `CHP 0`, restoring a prepared Checkout process context from the Dump Stack at absolute store zero. This initial restoration is not an unsuccessful CHANGE PROCESS and does not require an SCT lookup merely to restore an already formed C7 capability.
+2. The restored C7/IAR permits Checkout to begin at its independently documented absolute octal entry `034`. Some instructions may execute successfully.
+3. Because the ordinary capability/SCT infrastructure is not yet available, Checkout **eventually** performs an operation that generates a processor capability fault. There is no requirement that its *first* instruction fault or that it contain a special intentional fault instruction.
+4. The processor's C(S) fault-entry machinery accesses its four-word Special Fault/Start-Up Block, establishes the special capability-table environment, and resolves RSPC-0 to the **same Checkout Dump Stack at absolute zero**. In this construction the special block and RSPC-0 have been prepared for precisely this purpose.
+5. Automatic CHANGE PROCESS **successfully** restores that same Checkout process a second time, restarting at `034`. Checkout now executes in the capability environment established by the fault-entry path and can proceed with processor testing.
+
+Thus there are **two successful CHANGE PROCESS operations, one Checkout Dump Stack, one Checkout code entry, and an intervening ordinary capability fault**. The first entry does not fail during context restoration; nor is the faulting instruction merely retried in place. The fault machinery re-enters the *same process* through its prepared Dump Stack.
+
+**Evidence and limits:** The PDOS-format initial frame ends at octal `033`; the Leaman–Lloyd–Repton Checkout paper explicitly places the first Checkout code block at absolute `034–037`; the fault/startup patent describes C(S), the special table, RSPC-0, and automatic CHANGE PROCESS. The sources do **not** yet explicitly identify the absolute-zero Dump Stack as Checkout's, document reset microcode invoking `CHP 0`, or confirm that the fault machinery re-enters that same stack. The hypothesis predicts all three and should be tested for contradictions. In particular, check the precise fault classification of an SCT-dependent operation during Checkout, and whether the special SCT persists as the authority environment used after the second restoration.
+
+This construction supersedes the earlier suggestion that a *separate* primordial process must establish C(S) or execute a deliberately faulting first instruction. The original evidence and competing historical reasoning above are retained.
 
 ### 13.7 Virgin cold start versus power restoration
 
