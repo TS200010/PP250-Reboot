@@ -716,6 +716,8 @@ later:
 |<----------- twelve alterable / incremented bits ----------->|
 ```
 
+**WORKING ARCHITECTURAL INTERPRETATION:** The later C(S) may be a direct architectural replacement for the earlier SSCR, retaining the hardware-established recovery mechanism while extending software control over its physical location. This is a proposed continuity of function, not proof of an exact register-field mapping or of when the change appeared in operational hardware. In particular, Generation B's hard-wired startup root must not be confused with a claim that its address fields matched either patent embodiment.
+
 **RECONSTRUCTION / HYPOTHESIS:** the extra four variable address bits may reflect the transition from an early homogeneous 32K-store implementation to an architecture accommodating larger and potentially heterogeneous store modules. They would permit a recovery structure to occupy a store-size-appropriate high region rather than forcing a historical 32K-era reserved location to remain embedded within a larger module. Internal Mode would then give trusted configuration/reconfiguration software a controlled way to establish the preferred C(S) recovery address while the machine is healthy, leaving the fault microsequence able to operate autonomously later.
 
 This explanation is not yet documented as designer intent. The exact original Fault Block address, the software that writes C(S)[23:12], and the exact arithmetic meaning of the later twelve-bit increment remain unresolved.
