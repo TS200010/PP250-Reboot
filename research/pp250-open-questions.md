@@ -115,6 +115,14 @@ The architectural path for a fault arising within the fault-handling process has
 
 See [resource-lifecycle reconstruction, section 22](capability-genesis-and-resource-lifecycle.md#22-8-october-2026--exclusive-primordial-allocation-and-dynamic-physical-reconfiguration).
 
+### COS `LOP` loading command
+
+**Open documentary question:** What does the `LOP` command do, and what does the `P` suffix signify?
+
+The *System 250 Pocket Reference*, pp. 11–12, lists `LOI` (“load assembler output via data break”), `LOO` (“load assembler output from serial medium reader”), and `LOP` with a **genuinely blank description** (confirmed against the original page). Pages 15–16 also give `LP` as the abbreviated form of `LOP`. The commands are adjacent because the list is alphabetical; their adjacency provides no evidence of a common bootstrap function. Neither “Program” nor “Paper tape” is an established expansion of `P`.
+
+This may be relevant to historical software loading or initial installation, but **no bootstrap role for `LOP` has been established**. Seek an independent command description or contemporary operational documentation. This is a documentary gap, not a blocker to the architectural startup reconstruction.
+
 ## Resolved, demoted or deliberately parked issues
 
 The following must **not** be resurfaced as current architectural unknowns merely because older research records contain unresolved wording:
