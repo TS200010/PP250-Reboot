@@ -108,14 +108,16 @@ These patents are strongly relevant to the reconstructed lineage, but their mech
 
 ---
 
-# 4. Other Plessey data-processing families found during the sweep
+# 4. Correction: IBM and Siemens families excluded — 9 October 2026
 
-These are genuine Plessey computing patents encountered through the assignee/citation search. They should be reviewed, but the audit does **not** currently classify them as original PP250 processor mechanisms merely because they are nearby in the citation graph.
+The earlier audit incorrectly described the following families as Plessey computing patents. Their original assignees are IBM and Siemens respectively, and no architectural connection to PP250/System 250 has been established:
 
-- **GB1523005A / US3999052A — Data processing apparatus / upper-bounds address checking.** Priority 1975-06-18. It appears in the citation neighbourhood of `GB1536853A`; treat as a later general data-processing protection family pending architectural review.
-- A later data-processing family published as **GB1542136A / US4133029A** appears in the same period and citation neighbourhood. It requires direct primary-text review before being classified as PP250 lineage; do not silently include it in the original machine.
+- **US3999052A / GB1523005A** — *Upper bounds address checking system for providing storage protection for a digital data processor*. Inventors: David N. Gooding and Everett M. Shimp. Original assignee: **International Business Machines Corporation (IBM)**. [Patent record](https://patents.google.com/patent/US3999052).
+- **US4133029A / GB1542136A** — *Data processing system with two or more subsystems having combinational logic units for forming data paths between portions of the subsystems*. Inventors: Hermann Ruckdeschel and Thomas Rambold. Original assignee: **Siemens AG**. [Patent record](https://patents.google.com/patent/US4133029A/en).
 
-These are deliberately separated from the confirmed System-250 set rather than inflated into it.
+Both families are excluded from the active PP250 patent collection and acquisition list. Their PDF/RTF pairs (`US-3999052-A.pdf`, `US-3999052-A.rtf`, `US-4133029-A.pdf` and `US-4133029-A.rtf`) were removed from `patents/` on 9 October 2026 with the repository owner's approval. They remain recoverable from Git history; the last revision before removal is `80cdb3d22a157ab2d02680785f53d52791f91da2`.
+
+These records are retained here to prevent mistaken reacquisition or reuse as Plessey evidence. Reconsider inclusion only if independent evidence establishes a useful architectural connection; generic subject similarity or citation proximity is insufficient.
 
 ---
 
@@ -301,10 +303,9 @@ These are **not** included as PP250 patents. The audit records the distinction b
 
 9. **US3657736A** — Method of assembling subroutines / distributed-algorithm multiprocessor work
 
-## Review before inclusion as lineage
+## Excluded acquisition leads
 
-10. **US3999052A / GB1523005A** — Data processing apparatus / upper-bounds address checking
-11. **US4133029A / GB1542136A** — later data-processing family; direct text review required before classification
+US3999052A / GB1523005A (IBM) and US4133029A / GB1542136A (Siemens) are excluded. See Section 4 for the corrected attribution and removal record.
 
 ---
 
@@ -327,6 +328,7 @@ The first four missing patents directly bear on the questions currently open abo
 # 10. Corrections established by the completed audit
 
 - **US4001813** is unrelated to PP250 and must not be cited as System 250 evidence.
+- **US3999052A / GB1523005A** is IBM and **US4133029A / GB1542136A** is Siemens, not Plessey. Both were excluded from the active collection and acquisition list on 9 October 2026; see Section 4.
 - **US4066883 / GB1563288** is IBM, not Plessey; it cites a PP250 diagnostic patent but is not part of the PP250 family.
 - **GB1410631A** corresponds to US family member **US3771146A**; there is no "US 1,410,631" counterpart.
 - **US3757307A** and **US3771146A** are separate interrupt inventions.
