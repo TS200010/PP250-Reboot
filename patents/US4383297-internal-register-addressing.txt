@@ -1,0 +1,475 @@
+United States Patent [191                                                                                                                                            [11]         4,383,297
+Wheatley et a1.                                                                                                                                                      [45]       May 10, 1983
+
+[54] DATA PROCESSING SYSTEM INCLUDING                                                                                                1538023          1/1979 United Kingdom .
+     INTERNAL REGISTER ADDRESSING                                                                                         Primary Examiner—James D. Thomas
+     ARRANGEMENTS                                                                                                         Assistant Examiner—David Y. Eng
+[75] Inventors: Nigel J. Wheatley, Broadstone;                                                                            Attorney, Agent, or Firm—Fleit, Jacobson & Cohn
+                Martyn P. Andrews, Taplow, both of                                                                        [57]                               ABSTRACT
+                                England                                                                                   In a multi-processor system of the type in which each
+[73] Assignee:                  Plessey Overseas Limited, Ilford,                                                         processor is provided with its own unique bus which
+                                 England                                                                                  has an addressing system organized in such a manner
+[21] Appl. No.: 191,850                                                                                                   that all store locations and peripheral equipments are
+                                                                                                                          addressed as part of a comprehensive single addressing
+[22] Filed:                      Sep. 29, 1980                                                                            system. Each address comprises a module number and
+[30]           Foreign Application Priority Data                                                                          an offset address. Each module in the system includes a
+                                                                                                                          module number comparator which detects the presence
+  Sep. 29, 1979 [GB]                          United Kingdom ............... .. 7933858
+                                                                                                                          of its module address on a CPU bus and allows the
+[51]    Int. Cl.3 ............................................ .. G06F 13/00                                              offset address to be active within that module. The
+[52]    U.S.   Cl.     . . . . . . . . . . . . .. . .               . . . . . . . . . . . . . . . . . ..   364/200        invention provides for the incorporation of similar
+[58]    Field of Search .............................. .. 364/200, 900                                                    mechanisms within a CPU allowing the CPU to address
+                                                                                                                          its own internal registers in an identical manner to its
+[56]                  References Cited
+                                                                                                                          normal bus addressing mode. In addition the offset ad
+               U.S. PATENT DOCUMENTS                                                                                      dress includes a “bit portion address” which selects a
+       3,614,741 10/1971 McFarland, Jr.                                                                    364/200        mask which is used when performing the required inter
+       3’854’126 12/1974 Gray a a1- ----- ~~                      364/200                                                 nal register operation. The main advantage of such an
+                         Magcr ............................... ..                                                         arrangement is the simplification of the instruction
+           FOREIGN PATENT DOCUMENTS                                                                                       range for the CPU as “normal” instructions may be
+        1394431        5/1975 U ,t d K,                             dom                                                   used to manipulate the internal registers rather than
+                                                        n1 e   mg                 .                                              .                .              .          .          .
+
+        1405334 9/1975 United Kingdom I                                                                                   havinglspecialfpgrpose instructions dedicated to the
+        1461245        1/1977 United Kingdom .                                                                            mam!” atmg 0 t e reglsters
+        1474385        5/1977                   United Kingdom .
+        1493792 11/1977 United Kingdom .                                                                                                              4 Claims, 6 Drawing Figures
+
+
+
+
+                                                                                                                                                                                           PE
+                      STA                                                                     STB                                                 STC
+
+
+                      SAUA                                                                    SAUB                                                SAUC                             PAUN
+                  \                                                                       l                   l                               l                                    l            l
+
+
+                  '                                                                                                                       .
+
+
+
+
+                  CB1                                                                                              1C8?
+             BIFi                                                                                                 BIF2
+
+               CPU                                                                                                CPU
+                 1'                                                                                                2
+US. Patent   May 10, 1983   Sheet 1 of 5   4,383,297
+US. Patent     May 10, 1983         Sheet 4 of5           4,383,297
+
+                SPECIAL PURPOSE CAPABILITY REGISTERS
+      cw) H’Ipnouzss DUMPSTACK        l
+      c(I) E’WTERVAL TIMER wono ]
+      c(c1) E’Ismem CAPABILITY TABLEi]
+      cm) EEE'HNQRMALINTERRUPT BLOCK ]
+      C(L) Eamon. STORE STACK BLOCK 1
+      c(P) E
+      c(c2) E’ISYSTEM CAPABILITY TABLEZI
+      c(s) E’Ispracm. START up BLOCK 1
+                SPECIAL PURPOSE DATA REGISTERS
+      POSPRI:::|                   PROCESS DUMPSTACK PUSHDOWN
+                                   POINTER REGISTER
+      WTR III:                     WATCIIDOG TIMER REGISTER
+      FIDR :                       FAULT INDICATOR DUMP REGISTER
+      D(A) :3                      DATA REGISTER D(A)
+      0(8) LI:                     DATA REGISTER D(B)
+      LNR III:                     LEVEL NUMBER AND LOCAL
+                                   STORE STACK POINTER REGISTER
+      LCCR E:I:::                  LOCAL CAPABILITY COUNT AND LOCAL
+                                   STORE CLEAR COUNT REGISTER
+      IAR I—______—'——______I      INSTRUCTION ADDRESS REGISTER
+
+      IR   [:1                     INTERRUPT ACCEPT REGISTER
+            INDICATOR REGISTERS
+      PIR III:                  PRIMARY INDICATOR REGISTER
+      FIR C:                   FAULT INDICATOR REGISTER
+      I-IR c:                   HISTORICAL REGISTER
+      TR ::1                    TEST REGISTER
+
+              5194
+U.S. Patant                         May 10, 1983                                                                  Sheet 5 of5                                           4,383,297
+
+
+
+
+     M100000401401000090100018001000A700100Ow6000100R50000105400X0XX0$300X0XX0ZOOXQXXXO1000X0XXX000X0101ICFPHCMD-/TKMRBAEASOLEMTPUWS
+                                                                                                                                                                  M.nwm Ss sb
+                                                                                                                                                                   W(
+                                                                                               UAmYmLEDRT EINLV.'-Y\V|AI/a\
+                                                                                                                      TSMDA)0.mcEm(BL                                           mm)
+
+                                                                                  RTIAIORATmRm(BE!\ WSDm|AGWw(
+                                                                                                                                     R R R R R
+                                                                                                                                   OA%W1RAmMw)f?n cmvs(c IVDnA-X )
+                                                                                                                                       R
+
+
+
+
+       LSI                  FC                ID(N)| M | c(N)[                                                                           ADDRESS                          I
+
+
+
+                                                                               DMS
+                                                PR
+                                                                      Ilw)sR
+                                           M
+                                           IFO          “Mm.
+                                                        Rm
+                                                         Em
+                                                         ADDAPERO
+                                                   R0MARm UUNSINKDw      M“
+                                                                         ma                       Ss 32A»1
+                                        FIF
+
+
+
+
+                                                                                                                                    E5.
+                                                      4,383,297
+                           1                                                                 2
+                                                                  protect information held in the internal registers of the
+   DATA PROCESSING SYSTEM INCLUDING                               processing unit.
+     INTERNAL REGISTER ADDRESSING                                   The invention together with its various features,
+            ARRANGEMENTS                                          should be more readily understood from the following
+                                                                  description which should be read in conjunction with
+     BACKGROUND OF THE INVENTION                                  the accompanying drawings.        _
+   1. Field of Invention                                            BRIEF DESCRIPTION OF THE DRAWINGS
+  The present invention relates to data processing sys
+tems and is more particularly concerned with the ad                 FIG. 1 shows in block diagram form a typical data
+dressing of internal registers in the central processing          processing system for use with the invention,
+units (CPU’s) of such systems.                                      FIG. 2 shows, in block diagram form a processing
+   2. Discussion of Prior Art                                     unit suitable for use with the invention,
+   In B.P. No. 1,394,431 there is provided a multiproces             FIG. 3 shows, in block diagram form a bus interface
+sor system in which each CPU is provided with an                  unit for use in the invention,
+individual bus to provide access to information held in             FIG. 4 shows the special purpose data and capability
+storage locations and peripheral equipments using a               register provided in the CPU,
+comprehensive single addressing system. In such an                  FIG. 5 shows in tabular form, a typical internal mode
+arrangement each address comprises a module number                address bit allocation whereas
+which speci?es the module (i.e. store module or periph              FIG. 6 shows in flow diagram form the operations
+eral equipment) and an offset address used to de?ne the           performed in loading an internal register.
+required location within the module.                                   DESCRIPTION OF AN ILLUSTRATIVE
+  It is an aim of the present invention to extend the                           EMBODIMENT
+addressing system so that normal addressing instruc
+tions are used to access internal registers.                 25     Considering ?rstly FIG. 1, it will be seen that a mod
+                                                                  ular data processing system is shown including (i) a
+                      SUMMARY                                     number of processing units CPUl and CPU2, (ii) a
+  According to the invention there is provided a data             number of storage modules STA, STB and STC and (iii)
+processing system of the type including one or more               a group of peripheral equipments collectively shown as
+processing units, a plurality of storage modules and a            PE. Each storage module and each peripheral equip
+plurality of peripheral equipments and each storage               ment is provided with an access unit SAUA, SAUB,
+module and each peripheral equipment is provided with             SAUC and PAUN.
+an access unit and each processing unit is provided with            Each processing unit is provided with a discrete com
+its own unique data communication path which is con               munication path or bus (CB1 and CB2 respectively for
+nected to an individual port on each access unit and              processing units CPUl and CPU2). Each bus is termi
+each access unit is conditioned with the system identity          nated upon a separate port of all the access units
+of the equipment it serves and each access unit includes          (SAUA, SAUB, SAUC and PAUN).
+an identity address recognition arrangement and pro                 All the access units are provided with the facility of
+cessing unit access to a peripheral equipment or a stor           recognising coded address information when applied to
+age module location is performed by the processing unit           the buses terminated on their input port.
+extending to its own communication path an address                  Considering now FIG. 2, each processing unit CPU
+comprising at least two ?elds the ?rst address ?eld               includes an A data ?le ADF and a B data ?le BDF each
+de?ning the system identity of the required storage               including 32 locations together with A and B capability
+module or peripheral equipment and the second de?n                register ?les ACF and BCF. The capability registers are
+ing a location within the required storage module or              used to provide information protection arrangements of
+peripheral equipment and in which each processing unit            the type disclosed in HP. Speci?cation No. 1,329,721.
+includes a bus interface unit which is conditioned with           The data ?les ADF and BDF provide duplicated regis
+the system identity of a processing unit and the bus              ter arrangements and each include eight general pur
+interface unit includes an identity address recognition           pose data registers referred to as D(0) to D(7), in which
+arrangement activated by the presentation of an address           all data manipulation is performed, together with a
+including a ?eld de?ning the system identity of a pro             number of special purpose data registers which are
+cessing unit and the remainder of the presented address           shown in FIG. 4 and which are only accessible in inter
+is used to select one of the internal registers of the pro    nal mode. The capability register ?les ACF and BCF
+cessing unit.                                              55
+                                                              provide   duplicated register arrangements and each in
+   In addition the remainder of the address according to      clude a number of general purpose capability registers
+a feature of the invention is used to select a bit pattern    together with a number of special purpose capability
+or a single bit in the selected internal register.            registers. The general purpose capability registers re
+  By such an arrangement the internal registers of a              ferred to as C(0) to C(7) are loaded with a descriptor
+processing unit are accessed in an identical manner to            comprising a base address, a limit address and an access
+the locations in the storage modules allowing the use of          rights code indicative of a block in the memory or a
+general purpose machine instructions such as LOAD,                group of peripheral equipment registers. The capability
+STORE and MOVE, to access the internal registers                  register ?les ACF and BCF are shown segregated into
+rather than providing special purpose instructions. This          a base section (ACB and BCB) and an access/limit
+arrangement has particular signi?cance when the data 65 section (ACA/L and BCA/ L). The special purpose
+processing system incorporates information protection    capability registers are only read and altered by pro
+systems (using for example so-called capability regis    grams having the capability of addressing in internal
+ters) as the protection mechanisms can be extended to             mode.
+                                                       4,383,297
+                            3                                                                  4
+                                                                    information. They can be read and altered by programs
+    SPECIAL PURPOSE DATA REGISTERS                                  which have the capability of addressing in ‘Internal
+  The special purpose Data Registers are listed below.              Mode’ since special loading instructions are not pro
+As mentioned previously they are accessible in ‘Internal            vided.
+Mode’.
+                                                                                  1. Capability Register C(D)
+         1. Instruction Address Register (IAR)                        This register contains Base/Limit Addresses and
+  This register contains the absolute address of the                Access code for the Processor Dump-Stack of the ac
+current instruction within the program block speci?ed               tive process. It is changed by the CHANGE PROCESS
+by the general purpose Capability Register C(7). It is              instruction.
+altered by CALL, RETURN and LOAD CAPABIL
+ITY C(7) instructions and changed by a CHANGE                                    2. Capability Registers C(I)
+PROCESS instruction.                                       This register de?nes a block of store the ?rst word of
+                                                         which contains the Interval Timer value. It measures
+         2. Watch-Dog Timer Register (WTR)            15 the absolute time elapsed and it is decremented once
+  This register is changed by a CHANGE PROCESS           every 100 usec by the Processor Unit. When it reaches
+instruction, the old value being saved in the Process    zero, a Normal Interrupt is generated.
+Dump-Stack of the suspended process; the new value is
+loaded from that of the activated process. It is decre                           3. Capability Register C(Cll)
+mented once every 100 usec. If it reaches zero, a Fault               This register de?nes a block of store containing the
+Interrupt is caused. It therefore measures the total time           ?rst part of the System Capability Table.
+each process is active.
+                                                                                 4. Capability Register C(C2)
+           3. Interrupt Accept Register (IR)                          This register de?nes a block of store containing the
+  This register contains a single bit, bit 6, which is set 25 second part of the System Capability Table.
+when a Program Trap is accepted.
+                                                                                  5. Capability Register C(N)
+4. Process Dump-Stack Pushdown Register (PDSPR)                       This register de?nes a block of store the ?rst word of
+  This register contains an absolute address pointer                which contains a Capability Pointer which permits
+which de?nes the current top of the Process Dump                    entry to the Normal Interrupt process.
+Stack (i.e. it points to the ?rst word in the area available
+for dumping). It is altered by the CALL RETURN                                    6. Capability Register C(S)
+instruction and changed by the CHANGE PROCESS                         This register de?nes a four word block of store which
+instruction.                                                        is used by the processor when dealing with Fault Inter
+                                                               35 rupts. The 12 most signi?cant bits of the Base word are
+      5. Fault Indicator Dump Register (FIDR)                       incremented during the fault sequence, the remainder of
+   Following the ?rst Fault Interrupt, this register con            the register being preset by the processor following
+tains the state of the Fault Indicator Register.                    power-up.
+           6. Level Number Register (LNR)                                         7. Capability Register C(L)
+  This register is divided into two parts. The most                   This register de?nes a block of store for the Local
+signi?cant 8 bits contain the current link level number             Store Stack of the current process. It is changed by the
+of the process. It is altered by the CALL and RETURN                CHANGE PROCESS instruction.
+instructions, and changed by the CHANGE PROCESS                                   8. Capability Register C(P)
+instruction. The least signi?cant 16 bits of the register 45
+contains a relative address pointer.                                  This register is used by the Programmer Interface
+                                                                    when accessing store.
+7. Local Capability Count and Local Store Clear Count
+                     Register (LCCR)                                             INDICATOR REGISTERS
+  The register is divided into two parts. The most sig 50        There are four Indicator Registers: Primary Indicator
+ni?cant 8 bits contain the count of the number of local       (PIR FIG. 2 and FIG. 4), Fault Indicator FIR, Test TR
+capabilities created at the current link level. The least     and Historical HR register. They indicate various con
+signi?cant 16 bits of the register contain the local store    ditions with the Processor. They are accessible in Inter
+clear count.                                                  nal Mode only. The contents of the Primary Indicator
+                                                           55 Register are changed by a CHANGE PROCESS in
+            8. Data Registers D(A) and D(B)                   struction; the old value is saved in the Process Dump
+  These registers are not used by any of the functions of     Stack of the suspended process and then the new value
+the processor, but can be accessed by data instructions       is loaded from that of the activated process.
+using ‘Internal Mode’.                                                   Primary Indicator Register (PIR)
+   All the Special Purpose Data Registers are 24 bits
+long, with the exception of the Interrupt Accept Regis                The Primary Indicator Register is eight bits long.
+ter. All of them can be accessed by data instructions                 Bits 0-2 are Arithmetic Indicators: EQUAL TO
+using ‘Internal Mode’ as well as being accessed by spe              ZERO, (bit 0), LESS THAN ZERO, (bit ll), OVER
+ci?c instructions.                                                  FLOW, (bit 2). They are set or cleared by the result of
+                                                               65   the majority of instructions.
+‘SPECIAL PURPOSE CAPABILITY REGISTERS                                 Bits 4 and 5 are Control Indicators.
+ There are eight special purpose Capability Registers,                DATA PARITY INDICATOR (bit 6) is set equal to
+which are used by the processor unit to access control              the parity bit on the last data word read from the paral
+                                                     4,383,297
+                            5                                                              6
+lel bus, by Store Mode instructions that set the indica          Bit 15 is the TRAP FAULT Indicator. It is set if a
+tors.                                                         Program Trap occurs while INHIBIT INTERRUPTS
+  Bit 7 is FIRST ATTEMPT Indicator. It is set by a            15 set.
+Fault Interrupt and affects the Processor’s response to          Bits 16 and 19 indicate Hardware Faults. HARD
+subsequent faults.                                            WARE FAULT l and HARDWARE FAULT 2 are
+  Bit 8 is the INHIBIT INTERRUPTS Indicator. It               set if certain internal hardware checks fail. These mini
+inhibits timer interrupts from taking place when set.         mise the probability of hardware faults violating the
+                                                              Capability structures by checking the operation of those
+           Fault Indicator Register (FIR)                     circuits concerned with Capability manipulation and
+  The Fault Indicator Register is 24 bits long.               store access.
+   Any bit may be set by an Internal Mode Access; any            Bit 17 is the WATCHDOG TIMER ZERO Indica
+bit may be cleared. When set by the events described          tor. It is set if the watchdog Timer Register reaches
+below, a Fault Interrupt occurs, excepting Processor/         zero.
+Store Interface Faults when INTERFACE FAULTS                     Bits 20-23 are set to the octal address of the Capabil
+INHIBIT is set in the Primary Indicator Register.             ity Register being used when a Fault or Trap occurs.
+   Bits 0, 5, 9-11 and 14 indicate Processor/Store faults:       Bits 3 and 4 can only be set/reset by data instructions
+   l. BUS CORRUPT (bit 0) is set if any of the input          using ‘Internal Mode’.
+lines from the parallel bus have not returned to logic ‘0’
+within 400 psec after a store access. This bit may only                          Test Register (TR)
+be set when INTERFACE FAULTS INHIBIT is set, 20                  This register contains control facilities for testing the
+i.e. it cannot cause an interrupt.                            fault detection mechanisms.
+  2. SLAVE TIMEOUT (bit 5) is set if a store module
+reports that address or data cannot be accepted by the                        Historical Register (HR)
+module during a store access.                                   One register of a group of sixteen 26 bit registers is
+   3. STORE INTERFACE TIMEOUT (bit 9) is set if               addressable at a time, by a 4 bit address counter. They
+a store module has not responded within 50 psec.              constitute a First-In/First-Out circular queue.
+  4. PARITY COMPARISON FAULT (bit 10) is set if                  The use of the above registers together with the bit
+the parity generated by the store module on a forward          multiplexer BM, the arithmetic unit ALU, the instruc
+going word (i.e. ‘address’ or ‘address/data’) and re           tion register IREG, the memory address register MAR,
+turned to the CPU, is not equivalent to that generated         the data in register MDIN and the data out register
+by the processor.                                              MDOR and the A and B Capability check comparators
+   5. READ DATA PARITY FAULT (bit 11) is set if                ACC and BCC all shown in FIG. 2 and will be more
+the ‘data/address’ parity read from store is not equiva        readily seen later with reference to the operation of the
+lent to that generated by the processor on the address         processor in so-called internal mode.
+and data from store.
+                                                                          Internal Mode Operation General
+   6. INVALID CONTROL CODE (bit 14) is set if a
+store module reports that it has received an invalid             The registers, internal to the processor unit, are allo
+control code during a CPU/Store transfer. Three bit,           cated a module address which is programmed into the
+odd parity codes are used.                                     processor units bus interface BIF (FIG. 3). When this
+   Bit 2 is the INTERRUPT TIMEOUT Indicator. It is             module address is speci?ed in an address construction
+set if the Interrupt Accept Register has not been ac           the processor module internally, in the bus interface
+cessed, following the Interval Timer Word being decre          unit, recognises the address and uses the remainder of
+mented to zero (when INHIBIT INTERRUPTS is not                the address word to access one of the internal registers.
+set), for a period of 300 ms, or if this condition has not    In this way internal registers are accessed in an identical
+occurred 30 ms after a Fault Interrupt, (see Sect. 4).     45 manner to the accessing of locations in main store, both
+   Bits 6-8 and 18 indicate Capability faults:                of which use the general purpose instruction set.
+   l. CAPABILITY COMPARISON FAULT (bit 6) is                    The accessing of a location in main store uses the
+set if the duplicated Base Address, Limit Address or          address construction derived from the instruction
+Access Code within a Capability Register being used by        which is divided into a Module Address, specifying the
+an attempted access are found not to be identical.             Main Store Module, and a Location Offset, specifying
+   2. CAPABILITY SUMCHECK FAULT (bit 7) is                     the word within the Main Store Module. When the
+set if the Sumcheck word, circulated left by 9 bits, does      Internal Registers Module is speci?ed the remainder of
+not agree with the sum of Base and Limit values when           the address construction specifies the Register Offset
+a Capability Register is being loaded.                   Address, and for some of the registers, the Bit Position
+   3. CAPABILITY BASE/LIMIT VIOLATION (bit 55 Address. The Bit Position Address is only used for
+8) is set if an address is found to be outside the range those registers containing individual bits with discrete
+speci?ed by the Base and Limit Addresses of the Capa           functions. The Module Address and the Register Offset
+bility being used.                                             Address allow only one register to be speci?ed,
+   4. ACCESS FIELD VIOLATION (bit 18) is set if an             whereas each bit within the Bit Position Address corre
+illegal transfer is attempted (e.g. an attempted STORE         sponds to a bit within the register, allowing multiple bits
+DATA operation to a block whose Capability does not            to be speci?ed.
+have the WRITE DATA bit set in the Access code).                 The Bit Position Address selects a mask which is used
+   5. CAPABILITY POINTER FAULT (bit 1) T.B.D.                  when performing the operation on the register. If the
+   Bit 12 is the INVALID OPERATION Indicator. It               Bit Position Address is zero then all the bits in the regis
+is set whenever an invalid operation is attempted. These       ter can be accessed, whereas, if any bit is set in the Bit
+are detailed as exceptions in Sect. 3.                         Position Address only the corresponding bit in the reg- '
+   Bit 13 is the POWER FAILURE Indicator. It is set if         ister can be accessed. When a single bit is speci?ed in
+the power supply margins are exceeded.                         the Bit Position Address for a write operation then a
+                                                        4,383,297
+                            7                                                              B
+de?ned mask is used to perform a logical AND opera             D(N) to be used to receive the data to be loaded, (v) the
+tion on the data pattern speci?ed by the instruction. The      function code (FC), de?ning the load instruction, and
+result of the logical AND and the contents of the speci        (vi) the store mode flag (S).
+?ed register are used in logical INCLUSIVE OR oper                The following description will be sectionalised under
+ation and the result overwrites the original contents of       the steps of the flow diagram of FIG. 6 and for each
+the register. For a read operation the de?ned mask is          step the way in which the processor unit operates will
+used to perform a logical AND operation on the con             be de?ned.
+tents of the speci?ed register. When multiple bits are set
+                                                                 _ STEP Sll——Read In from Program Block
+in the Bit Position Address then the masks de?ned by
+the individual bits are combined together by a logical O      In the step the processor unit uses the C(7) capability
+OR operation to produce a composite mask.                  register and the instruction address register to form the
+   By using the Bit Position Address to de?ne a mask, or   address of the next instruction in the program being
+masks, the advantage of being able to group associated     performed. The so-formed address is fed into the ad
+bits at contiguous addresses is gained.             ‘          dress register MAR (FIG. 2) and the capability code
+  Normally, ‘active’ Capabilities de?ne Base and Limit         comparators ACC and BCC check to see if the access is
+Addresses of blocks of store. If the Module Number bits         to be permitted. If it is the address is passed over high
+(the top eight bits of the Base Address) in a Capability        way BIO into the Bus Interface BIF (FIG. 3). The
+Register are all ones and this Register is speci?ed in an       address is passed to the Bus sequence and control circuit
+address construction, the least signi?cant 12 bits of the       BS & C and thence to the processor units output bus
+second operand address are interpreted as specifying a          CBO using the Bus driver and terminator circuits BD &
+Register within the Processor. No storage module can,           T. Eventually the store module holding the current
+therefore, use this Module Number.                              program block will respond with the next instruction
+   As shown in FIG. 5, one bit set in bits 5-111 of the         word (i.e. the load instruction) and this word is fed to
+address a register or a group of registers; bits 1-4 spec       the bus interface BIF over the input bus ClBI. The word
+ify one of the sixteen Data or Capability Registers when 25 together with status information is passed over leads
+5 or 6 is set. If bit 6 is set for the Capability Registers bit DBIN and SI respectively to the input data multiplexer
+0 selects the Base when reset and the Access/Limit              IDM and the bus fault indicators BFI respectively by
+when set. If bit 5 is set then resetting bit 0 selects the      the Bus receivers and terminators BR & T. Under clock
+Data Registers and setting bit 0 selects the Pointer Reg       CLK control the incoming instruction word is passed
+isters. When bit 9 and bit 0 are set the Test Register is      over leads BII into the instruction buffer IBL in FIG. 2.
+selected.                                                      The function code FC (see FIG. 6) is used to access the
+  When the primary Indicator Register is selected ac           microprogram unit (not shown) of the processing unit
+cess can be further restricted to speci?c control bits by      whereas the address offset information ADDRESS is
+use of bits 0-4 within the address. The allocation of the      set into the instruction register IREG. Also other ?elds
+bits in the register to the address bits is given in table 3. 35 of the instruction word are used to condition the micro
+If all the bits are zero the complete register can be ac         program unit to control the operations of the instruc~
+cessed.                                                        tion.
+  A Capability descriptor can either de?ne all the regis                  Step S2 FORM Required Address
+ters in internal mode, a group of these registers, a single
+register, or a single bit, as in the case of the Primary         In this step the microprogram unit causes the address
+Indicator Register.                    offset in the IREG to be passed through the input multi
+                                       plexer IMUX and the bit manipulator BM into the ‘A’
+  The following restrictions apply to instructions
+                                       port of the arithmetic unit ALU while causing the base
+which specify an Internal Mode Capability:
+  1. Only LOAD DATA, LOAD DATA MASKED, address of the capability register, de?ned by C(N) in the
+STORE DATA, STORE DATA MASKED, MOVE 45 instruction word, to be passed from the base ?le BCB
+WORD and MOVE BYTE instructions are allowed.                   over the capability multiplexer CAPMUX into the ‘B’
+Any other will cause a fault Interrupt (Invalid Opera          port of the ALU. The ALU will then be conditioned to
+tion).         ‘                                               add and place the result in the address register MAR.
+  2. Capability Registers (except the Base of C(S)) can        As mentioned previously the internal mode is de?ned
+only be read. They are always loaded by Capability             by the module address of the capability register used
+Manipulation instructions. A STORE DATA or                     having an all l’s value. Accordingly after the capability
+STORE DATA MASKED instructions causes no                       bounds check performed by the comparator BCC has
+change; no FAULT is generated.                                 been performed the required address will be passed to
+   3. Special purpose Capability Register C(S) has 12          the bus sequence and control circuit BS & C Where the
+alterable bits only (the most signi?cant bits of the Base).    internal mode address will be detected and the address
+All bits may be read.                                          information will be looped back, by the input data mul
+  4. If more than one of the bits 5-11 are set, no mean        tiplexer IDM, under the in?uence of the internal mode
+ingful information is accessed.                                signal IM. The bus sequence and control circuit in
+  To show how the equipment operates in internal               cludes a detector arranged to generate the IM signal
+mode the operations performed in performing a load 60 when the module address is all l’s. The internal mode
+data instruction will be described.                    signal IM is also passed to the microprogram unit (not
+  FIG. 6 shows the flow diagram and the basic instruc  shown) to condition that unit to perform the following
+tion word IW for a “load” instruction. The instruction data transfer sequence. In this sequence the symbolz=is
+word comprises six ?elds de?ning (i) the ADDRESS,      used to indicate becomes.
+(ii) the Capability Register C(N), de?ning the block in          BIIzzBIO
+which the offset address is to be used to provide the            MDINzzBII
+data source for the instruction, (iii) the data register to      ALUzzMDIN
+be used as an address modi?er (M), (iv) the data register        ALUCS:=ALU
+                                                       4,383,297
+                            9                                                                      10
+  In this way the address offset part of the address                of the associated art, each access unit further including
+generated in step S2 is passed to the microprogram unit             an identity address recognition circuit which activates
+using the arithmetic unit condition signals ALUCS.                  the access unit upon receipt of an associated identity
+This information is used to de?ne the required “regis               code, a processing unit access operation involving a
+ter” and the allocation of this information is shown in             peripheral equipment or storage module location being
+FIG. 5.                                                             performed by the processing unit associated with a
+                                                                    communication path of the processing unit, an address
+          Step S3—Read at Formed Address                            comprising at least two ?elds, the ?rst address ?led
+  The microprogram unit now conditions the required                 de?ning the system identity of the required storage
+register or bit or selection of bits in the data ?le or             module or peripheral equipment and the second address
+capability register ?le to be passed to the arithmetic unit         ?eld de?ning a location within the required storage
+ALU and thence to the data register D(N) de?ned by                  module or peripheral equipment, wherein the improve
+the instruction using the following sequence.                       ment comprises in each processing unit a bus interface
+  MDOR:=ALU                                                         unit connected to a unique data communication path of
+  BIO:=MDOR                                                         each processing unit and an internal register selection
+  BII:=BIO                                                          means and said bus interface unit includes identity stor
+                                                                    ing means for storing an identity code indicative of the
+          Step S4—I/ P Read Data into D(N)                          processing unit and an identity address recognition
+  In this step the data on the input bus B11 is fed into the        means arranged to compare the ?rst ?eld of an address
+input register MDIN and thence through the ALU into 20 extended to the data communication path with said
+the D(N) de?ned data register in both the A and B data identity code stored in said identity storing means and
+?les ADF and BDF.                                      upon detection of said identity code of the processing
+  From the above it can be seen that the described                  unit in the ?rst ?eld of an address extended to the data
+embodiment provides a mechanism for addressing any                  communication path, said identity address recognition
+of a number of internal CPU registers or bits or bytes 25 means being connected to the second ?eld of the pres
+thereof treating them in an identical manner to address   ented address to the internal register selection means so
+ing store locations. This has the particular advantage    that a selected internal register can be used as the loca
+that it is not necessary to have special purpose register tion for a processing unit access operation.
+accessing instructions. Also the store protection system,   2. A data processing system according to claim 1 in
+embodied in the capability register structure, is ex 30 which the bus interface unit includes means for identify
+tended to the internal registers since the capability de  ing a system address identity comprising a module num
+scriptor incorporating the internal mode module ad        ber of all ones.
+dress can de?ne all or a sub-set of the internal registers.    3. A data processing system according to claim 1 or 2
+  What we claim .is:                                        in which the processing unit includes means for select
+  1. A data processing system including one or more 3.5 ing a sub-set of the register contents de?ned by the
+processing units, a plurality of storage modules and a      second ?eld and each address includes a third ?eld to
+plurality of peripheral equipments, and each storage                de?ne a bit position address to de?ne the required sub
+module and each peripheral equipment being provided                 set.
+with an access unit and each processing unit being pro                4. A data processing system according to claim 3 in
+vided with an associated unique data communication                  which the bit portion address is used to de?ne a mask or
+path which is connected to an individual port on each               masks to select the bits of the selected register to be
+access unit, each access unit including means for storing           subjected to the required operation.
+                                                                                         it   ‘I   *    *   i‘
+a unique identity code indicative of the system identity
+                                                               45
+
+
+
+
+                                                               55
+
+
+
+
+                                                               60
+
+
+
+
+                                                               65
+

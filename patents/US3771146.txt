@@ -1,0 +1,1014 @@
+United States Patent (19)                                                                                    11         3,771,146
+Cotton et al.                                                                                               (45       Nov. 6, 1973
+54) DATA PROCESSING SYSTEM INTERRUPT                                         R27,251     12/1971   Amdahl et al................... 340,172.5
+        ARRANGEMENTS
+                                                                            Primary Examiner-Paul J. Henon
+I75     Inventors: John Michael Cotton, Bournemouth;                        Assistant Examiner-Jan E. Rhoads
+                   James Jeffrey Llewelyn Williams,                         Attorney-Alex Friedman et al.
+                   Marlow; David Cockburn Cosserat,
+             London, all of England                                          57                    ABSTRACT
+73 Assignee: Plessey Handel Und Investments                                 A data processing system includes a memory in which
+             A.G., Zug, Switzerland                                         information is stored in segments and at least one pro
+22      Filed:          Jan. 22, 1973                                       cessor unit arranged to co-operate with the memory
+                                                                            and provided with at least one so-called capability reg
+21      Appl. No.: 325,707                                                  ister arranged to store a segment descriptor which in
+                                                                            cludes information indicative of the base and limit ad
+30          Foreign Application Priority Data                               dresses of a particular memory segment and is used in
+        Jan. 26, 1972      Great Britain..................... 3,601/72
+                                                                            all memory access operations relevant to the particular
+                                                                            memory segment and the processor unit includes a pro
+                                                                            gram interrupt arrangement having interrupt actuating
+52 U.S. Cl. ............................................. 340,172.5         means which when activated causes the processing of
+51 int. Cl........................ G06f 11/00, G08b 29/00                   the current program to be suspended and the process
+58) Field of Search.................................. 340, 72.5             ing of an interrupt handling program to be commenced.
+56                  References Cited
+                                                                            The processor unit is provided with capability register
+                                                                            restoration arrangements operative to load at least part
+              UNITED STATES PATENTS                                         of the capability register with a discrete characteristic
+3,562,77      21197    Harmon et al................... 3401 172.5           code and discrete characteristic code detection means
+3,573,736     4/197 Schlaeppi......................... 3401 172.5           arranged to monitor the information content of each
+3,573,855        4f197     Cragon et al.................... 3401 172.5      capability register as it is used and to activate the inter
+3,609,697        9/197     Blevins et al.................... 340, 172.5     rupt actuating means upon detection of the discrete
+3,671,940        6/1972    Kronies et al.................... 340/172.5      characteristic code.
+3,706,077    12/1972       Mori et al........................ 340/172.5
+ R27,230     1 1197.       Ulrich.............................. 340/172.5                8 Claims, 13 Drawing Figures
+
+                                                        As CIS TI           ICs FICs obso               --- -
+                                                                                                                        IR
+
+
+
+
+            3.               AJCS
+                                        It is                 r
+                                    uPIC          c               ---
+ AUIS            M LL
+        l                                             JSICUSIC
+                 ------                                     S.I
+
+
+
+
+                                         G1
+PATENTED HOY F6 1973                            3.77 l. l 46
+                           SHEET O1 OF 11
+
+
+
+
+                              ICM
+
+
+
+
+            S
+
+
+                       2       3       1.   2    3
+
+
+
+                              PU
+
+                              PU2
+
+
+
+
+                Fis 1                           PUA
+                                                SN
+PATFIEC 49Y ?, 373                       3,77l, las
+                     SEE   O2 OF 11
+
+
+
+                                      AUCS CIS TI
+PATENTED NOY 6 1973                               3.77 l. l A6
+                       SHEET O 3 OF 11
+
+
+
+
+     ICS FICS Opo                           I
+                                  AC                  (2)
+                                                        GA
+         U PROG
+                                                             --
+
+
+
+      UPECS                   GOS                            --
+                                                             a
+
+
+
+
+                                                      SOH
+
+
+
+
+            FIR                                 *S sIHcs
+                      FICS       M-W             SD          S
+                                                  I
+                                         (2)-               2).
+                G9                       G11 ||             G14
+PATENTED NOY S 1973                            3,77l, la6
+                         SHEET O OF 11
+
+
+
+
+             24       ACC SK      1.
+     ACCO
+     ACC1.
+       TO
+     ACCO
+     ACC 7
+     DSPP
+     MFI
+
+     IAR
+     SCR
+                                           Fig 3
+
+                  BASE STK             TC/LMT STK
+PATENTED HOY 6 1973                           3,77l, la,6
+                             SHEET OS OF 11
+
+
+
+
+                             PEAD NEXT
+                              NST WORD A
+                               NTO IR
+
+
+                             FORMSTORE
+                              ADDRESS B
+
+            ACCESS CODE
+                      s 11
+
+
+                      ACCESS
+                      PERMIT
+
+
+                       MTS
+                VOATED
+PATENTED ROY G 1973                     3,77l, la S
+                      SHEET O 6 OF 11
+
+
+
+
+                        UTS
+                        u     SIR
+PNTENTED ROY 6 1975                         3,771,146
+                      SHEET 07 OF 11
+
+
+
+
+                            SET
+                         MIF (2O-23)
+
+                                       2
+
+
+                                       3
+
+
+                                       4.
+
+
+                        ACCESS IN
+                        - ANDLER OS    5
+                           PONTER
+
+
+                                       Co
+PATENTED HOY 6, 1973                              3,771. A6
+                       SHEET 08 OF 11
+
+
+
+
+      NICRifi                 is              a     NIB
+
+       DCREASE
+
+
+
+                                                    PDS
+
+
+
+
+                                        PDP
+                              ACT
+                                        SCR
+PATENTED NOY 6 1973                    3,771. 146
+                      SHEET O9 OF 11
+
+
+
+
+      L         WCRC       -- -
+                 BCP - - -
+             PDC licP
+PATENED NOY 6 1973                           3,77l, la6
+                      SHEET 1. O OF 11
+
+
+
+                      READIW S1
+                     FROM CRCE
+
+                     I/PIW INTO S2
+
+
+                                   S3
+
+
+                     ADDRESS       SA
+                        RCP
+
+                      SELECT       SS
+                        CRX
+
+
+
+
+                                         ZEROSE
+                                           CRX
+
+
+                     READ MCT
+                     S-CX ENTRY
+
+
+
+
+                      READ MC
+                       X ENTRY
+                                                    3,771,146
+                           1.                                                            2
+    DATA PROCESSING SYSTEM INTERRUPT                         memory segment is performed by said processor unit
+             ARRANGEMENTS                                    and said processor unit includes a program interrupt
+      BACKGROUND OF THE INVENTION                            arrangement having interrupt actuating means which
+   The present invention relates to data processing sys      when activated causes the processing of the current
+tems and is more particularly concerned with program         program to be suspended and the processing of an in
+interrupt arrangements for use in real-time data pro         terrupt handling program to be commenced, character
+cessing systems employing memory protection tech             ised in that said processor unit is provided with (a) ca
+niques provided by so-called segment descriptors.            pability register restoration arrangements operative to
+                                                             load at least part of said capability register with a dis
+   In such systems all the information in the system crete characteristic code and (b) discrete characteristic
+main memory is divided into blocks or so-called seg O code       detection means arranged (i) to monitor the in
+ments. Each segment is defined by a so-called "seg
+ment descriptor' consisting of base and limit addresses formation       content of each capability register as it is
+defining the bounds of the block. Each system program upon detectionto of
+                                                          used  and   (ii)    activate said interrupt actuating means
+requiring access to a segment is provided with a so s By the provision said            discrete characteristic code.
+                                                                                  of such an interrupt arrangement a
+called "capability' word for that segment consisting of processor module may
+the segment descriptor together with an "access type" handler program each be         time
+                                                                                          forced to enter the interrupt
+                                                                                            any of its capability regis
+code. When access to information in a segment is re ters, having a discrete characteristic               code in part
+quired by a processor module of the data processing
+system, a so-called "capability' register, which has pre thereof,    is used. Consequently it now remains to pro
+                                                          vide a mechanism which causes the discrete character
+viously been loaded with the capability (segment de istic
+scriptor and access type code) word for that segment, ticularcode      to be written into the relevant part of a par
+                                                                   capability   register when required. Typically this
+is used (a) to obtain the absolute main memory address
+of the required information word and (b) to check the isbility
+                                                             performed (i) when the segment to which the capa
+formed absolute address and memory access required 25 within register       relates is in the course of relocation
+                                                                   the system memory or (ii) when the segment to
+against the segment bounds and the access type code which the          capability register to be loaded relates is cur
+of the pertinent capability word.
+   In multi-processor systems employing techniques of rently      located in the backing store. The first case is in
+                                                          dicated by associating a predetermined indication
+the above mentioned type the system memory com when              the relevant segment descriptor entry in a master
+prises a main memory, which may be formed of a plu segment
+rality of storage modules, and a backing store, typically dicated descriptor
+                                                                     by   a
+                                                                                  table whereas the second case is in
+                                                                             discrete   indication associated with a
+a magnetic disc store. In the execution of any of the ap
+plication programs by a processor module working in pointer         which is relevant to the master segment de
+                                                          scriptor table entry.
+formation is extracted from or inserted into the main
+                                                             In the preferred embodiment of the invention each
+memory only. Consequently store access operations 35 processor
+are all performed with the assumption that the segment significant module,        of a multi-processor system, has no
+                                                                        internal storage and has direct access to all
+descriptor in the capability register used for the mem the     storage modules of the system memory. Each pro
+ory access defines a segment in the main memory. Ob cessor         module is also typically of the type defined in
+viously arrangements must be provided for blocks or
+segments to be transferred between the main memory 40 our       co-pending application Serial No. 146,334. In
+storage modules and the disc backing store automati telecommunications               system for example, provided
+                                                          with stored program control employing multi-proc
+cally, without the processor module using these blocks essor
+being conscious that any such transfers are taking rithm systems              of the above type, the control algo
+                                                                  may typically be divided into a plurality of
+place. Accordingly when a processor module attempts
+to access an information block that block has to be au 45 applications programs each dealing with a specific
+tomatically transferred into a main memory area if it is aspect of a telephone call set-up and switching
+not already resident therein. Additionally it may be network administration procedures. At any one time
+necessary, under memory module fault conditions for more than one call may be at a similar stage of call
+example, to relocate information segments in other set-up and consequently the same applications
+memory modules before removing the faulty module 50 program may be in the course of execution by dif
+from the system. It is necessary in such circumstances ferent processor modules concurrently. As a conse
+to ensure that other processor modules cannot gain ac quence it is necessary for the system control programs
+cess to a segment which is in the process of being relo to be able to identify individually each "pass' of an ap
+cated and it is a prime object of the present invention plications program for scheduling purposes for exam
+to provide a simple mechanism to detect an attempt to 55 ple. Typically each pass of each applications program
+access a block which is in the course of being relocated. is considered as a "process" and from a scheduling
+It is a further object of the invention to use the same point of view an active process equates to a task to be
+mechanism to detect an access attempt to a block not performed. Each process is allocated its own unique so
+currently in the main memory.                             called "dump-stack" and "reserved capability pointer
+   According to the invention there is provided a data 60 table' at its inception. Each dump-stack provides a
+processing system including a memory, in which infor storage segment into which working parameters are
+mation is stored in segments, and at least one processor dumped each time the process is suspended before
+unit arranged to co-operate with said memory and pro reaching completion. The reserved capability pointer
+vided with at least one so-called capability register ar table defines all the system facilities required for the
+ranged to store a capability word which includes infor 65 execution of the process. The system facilities include
+mation indicative of the base and limit addresses of a    all the storage segments both main memory segments
+particular memory segment and is used each time a and backing store segments and all the system re
+memory access operation relevant to said particular sources such as computer peripheral equipment and
+                                                    3,771,146                             4.
+                             3
+the like necessary for the execution of the process.          FIG.   4  shows   the layout   of the capability register
+Each item in the reserved capability table defines a sin stack of the processor module of FIG. 2,
+gle system facility. The reserved capability pointer           FIG. 5 shows a flow diagram of a memory access in
+table items which relate to memory segments comprise struction for the processor module.
+a "pointer' field and an "access code" field. The              FIG. 6a shows a circuit diagram of a part of the sec
+pointer defines the first word of a three word entry in     ondary    machine indicators register and FIG. 6b shows
+the master capability table defining the location of that part of the fault indicators register of the processor
+segment in the memory whereas the access code de module               of FIG. 2,
+                                                               FIG. 7 shows a flow diagram of the so-called “trap'
+fines the type of access (read only, read-write etc.) the O micro-sequence,
+process is to be permitted to that segment. The most           FIG. 8 shows the significance of certain capability
+significant two bits of the access code are used to de words
+fine that the entry relates to a storage segment. The re cessor held     in the hidden capability registers of the pro
+                                                                     module.
+served capability pointer table items which relate to          FIG. 9 shows a schematic diagram of the operations
+systems resources, such as a segment in backing store 15 performed
+or the registers in computer pheripheral devices etc., instruction,when executing a "load capability register'
+are arranged so that the "access" code field defines the       FIG. 10 shows a flow diagram, including only the sig
+resource type whereas the pointer field relates to the nificant        parts of the operation performed in accor
+entry defining the particular resource. Typically the dance with          the preferred embodiment of the invention,
+two most significant bits of the "access code' define of a 'load capability          register' instruction whereas,
+ broadly the resource type.                                    FIG. 11 shows a circuit diagram of a zero detector
+    According to a feature of the invention a processor circuit associated with the operand register of the pro
+ module capability register is loaded in said part with all cessor module.
+ zeros when it is detected that the two most significant
+ bits of the "access' code of the reserved capability 25                    GENERAL DESCRIPTION
+ table entry to be used to load the capability register de     Referring firstly to FIG. 1 brief consideration will be
+ fine a resource rather than a memory segment.               given to a typical multi-processor data processing sys
+    According to a further feature of the invention a pro tem organised on a modular basis and suited to employ
+ cessor module capability register is loaded in said part ing processor modules incorporating the preferred em
+ with all zeros when the first word of the system capabil bodiment of the invention. The system consists typi
+ ity table entry to be used to load the capability register cally of (i) a main memory MEM, including a number
+ contains all zeros.                                         of storage modules SM1 to SM5, (ii) a number of pro
+     By the provision of these two mechanisms the proces cessor modules PM1 to PM3, (iii) a number of input
+ sor module may be "trapped" and diverted to perform ?output modules IOM1 to IOM3, which serve periph
+  an interrupt handling process under one of three mech 35 eral units PU1, PU2 and PUA to PUN, and (iv) an in
+  anisms. These mechanisms are (i) zeros in the sum tercommunication medium ICM for memory to proces
+  check word of the system capability table entry (ii) re sor or input/output module communication. The actual
+  source code in the "access' field and (iii) zero code in quantities of the various modules shown in FIG. 1 are
+  access field. The first mechanism allows a system con typical only and are not intended to be limiting to the
+  trol program to prevent access to a memory segment by 40 present invention. The input/output modules IOM1 to
+  all applications programs typically when that segment IOM3 may be arranged to serve a single peripheral unit
+  is being relocated within the main memory or up-dated. (such as PU1) or, by way of a peripheral unit access
+  The second mechanism causes the processor to enter switching network PUASN a plurality of peripheral
+  the interrupt handler program so that, for example, a 45 units (such as PUA to PUN) on a time-sharing basis.
+  system control input/output handler process can be            Each processor module may be connected, by the in
+  performed in connection with the required system re tercommunication medium ICM, to any of the storage
+  source, whereas the third mechanism allows a system modules SM1-5 and the memory MEM provides stor
+  control program to prevent a single processor module age for all the applications and supervisory (control)
+  from accessing a particular memory segment. This may 50 programs and working and permanent data for each
+  occur when another applications process temporarily process. While performing a process a processor mod
+   requires exclusive access to the memory segment.           ule is arranged to extend a demand to the intercommu
+     The invention will be more readily understood from nication medium indicative of the memory address re
+   the following description of one embodiment which quired and the intercommunication medium time
+   should be read in conjunction with the drawings ac 55 shares the access demands to the various storage mod
+   companying the provisional specification.                  ules. The input/output modules IOM1 to IOM3 are also
+                                                              able to gain access to the memory for the interchange
+        BRIEF DESCRIPTION OF THE DRAWINGS                     of information between particular memory areas and
+      FIG. 1 shows a simple block diagram of a typical mul the peripheral unit.
+   ti-processor system suitable for use with the embodi 60 used Typically peripheral unit PU1 may be a disc store
+   ment of the invention.                                           as a backing store for the main memory MEM. In
+      FIGS. 2a and 2b show, when placed side by side with such circumstances it will be necessary from time to
+   FIG. 2b on the right, a block diagram of a processor store time to extract segments of information from the disc
+   module incorporating equipment in accordance with ory MEM.        and to insert them into defined areas of the mem
+   the specific embodiment of the invention to be de 65 put/output Such          an operation will be initiated by an in
+                                                                           handler  process which will inform the input
+   scribed.                                                   /output   module    IOM1   of the memory areas involved
+      FIG. 3 shows the layout of the accumulator stack of and then leave that module           IOM1 to asynchronously
+   the processor module of FIG. 2,
+                                                    3,771,146
+                             S                                                           6
+execute the required disc-to-main memory transfer.           register IR, a register stack of accumulator/working
+Upon completion of the transfer the input/output mod         registers ACC STK, a result register RESREG, an oper
+ule sets its own interrupt bit in a system interrupt word    and register OPREG, a micro-program control unit
+SIW which is resident in the memory. At some subse           uPROG, an arithmetic unit MILL, a comparator
+quent time one of the processor modules will respond         COMP, a memory data input register SDIREG a pair of
+to the set system interrupt bit and subsequently any         memory protection (capability) register stacks BASE
+processes which were suspended awaiting the comple           STK and TC/LMT STK, a set of machine indicator reg
+tion of the transfer are freed to continue. The opera        isters PIR (primary), SIR (secondary) and FIR (fault),
+tions of an interrupt system of the above type is dis        a zero detection circuit ZD associated with the operand
+closed and claimed in our co-pending application             register and a "trap' condition detection circuit TDar
+Serial No. 176.464.                                          ranged to monitor the access code on leads AC. Typi
+  In a modular data processing system to which the in        cally the three register stacks (ACC STK, BASE STK
+vention is particularly suited as has already been stated    and TC/LMT STK) may be constructed using so-called
+the memory is arranged on a segmented basis. All pro         scratch-pad units and these units are provided with line
+gram data and process working and permanent data is 15 selection circuits (SELA, SELEB and SELL respec
+distributed in segmented form amongst the various tively) which control the connection of the required
+storage modules of the system memory. Each processor “register' of the stack to the input and output paths
+module is provided with a plurality of so-called capabil thereof.
+ity registers each arranged to hold a capability word re        The processor unit is organised for parallel process
+lating to a memory segment to which the processor re ing although for ease of presentation the various data
+quires access in the performance of the current pro paths have been shown as a single lead in FIGS. 2a and
+cess. Such an arrangement is disclosed in our co 2b. The processor module is provided with a so-called
+pending application Serial No. 146,334.                       main highway MHW, a store input highway SIH and a
+  Two of the capability registers in such a processor store output highway SOH. Each of these highways is
+module are used to hole capability words relating to a 25 typically of 24 bits corresponding to a memory word
+so-called master (or system) capability table and a so and the store highways SOH and SIH have associated
+called reserved capability pointer table. The master ca therein control signal highways SOHCS and SIHCS.
+pability table has one entry for each segment in the sys These control signal highways are used to carry control
+tem memory and each entry includes information de signals between the processor module and the memory
+fining the base and limit addresses of the segment to 30 and they include a so-called timing wire and for high
+which it relates. Thus the master capability table pro way SHCS store access (read, read-write etc.) control
+vides information on the location of the block in the         wires. Although the memory is not shown in FIGS. 2a
+memory for each information segment. Obviously some and 2b it is to be assumed that highways SIH and SOH
+of the information segments will be common to a num are connected to the system memory over the system
+ber of processes while others will be particular to a spe 35 intercommunication medium. Hence highways SIH and
+cific process. Each segment to which a process is re SOH, together with their associated control signal high
+quired to have access is recorded in the process's re ways SIHCS and SOHCS, collectively equate to a path
+served capability pointer table and each item thereof such as SH shown in FIG. 1.
+has two fields. The first field, the access code field, is 40 Associated with the various highways are a number
+used to define the type of access to the segment the of micro-program signal controlled AND gates such as
+process will be permitted, whereas the second field G2 (i.e. those gates which include a number 2 within
+holds a pointer, relative to the base address of the mas them). It should be realised that each gate in practice
+ter capability table, which defines the start of the entry will consist of a plurality such as twenty-four such gates
+of the segment descriptor for the particular segment. 45 one for each lead of the highway and these gates are ac
+   The present invention makes use of both an entry in tivated, by a signal from the micro-program control
+the master capability table and the access code in a re unit uPROG on the unreferenced input lead thereto, to
+served capability pointer table item to provide for the allow data on the various highways to be written into
+"trapping' of a process. Typically the master capability selected registers as required. AND gating, such as gate
+table entry will be marked when the memory segment 50 G4, is also provided at the output of the registers and
+to which it relates is being relocated whereas the access register stacks allowing selective connection of the var
+code of the relevant pointer item will be marked when ious machine registers to the arithmetic unit MILL or
+access to the particular memory segment is to be the machine highway MHW. Also shown in FIGS. 2a
+barred to the particular process only. Additionally, as and 2b are a number of OR gates (i.e. those gates which
+mentioned previously, resource capability pointers are 55 include a number 1 within them) and these gates are
+also held in a process's reserved capability pointer table provided for isolation purposes allowing two or more
+and the embodiment of the invention provides for the signal paths to be ORed into one input path.
+resetting of a capability register when any one of the          Accumulator Stack (ACC STK)
+above three conditions are detected.                            This scratch-pad unit is used to provide a number of
+   Consideration will now be given, with reference to 60 accumulator registers, (ACCO-ACC7) which may also
+the accompanying drawings, to a processor module be used as mask registers or modifier registers, and the
+suitable to the incorporation of one embodiment of the required one of the registers is selected by the code ap
+invention.                                                    plied to leads RSEL either by micro-program control
+        PROCESSOR MODULE DESCRIPTION
+                                                              unit PROG or by a register selection field or modifier
+                                                           65 select field in the instruction word in register R. Also
+   FIGS. 2a and 2b show the relevant details of a proces      included in the accumulator stack ACC STK is a group
+sor module incorporating one embodiment of the in of so-called hidden registers which include a sequence
+vention. The processor module includes an instruction control register (SCR), an interrupt accept register
+                                                      3,771,146                            8
+                         7
+(IAR), a machine fault indicator register (MFI) and a          ing line in both the base stack and the limit stack. Each
+dump-stack-push-down-pointer register (DSPP) as             location in this stack stores the descriptor limit address
+shown in FIG.3. The significance of these hidden regis      and the permitted access code of the relevant capabil
+ters will be seen later. The required register for any op   ity word.
+eration is selected by passing a selection code to the se       Result Register (RES REG)
+lection unit SELA (FIG. 2a) associated with the accu            This  register is fed from the processor module main
+mulator stack.                                              highway MHW and may be used to temporarily store
+    Base Register Stack (BASE STK)                          the result of an arithmetic operation.
+   This scratch-pad unit is used to provide a number of O Operand
+                                                                This
+                                                                            Register (OPREG)
+                                                                      register   may be fed from either the main high
+"half" capability registers for the processor module. It way MHW or the             memory output highway SOH and it
+was stated above that the memory protection system
+incorporates a number of so-called capability registers      is  used  as  an intermediate    register in the formation of
+each of which holds a capability word consisting of a a store access address. The offset address of an instruc
+segment descriptor(base address and a limit address) 15 tion word is fed into this register when an instruction
+and a permitted access type code. The base register word is fetched from the memory.
+stack holds the base addresses for all the capability reg       Instruction Register (IR)
+                                                                This  register is used to hold the control bit fields of
+isters. FIG. 4 on the left-hand side shows the half capa an instruction
+bility registers held in this stack and they consist of The significanceword           when fetched from the memory.
+                                                                                   of the various fields will be discussed
+eight so-called "work-space' capability registers 20
+WCRO to WCR7 and a number of so-called 'hidden'              later in the execution of a specific instruction.
+capability registers. Only three of the hidden capability        Micro-Program Control Unit (PROG)
+ registers are shown (DCR, NICR and MCR) in FIG. 4 theThis            unit controls the sequencing and performance of
+                                                                   operations    of the processor module in the execu
+ as these are the only hidden capability registers which
+ are of importance in the understanding of the present 25 tion     of each instruction step. The unit issues timed and
+                                                              sequenced equipment control signals (uPECS) to (i)
+ invention. The workspace capability registers are se activate
+ lectable by selection code fields in the machine instruc gates by as     way
+                                                                             required the various register input AND
+                                                                                of suitable signals on the unreferenced
+ tion register IR or by micro-program control signals
+ whereas the hidden capability registers are only select input leads to those gates, (ii) control the operation of
+ able by special instruction word control codes and by 30 the      arithmetic unit MILL (leads AUS), (iii) control
+                                                              the operation of the comparator COMP (lead CLS)
+ micro-program generated selection codes.
+     The work-space capability registers are used to hold and      (iv) control the setting of some of the primary indi
+ capability words which define some of the working and the(leads
+                                                              cators              PIC), the secondary indicators (LSIC)
+                                                                         fault indicators (FIC). The micro-program
+ areas of the memory to which the currently active pro
+  cess being executed by the processor module requires 35 control       unit is also able (i) to select various registers for
+  access. One of the work-space capability registers is use        in a micro-sequence over leads CRSEL and RSEL,
+  used to hold a capability word which defines a "re (ii)          to increment the contents of the memory input reg
+                                                              ister SDIREG (lead --1S) and (iii) to generate memory
+  served capability pointer table' and by convention the access        control codes on the highway SIHCS and to acti
+  reserved capability pointer table for the current pro vate that
+  cess is defined by the segment descriptor held in 40 condition highway's  signals  are
+                                                                                        timing wire. Various control and
+                                                                                         generated within the rest of the
+  WCR6.
+     The hidden capability registers are used to hold capa processor        module and fed to the micro-program con
+  bility words which include segment descriptors which trol         unit PROG. These signals are shown as (a) leads
+  define the "administration" segments. Capability regis AUCS, MILL,
+                                                                          condition signals from the arithmetic unit
+                                                                        (b)  leads CIS, condition and indication signals
+  ter DCR is the dump area capability register and the 45
+  word therein defines the segment into which the pa from            the comparator COMP, (c) leads ICS, indication
+   rameters of the currently running process are to be signals          from the primary and secondary indicator regis
+                                                               ters PIR and SIR, (d) leads FICS, indication signals
+  dumped when the operations on this process are sus from              the fault indicator register FIR and (e) lead
+   pended. Capability register NICR holds a capability
+   word whose segment descriptor defines a segment in SO OP=O, an indication signal from the zero detector ZD.
+   which is stored a pointer which defines the capability         Arithmetic Unit (MILL)
+   for the dump stack for the system interrupt handler performing This unit is a conventional arithmetic unit capable of
+   process which is to be accessed when an interrupt is ented over its        parallel arithmetic on the data words pres
+   forced by the trap detection circuit TD. Capability reg over                   two input ports. It's result is connected
+                                                                     the   main
+   ister MCR holds a segment descriptor for the segment 55 fined destination.     highway MHW to a micro-program de
+   in which the master capability table is located. The sig the MILL are defined      The actual operations performed by
+   nificance of all these segments and their segment de program control signalsbyAUpu.S.        the arithmetic unit micro
+                                                                                                      Certain condition sig
+   scriptors will be seen later when considering the de
+   tailed operation of the system in accordance with the nals,        such as overflow, are generated by the MILL and
+                                                                these are fed either to the primary indicator register
+   features of the invention.                              60
+      Each base address of a capability register indicates PIR or to the micro-program control unit uPROG (sig
+  (a) the store module (8 bits) in which the segment is           nals AUCS).
+  located and (b) the base or start address of that seg         Comparator (COMP)
+  ment within the storage module (16 bits).                     This unit is used to compare the address loaded into
+    Type Code/Limit Stack (TC/LMT STK)                     65
+                                                              the  memory-data-input register SDREG and the ac
+    This stack provides the other "half" of the capability    cess operations required, with the bounds (i.e. base and
+  registers and it is shown on the right-hand side of FIG. limit)    and permitted access code respectively of the ca
+                                                              pability word relevant to the memory access required.
+  4. Each capability register is formed by a correspond
+                                                     3,771,146
+                          9                                                                  O
+The condition indicating output signals CIS produced           are in the 0 state and inverter IZD, therefore, generates
+by the comparator are fed to the micro-program con         a 1 state (significant) signal on the micro-program con
+trol unit PROG. The significance of the comparator's       dition signal lead OP=O.
+function will be evident later.                              Trap Detector Circuit (TD)
+  Memory-Data-Input Register (SDIREG)                   5 This circuit consists of a simple two input NAND
+  This register acts as the "CPU-to-memory' or pro gate, as shown in FIG. 6a, which drives the TRAP indi
+cessor module output register and address data or cator MIS 11 of the secondary indicator register SIR
+working data for passage to the memory is assembled over lead TI. The NAND gate is fed with the two most
+in this register prior to its passage thereto over the significant bits on leads LIM MSB and LIM MSB-1 of
+memory input highway SIH.                                O the access type code field each time a capability regis
+  Primary Indicator Register (PIR)                         ter is used. Consequently lead TI will be in the O state
+  This register is used to hold eight primary indicators only when the before mentioned two bits are both in
+which require retention (in the process dump-stack) the l state. All other combinations of these two bits will
+when a process is suspended.                               produce a 1 state on lead TI causing the trap indicator
+Typically the primary indicators include:                5 bit to be set.
+  Bit O - Arithmetic result equal to zero                    Trap Interrupt Operation
+  Bit 1 - Arithmetic result less than zero                   As mentioned above the trap indicator circuit TD of
+  Bit 2 - Arithmetic result overflow                       FIG.2b monitors the two most significant bits of the ac
+  Bit 3 - Write inverse parity                             cess code field of each capability register as it is used
+  Bit 4 - Second group                                  2O and, upon detection therein of a trap condition, it
+  Bit S - Interface faults inhibit                         causes the TRAP indicator in register SIP to be set. The
+  Bit 6 - Halt                                             following table shows typically the significance of the
+  Bit 7 - First attempt                                    various  combinations of the two most significant bits of
+  Bits 8 to 23 - spare                                     the access code field of a capability word.
+  The first three indicators are affected by all data in- 25 Bit 22       Bit 23              Significance
+structions whereas the remaining five indicators are                               Active store block (segment)
+manipulated by the internal hardware and certain con                                 capability
+                                                                             O     Passive store (backing) block
+trol programs.                                                                        (segment)
+  Secondary Indicator Register (SIR)                                               capability
+  This register is used to hold indicator bits mostly for 30          O            Resource capability
+                                                                      O      O     Null capability
+use internally by the micro-program control unit
+ uPROG. Typically this register includes arithmetic op           From the above it can be seen that in all cases of bit
+eration, fault control and interrupt indicators and in combination, other than both in the 1 state, activity
+cludes two bits (bits 11 and 14) which are important to 35 outside the normal currently running process is re
+the embodiment of the invention. Bit 11 indicates the          quired. In the case of the access code defining (i) a
+occurance of a "TRAP' condition whereas bit 14 is the          backing store segment (bits 10) a "page changing" pro
+interrupt indicator. Both these indicators are shown in cess is required, (ii) a resource (bits 01) an input/out
+FIG. 6a will be referred to in more detail later.              put handler process is required whereas (iii) a null ca
+   Fault Indicator Register (FIR)                              pability requires reference to a trap handler process as
+   This register is used to hold fault condition indicators 40 the capability register use may be in error. It will there
+and typically may have parity, capability-field-violation fore be appreciated that the detection of a "trap' con
+and capability-access-field-violation indicators in dition whenever a capability register is used necessi
+cluded therein. The four most significant bits of this tates the execution of a "change-process' micro
+register are used to store the identity of the capability sequence suspending the current process and switching
+register in use when a capability related fault condition 45 into a "trap handling' process.
+is detected. These four bits (MIF 20 - 23) of register           FIG. 5 shows, broadly, the operations performed for
+FIR are shown in FIG. 6b and are also used when the            each processor module instruction requiring access to
+“trap" indicator is set. Most of the contents of the fault information not currently resident in the processor
+indicator register are written into the machine fault in 50 module itself. The operation of the processor module
+dicators register MFI in the ACC STK after a fault or of FIGS. 2a and 2b in accordance with the steps of FIG.
+trap indication occurs.                                        5 will now be considered.
+   Zero Detector Circuit (ZD)                                    In the first step (A) the information, instruction
+   This circuit monitors the contents of the operand reg word, produced by the memory on the highway SOH is
+ister OPREG (FIG. 2b) as it is used and produces a sig 55 fed into the instruction register IR (FIG.2b) by activat
+nificant output condition, on lead OP=O, to the micro ing, under micro-program control, gate G1. Gates G2
+program control unit PROG when the contents of the and G3 are also activated under micro-program control
+register are all zero's. The circuit diagram of the zero at this time allowing the instruction word address offset
+detector circuit is shown in FIG. 11 and it consists of        section to be fed into the operand register OPREG.
+four NOR gates GZD1 to GZD4, each having six inputs 60 In the second step (B) the external address required
+and a four input NAND gate GZD5 and an inverter is constructed and this is performed by adding the off
+IZD. The twenty-four bit output of the operand register set address in the operand register to the base address
+on lead OPREGO/P are partitioned into four groups of of a particular capability register specified in the in
+six bits each and each group is connected to a NOR struction word. This is achieved by the micro-program
+gate. Hence NOR gates GZD1 to GZD4 produce "1" 65 control unit a PROG (i) applying to leads CRSEL the
+state output when all limits thereto are in the "0" state. particular capability register selection code, (ii) open
+Consequently NAND gate GZD5 produces an 0 state ing gates G4 and G5, (iii) instructing the MILL to per
+output only when all outputs from the operand register form an add operation and (iv) opening gate G6.
+                                                    3,771,146
+                           11                                                             12
+Thereafter the result (address offset plus segment base       bodiment of the invention is that disclosed in co
+address) may be recirculated by way of the MILL with    pending application Serial No. 76.464 and the inter
+gate G7 activated after selecting (using leads RESEL)   rupt handler is organised to use the interrupt accept
+an instruction word defined modifier accumulator if     word to define the reason for entry. The trap accept
+address modification is called for.                   5 bit is set by opening, under micro-program control,
+  The presentation of capability register selection in gates G7 and G10 and instructing the MILL to set to
+formation on leads CRSEL in step B is also active upon 1 the "trap accepted' bit after selecting in the ACC
+the other half of the capability register allowing the STK the IAW accumulator.
+trap detector circuit TD to monitor the two most signif.    Step 4 Dump Current Process Programs
+icant bits of the access code (TC) and step C of FIG. O At this stage the processor module has effectively in
+5 shows this function. If the access code defines a mem   hibited the operations of the process it was performing
+ory segment steps D, E and F are performed checking prior to the generation of signal TI. It is now necessary
+the type of access required, checking to see if the ad for the processor module to perform a "change pro
+dress formed still lies within the bounds of the required cess' operation to preserve in the system memory the
+Negment and checking to see if the access required is S. current state of the parameters for the inhibited pro
+compatible with that permitted before accessing the Cess.
+memory and performing the instruction function (step        It was mentioned previously that each process is pro
+G). If any of the checks of steps D, E and F fail then vided with a so-called dump stack PDS (as shown in
+the fault indicator is set and the processor module FIG. 8) and the segment in which it resides is defined
+changes process to a fault handler process.                 by the segment descriptor in the dump capability regis
+  The test, on the most significant two bits the access ter DCR. Each dump-stack contains information about
+code in the capability register specified by the instruc the state of the currently running process, such as the
+tion word, performed in step C of FIG. 5, if unsuccess values of the reserved capability pointers (RCP) corre
+ful (lead n) will cause step T to be performed before 25 sponding to each of the work-space capability registers
+entering a "trap" micro-sequence. Step T is performed WCR0 to WCR5. These locations in the dump-stack
+by the clocked setting of bit 11 of the indicator register are loaded with the corresponding pointer whenever a
+MIS as shown in FIG. 6a under the control of the trap capability register is loaded as is shown in our co
+detector TD.                                                pending application Serial No. 146,334. However, the
+   FIG. 7 shows the flow diagram of the trap micro 30 dump area segment is also used to store the contents
+sequence and this diagram will now be described with of the registers of the ACC STK and the pointers
+reference to the actions of the processor module of for the current process program code segment (capa
+FIGS. 2a and 2b. The setting of the "trap' indicator bility register WCR7) and the current processes
+MIS11 (FIG. 6a) causes the TRAP signal to be passed reserved segment pointer table (capability register
+to the micro-program control unit uPROG (FIG.2b) as WCR6) together with the value of the sequence con
+one of the indicator control signals ICS and the trap mi 35 trol register SCR, when the current process is
+cro-sequence is performed as follows.                       changed (i.e. suspended). FIG. 8 shows the layout
+   Step 1 Set MFI (20–23)                                   of  the process dump area and, during the "change
+   In this step the micro-program control unit PROG process'          sequence, step 4 of FIG. 7 causes the
+(FIG. 2b) opens gate G8 causing the four most signifi 40 contents of each of the accumulators ACC0 to
+cant bits of the fault indicator register FIR to be set to   ACC7 and the current setting of a scheduler timer reg
+the current state of the CRSEL leads. It will be recalled
+that the "trap" indicator is set while step B of FIG. 5 isterister
+                                                                   STR and the contents of the primary indicator reg
+                                                                    PIR to be dumped. The actual operations per
+is in progress and consequently the CRSEL leads will
+be carrying the address code of the capability register 45 formed
+                                                             require:
+                                                                       in the processor module of FIGS. 2a and 2b
+                                                                        (i) the forming of the first dump area address
+defined by the instruction word whose segment de by selecting
+scriptor relates to the instruction word offset address. and accessing(over        leads CRSEL) the DCR base address
+FIG. 6b shows this operation as gates G8/20, G8/21, G12, G13 and G14memory     the          (by opening gates G5, G11,
+                                                                                    with the usual bounds/access check
+G8/22 and G8/23 (functionally shown in FIG. 2b as arrangements)                 at the dump-stack, the dump-stack ad
+gate G8) are opened by the micro-program produced 50 dress is also saved,
+trap-set signal TSS and toggles MF 20 to 23 are opening gates G15 inat the             the
+                                                                                           result register RES REG (by
+                                                                                            same time as gates G11 are
+thereby set according to the states of the CRSEL code. opened) for successive dump-stack                accesses and (ii)
+   Step 2 Load MFI
+   In this step, under micro-program control, gates G9 G7, G11 and G14) for each entry in the ACC(over
+                                                             the  passage   of the relevant register contents
+                                                                                                                STK
+                                                                                                                   gates
+                                                                                                                    with
+and G10 of FIGS. 2a and 2b are opened and leads 55 the updating by one of the access address (opening
+RSEL are conditioned with a code defining the fault in gates G16 and G7 and instructing the MILL to perform
+ dicators accumulator MFI (FIG. 3) in the accumulator
+stack ACC STK. Consequently the contents of the fault an         add 1 operation). The above (i) and (ii) referenced
+                                                             operations    are repeated for the storage of accumulators
+ indicator register FIR (and more particularly bits 20 to ACC0 to ACC7             and for the scheduler timer register
+23 thereof) are written into accumulator MFI.             60 STR in the ACC STK in the dump-stack. The primary
+   Step 3 Force Trap Bit                                     indicators are loaded into the dump-stack by opening
+   This effectively records that the trap indicator has gates
+ been set so that the interrupt handler process will sub stack G17        and G11 and G14 after addressing the dump
+                                                                     at the next location.
+ sequently know the reason for entry therein. The inter         Also located in the dump-stack is a push-down
+ rupt handler process makes use of an interrupt accept 65 pointer      PDP and the value in this location relates to the
+ word accumulator IAW (FIG. 3) in the ACC STK and              remaining area "below' it in FIG. 8 which is operated
+ one bit of this accumulator is reversed for use exclu         as "push-down' portion. The value in the push-down
+ sively as a "trap accepted" bit. In actuality the normal      pointer defines the currently accessable three word
+ interrupt system of the processor module of the em
+                                                    3,771,146
+                             13                                                          14
+"packet" in the push-down portion and it is an offset cept word register IAR in the ACC STK in step 3
+ from the base of the dump area segment. The push above. It will be noted that the contents of this register
+ down pointer PDP is written into the "dump-stack are not involved in the dumping (step 4) and undump
+ push-down pointer' register DSPP (FIG. 3) in the ACC ing (step 7) operations and step 3 was used to load this
+ STK when the corresponding process is selected for register with a condition which will be detected by the
+ processing by the processor module. This pointer regis interrupt handler process as being definitive of a trap
+ ter DSPP is then used when "calling' or "returning" condition detection. It will, also be recalled that the
+from nested subroutines and the nexting of these sub fault indicator register FIR and the fault indicator accu
+ routines is provided for by the three word packets of mulator MFI are not involved in the change process op
+the push-down portion of the dump-stack. Each packet O erations and consequently they are currently register
+contains the pointers for capability registers WCR7 and ing in bits 20-23, the stack address code for the capa
+ WCR6 together with the relativised value of the SCR. bility register used when the trap condition was de
+ Hence step 4 of FIG. 7 also accommodates the loading tected. These latter registration operations were per
+of the push-down stack pointer PDP in the dump area formed in steps 1 and 2 of FIG. 7. Consequently the in
+with the corresponding value from the pointer register 15 terrupt handler process by reference to bits 20-23 of
+ DSPP.                                                       the fault indicator accumulator MFI may obtain the ad
+   Step 5 Access INT Handler DS Pointer                      dress of the capability register used.
+   In a normal "change process' sequence the proces             This address of course also may be used to compute
+sor module will be provided, in the corresponding in the location in the dump stack of the suspended pro
+struction word, with the offset down the reserved capa 20 cess at which the reserved capability pointer for that
+bility pointer table of the process which is used to ac capability register is stored. Consequently by reading
+cess the master capability table to obtain the dump this pointer word and testing the access code thereof
+stack for the process to which the change is to be made. the interrupt handler process may ascertain the reason
+ However, in the current situation the change process for the process being trapped. If the segment to which
+sequence is automatic (i.e. as a result of the setting of 25 access is required resides in backing store a disc han
+the trap indicator) and consequently the dump-stack dler process will be scheduled to page into the memory
+for the interrupt handler process must be obtained in the required segment. If the access code defines a re
+a different manner. Reference to FIG. 8 shows a dedi         source capability an input/output handler process will
+cated normal interrupt block NIB which is particular to 30 be scheduled to handle the required action whereas if
+the processor module and is referred by the segment the access code is a "null' capability the process will
+descriptor in the normal interrupt capability register be suspended waiting for the freeing of the segment in
+NICR. This block is arranged to include an interrupt question.
+handler process dump-stack pointer IDAP together                From the above it can be seen that the invention pro
+with the permitted access type code therefore.               vides a mechanism for the entry into an interrupt han
+   Step 6 of FIG.7 uses this pointer to obtain the entry 35 dling process each time a capability register is used
+in the master capability table which stores the bounds which has an access code whose most significant bits
+and sum-check codes for the interrupt handler process are other than 11. It now remains to show how these
+dump-stack. The actual operations performed are the bits may be loaded with a code other than 11.
+same as those used for any "load capability register"          Load Capability Register Instruction Operation
+operation (which will be described later) with the ex 40 As mentioned previously all capability registers are
+ception that the micro-program unit uPROG, (FIG. 2) loaded in accordance with the methods described in
+defines the dump capability register DCR over its selec our co-pending application Serial No. 146,334 and
+tion leads CRSEL, into which the segment descriptor          FIG. 9 shows diagramatically the operations per
+is to be loaded. The actual loading of the dump-stack 45 formed by a load capability register instruction.
+capability register DCR will be performed in step 6 of         The drawing of FIG. 9 is provided with ten bracketed
+the flow diagram of FIG. 7.                                  references and these indicate the ten basic steps of the
+   Step 7 Undump IHP Params                                  load capability register micro-sequence a flow diagram
+   In this step the newly loaded dump-stack capability of which is shown in FIG. 10. The various steps of FIG.
+register DCR, which now of course contains the dump 10 are referenced S1 to S10 to correspond to the refer
+stack segment descriptor of the interrupt handler pro 50 ences of FIG. 9 whereas the three steps which are spe
+cess, is used to copy the various parameters of this pro cific to the embodiment of the invention are referenced
+cess into the relevant registers of the processor module. SX, SY and SZ.
+FIG. 8 at the bottom shows the layout of the dump area         The following description will be sectionalised in ac
+segment. Each of the capability registers WCR0 to 55 cordance with the steps of FIG. 10 and reference to
+WCR7 is loaded by using the relevant dump-stack FIGS. 2a, 2b and 9 will frequently be made.
+stored pointer to access the master capability table in        Steps S1 - Read IW from CRCB
+a similar manner to that used for a "load-capability           In this step the program block CRCB (FIG. 9) of the
+register" instruction and the absolute value of the SCR current process is accessed for a read operation at the
+will be derived when it is loaded by the addition of the 60. next instruction word by an address defined by the set
+base address value from WCR7.                                ting of the sequence control register SCR relative to be
+   Enter Interrupt Handler Process                           base address of capability register WCR7. In FIGS. 2a
+   Upon the completion of the operations of step 7 of and 2b these operations are performed under control of
+FIG. 7 the operations of the change process to the in the micro-program control unit PROG by (i) select
+terrupt handler process are complete. However it is 65 ing the SCR, using leads RSEL, (ii) selecting the capa
+necessary for the interrupt handler process to be aware bility register WCR7, using leads CRSEL, (iii) activat
+of the interrupt accepted and this is achieved by refer ing gates G18 and G7, (iv) instructing the arithmetic
+ence to the code which was placed in the interrupt ac unit MILL to perform an add operation, (v) opening
+                                                     3,771,146                          16
+                             15
+gates G11, (ivi) activating the comparator COMP for address of the word required in the dump-stack (iv) ac
+access and limits tests and (vii) activating gates G14 tivating the MILL for an add operation, (v) activating
+and highway SIHCS. Path (1) of FIG. 9 shows this step. gates     G 11 and G14 and (vi) accessing the memory for
+                                                           a write operation. The subsequent write operation in
+  Step S2- I/PIW into IR
+  This step controls the gating into the processor mod volves the contents of the operand register which are
+ule of the instruction word accessed in step S1. The mi applied over gates G4, G11 and G14 to the store.
+cro-program control unit uPROG (FIG. 2b) will open           Step SX - AC = Non-Mem?
+gates G1, G2 and G3 when the timing wire on the mem section  In this step the access code fed in step S6 into the TC
+ory output control signal highway SOHCS indicates                   of the limit stack LIM STK is tested to see if it
+that the instruction word in on the memory output O icant  relates to a non-memory capability (i.e. the most signif
+highway SOH. The instruction word read is shown at               bits are 11). This operation is performed by acti
+the top of FIG. 9 and it consists of a number of adminis   vating  leads CRSEL with the code in the CRL field of
+tration fields (bits 10 to 24) and an address offset field the instruction word and testing the state of lead TI. It
+(bits 1 to 9)A. The administration fields define (a) bits will be recalled, by reference to FIG. 6a, that the signal
+10 - 12 (CRPT) the capability register WCR7 which 5 TI is produced when the trap detector TD detects a
+relates to the reserved capability pointer table (b) bits trap condition (i.e. the most significant two bits of the
+13 - 15 (MOD) the accumulator to be used as an ad              access code are not 11). It should be realised that the
+dress modifier register, (c) bits 16 - 18 (CRL) the ca trap indicator          in the secondary indicators is not set as
+pability register to be loaded, (d) bits 19 - 23 (LDCR) 20 these     indicators are not clocked (on lead CIK) at this
+                                                              time. If signal T1 is in the 1 state step SY is performed.
+the function code which in this case defines the "load
+capability register" instructor and (e) bits 24 (S) the         Step SY - Zeroise CRX
+direct or store operation bit. Path (2) of FIG. 9 shows          In this step capability register WCRX is again se
+this step.                                                    lected  and gates G19 and G20 in FGS. 2a and 2b are
+   Step S3 - Select PRCPT                                     activated    under micro-program control. This causes
+    In this step the micro-program control unit uPROG 25 zero (the current output from the MILL on the high
+in FIG. 2a conditions the CRSEL leads to select the           way MHW) to be written into both halves of the capa
+working capability register defined by the CRPT field bility register WCRX and the load capability register
+of the instruction word. This operation is shown by instruction
+                                                              the  access
+                                                                             micro-sequence is ended. Consequently if
+                                                                           code  as held in a reserved capability pointer
+path (3) in FIG. 9.                                        30 table of any capability is other than that of a memory
+    Step S4 - Address RCP
+    In this step the reserved capability pointer item ad segment         the entire contents, including the access code,
+ dress is formed and path (4) in FIG. 9 indicates this op of      the corresponding capability register as it is to be
+ eration. This micro-program control unit uPROG acti loaded            is reset to zero.
+                                                                 If the result of the test in step SX was no (i.e. lead
+ vates gates G4 and G5, instructs the MILL to perform 35 TI-O)         step S8 is performed.
+ an add operation and activates gates G11 and G14. At            Step S8 - Read MCT S-CX Entry
+ the same time as gate G14 is actuated a read code is ap
+ plied to highway SIHCS and the timing wire is acti theInmaster     this step the first word of the three word entry in
+                                                                            capability table is read. This operation is de
+ wated.
+    Step S5 - Select CRX                                       picted in  FIG.9  by path 8 and involves (i) the selection
+    In this step the micro-program control unit applies 40 of capability register MCR (ii) the actuation of gates
+ the CRL field information to leads CRSEL of FIG. 2a           G4 and G5 (iii) the actuation of the MILL for an add
+  to select the capability register (WCRX in FIG. 9) to operation
+                                                               under
+                                                                           and (iv) the actuation of gates G11 and G14
+                                                                      micro-program     control. When the store read op
+ be loaded. Path (5) in FIG. 9 depicts this step.              eration  is  complete  gates  G2 and G3 are opened and
+     Step S6 - Read RCP                                    45 the sum-check word is fed into the operand register.
+     In this step the reserved capability pointer item word Gate G15 is also opened at this time to save the MCT
+ (i.e. capability word access code and reserved capabil         address.
+ ity pointer address offset) is fed into the processor          It was mentioned previously that each entry in the
+ module from the memory output highway SOH. The               master   capability table (MCT in FIG. 9) is formed of
+ access code is fed into the TC section of the limit stack 50
+ LIM STK at the location selected in step S5 whereas three words. The first is arranged to be a sum-check
+ the whole word including the access code and the code               relevant to the other two words of the entry.
+ pointer address offset is fed into the operand register cates torelocation
+                                                              When                  occurs the relocating process indi
+                                                                         the rest of the system that access to the seg
+ OPREG. These operations, depicted in FIG. 9 by path ment involved              is temporarily to be suspended by writ
+ (6), are performed under micro-program control by ac 55 ing into the sum-check           code word location of the mas
+ tivating gates G2, G3 and G19 of FIGS 2a and 2b when ter
+ the timing wire of the control signal highway SOHCS the sum-check code S-CXanforallthe
+                                                                   capability  table  entry       zero's word. Hence as
+                                                                                                     segment descriptor
+ is activated.
+    Step S7 - Dump RCP                                        to  be  loaded  into  register WCRX   is currently resident
+    In this step, depicted by path (7) of FIG. 9, the re 60 in   the operand register, step SZ is used to test to see if
+ served capability pointer, resident in the operand regis the segment is being relocated.
+ ter OPREG (FIG. 2b) is copied into the current pro              Step SZ - S-C=O?
+ cesses dump-stack at the location reserved for the ca           The   micro-program control unit puPROG (FIG. 2a
+  pability register to be loaded. This operation is per         and 2b) tests the state of lead OP=O from the zero de
+                                                           tector circuit ZD to see if the sum-check code is zero.
+  formed under micro-program control by (i) selecting, 65 The
+  over leads CRSEL, the process dump-stack capability it willzero    detector circuit ZD is shown in FIG. 11 and
+  register DCR, (ii) activating Gates G5, (iii) generating O/P are inseen
+                                                                  be       that if all the inputs from the OPREG
+                                                                      the 0 state NOR gates GZD1 to 4 will all pro
+  an offset address code on leads GOS defining the offset
+                                                    3,771,146
+                          17                                                         18
+duce 1 state outputs causing a 0 state output from          stacks and the micro-program control unit. Reference
+NAND gate GZD5 and consequently a 1 state output            to Chapter 16 of "Semi-conductor Memories' edited
+on lead OP=O. If any one or more of the OPREGO/P            by Jerry Eimbinder and published by John Wiley &
+inputs are at 1 the NOR gate upon which it is termi         Sons Inc however provides information on typical loca
+nated will produce a 0 state output which causes a 1        tion (or line) addressable random access memories ide
+state output from gate GZD5 and consequently a 0            ally suited to the fabrication of scratch-pad memory
+state condition on lead OP=O.                               stacks. Chapter 14 of the same publication provides in
+  If lead OP=O is in the 1 state step S7 is performed be    formation on the fabrication of a micro-program con
+fore exiting from the load capability register micro        trol unit using read-only memory elements.
+sequence. However, if lead OP=O is in the 0 state step         What we claim is:
+S9 is performed.                                                1. A data processing system including a memory, in
+  Step S9 - Read MCT BX Entry                                 which information is stored in segments at least one
+  In this step, shown by path 9 in FIG. 9, the base ad        processor unit arranged to co-operate with said mem
+dress of the master capability table entry is read into       ory and provided with at least one capability register,
+the base half of the capability register stack at the loca 15 used to store a capability word which includes a seg
+tion defined by the CRL code field of the instruction ment descriptor indicative of the base and limit ad
+word.                                                       dresses of a particular memory segment, said capability
+  Step S10 - Read MCT LX Entry                              register being referenced each time a memory access
+  In this step, depicted by path 10 in FIG. 9, the limit    operation relevant to said particular memory segment
+address of the master capability table entry is read into   is performed by said processor unit, said processor unit
+the limit half of the capability register (WCRK) to be      further including a program interrupt actuating means
+loaded. This step completes the operation of loading      which when activated causes the processing of the cur
+the capability register.                                  rent program to be suspended and the processing of an
+                 CONCLUSIONS
+                                                          interrupt  handling program to be commenced, and said
+                                                       25 processor unit further provided with (a) capability reg
+  From the above it can be seen that the invention has    ister restoration arrangements operative to load at least
+provided a mechanism which forces entry into an inter part of said capability register with a discrete charac
+rupt handler process when a capability register loaded teristic code and (b) discrete characteristic code detec
+with a discrete code (i.e. all zeros) is used. The mecha 30 tion means operative to monitor the information con
+nisms for loading the capability register with the dis tent of a capability register each time it is used and to
+crete code are (i) when the sum-check code of the mas       activate said interrupt actuating means upon detection
+ter capability table is zeroised or (ii) when the access of said discrete characteristic code in said part.
+code of the capability for the process is other than a        2. A data processing system as claimed in claim 1 and
+memory segment indicating code. The first case allows 35 in which said memory includes a first information seg
+the trapping of all processes having reference to the ment, holding a reserved pointer table particular to a
+segment (e.g. when that segment is to be relocated) currently active process under execution by said pro
+whereas the second case can be used to selectively trap cessing unit, and a second information segment having
+a single process (i.e. the most significant two bits of the an entry for each system resource, and each item in
+access code are 0 0) or to trap the process ready for 40 said reserved capability pointer table defines a system
+entry into a resource handling process or the like re resource to which the process is permitted access, each
+quiring access to equipment external to both the pro item taking the form of a pointer relative to the base of
+cessor module and the store modules.                        a master capability table containing an entry for each
+  A single hazard still, however, remains in relation to memory segment and a permitted access code defining
+memory segment relocation. This is because one or 45 the system resource type and the mode of access to be
+more processor modules may have loaded one of their permitted by said active process to the system resource,
+capability registers with the capability for the particular and said processor unit includes first trap condition de
+segment prior to the relocation decision. This situation tecting means responsive to access codes defining non
+may be accommodated by the segment relocating pro memory segment system resources.
+cess causing an interrupt to be applied to all these pro 50 3. A data processing system as claimed in claim 2 and
+cessor modules. Upon entry into the interrupt handler in which said processor unit includes second trap con
+each processor module may be returned to the process dition detecting means responsive to a predetermined
+interrupted. It will be recalled that each change process trap characteristic condition in the master capability
+operation involves the reloading of the workspace ca table entry corresponding to said particular memory
+pability registers using the reserved capability pointer 55 segment.
+in the dump stack of the process changed to. Conse            4. A data processing system as claimed in claim 3 in
+quently the above mechanism ensures that already which said first or second trap condition detecting
+loaded capability registers are effectively overwritten means when activated cause said capability restoration
+by zero.                                                    arrangements to be operative.
+   In the above description various items of equipment 60 5. A data processing system as claimed in claim 4 and
+have been referred to. Reference to "Understanding in which each master capability table entry which re
+Digital Computers' by Paul Siegel published by John lates to a memory segment comprises two parts, a first
+Wiley & Sons : New York and London and "Digital part which holds the segment descriptor of the corre
+Computers, Components and Circuits" by R.K. Rich sponding memory segment, and a second part defines
+ards published by Van Nostrand & Company Inc : New 65 a segment descriptor check code having a form which
+York will provide typical examples of equipment suit is normally significant of the base and limit memory ad
+able for use in the block elements shown in the draw        dresses in combination and arranged to be overwritten
+ings with the exception of the scratch-pad memory with said predetermined trap characteristic condition
+                                                   3,771,146
+                            19                                                               20
+when access to the memory segment defined by said               in which said discrete characteristic code detection
+entry is to be suspended.                                       means monitors the two most significant bits of the per
+   6. A data processing system as claimed in claim 5 in         mitted access code stored in said capability register.
+which each master capability table entry which relates            8. A data processing system as claimed in claim 2 and
+to a memory segment comprises three data words the              in which a plurality of capability registers are provided
+first of which stores said segment descriptor check             in said processor unit together with means for record
+codes and said predetermined trap characteristic con            ing the identity of the capability register in use when
+dition is indicated by all zeros in said first word.            said discrete characteristic code is detected.
+                                                                                    sk   k   k    2t   k
+   7. A data processing system as claimed in claim 2 and
+                                                           O
+
+
+
+
+                                                           5
+
+
+
+
+                                                           25
+
+
+
+
+                                                           35
+
+
+
+
+                                                           40
+
+
+
+
+                                                           45
+
+
+
+
+                                                           50
+
+
+
+
+                                                           55
+
+
+
+
+                                                           60
+
+
+
+
+                                                           65
+
