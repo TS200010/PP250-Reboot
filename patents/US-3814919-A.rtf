@@ -1,0 +1,1169 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red255\green255\blue255;\red78\green78\blue78;
+\red117\green117\blue117;\red47\green103\blue243;\red98\green98\blue98;\red249\green249\blue249;\red229\green229\blue229;
+}
+{\*\expandedcolortbl;;\cssrgb\c20000\c20000\c20000;\cssrgb\c100000\c100000\c100000;\cssrgb\c38039\c38039\c38039;
+\cssrgb\c53333\c53333\c53333;\cssrgb\c23529\c50196\c96471;\cssrgb\c45882\c45882\c45882;\cssrgb\c98039\c98039\c98039;\cssrgb\c91765\c91765\c91765;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Description\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 \cb3 United States \ul Patent\ulnone  1 Repton et al.\cb1 \
+\cb3 [ June 4, 1974 1 1 FAULT DETECTION AND ISOLATION IN A DATA PROCESSING SYSTEM [75] lnventors: Charles Samuel Repton, Wooburn Green; Peter Charles Venton; Kenneth James Hamer Hodges, both of Wimborne. Dorset, all of England [731 Assignee: Plessey Handel und Investment A.G., Zug, Switzerland [22] Filed: Mar. 1, I972 [21] Appl. No; 232,463\cb1 \
+\cb3 Primary E.wminerMalcolm A. Morrison Assistant E.mminerDavid H. Malzahn Attorney, Agent, or FirmBlum, Moscovitz. Friedman & Kaplan 1571 ABSTRACT A fault interrupt system is arranged, upon the detection of a fault to cause a processor in which the fault is detected to enter a fault check-out routine. Successive fault conditions detected while performing the fault check-out routine causes re-entry into that routine. A faulty processor is therefore, trapped within the fault check-out routine. Additionally the detection of a fault causes the master capability register of the fault detecting processor to be overwritten with a capability defining a special capability table which is only relevant to the fault check-out programs. By this mechanism the faulty processor cannot. even under fault conditions, gain access to any storage areas outside those of the fault check-out programs. In the multi-processor/multi-storage module system of the PP250 a number of copies of the fault check-out programs and related workspace areas on a one copy per store module basis are provided together with a special capability pointer for each processor of the system and each entry into the check-out program is performed using a different store and therefore entry mechanism into the check-out programs copy so that intermittent processor faults or particular storage module faults will not maintain the processor indefinitely in the check-out program.\cb1 \
+\cb3 7 Claims, 7 Drawing Figures ,\ul gaset PATENTEDJIIII\ulnone  4 I974 SIIEEI I \ul BF\ulnone  6 24 \ul ACC STK\ulnone  1 ACC6 ACC7\cb1 \
+\cb3 Acc(r) SCR BASE PARITY BIT LIMIT PARITY BIT 5o BASE 5m \\rc/\ul Lm 5m\ulnone  1 TYPE wcno BASE CODE LIMIT wcm ro wcne wcm men\cb1 \
+\cb3 MCR\cb1 \
+\cb3 men PARTBASE wmeo WIRED SSCR ADDRESSHTYPECODE LIMIT PATENTEDJUH 4mm 3814.919 SHEET 5 [1F 6 PATENTEDJun 4mm 3,814,919\cb1 \
+\cb3 SHEEI 6 \ul BF\ulnone  6 6-005 C-ORSP DUMP STACK CA REG WORKSPACE CAPABJUTYREGIS A5 R CAP REG FAULT DETECTION AND ISOLATION IN A DATA PROCESSING SYSTEM The present invention relates to fault detection and handling arrangements for use in real-time data processing systems and is more particularly although not exclusively concerned with the use of such arrangements in so-called multi-processor systems.\cb1 \
+\cb3 In real-time processor environments, such as multiprocessor controlled telecommunication systems. it is vital to ensure that malfunctioning of one of the processor equipments is detected and compensated for as soon as possible. Both hardware and so-called software" (programming errors) faults must be detected and acted upon, however it is reasonable to suppose that the majority of software faults will be removed before the processor system becomes operational by the incorporation of thorough and comprehensive testing of the application and supervisor programs of the system prior to its operational cut-over. Those software faults which remain when the system becomes operational must be handled. when detected, as for solid and transient hardware faults.\cb1 \
+\cb3 In many prior art systems the detection ofa fault simply causes the equipment in which the fault has been detected to be rejected (i.e., placed off-line) from the on-line system. Hardware faults, however. may be classifted as solid" or transient and it is commonly accepted that significantly more transient faults than solid faults occur and indeed the ratio of transient to solid faults may be of the order of some live transient to one solid fault. The simple rejection of a faulty equipment from the operational system has the immediate effect of reducing the operational security of the remaining system by the removal of part or even all of its fail safe" redundancy. This is particularly relevant in socalled multi-processor systems where the removal of one of the processors severely restricts the spare capacity of the processor system. The rejection of the faulty equipment leaves the operational system in a critical state until some reconfiguration mechanism is activated to replace the faulty equipment by a spare equipment.\cb1 \
+\cb3 Upon detection of a fault it is vital in any multiprocessor system to ensure that the effects of the fault do not spread throughout the rest of the data processing system. The effects of the fault must be confined to as limited an area as possible so that correctly functioning equipment is not corrupted by the effects of the fault. It is therefore an object of the present invention to confine the functions of a faulty device to those functions which will be harmless to the rest of the online system when a fault is detected.\cb1 \
+\cb3 According to the invention there is provided a data processing system including a memory and at least one processor module. said memory providing storage for information relative to application and supervisory programs together with information relative to a fault check'out program characterised in that the processor module is provided with fault detection and handling means arranged upon detection of a fault condition to become immediately operative within the processor module to restrict the area of access permitted to said memory to that in which the information relative to said fault check-out program resides.\cb1 \
+\cb3 As stated above all hardware faults fall into one of two categories (i.e.. solid or transient) and therefore the detection of a fault on many occasions will leave the system in a critical state if the equipment (processor) in which the fault condition has been detected is immediately removed from the on-line system although the actual fault which had occurred could have been transient. It is therefore a further object of the invention to provide a fault interrupt mechanism for use in a data processing system which is arranged to discriminate between solid and transient faults.\cb1 \
+\cb3 According to an aspect of the invention there is provided an on-line data processing system including a memory having a plurality of storage modules and at least one processor module, said memory providing storage for information relative to application and supervisory programs together with a fault check-out program characterised in that a multiplicity of fault checkout program entry segments are provided each holding information defining a segment holding information relative to memory areas holding information relative to said fault check-out program and each of said entry segments is stored in a different one of said memory modules and a processor module is provided with fault detection means arranged upon detection of a fault condition to become immediately operative within the processor module to suspend said processor module from said on-line system by preventing access to the information relative to said application and supervisor programs and to use one of said entry segments to enter said fault check-out program to check-out all the functional operations of said processor module and ifa further fault is detected when performing said fault checkout program said fault detection means is arranged to cause said processor module to use another of said entry segments to re-enter said fault check-out program whereas if said fault check-out program is successfully performed said processor module is restored to said on-line system.\cb1 \
+\cb3 By the use of the above arrangements of the invention a faulty processor can be contained within an infnite loop using progressively all the fault check-out program entry segments in turn. However. if the original fault had been transient the processor will subsequently complete check-out and apply to re-enter the on-line system. Additionally a fault in a storage module which may manifest itself as a processor module fault will not maintain the processor module off-line as the check-out procedure will be eventually successful using another entry segment and check-out program copy in a storage module other than that which is faulty.\cb1 \
+\cb3 The invention has particular, although not exclusive. application to data processing systems incorporating memory protection systems typically of the type disclosed in our copening US. application Ser. No. 146,334 filed May 24, 197 1. In such systems a plurality of so-called capability" registers are provided in a processor module each of which is arranged to hold a segment descriptor defining the base and limit addresses of a particular segment of information in the systems memory. Two sets of such capability registers are used in the processor module described in copending US. application Ser. No. l46.334, filed May 24, l97l. one set being so-called work-space" capability registers whereas the other set are so-called "hidden" capability registers.\cb1 \
+\cb3 The work-space capability registers are used to hold segment descriptors which define some of the working areas of the memory to which the program currently being executed by the processor module is allowed access. All memory accesses are relative to the base address of a selected one of the capability registers and the actual access address is checked to ensure that it lies within the segment defined by that capability register. Additionally arrangements are provided to ensure that the type of access required is currently permitted.\cb1 \
+\cb3 The hidden capability registers hold segment descriptors which define administration segment areas in the memory used for example on dumping and interrupt operations. One of the hidden capability registers is a so-called master capability register referred to as MCR in copending U.S. Pat. application Ser. No. M6334, filed May 24, 197] The master capability register is arranged. under normal working conditions. to hold a segment descriptor which defines a so-called master capability table held in the memory. The master capability table consists of a list of entries one for each infora matron segment of the memory. Each entry consists of the base and limit addresses ofa memory segment and the master capability table has a corresponding entry for each segment of information for all the programs of the system in the memory.\cb1 \
+\cb3 According to a preferred embodiment of the invention the processor module includes a special register holding information defining one of said entry segments and each of said entry segments includes information relative to a segment descriptor defining a special capability table and said fault detection means are arranged upon detection of a fault condition to replace the contents of the master capability register with the segment descriptor defining said special capability table. said special capability table comprising a number ofentries one for each segment of information relative to said check-out program alone.\cb1 \
+\cb3 By the provision ofthe special register the master ca pability register. which is used on all work-space capability register loading operations. is loaded with 21 segment descriptor defining a special capability table as soon as a fault is detected. The special capability table has information relating to a very limited sub-set of the system programs typically only those segments relative to the fault check-out program alone. Hence the above arrangements have the effect of ensuring that the faulty processor module has its memory access abilities re stricted to the areas of the memory in which the fault check-out program resides as soon as a fault condition is detected. The segments relative to all the other programs (i.e.. applications and supervisor) cannot be accessed by the faulty processor module because of the memory protection arrangements provided by the capability register structure; therefore while the processor is performing the fault check-out program, corruption of those segments cannot occur. The fault checkout program is arranged to routine and test all the operations of the processor module and if it is completed successfully exit from this program may be to a startup supervisor program allowing the nominally faulty processor which has been suspended from the on-line system to rejoin that system. Hence a processor module which was subjected to a transient fault will not be prematurely rejected from the system. However if a solid fault had occurred the processor module will be confined harmlessly in the fault check-out loop previously referred to.\cb1 \
+\cb3 The invention, together with its features, will be more readily understood from the following description of one embodiment of the invention which should be read in conjunction with the accompanying drawings.\cb1 \
+\cb3 Of the drawings:\cb1 \
+\cb3 FIG. I shows a block diagram of a typical so-called multi-processor data processing system in which a processor module incorporating the invention may be employed.\cb1 \
+\cb3 FIG. 2a and 2b shows a block diagram of a processor module incorporating one embodiment of the inventlon.\cb1 \
+\cb3 HO. 3 shows the lay-out of a so-called accumulator stack of the processor module of FIG. 2.\cb1 \
+\cb3 FIG. 4 shows the lay-out of so-called capability register stacks within the processor module of FIG. 2.\cb1 \
+\cb3 HO. 5 shows a flow diagram of the operation performed in response to the detection of a fault condition in accordance with the specific embodiment of the invention while HO. 6 shows in block form particular data segments of the memory of the data processing system of FIG. 1.\cb1 \
+\cb3 GENERAL DESCRIPTION Referring firstly to FIG. brief consideration will be given to a typical multi-processor data processing sys tem organized on a modular basis. The system consists typically of a memory MEM. including a number of storage modules SMl to SMS, a number of processor modules PMl to PMS and a number of input-output modules lOMl to IOM3, which serve the peripheral units PU]. PU2 and PUA to PUN. together with an intercommunication medium lCM for memory to processor/input-output module intcrcommunication. The actual quantities of the various modules shown in FIG. I is typical only and they are not intended to be limiting to the present invention in any way. The inputoutput modules IOM] to lOM3 may be arranged to serve a single peripheral unit (such as PU!) or by way of a peripheral unit access switching network PUASN a plurality of peripheral units (such as PUA to PUN) on a time-sharing basis.\cb1 \
+\cb3 Each processor module may be connected by the intercommunication medium lCM to any of the storage modules SM] 5 and the memory MEM provides storage for all the application and supervisory programs and working and permanent data therefor. While performing a program a processor module is arranged to extend a demand to the intercommunication medium 1C M indicative of the memory address required and the intercommunication medium time-shares the access demands to the various storage modules. The inputoutput modules lOMl to lOM3 are also able to gain ac cess to the memory for the interchange of information between particular memory areas and the peripheral unitsv In a modular data processing system to which the invention is particularly, although not exclusively. related the memory is arranged on a segmented basis. All the program data, and the working and permanent data therefor. is distributed in segmented form amongst the various storage modules of the system. Each processor is provided with a plurality of so-called capability registers each arranged to hold a so-called segment descriptor defining a segment to which the processor requires access in the performance of the currently allocated program. Such an arrangement as already stated is described in our copending US. Pat. application Ser. No. 146,334. filed May 24. 1971. Two ofthe capability registers in such a processor module are used to hold segment descriptors defining a so-called master capability table and a so-called reserved segment pointer table respectively. The master capability table has one entry for each segment in the memory and each entry includes information defining the base and limit addresses of the segment to which it relates. Thus the master capability table provides information on the location within the memory for each information segment for all the programs and working and permanent data for the system. Obviously some of the information segments will be common to a number of programs while others will be particular to specific programs. Each program is provided with a list of segments to which it requires and can be allowed access and this list consists ofa series of pointers relative to the master capability table which are stored in a reserved segment pointer table associated with each program. The segment descriptor defining the program's reserved segment pointer table is loaded into one of the capability registers of a processor module each time that processor module commences performance of the particular program. The capability registers of a processor module are divided into two groups. one for administration purposes (including the master capability table register) and the second for current working program use. The second group of registers are called workspace capability registers and are used to hole segment descriptors defining segments which are to be used in the execution of the current program. For economy purposes there are considerably less workspace capability registers provided in a processor module than there are locations in the reserved segment pointer table and the processor modules are provided with a load capability register instruction. This instruction uses the reserved segment pointer table for the current program and the master capability table to derive from the master capability table a segment descriptor for the program as required in its execution.\cb1 \
+\cb3 A capability register is used each time a memory access operation is required. The base address ofa particular instruction word defined capability register is added to the instruction word defined address to define the absolute address ofa particular location within the required segment. The address for each store access is checked to ensure that it lies within the bounds of the required segment (i.e.. store absolute address defined segment base address and defined segment limit address) before memory accesses is permitted. If either of the above conditions do not occur a fault condition is immediately indicated.\cb1 \
+\cb3 lt was stated above that circumstances will arise where segments are common to a number of programs and certain programs may only be permitted to read the information therein while other programs may be permitted to both read and write to those segments. To accommodate this and other circumstances each reserved segment pointer has associated with it a socalled permitted access code defining the access operations permitted by the particular program. The permitted access code is placed in the capability register loaded with the segment descriptor and is used to check that each access to that segment by the processor module is of the permitted type. Again a fault indication is given if an access type violation occurs.\cb1 \
+\cb3 By the provision of the above mechanisms it can be seen that a very secure memory access system may be built into the organisation of a processor module and by the provision of other more normal fault detection mechanisms (such as parity) a processor module may be produced which has a very high degree of internal security. However as mentioned previously many faults which occur are of the transient type and it is one of the aims of the present invention to provide a fault interrupt mechanism which suspends the processor module from the on-line system when a fault occurs but will allow that processor module to return to the on-line system if it passes correctly through a fault check-out process.\cb1 \
+\cb3 For this reason each processor module of the system of FIG. I, is provided with a fault interrupt mechanism which upon detection of a fault condition causes the segment descriptor in the master capability register to be overwritten with a segment descriptor which defines a special capability table having a very limited number of entries. The segments specified by the special capability table are those which are relevant to a fault check-out program and a system rejoin program. By this arrangement the processor module in which a fault condition has been detected is immediately confined to a limited area of the memory (i.e.. that relative to the fault check-out program) and cannot therefore have any destructive effects on the rest of the working online system.\cb1 \
+\cb3 The segment descriptor for the special capability table is derived from the memory and each processor is provided with a special capability register which points to a particular area in a so-called fault block. In actuality a plurality of these fault blocks are provided each having an area particular to each processor module in different storage modules together with one copy of the fault checkout program in each storage module having a fault block. The gase address of the area within a fault block for a particular processor is arranged to be the same in each storage module in which it appears and the fault interrupt mechanism and the fault check-out program are arranged in such a manner that ifa fault is detected while they are in operation the processor module returns to the start of the fault interrupt sequence using the fault block from another storage module and therefore enters the fault check-out program using another copy thereof. By this arrangement if the fault which occurred was on a particular storage module rather than in the processor module the check-out program could be obeyed using a good storage module after an abortive attempt using the faulty storage module. Additionally if the fault which occurred in the processor module was solid" the faulty processor will be trapped harmlessly in the fault checkout routine sequentially accessing each storage module in turn in which the fault blocks are held.\cb1 \
+\cb3 Consideration will now be given with reference to FIGS. 2a. 2b, 3 and 4 to a typical processor module which may incorporate an interrupt mechanism according to the teachings of the invention before embarking upon description of the functioning of one embodiment of the interrupt mechanism of the invention.\cb1 \
+\cb3 PROCESSOR MODULE DESCRIPTION FIGS. 2a and 2b which should be placed side-by-side with FIG. 217 on the right, show the relevant details of a typical processor module which incorporates equipment for the performance of the invention. The processor module CPU consists of an instruction register IR, a register stack of accumulator/working registers ACC STK, a result register RES REG. an operand register OPREG, a mirco-program control unit PROG. an arithmetic unit MILL, a data comparator COMP, a memory data input register SDIREG. a pair of memory protection (capability) register stacks BASE STK and TC/LMTSTK. a pair of machine indicator registers MIP and MIS, a so-called historic register stack HIS STK, a parity generation and comparison circuit PGC and a special block capability register SSCR. Typically the four register stacks (ACC STK. BASE STK, TC/LMT STK and HIS STK) may be constructed using so-called scratch-pad units and these scratch-pad units are provided with line selection circuits (SELA. SELB, SELL and SELH respectively) which control the connection of the required register to the input and output paths of the stack.\cb1 \
+\cb3 The processor module CPU is organised for parallel processing. although for ease of presentation the various data paths have been shown as a single lead in FIGS. and 2b. The processor module is provided with a socalled main highway MHW. a store input highway SIH and a store output highway SOH. Each of these highways is typically of 24 bits corresponding to the memory word size.\cb1 \
+\cb3 Associated with the various highways are a number of micro-program signal controlled AND gates such as G6 (i.e.. those gates which include a \ul number\ulnone  2 inside them It must be realised that each gate in practice will consist of 24 gates one for each lead in the 24 bit highway and these gates are activated under micro-program control to allow the data on the various highways to be written into selected registers as required. AND gating, such as gate G3, is also provided on the output of the registers and register stacks allowing selective connec' tion of the various registers to the arithmetic unit MILL. Also shown in FIGS. 2a and 2b are a number of OR gates (i.e.. those gates which include a number I inside them) these simply being used for isolation purposes allowing two or more signal paths to be ORed into one input path.\cb1 \
+\cb3 Accumulator stack ACC STK This scratch-pad unit is used to provide a number of accumulator registers [ACCO-ACC? which may also be used as mask registers or modifier registers) and the required one of these registers may be selected either by micro-program control signals or by instruction word control field bit control signals. Also included in the accumulator stack ACC STK is the sequence control register (SCR) together with additional registers. only one lACClU] of which is shown in FIG. 3. Register ACC(I) is used to store the primary machine working indicators when a fault interrupt occurs. The required register for any operation is selected by passing a selection code to the scratch-pad unit selection circuit SELA in FIG. 21:. Historic register stack HIS STK This scratch-pad unit is used to store (i) the current sequence control register absolute value. (ii) the cur rent instruction word for all program steps (instructions) and (iii) the memory operand absolute address on store access instructions. The stack consists of l6, 24-bit registers, addressed sequentially by a 4-bit selection register SELH. and constituted as a first-in-firstout circular queue. The historic registers therefore provide a record of the more recently executed program steps and this information may be used in a fault handler program to ascertain the reasons for fault.\cb1 \
+\cb3 Base register stack BASE STK This scratch-pad unit is used to provide a number of half" capability registers for the CPU. It was stated above that the memory protection system incorporates a number of so-called capability registers each of which holds a segment descriptor consisting of a base address. a limit address and a permitted access type code. The base register stack holds the base addresses for all the capability registers. FIG. 4 on the left-hand side shows the half capability registers held in this stack and they consist of eight so-called work-space capability registers WCRO to WCR7 and a number of so-called hidden capability registers. Only two of the "hidden capability registers are shown (DCR and MCR) in FIG. 4 as these are the only registers which are of importance in the understanding of the invention. The work-space capability" registers are selectable by selection codes in the machine instruction register IR and by microprogram control signals while the hidden capability registers are only selectable by special instruction word control codes and by micro-program generated selection codes.\cb1 \
+\cb3 The workspace capability registers are used to hold segment descriptors which define some of the working areas of the memory to which the current processor module requires access. One or more of the workspace capability registers is used to hold a segment descriptor which is defined as a reserved segment pointer table and by convention the main table for the current program is defined by WCR7.\cb1 \
+\cb3 Appended to the bottom of the capability register stack of FIG. 4 is a register SSCR and this equates to the special block capability register SSCR shown in FIG. 2a. This register is used, when a fault interrupt sequence is started. to derive the information for restricting the processor modules memory access area. C apability register DCR is the dump area capability register defining the segment into which the parameters of the currently running program are to be dumped when a change process operation is to be performed. Capability register MC R defines the memory segment in which the master capability table resides and will be filled by the descriptor for the special capability table when a fault interrupt occurs.\cb1 \
+\cb3 Each base of a capability register indicates (a) the store module (e.g., most significant 8 bits) in which the segment resides and (b) the base or start address of that segment within the storage module and has appended thereto a parity bit for the full base address.\cb1 \
+\cb3 Type code/limit stack TC/LMT STK This stack provides the other half" of the capability registers and it is shown on the right-hand side of FIG. 4. Each capability register is formed by a corresponding line in both the base and limit stacks. The limit address defines the last address of the segment and has appended thereto a parity bit for that limit address only. The type code is not provided with a parity bit nor does it have any relevance to the parity bits of the base and limit addresses.\cb1 \
+\cb3 Result register RES REG This register, which is 24 bits long. is fed from the main highway MHW and may be used to temporarily store data for example the result of an arithmetic process. Operand register OPREG This register, which is 24 bits long, may be fed from either the main highway MHW or the memory output highway SOH and it is used to receive an instruction word and as an intermediate register in the formation of a store access address. instruction register IR This register is used to hold the control bit fields of an instruction word and applies these to the microprogram control. However it plays no part in the operation of the present invention and is therefore not considered further in this description. Micro-program unit LPROG This unit controls the sequencing of the performance of the operations of the processor module by the issuance of timed and sequenced control signals PGCS) to control (i) the various input and output gates of the registers, (ii) the arithmetic unit MILL (leads AUuS). (iii) the comparator COMP (leads C/J-S). (iv) the fault bits of the primary indicator register MlP (leads HS) and (v) the condition bits of the secondary indicator register MlS (leads Sl/LCS The micro-program unit is also able (i) to select various registers over leads RSEL and CRSEL, (ii) to control the stepping of the historic register address selector (lead lNC), (iii) to increment the contents of the memory input register SDIREG (lead HS) and (iv) to generate the control codes on the memory access control signal highway SIHCS in accordance with the accessed segment descriptor type code. Various control and condition signals are fed to the unit indicative of the various conditions and indications which are active in the processor module at any one time. These signals are shown as (a) leads AUCS, the condition signals from the arithmetic unit MlLL. (b) leads lCS, the indication signals from the primary and secondary indicator registers MlP and MlS, (c) leads PCS. the condition signals from the parity generator and checking circuit PGC and (d) leads ([5, the condition signals from the comparator COMP. Conveniently the micro-program unit may be of any wellknown type for example using read-only memories of the self addressed type. Arithmetic unit MlLL This unit is a conventional arithmetic unit capable of performing parallel arithmetic on the data words presented over its two input ports. lts result is connected over the main highway MHW to the micro-program defined destination. The actual operations performed by the MlLL are defined by the arithmetic unit microprogram control signals AuaS. Comparator COMP This unit is used to compare the address loaded into the memory data input registers SDIREG and the access operations required with the bounds (i.e., base and limit) and permitted access code of the segment dcscriptor relevant to the memory access. its condition indicating output signals ClS are fed to the microprogram unit uPROG and control the state of some of the primary indicators. The comparator also is arranged to check the parity of the base and limit addresses each time they are used and the significance of the comparators functions will be evident later. Memory data input register SDIREG This register acts as the CPU to memory" output register and the memory address and memory write data for passage to the memory is assembled in this register prior to its passage to the memory over the memory input highway SI H. This register is provided with an increment by one facility controlled by lead +lS which is under micro-program control. Parity generator and checking circuit PGC This circuit is used to check the parity bit (lead SPB) received on the memory output control highway SOHCS accompanying a read data word with locally generated parity from the data on highway SOH and the data set into the operand register OPREG. in addition this circuit checks the locally generated parity of the address or data in the memory input register SDI- REG against the condition of a parity check wire PCW included in highway SOHCS. The parity check wire PCW is used to return to the processor module the parity of the memory received address or data generated by that processor module. The results of the various parity checks are communicated to the micro-program unit over leads PCS. The store parity bit wire SP8 is subjected to the actions of a switchable inversion circuit IP and the relevance of this arrangement will be Machine indicator register MlP Register MlP is used to store the so-called primary indicators whereas register MlS stores the so-called secondary indicators. The following table shows a typical list of primary indicators stored in register MlP. The table is not intended to be exhaustive of all the types of fault condition detection arrangements available and is typical only by way of example.\cb1 \
+\cb3 Indicator name Function Mill equals zero Mill greater than zero Mill overflow" V Arithmetic indicators.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 l\ulnone  2 3 4 2..." Access field violation... 7 B\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 Capability Earity lault Capability use/limit violation" Capability sum-cheek fault Store interface timeout.\cb1 \
+\cb3 a. Arithmetic indicators These indicators are self explanatory being set in accordance with the state of detection arrangements built into the MILL.\cb1 \
+\cb3 b. Fault indicators These indicators are set as a result of fault conditions occurring and being detected by the processor module. Consideration will be given to each indicator in turn.\cb1 \
+\cb3 i. Bit Access field violation. This bit is set by an output condition from the comparator COMP when the memory operation required. as defined by coding on a set of three wires in highway SOHCS. forming so-called control wires, does not correspond with the operations permitted by the segment descriptor type code. The three control wires may be coded so that code 001 specifies Read; 010 specifies Read and hold; l0() specifies write and l l l specifies reset. it will be noted that the above codes are such that a single bit error will be detected at the memory as an invalid pattern. The type code of a capability. arranged as the most significant 8 bits of the limit half of the capability register is linearly coded so that bit 16 specifies Read data; bit 17 specifies write data; bit 18 specifies execute data; bit 19 specifies read capability; \ul bit\ulnone  20 specifies write capability and bit 21 specifies enter capability, bits 22 and 23 being spare. It will be seen that a program's information is partitioned into two types: data and capability pointers. Blocks of data may contain either program instruction (type code with bit 18 set). data constants (bit 16 set). or variables (hit 17 set). Blocks of capability pointers are used during the loading of capability registers (bit 19 set). during the storing of capability pointers (\ul bit\ulnone  20 set) or to read other programs capability pointers (bit 2] set). From the above it can be seen that ifa program having a capability only to read a particular segment tries to say write to that segment the write code 100 on the control wires of SOHCS will be incompatible with the set condition of bit 16 of the type code for that segment descriptor and this will result in \ul Bit\ulnone  5 of the indicator register MlP being set by comparator COMP.\cb1 \
+\cb3 (ii). \ul Bit\ulnone  6 Capability parity fault. As previously mentioned the base and limit addresses stored in the capability registers have appended thereto the parity bits received gy the processor module when these addresses are extracted from the master capability table and passed over the memory/processor module interface. Each time a base address or a limit address is used in the processor module the comparator COMP computes the parity bit for that address and compares it with that stored with the particular address. This arrangement keeps a permanent check against one bit failures of the segment descriptor addresses while they are in the processor module's capability registers. If the parity bits do not agree \ul Bit\ulnone  6 of the primary indicator register MlP is set by an output from the comparator.\cb1 \
+\cb3 iii. \ul Bit\ulnone  7 Capability base/limit violation. As mentioned previously each memory access involves the use of a capability register and the computed memory absolute address (e.g.. base address plus instruction word defined address) is checked against the base and limit values of the segment required. This operation is again performed by the comparator COMP and. if the computed absolute address lies outside the limits of the segment descriptor, \ul Bit\ulnone  7 of the primary indicator register MlP is set.\cb1 \
+\cb3 iv. \ul Bit\ulnone  8 Capability sum-check fault. In copending US. Pat. application Ser. No. M6334 filed May 24.\cb1 \
+\cb3 I97] it is shown that each master capability table entry comprises three store words (i) sum-check (ii) base address (iii) limit address. The first word is a computed sum of the second two words and this is used to ensure that the capability registers are loaded correctly. When a load capability register instruction is performed the first word is internally stored and compared with a locally generated sum-check word computed from the base and limit addresses loaded into the particular capability register. If the locally generated sum-check and the master capability table sum-check do not equate the MILL will produce a MILL greater than zero condition which, under micro-program control using one of leads H5, is used to set \ul Bit\ulnone  8 of the primary indicator register MlP.\cb1 \
+\cb3 v. Bit 9 Store interface time-out. This bit of the primary indicator register MlP will be set, by microprogram control using one of leads FlS. if a predetermined time elapses between the presentation of a data or address word by the processor module to the memory and a response from the memory. Typically the micro-program control unit may include a counter arranged to count up to say 20 uSeconds and this counter will be started when the address or data word in the memory input register SDIREG is presented to the highway SlH. The return of information on the store output control highway SOHCS will stop the counter. However if the full state of count is reached before the return of information is experienced Bit 9 of register MlP will be set.\cb1 \
+\cb3 vi. Bit l0 Parity comparison fault. This bit will be set using one of leads FlS under micro-program control if the parity generated at the memory on address or write data words and returned over the return parity" lead of highway SOHCS does not equate to the locally generated parity. in parity generator PGC. of the address or data word formed in register SDIREG.\cb1 \
+\cb3 vii. Bit ll Read data parity fault. This bit will be set using one of leads FlS under micro-program control if the data received over highway SOH and written into the operand register does not have the same locally generated parity, in parity generator PGC. as that indicated by the parity wire of highway SOHCS.\cb1 \
+\cb3 viii. Bit [2 lnvalid operation. This bit will be set under micro-program control using one of leads FlS if the function code fed into the instruction register lR when presented to the micro-program control uPROG is found by that equipment to be an invalid instruction.\cb1 \
+\cb3 ix. Bit l3 Power failure. This bit will be set when it is detected that the power supply margins have been exceeded.\cb1 \
+\cb3 x. Bit l4 Invalid store control signal. This bit will be set under micro-program control using one of leads HS in response to an indication over the highway SOHCS from the memory that the control code presented to the memory over highway SlHCS is invalid. It will be recalled that three wires are used for the control code and the coding is arranged such that one bit errors in this part of the control highway will produce an invalid memory operation code.\cb1 \
+\cb3 c. Register fault \ul identity indicators Bits\ulnone  20 to 23 of register M]? will be conditioned by leads FlS under micro-program control to define, on one-out-of-l6 form, the identity of the capability register in use when one of the \ul fault indicator bits\ulnone  5. 6. 7 or 8 are set. The address code will be generated by the micro-program control. Machine indicator register MlS Register MIS stores a number of indicators required for use internally by the micro-program control operative over leads SlpCS. Only five of these indicators are of significance to the present invention. These indicators are (i) a first attempt indicator (ii) a fault administrative indicator (iii) a second fault indicator (iv) a common fault indicator and (v) an internal parity indicator. The significance of these indicators will be seen from the following description of the operation of the processor module when a fault interrupt occurs.\cb1 \
+\cb3 FAULT INTERRUPT OPERATION The sequences of operation performed by the processor module when a fault indicator is set will now be described with reference to FIGG. 2a and 2!) together with FIG. 5.\cb1 \
+\cb3 Step SO (CFI SET) of FIG. is the entry step into the fault interrupt micro-program and it indicates that the common fault indicator (CFl) in the secondary indicator register MIS (FIG. has been set and its set state has been communicated, over the relevant one of leads lCS to the micro-program control unit uPROG. The setting of any of \ul bits\ulnone  5 to 14 of the primary indicator register MlP causes the common fault indicator of register MlS to be set over lead F. Regardless of all other current conditions the activation of the common fault indicator causes the fault interrupt micro-program to be commenced.\cb1 \
+\cb3 The following description will be seetionalised under the steps of FIG. 5 however. many and frquency references to other figures of the drawings will be made. S1 F.A.T. Set\cb1 \
+\cb3 The micro-program control pPROG tests the state of the first attempt indicator (F.A.T.) in the secondary indicator register MIS (by interrogation of the relevant ICS lead) to see if it is set.\cb1 \
+\cb3 It will be assumed that the first attempt indicator is not set at this stage indicating that this is the first entry into the fault interrupt micro-sequence for the current fault condition and the relevance of this test will be seen later.\cb1 \
+\cb3 S2 lNV PAR The micro-program control LPROG, in this step. changes the state of the internal parity indicator in the secondary indicator register MlS. This indicator is used to generate conditions on leads PS to control the parity bit inversion circuit IP and to provide parity state indication signals (i.e.. odd" or even parity) to the parity checking and generator circuit PGC and the comparator (OM P. The data processing system may for example be organised on an odd parity basis so that odd parity is stored in the storage equipments and is passed to the processor modules when data is read. The processor modules, however, may be arranged to function internally using either odd or even parity dependant upon the state of the internal parity indicator. Each time a fault interrupt occurs, with the first attempt indicator in the reset state. the state of the internal parity indicator is inverted. Hence all the data currently resident in the processor module at this stage will be adjudged, if used erroneously, to have bad parity. This has particular significance with respect to the capability registers as the stored parity bits for the base and limit addresses of each loaded capability register will now be invalidated. This arrangement ensures that the program currently being performed cannot be corrupted by the faulty processor as any attempt to use the currently loaded capability registers after the fault condition has been detected will result in a capability register parity fault condition.\cb1 \
+\cb3 S3 Set F.A.T.\cb1 \
+\cb3 The micro-program control, in this step, sets the first attempt indicator (F .A.T.) to indicate that this current entry into the fault interrupt sequence is the first due to the current fault condition. The relevant one of leads SlpCS will be activated to set the first attempt indicator in register MIS. The first attempt indicator when set is arranged to inhibit the processor module's interrupt system and the processor module is therefore confined to the fault check-out procedure. The first attempt indicator is reset by program instruction towards the end of the fault check-out program.\cb1 \
+\cb3 S4 SELH l The micro-program control increments (by activating lead lNC) the address pointer on the historic registers stack HIS STK in this step ready for later use.\cb1 \
+\cb3 S5 ACC(l): MIP\cb1 \
+\cb3 The micro-program control causes the primary machine indicators in register MIP to be copied into the indicators accumulator ACC(I). It should be noted that the symbol shown in step S4 of FIG. 5 is to be read as becomes." The operations of this step are performed by (i) selecting ACC(I) by use of leads RSEL (ii) opening gate G1 and (iii) opening gate G2. This allows the contents of register MIP to be applied over highway MHW to the selected accumulator ACC(l). S6 Set F IT The micro-program control ,uPROG. using the relevant one of leads SI CS, sets the fault administration indicator (FIT) at this stage. This indicator is used to protect the record of the conditions of the fault indicators in the indicators accumulator ACC(l) should a second fault occur before these indicators states have been written into the historic registers. Although not shown of FIG. 5 for sake of simplicity this indicator (FIT) is arranged to bypass steps S4 and S5 ifthe fault interrupt micro-sequence is entered with FlT set.\cb1 \
+\cb3 S7 Reset Fl The micro-program control [.LPROG resets the set fault indicator in the primary indicator register MIP and the common fault indicator (CFI) in the secondary indicator register MlS in this step using the relevant one of leads Sll-LCS.\cb1 \
+\cb3 S8 FllT Set The micro-program control pPROG tests the state of the second fault indicator (FllT) in the secondary indicator register MIS, using the relevant one of leads ICS, in this step. It will be assumed that the second fault indicator is not set at this stage as this is the first entry into the fault interrupt micro-sequence.\cb1 \
+\cb3 S9 Reset MEM The micro-program control pPROG causes the all 1 s code to be applied to the control wires of the memory input control highway SIHCS in this step if the fault has occurred during the addressing of the memory. This has the effect of releasing the memory for use by other processor modules.\cb1 \
+\cb3 S10 Load MCR The micro-program control uPROG causes the master capability register MCR (of FIG. 4) to be loaded with the special capability table segment descriptor for this processor module. The functions performed in this step are somewhat complex and reference will not only be made to FIGS. 20 and 2b but also to FIG. 6.\cb1 \
+\cb3 FIG. 6 shows, in very brief outline one processor module CPUY and one storage module SMX. The registers shown in the processor module of FIG. 6 have been skeletonised as this drawing is to be interpreted as explanatory only of the various functions performed in the fault interrupt micro-sequence. The workspace capability registers" WCRO-7 (FIG. 4) are shown in FIG. 6 as one block and only the DUMP STACK CAP. REG and the MASTER CAP REG of the hidden capability registers is shown. The special capability register SSCR and the ope rand register OPREG are the only other two registers shown in FIG. 6. It was mentioned previously that some of the storage modules in the memory are provided with a fault block which has special information for each processor module in the system. The fault block is represented at SFB in FIG. 6 and this consists of N four-word areas where N is equal to the number of processor modules. Only two such areas are shown in FIG. 6 and the area relevant to processor module CPUY is shown pointed to by the special capability register SSCR in that module over path (I). Each area in the fault block SFB consists of (i) a sum-check word (ii) a base address BASE (iii) a limit address LIMIT and (iv) a pointer word RSPC-O. A number of other segments are shown in FIG. 6 in the storage module SMX and these will be used later in the description and briefly they are (i) a block of special capability tables SCT one for each processor module (ii) a block of check-out program dump stacks C-ODS. one for each processor module (iii) a block of checkout program segment pointer tables C-ORSPI" one for each processor module and (iv) a block of segments storing the information for the check-out program C OPROG.\cb1 \
+\cb3 Considering now the actions of the micro-program control pPROG (FIG. 2) in the performance of the current step of the fault interrupt micro-sequence. The first operation is to address the storage module SMX (of FIG. 6) with the start address ofthe area particular to processor module CPUY in the fault block SFB. SIOu Access first word of area in SFB This operation is performed by activating gates G3, G4 and G6 in FIGS. 2a and 2h. The activation of gate G3 causes the base address contents of the special capability register SSCR to be fed via the arithmetic unit MILL and the highway MHW into the memory input register SDIREG. The special capability register SSCR is divided into two sections. The first section is conditioned by a "hard-wired" strapping field SF arranged to permanently code that section with the first address of the area in the fault block of each storage module. The second section is alterablc and is arranged to be reset to all zeros at this stage indicating, it will be assumed the storage module address of storage module SMX in FIG. 6. Hence when gate G5 (in FIG. 2b) is opened the memory input highway SIH will carry the first address of the area applicable to processor module CPUY in the special fault block SFB (FIG. 6). At the same time the micro-program control conditions the code wires of memory input control signal highway SII-ICS (FIG. 2b) to indicate a read operation to the memory. Path (I) shown in FIG. 6 is, therefore. activated, and the first word of the processor module's area in block SFB will be read out and returned to the processor over the memory output highway SOH (FIG. 2b). Sl0b Input first word from area in SFB This word is in fact the sum-check word for the special capability table segment descriptor and its arrival at the processor module will be indicated to the microprogram control )LPROG by the control signal highway SOHCS. The micro-program control thereupon opens gates GS and G6 causing the sum-check word to be written into the operand register OP REG. While this operation is being performed the parity generator and checking circuit PGC will check the parity of the incoming word and the data in the operand register against the store parity bit condition on lead SPB. If no parity failures are detected the seond word from the area in SFB will be addressed.\cb1 \
+\cb3 S106 Access second word in area in SFB In this sub-step the micro-program control activates lead +IS to increment the address word in register SDI- REG, opens gate G5 and conditions the code wires of the memory input control signal highway SIHCS to define a read operation.\cb1 \
+\cb3 The second word in the special capability register defined area in the fault block SFB (FIG. 6) is the base address BASE of the special capability table segment descriptor and when this information is read it is passed to the processor, over path (2) of FIG. 6, for application to the base half of master capability register MCR. 510d Input second word from area in SFB The micro-program control uPROG (FIG. 2) upon reception of the control signals on the memory output control signal highway SOHC S opens gates G8. G7 and G8 after selecting over leads CRSEL the base half of the master capability register in BASE STK. This causes the memory output on highway SOH to be written into the base half of the master capability register together with the condition of the parity bit for that word on lead SPB.\cb1 \
+\cb3 S106 Access third word in area in SFB The micro-program control LPROG now activates lead +IS to increment by one the address word in register SDIREG. opens gate G5 and conditions the code wires of highway SIHCS to define a read operation.\cb1 \
+\cb3 The third word in the special capability register defined area in the fault block SFB (FIG. 6) is the limit address LIMIT of the special capability table segment descriptor and when this information is read it is passed to the processor, using path (2) of FIG. 6 for application to be limit half" of the master capability register.\cb1 \
+\cb3 SlOf Input third word of area in SFB The micro-program control when conditioned by highway SOHCS (FIG. 2) causes the CRSEL leads to be activated to select the master capability register and gates GS. G9 and G10 to be opened. This causes the limit address. together with its parity bit. to be fed into the relevant line" of the limit stack LMT STK. 510g Check capability register loading The micro-program control now tests the loaded master capability register to ensure that it has been correctly loaded. This sub-step is performed in two halves. Firstly a local sum-check is formed by activating leads CRSEL (FIG. 2a) with the identity of the master capability register, by opening gates GI I, G I2 and G13 and by instructing the arithmetic unit MILL to add the data words applied. It will be seen that the above operations cause the locally generated sum-check to be places in the result register RES REG. At the same time the parity of the base and limit addresses are checked in the comparator COMP.\cb1 \
+\cb3 The second half of this sub-step. causes the locally generated sum-check, in the result register, to be compared with the work in the operand register OPREG. This is performed by opening gates G14 and G and instructing the arithmetic unit MILL. over the appropriate leads AUaS. to perform a substraction operation and to set the arithmetic indicators in the primary indicator register MIP to the result derived. The microprogram control uPROG now tests the states of the arithmetic indicators, using the relevant ones of leads ICS to see if the two sum-check words are identical. Assuming that they are identical the fault interrupt sequence steps on to step S11.\cb1 \
+\cb3 S11 ACC(I) In this step the micro-program control uPROG activates leads RSEL to define the indicators accumulator ACC(I) in the register stack ACC STK and then activates gates G16, G17 and G18. This causes the primary indicators placed in the indicators accumulator in step S4 to be passed. via the arithmetic unit MILL, the highway MHW and the operand register OPREG, to the next line (as defined by step S3) of the historic register stack HIS STK. This operation ensures that the primary indicators are stored in the historic registers immediately following the last s.c.r.. instruction word and. if applicable, absolute memory address information block entry therein.\cb1 \
+\cb3 S12 SELH+I The micro-program control pPROG, by activating lead INT. causes the historic registers address pointer to he stepped on by one.\cb1 \
+\cb3 S13 Reset FIT The micro-program control #PROG. in the step resets the fault administration toggle FlT as the primary indicators as set by the original fault have now been stored in the historic registers.\cb1 \
+\cb3 S14 SCR+1 In this step one of the secondary indicators will be tested to see if the point at which the fault occurred in the current instruction was after the stage at which the sequence control register was incremented to point to the next instruction of the current program. Ifthis had already happened step S15 is performed to reduce the sequence control register value back to that of the current instruction. If this point has not been reached step S16 is performed directly.\cb1 \
+\cb3 S16 Read RSPC-O In this step the fourth word in the processor module's area in the fault block SFB (FIG. 6) is read and the reserved segment pointer in that word will be passed over path (3) of FIG. 6 and stored in the processor modules operand register. This pointer. which is relative to the special capability table. defines a dump stack relevant to the processor module and the check-out program. The operations performed by the processor module. under micro-program control uPROG (FIG. 2) are in two sections. The first causes the memory to be addressed for a read operation while the second causes the memory produced data to be fed into the operand register OPREG. The first operation is performed by micro-program control activation of lead +IS. gate G5 and the conditioning of the appropriate control wires of highway SIHCS. It will be recalled that prior to this step, indeed since the end of step S9, register SDIREG has been holding the address of thethird word in the processor modules area in block SF B of FIG. 6. Hence the address applied in this step to the memory will be that of the fourth word of that area.\cb1 \
+\cb3 When the memory produces the word RSPC-O it will be fed to the processor module on leads SOH (FIG. 2b) and the control signal highway SOHCS will indicate its presence to the micro-program control pPROG. Gates GS and G17 are therefore opened and the incoming data word (RSPC-O) is fed into the operand register OPREG. Concurrent with this operation the parity generator and checking circuit PCG checks the parity of the received data word and that of the work placed in the operand register.\cb1 \
+\cb3 S17 FllT Set? In this step the micro-program control #PROG tests the relevant one of leads ICS to see if the second fault indicator in the secondary indicator register MIS is set. This indicator will only be set at this stage if this is the second pass through the fault interrupt microsequence. As the above description relates to the first pass through the micro-sequence the sequence will be ended at point a.\cb1 \
+\cb3 In actuality the processor module is now arranged to perform a so-called automatic change process instruction. At this stage the processor module has suspended the performance of the program (process) it was performing prior to the generation of the fault interrupt signal (by the common fault indicator in the secondary indicator register) and it is now necessary to preserve in the memory the parameters of the suspended process and to extract from the memory the parameters of the fault check-out program.\cb1 \
+\cb3 It was mentioned previously that each program is provided with a so-called dump area segment pointed to by the contents of the dump capability register DCR (FIG. 4). Each dump area segment contains information about the state of the associated process, such as the values of the reserved segment pointers corresponding to each of the work-space capability registers of the processor module when running that process. These locations are loaded with the corresponding RS pointer whenever a capability register is loaded as shown in our copending US. Pat. application Ser. No. 146,334. filed May 24, \ul I97\ulnone  1. However, the dump area segment is also used to store the contents of the registers of the ACC STK including the current value of the sequence control register and the state of the primary indicators. when the process is suspended. Hence the exit from FIG. 5 by path a is to an automatic change process" operation causing the contents of the accumulator stack ACC STK to be dumped into the area defined by the dump stack capability register DCR. It will be recalled that at this stage all the capability registers. with the exception of the master capability register MCR (FIG. 4) are still holding the segment descriptors relevant to the process being performed when the fault condition occurred. The actual operations performed in the processor module of FIG. 2 require: (1) the forming of the first dump area address by selecting (over leads CRSEL) the DCR base address and accessing the memory (by opening gates G11, G4 and G5) for a write operation at the dump area, the dump area address is also saved, in the result register RES REG (by opening gates G13 at the same time as gates G4) for successive dump area accesses and (2) the passage of the relevant register contents (selected by RSEL and passed over gates G16, G4 and GS) of each relevant entry in the ACC STK with the up-dating of the access address (by opening gates G14 and GIS with G4 and instructing the MILL to perform an \ul add\ulnone  1 operation). The above (l) and (2) referenced operations are repeated for all the ACC STK entries required. It should be noted that step S2 of FIG. 5 invalidated the parity on all the capability registers loaded at that time and the sequencing of the automatic change process operation is arranged to take this situation into account allowing the dump stack capability register to be validly used.\cb1 \
+\cb3 In a normal change process instruction sequence the processor module will be provided, in the corresponding instruction word, with the offset down a reserved segment pointer table which is used to access the master capability table to obtain the dump area segment for the process (program) to which the change is to be made. However in the current situation the change process sequence is automatic (i.e.. as a result of the common fault indicator being set) and consequently the dump area segment for the check-out program must be obtained in a different manner.\cb1 \
+\cb3 It will be recalled that step S16 of FIG. 5 performed the extraction of an R.S. pointer (RSPC-O) from the last word in the processor module's area in the fault block of storage module SMX (FIG. 6). This pointer is arranged to define an offset down the processor module's special capability table. stored in block SCT, at which the segment descriptor for the check-out dump area particular to this processor is held in moduel SMX. Hence the required dump area segment descriptor can be extracted from the special capability table using a normal load capability register operation using the operand register OPREG contents as the special capabilty table offset. Path (4) and path (5) of FIG. 6 show this operation in outline form.\cb1 \
+\cb3 Having loaded the dump stack capability register with the required dump area segment descriptor the various parameters of the fault check-out program may now be extracted from the check-out programs dump area particular to the processor module in block C-ODS and loaded into the processor module usuing path (6) and (7) allowing the check-out program to be entered.\cb1 \
+\cb3 It will be seen from FIG. 6 that storage module SMX is provided with live storage areas which are relevant to the fault interrupt micro-sequence, and four of these are provided on a per processor module basis. As already mentioned the fault block SFB has a number of areas one for each processor module of the system. Similarly the special capability table block SCT, the check-out process dump area block C-ODS and the check-out process reserved segment pointer table block C-ORSPT, have a corresponding area for each processor module. The actual check-out program code, together with some work-space areas and the like operated in readonly mode ma be common to all the processors or if storage space allows may be individual thereto. Additionally in the overall modular system a number of storage modules are arranged to carry similar blocks to that shown in FIG. 6.\cb1 \
+\cb3 SECOND FAULTS The fault check-out program (operated in read-only mode) is arranged to test the various functions of the processor module and to activate one of the fault indicators if a faulty operation is encountered. Additionally the various checks which are performed in the operation of the processor module are similarly performed in the fault interrupt micro-sequence. For example in step S10 of FIG. 5 the incoming data is checked for parity and the master capability register after being loaded is checked using the sum-check words. Hence if the processor module fails for a second time the fault interrupt micro-sequence of FIG. 5 will be re-entered this time however with the first attempt indicator (F.A.T.) set.\cb1 \
+\cb3 Referring again to FIG. 5 the second entry into the fault interrupt micro-sequence (by the setting of the common fault indicator CFI of the secondary indicators) causes step S1 to be performed. This time, however, the first attempt indicator will be set causing step S18 to be performed. It should be noted that step S2 will not be performed under these circumstances maintaining the inverted state of parity in the processor module. S18 Set FlIT This step causes the second fault indicator (FIIT) in the secondary indicator register MIS (FIG. 2a) to be set by the activation of the appropriate lead of leads SiuCS under micro-program control. Steps S4, S5, S6, S7 and S8 (of FIG. 5) are now performed with the same effects as described above. Step S8, however, will produce a yes result causing the performance of step S19. S19 SMN+I The micro-program control uPROG causes the store module number part of the base address of the special capability register SSCR to be incremented in this step. This operation is performed by opening gates G3 and G19 and by instructing the MILL to add one to the store module address field of the address word. Steps S9 to SI6 are now performed, however. as the store module number of the base address in special capability register SSCR has been incremented the operations of these steps although identical will involve the use of another store module to that used in the first pass through the micro-sequence.\cb1 \
+\cb3 Additionally step S17 will produce a "yes result which causes the micro-sequence to be exited by way of path [3 after the reset of the second fault indicator in step S20. This latter path B is an entry into the automatic change process operation described above, however, it is arranged to be part-way through that process as there is no point in dumping the suspended processes parameters for a second time. It will also be realised that step S11 will cause the primary indicators, holding information on the second fault to be placed below the first fault primary indicators state in the historic registers.\cb1 \
+\cb3 By the above re-entry mechanism a faulty processor may be trapped either in the fault interrupt microsequence or in the check-out program sequentially using each storage module in turn in which the checkout program has an appearance. Each time a fault occurs the primary indicators will be written into the next location in the historic register stack. Alternatively if the first fault was due to a faulure in the storage module SMX of FIG. 6 the re-entry mechanism will cause another storage module to be used and the check-out program will then probably be correctly obeyed by the processor module.\cb1 \
+\cb3 Typically the check-out program may be written for operation in read only mode and so that all the functions of a processor module and a storage module are tested and if it is completed correctly the processor module may than apply to the on-line system to enter a *rejoin process allowing it to return to the on-line system after re-setting the first attempt indicator. Throughout the performance of the fault check-out program the first attempt indicator (F.A.T.) remains set and the fault check-out program itself is arranged to reset this indicator when it is complete. This ensures that the fault check-out program cannot be interrupted as the F.A.T. indicator as mentioned previously inhibits the processor modules normal interrupt mechanism. Typically if the processor module uses an interrupt system of the type described in co-pending US. Pat. application Ser. No. l76,464, now US. Pat. No. 3,757,307 the set state of the first attempt indicator may be used to inhibit the interrupt clock pulse source. The on-line system may be informed of the results of check-out by using so-called status words" and a request to rejoin the system may be communicated to the other processor modules of the system by way of the normal interrupt mechanism.\cb1 \
+\cb3 CONCLUSIONS From the above it can be deduced that the fault interrupt mechanism provided by the invention causes the processor module experiencing a fault condition to immediately invalidate the currently loaded information and to overwrite its master capabilty register contents with a segment descriptor defining a special capability table. The entries in the special capability table are such as to restrict very severely the area in the memory to which that processor is allowed access. Additionally once a processor enters the fault interrupt sequence it cannot be interrupted and it cannot rejoin the on-line system until it has successfully obeyed at check-out program. By the provision of a number of check-out program copies with corresponding access information in a number of storage modules a permanently faulty processor once having experienced a fault interrupt will be harmlcssly trapped in the fault check-out routines. It will be appreciated by those skilled in the art that arrangementsasuch as timing words in the memory which are commonly scanned and individually up-dated by the processor modules of the on-line system, may be provided to allow the online system to detect that a faulty processor module has been suspended.\cb1 \
+\cb3 The above description has been of one embodiment only and is not intended to be limiting to the scope of the inventionv Alternative arrangements may readily be seen by those skilled in the art. For example the invention has been related to a processor module incorporating a particular type of memory protection system however other types of such protection system may be controlled by the mechanism ofthe invention. Also the embodiment has been related to a multi or modular processor system, however the basic features of the invention are equally applicable to a single processor system.\cb1 \
+\cb3 What we claim is:\cb1 \
+\cb3 l. A data processing system comprising, in combination, a memory means for providing storage in segmented form for information segments relative to application and supervisory programs and master and special capability tables, together with information segments relative to a fault check-out program; intercommunication means; and at least one processor module coupled through said intereommunication means to said memory means, each processor module cooperating with said memory means and provided with memory protection means comprising, a plurality of capability registers, means for loading said capability registers, each of said registers holding memory segment descriptor information indicative of the base and limit memory addresses of an information segment, a first of said capability registers being adapted to hold a first segment descriptor defining an information segment which contains a master capability table having an entry for each information segment in said memory means, in which is stored the base and limit memory addresses of the corresponding information segment, said master capability table providing the base and limit memory addresses of a descriptor when said loading means effects loading of one of the remaining capability registers, overwriting means for replacing information in said capability registers, and, fault detection and handling means for detecting a fault condition and in response to the fault condition to become immediately operative within the processor module to suspend the processor module from the active processing system by activating said overwriting means for replacing information in the master capability register of said processor module with special descriptor information defining a special capability table having entries for only those information segments in said memory which are relative to said fault check-out program alone to thereby condition said processor module to enter said fault check-out program.\cb1 \
+\cb3 2. A data processing system as claimed in claim I, wherein said memory means comprises a plurality of storage modules accommodating a plurality of checkout program pointer segments in which the special descriptor information is stored. said check-out program pointer segments being distributed among the storage modules of said memory means on a mutually exclusive basis, said fault detection and handling means including first fault condition detection means for detecting a first fault condition, said memory protection means including check-out program pointer segment addressing means, said first fault condition detection means upon detecting a first fault condition activating said check out program pointer segment addressing means to read said special descriptor from one of said check-out program pointer segments, said fault detection and bandling means further including a further fault detection means for sensing the occurrence of the fault condition while said processor module is suspended from said ac tive processing system and in response to such occurrence conditioning said check-out program pointer segment addressing means to read said special descriptor from another of said check-out program pointer segments.\cb1 \
+\cb3 3. The data processing system as claimed in \ul claim\ulnone  2, wherein a plurality of copies of the information segments relative to said fault check-out program are provided in said memory means, said copies being distributed among said storage modules. each check-out pointer segment being arranged to hold (i) information relative to the area occupied by a different copy of said fault check-out program, and (ii) a pointer to the segment in which the instructions of said check-out program reside, each of said processor modules including means for loading one of said capability registers with the descriptor stored in the special capability table entry defined by said pointer.\cb1 \
+\cb3 4. The data processing system as claimed in \ul claim\ulnone  3 in which at least one processor module includes parity bit inversion means which are activated in response to the activation of said first fault condition detection means. to thereby invalidate all information in the processor module which is relative to programs other than said fault check-out programs.\cb1 \
+\cb3 5. A data processing system is claimed in \ul claim\ulnone  4 in which said first fault detection means includes a twostate switching device adapted to be switched to a first active state by the activation of said first fault condition detection means and to be switched to a second or inactive state in response to a particular instruction in said check-out program.\cb1 \
+\cb3 7. The data processing system as claimed in \ul claim\ulnone  6 wherein said at least one processor module includes means for replacing said first segment descriptor in said first master capability register upon the successful completion of said fault check-out program.\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf2 \cb3 Claims (7)\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf4 \cb3 \strokec4 Hide Dependent\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf2 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 \cb3 1. A data processing system comprising, in combination, a memory means for providing storage in segmented form for information segments relative to application and supervisory programs and master and special capability tables, together with information segments relative to a fault check-out program; intercommunication means; and at least one processor module coupled through said intercommunication means to said memory means, each processor module cooperating with said memory means and provided with memory protection means comprising, a plurality of capability registers, means for loading said capability registers, each of said registers holding memory segment descriptor information indicative of the base and limit memory addresses of an information segment, a first of said capability registers being adapted to hold a first segment descriptor defining an information segment which contains a master capability table having an entry for each information segment in said memory means, in which is stored the base and limit memory addresses of the corresponding information segment, said master capability table providing the base and limit memory addresses of a descriptor when said loading means effects loading of one of the remaining capability registers, overwriting means for replacing information in said capability registers, and, fault detection and handling means for detecting a fault condition and in response to the fault condition to become immediately operative within the processor module to suspend the processor module from the active processing system by activating said overwriting means for replacing information in the master capability register of said processor module with special descriptor information defining a special capability table having entries for only those information segments in said memory which are relative to said fault check-out program alone to thereby condition said processor module to enter said fault check-out program.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 2. A data processing system as claimed in claim 1, wherein said memory means comprises a plurality of storage modules accommodating a plurality of check-out program pointer segments in which the special descriptor information is stored, said check-out program pointer segments being distributed among the storage modules of said memory means on a mutually exclusive basis, said fault detection and handling means including first fault condition detection means for detecting a first fault condition, said memory protection means including check-out program pointer segment addressing means, said first fault condition detection means upon detecting a first fault condition activating said check-out program pointer segment addressing means to read said special descriptor from one of said check-out program pointer segments, said fault detection and handling means further including a further fault detection means for sensing the occurrence of the fault condition while said processor module is suspended from said active processing system and in response to such occurrence conditioning said check-out program pointer segment adDressing means to read said special descriptor from another of said check-out program pointer segments.\cb1 \
+\cb3 3. The data processing system as claimed in claim 2, wherein a plurality of copies of the information segments relative to said fault check-out program are provided in said memory means, said copies being distributed among said storage modules, each check-out pointer segment being arranged to hold (i) information relative to the area occupied by a different copy of said fault check-out program, and (ii) a pointer to the segment in which the instructions of said check-out program reside, each of said processor modules including means for loading one of said capability registers with the descriptor stored in the special capability table entry defined by said pointer.\cb1 \
+\cb3 4. The data processing system as claimed in claim 3 in which at least one processor module includes parity bit inversion means which are activated in response to the activation of said first fault condition detection means, to thereby invalidate all information in the processor module which is relative to programs other than said fault check-out programs.\cb1 \
+\cb3 5. A data processing system is claimed in claim 4 in which said first fault detection means includes a two-state switching device adapted to be switched to a first active state by the activation of said first fault condition detection means and to be switched to a second or inactive state in response to a particular instruction in said check-out program.\cb1 \
+\cb3 6. A data processing system as claimed in claim 5, and in which said two-state switching device when in said active state is adapted to cause the contents of a particular register in said check-out program pointer segment addressing means to be modified by a pre-determined amount each time said further fault condition detecting means is activated and said particular register is used to hold the address of said memory of the base address of the check-out program pointer segment to be used if a further fault condition is detected.\cb1 \
+\cb3 7. The data processing system as claimed in claim 6 wherein said at least one processor module includes means for replacing said first segment descriptor in said first master capability register upon the successful completion of said fault check-out program.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Patent Citations (6)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt\clvertalbase \clcbpat8 \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt\clvertalbase \clcbpat8 \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Assignee\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3201760A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1960-02-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1965-08-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Honeywell Inc\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Information handling apparatus\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3286239A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1962-11-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1966-11-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Burroughs Corp\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Automatic interrupt system for a data processor\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3387276A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1965-08-13\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1968-06-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Sperry Rand Corp\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Off-line memory test\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3517171A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1967-10-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1970-06-23\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Nasa\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Self-testing and repairing computer\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3599179A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1969-05-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1971-08-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Westinghouse Electric Corp\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fault detection and isolation in computer input-output devices\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3692989A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1970-10-14\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-09-19\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Atomic Energy Commission\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Computer diagnostic with inherent fail-safety\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clcbpat8 \clwWidth2579\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clcbpat8 \clwWidth5789\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party\cb1 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Cited By (27)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt\clvertalbase \clcbpat8 \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt\clvertalbase \clcbpat8 \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Assignee\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3911402A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-06-03\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-10-07\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Digital Equipment Corp\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Diagnostic circuit for data processing system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4164017A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-04-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1979-08-07\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 National Research Development Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Computer systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4181940A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1978-02-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-01-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Westinghouse Electric Corp.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multiprocessor for providing fault isolation test upon itself\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4214304A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1977-10-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-07-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Hitachi, Ltd.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multiprogrammed data processing system with improved interlock control\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 WO1982003710A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1981-04-16\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-10-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Ncr Co\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing system having error checking capability\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 USRE31318E }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-09-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-07-19\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Computer Automation, Inc.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Automatic modular memory address allocation system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4408274A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1979-09-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-10-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Plessey Overseas Limited\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory protection system using capability registers\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4446514A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-12-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-05-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Texas Instruments Incorporated\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multiple register digital processor system with shared and independent input and output interface\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4458312A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1981-11-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-07-03\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Rapid instruction redirection\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4485472A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-04-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-11-27\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Carnegie-Mellon University\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Testable interface circuit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4683532A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-12-03\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1987-07-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Honeywell Inc.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Real-time software monitor and write protect controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4797853A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-11-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1989-01-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Unisys Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Direct memory access controller for improved system security, memory to memory transfers, and interrupt processing\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4914572A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-03-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1990-04-03\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Siemens Aktiengesellschaft\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method for operating an error protected multiprocessor central control unit in a switching system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 WO1995022803A3 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1994-02-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1995-09-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Meridian Semiconductor Inc\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Circuit and method for detecting segment limit errors for code fetches\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5577219A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1994-05-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1996-11-19\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Intel Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method and apparatus for preforming memory segment limit violation checks\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5822786A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1994-11-14\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1998-10-13\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Advanced Micro Devices, Inc.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus and method for determining if an operand lies within an expand up or expand down segment\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US6021261A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1996-12-05\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2000-02-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method and system for testing a multiprocessor data processing system utilizing a plurality of event tracers\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US6654909B1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2000-06-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2003-11-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Intel Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus and method for protecting critical resources against soft errors in high performance microprocessors\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US6745341B1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1999-03-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2004-06-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fujitsu Limited\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Information processing apparatus having fault detection for multiplex storage devices\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US20070033514A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2005-07-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2007-02-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Nec Electronics Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus and method for detecting data error\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US20100031083A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2008-07-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2010-02-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fujitsu Limited\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Information processor\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US20110271152A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2010-04-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2011-11-03\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Hitachi, Ltd.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Failure management method and computer\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US20160154701A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2014-12-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2016-06-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Enhanced restart of a core dumping application\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 DE112008001528B4 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2007-06-11\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2020-11-19\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Toyota Jidosha Kabushiki Kaisha\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multiprocessor system and control method therefor\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clcbpat8 \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clcbpat8 \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1422952A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-06-03\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-01-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Plessey Co Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing system fault diagnostic arrangements\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB2158622A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-12-21\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-11-13\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Goran Anders Henrik Hemdal\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Computer controlled systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2209\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6158\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US9542254B2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2014-07-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2017-01-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Application-level signal handling and application-level memory protection\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party, \'87 Family to family citation\cb1 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Similar Documents
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt\clvertalbase \clcbpat8 \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication Date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4486831A}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-12-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multi-programming data processing system process suspension\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4891810A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1990-01-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Reconfigurable computing device\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4967347A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1990-10-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multiple-redundant fault detection system and related method for its use\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPS6229827B2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1987-06-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4383297A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-05-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing system including internal register addressing arrangements\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1410631A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-10-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing system interrupt arrangements\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPS58159164A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-09-21\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Defect diagnosis method and apparatus for memory programmable controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5216672A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1993-06-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Parallel diagnostic mode for testing computer memory\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1344474A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-01-23\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fault detection and handling arrangements for use in data proces sing systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4393446A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-07-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Routine timer for computer systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US6052801A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2000-04-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method and apparatus for providing breakpoints on a selectable address range\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0023821A2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1981-02-11\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus and method for checking a memory and a computer system including a memory and apparatus for checking the memory\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US8612720B2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2013-12-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 System and method for implementing data breakpoints\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4308580A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1981-12-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data multiprocessing system having protection against lockout of shared data\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US20070055480A1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2007-03-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 System and method for self-diagnosis in a controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1585960A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1981-03-11\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Information flow security mechanisms for data processing systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5036516A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1991-07-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Process and means for selftest of RAMs in an electronic device\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JP2855633B2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1999-02-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fault diagnosis device for dual port memory in multiprocessor system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPS5939052B2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-09-20\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Information processing device and method\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB2539657A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2016-12-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Tracing Processing Activity\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3794821A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-02-26\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory protection arrangements for data processing systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPS61136147A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-06-24\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Cache memory controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 Harrison et al.}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 System integrity in small real-time computer systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPS6195464A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-05-14\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data protecting system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2270\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11436\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPH03127241A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1991-05-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory control method for paging virtual storage system\cb1 \cell \lastrow\row
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 \strokec2 Priority And Related Applications\cb1 \
+\cb3 Applications Claiming Priority (1)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth6153\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt\clvertalbase \clcbpat8 \clwWidth6315\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3131\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Application\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Filing date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth6153\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth6315\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth3131\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 GB599471\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1971-03-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cell \lastrow\row
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 \strokec2 Legal Events
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt\clvertalbase \clcbpat8 \clwWidth621\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1358\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt\clvertalbase \clcbpat8 \clwWidth11810\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Code\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Description\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth621\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1358\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth11810\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 1990-09-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 AS\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Assignment\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\sa260\partightenfactor0
+
+\f1\b \cf2 \cb3 Owner name
+\f0\b0 : SIEMENS PLESSEY ELECTRONIC SYSTEMS LIMITED, ENGLAN\cb1 \
+
+\f1\b \cb3 Free format text
+\f0\b0 : ASSIGNMENT OF ASSIGNORS INTEREST.;ASSIGNOR:PLESSEY OVERSEAS LIMITED;REEL/FRAME:005454/0528\cb1 \
+
+\f1\b \cb3 Effective date
+\f0\b0 : 19900717\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 Data provided by IFI CLAIMS Patent Services\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://support.google.com/faqs/answer/6390996"}}{\fldrslt \cf6 \cb8 \strokec6 About}}\cb8  {\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3814919A/en#"}}{\fldrslt \cf6 \cb8 \strokec6 Send Feedback}} {\field{\*\fldinst{HYPERLINK "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"}}{\fldrslt \cf6 \strokec6 Public Datasets}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/policies/terms/"}}{\fldrslt \cf6 \strokec6 Terms}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/privacy/privacy-policy.html"}}{\fldrslt \cf6 \strokec6 Privacy Policy}} {\field{\*\fldinst{HYPERLINK "https://support.google.com/websearch/"}}{\fldrslt \cf6 \strokec6 Help}}\cb1 \
+}

@@ -1,0 +1,976 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red255\green255\blue255;\red78\green78\blue78;
+\red117\green117\blue117;\red47\green103\blue243;\red98\green98\blue98;\red249\green249\blue249;\red229\green229\blue229;
+}
+{\*\expandedcolortbl;;\cssrgb\c20000\c20000\c20000;\cssrgb\c100000\c100000\c100000;\cssrgb\c38039\c38039\c38039;
+\cssrgb\c53333\c53333\c53333;\cssrgb\c23529\c50196\c96471;\cssrgb\c45882\c45882\c45882;\cssrgb\c98039\c98039\c98039;\cssrgb\c91765\c91765\c91765;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Description\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 \cb3 \strokec2 CROSS-REFERENCE TO RELATED APPLICATION\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 The present invention makes use of the novel independent zone arithmetic unit described and claimed in copending U.S. Pat. application Ser. No. 573,656, filed May 1, 1975, and entitled "Parallel Digital Arithmetic Device Having a Variable Number of Independent Arithmetic Zones of Variable Width and Location," the applicants and assignee for this copending application being the same as for the present application. For sake of brevity, such independent zone arithmetic unit will be described only in a general manner herein. For additional details, reference should be made to the copending application. The description set forth in such copending application is hereby incorporated in the present application by this reference thereto.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 BACKGROUND AND SUMMARY OF THE INVENTION\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 This invention relates to data processing circuitry for use in the arithmetic and logic sections of digital computers and digital data processors. This invention is particularly useful in providing a novel storage protection system for a data processor and hence will be described primarily in that context.\cb1 \
+\cb3 As is known, it is frequently desirable to restrict access to various storage areas in the data storage system associated with a digital data processor to particular authorized users. This is done primarily for data security and data integrity reasons. In particular, in a large scale data storage system, a certain storage area may be assigned to a particular user or customer and it is desirable to prevent other users or customers from gaining access to or disturbing the data in such storage area. In other words, it is often desirable to protect certain storage areas so as to prevent the use of the data stored therein by unauthorized persons.\cb1 \
+\cb3 Various storage protection systems have been heretofore proposed. One such system makes use of storage protection keys or codes which are used to protect known fixed size storage areas. In order to gain access to a particular one of these fixed size storage areas, the user must initially enter the proper protection key or protection code. Such a system performs quite satisfactorily but suffers from the disadvantage that is limited to use with storage areas of predetermined fixed size. In a goodly number of cases, it would be desirable to instead protect storage areas of various different sizes and to be able to change the sizes and locations of the protected areas from time to time.\cb1 \
+\cb3 Another previously proposed form of storage protection involves the use of upper and lower boundary limits which can be assigned to a particular storage area of a desired selectable size. To initially gain access to the protected storage area, the user must submit the proper identification code. Thereafter, a mechanism within the data processor is used to examine subsequently submitted storage address requests to ensure that they lie within the range set by the upper and lower address limit boundaries. If the user attempts to go beyond either of these boundaries, the data processor stops processing his requests and gives him an out-of-bounds signal. Such boundary limit systems provide the flexibility lacking in the protection key systems. The previously proposed boundary limit type systems, however, have substantial room for improvement in terms of the time required to perform the storage address checking function.\cb1 \
+\cb3 The present invention provides a unique combination of data processing circuitry which can be used to significantly reduce the time required of the data processor for performing the storage address checking function in a boundary limit type storage protection system. This is accomplished by providing data processing circuitry for performing two serially related arithmetic operations during one and the same machine control cycle. With this circuitry, the upper boundary address checking function is performed in parallel with and during the same machine cycle used for the accessing of the data into or out of the storage system.\cb1 \
+\cb3 For a better understanding of the present invention, together with other and further advantages and features thereof, reference is made to the following description taken in connection with the accompanying drawings, the scope of the invention being pointed out in the appended claims.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 BRIEF DESCRIPTION OF THE DRAWINGS\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 Referring to the drawings:\cb1 \
+\cb3 FIG. 1 is a functional block diagram of a representative digital data processor and showing incorporated therein data processing circuitry constructed in accordance with the present invention;\cb1 \
+\cb3 FIG. 2 is a diagram describing in greater detail the construction and operation of the independent zone parallel binary arithmetic circuitry represented by the \ul ALU\ulnone  20 of FIG. 1;\cb1 \
+\cb3 FIG. 3 is a functional block diagram of a digital data processor similar to the one shown in FIG. 1, but describing in greater detail the construction of a representative form of control section and its relationship to the other functional units; and\cb1 \
+\cb3 FIGS. 4-6 are charts used in explaining the operation of the data processing circuitry of FIG. 1.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 DESCRIPTION OF THE PREFERRED EMBODIMENT\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 Referring to FIG. 1 of the drawings, there is shown a \ul data processor\ulnone  10 for processing data represented by sequences of binary digits or bits. It is assumed herein that the data bits in these binary bit sequences are grouped into eight-bit groups and each such eight-bit group is called a "byte." The \ul data processor\ulnone  10 can be thought of as being composed of the classical input/output, storage, processing and control sections. The input/output (I/O) section is represented by an I/\ul O device\ulnone  11 and an I/\ul O buffer\ulnone  12. The storage section includes \ul main storage\ulnone  13, a \ul data register\ulnone  14 and a \ul storage address register\ulnone  15. The control section is represented at 16. The remainder of the units shown in FIG. 1 are included in the processing section, such section being represented as a whole by \ul reference numeral\ulnone  17.\cb1 \
+\cb3 An arithmetic and logic unit (ALU) 20 represents the heart of the \ul processing section\ulnone  17. The \ul ALU\ulnone  20 is comprised of independent zone parallel binary arithmetic circuitry of the kind described in the above crossreferenced related application Ser. No. 573,656. For sake of specific example herein, it is assumed that the \ul ALU\ulnone  20 takes the form of one of the binary adder embodiments described in this cross-referenced application. With this in mind, the general nature of the \ul ALU\ulnone  20 is shown in greater detail in FIG. 2. With reference to FIG. 2, the \ul ALU\ulnone  20 of the present embodiment is a parallel binary adder having a relatively wide overall data flow width of eight bytes (bytes 0-7) and a pair of adjustable boundary mechanisms, designated as boundary A and boundary B, for subdividing the ALU or adder 20 into plural independent operating zones of variable width and variable location. Depending on the placement of boundaries A and B, anywhere from one to three independent operating zones may be obtained. Independent external carry-in lines CU, CV and CW and independent external carry-out lines CX, CY and CZ are provided for the three independent operating zones, and the connecting points for such carry-in and carry-out lines are automatically shifted in step with the movement of the zone boundaries A and B. Thus, the connecting point for the CU carry-in line for \ul zone\ulnone  1 and the connecting point for the CY carry-out line for \ul zone\ulnone  2 are shifted in step with the movement of boundary A, while the CV carry-in line for \ul zone\ulnone  2 and the CZ carry-out line for \ul zone\ulnone  3 move in step with the movement of boundary B.\cb1 \
+\cb3 Each one-byte section of the \ul adder\ulnone  20 includes eight parallel binary bit stages. Thus, the overall data flow width of the \ul adder\ulnone  20 is 64 bits. The order of significance of the bits and bytes increases from right to left. Thus, for example, \ul byte\ulnone  0 is the highest order or most significant byte, while \ul byte\ulnone  7 is the lowest order or least significant byte. Each one-byte section (for example, byte 0) is capable of adding a first eight-bit input operand (for exampe, A0 for byte 0) to a second eight-bit input operand (for example, B0 for byte 0) to produce a resultant eight-bit sum (for example, S0 for byte 0).\cb1 \
+\cb3 For the representative operation to be described herein, it is assumed that the control circuitry included within the \ul ALU\ulnone  20 is set to subdivide the \ul ALU\ulnone  20 into two independent operating zones, each having a width of four bytes. This setting is determined by boundary control signals supplied from the \ul control section\ulnone  16 to the \ul ALU\ulnone  20 by way of control bus 21 (FIG. 1). With respect to FIG. 2, it is assumed that boundary A and boundary B are set so that \ul zone\ulnone  1 covers \ul bytes\ulnone  0 through 3, and \ul zone\ulnone  2 covers \ul bytes\ulnone  4 through 7. This is accomplished by setting boundary A at the dividing line between \ul bytes\ulnone  3 and 4 (boundary A scale location 4) and by setting boundary B at the right-hand extremity of the adder 20 (boundary B scale position 7). In this case, \ul zone\ulnone  3 disappears. The higher order or \ul zone\ulnone  1 half of the \ul arithmetic circuitry\ulnone  20 is designated as 20a and the lower order or \ul zone\ulnone  2 half is identified as 20b.\cb1 \
+\cb3 With this boundary setting, the higher and \ul lower order halves\ulnone  20a and 20b funtion as independent first and second arithmetic units. The higher order \ul arithmetic unit\ulnone  20a operates to add a first four-byte operand (A0 -A3) to a second four-byte operand (B0-B3) to form a resultant four-byte sum (S0-S3). In a similar manner, the lower order \ul arithmetic unit\ulnone  20b operates to add a first four-byte operand (A4-A7) to a second four-byte operand (B4-B7) to form a resultant four-byte sum (S4-S7).\cb1 \
+\cb3 In FIG. 1, the higher \ul order arithmetic zone\ulnone  20a is represented by the shaded area, while the lower \ul order arithmetic zone\ulnone  20b is represented by the unshaded area. With respect to FIG. 1, input bytes A0-A7 are supplied to the left side or A side input of the \ul ALU\ulnone  20, while input bytes B0-B7 are supplied to the right side of B side input of the \ul ALU\ulnone  20. Result bytes S0-S7 appear at the output side or bottom side of \ul ALU\ulnone  20. For simplicity of illustration, the 32 input or output conductors for each four-byte group of data bits is represented by a single line in FIG. 1, such line denoting a 32-conductor data bus. Thus, for example, the 32 data bits for input bytes A0-A3 are carried by a 32-conductor data bus 22.\cb1 \
+\cb3 Data is written into the \ul main storage\ulnone  13 by first placing same in the data register 14 and by placing the proper storage address in the \ul storage address register\ulnone  15. Data is read out of the \ul main storage\ulnone  13 by placing the proper address in the \ul storage address register\ulnone  15 and then transferring the data at that address into the data register 14. Storage is addressable on a byte basis or, in other words, each byte location in \ul main storage\ulnone  13 has its own unique address. In the present embodiment, anywhere from one to eight bytes may be accessed at any given instant.\cb1 \
+\cb3 Assuming for the moment that data is being read from the \ul main storage\ulnone  13 for purposes of processing same in the \ul processing section\ulnone  17, such data is transferred to the data register 14 during successive storage read instruction cycles. Assuming the readout mechanism to have a data flow width of eight bytes, then anywhere from one to eight bytes is transferred to the data register 14 during any given storage read cycle. For processing purposes, the data in data register 14 is transferred by way of a \ul shifter unit\ulnone  24 to a \ul destination register\ulnone  25. The data in the \ul destination register\ulnone  25 is subsequently transferred to either an \ul A register\ulnone  26, a \ul B register\ulnone  27 or to one of several general purpose or special purpose registers or storage locations in a \ul local storage subsection\ulnone  28. A typical general purpose register in this \ul subsection\ulnone  28 is indicated at 30. As indicated, various additional registers or storage locations are also located in this \ul subsection\ulnone  28. The data in the \ul destination register\ulnone  25 may also be transferred back to the data register 14 by way of four-\ul byte data buses\ulnone  31a and 31b. If the data in data register 14 is a program instruction, then it is also transferred to and set into the \ul instruction register\ulnone  32.\cb1 \
+\cb3 The data in A \ul register\ulnone  26 is supplied to the left side or A side input of the ALU or \ul arithmetic unit\ulnone  20. The data in B register 27 is supplied by way of true/complement (T/C) \ul gates\ulnone  33 to the right side or B side input of the \ul arithmetic unit\ulnone  20. The resultant data appearing at the output of \ul arithmetic unit\ulnone  20 is supplied to a \ul Z register\ulnone  34. The data in Z register 34 may be transferred to either or both of \ul control section\ulnone  16 and \ul shifter\ulnone  24. The true/\ul complement gates\ulnone  33 may pass the data in the \ul B register\ulnone  27 to the \ul arithmetic unit\ulnone  20 in either true or one's complement form, depending on the settings of the control signals supplied thereto from the \ul control section\ulnone  16 by way of the control lines in a \ul control bus\ulnone  35. The controls for the two \ul portions\ulnone  33a and 33b of the T/\ul C gates\ulnone  33 are independent of one another so that independent gating and T/C functions can be specified for the two portions. When doing a subtraction operation, a +1 carry-in is supplied to the \ul arithmetic unit\ulnone  20 by a + 1 \ul circuit\ulnone  36. This +1 carry-in can be supplied on either or both of the CU and CV carry-in lines (FIG. 2) depending upon the specified ALU function for each of the separate \ul arithmetic zones\ulnone  20a and 20b.\cb1 \
+\cb3 Each of units 24-27, 30, 33 and 34 has a data flow width of eight bytes. Thus, each of these units includes 64 binary data bit stages. The bit stages which handle the higher order four bytes are identified by the suffix letter a, while the bit stages which handle the lower order four bytes are identified by the suffix letter b. The data buses running between these units and to and from the \ul arithmetic unit\ulnone  20 each includes a set of 32 data conductors or data lines. Thus, for example, each of the four-\ul byte data buses\ulnone  37a and 37b running between the \ul shifter\ulnone  24 and the \ul destination register\ulnone  25 includes 32 data conductors. Data bus 37a interconnects the \ul higher order stages\ulnone  24a and 25a, while \ul data bus\ulnone  37b interconnects the lower order stages 24b and 25b. Each of the 32-conductor data buses shown in FIG. 1 has associated therewith a set of 32 control gates for enabling or disabling the flow of data along such data bus. As is customary in the computer art and for sake of simplicity, such data flow control gates are not specifically indicated in the drawing.\cb1 \
+\cb3 The data processing circuitry of FIG. 1 also includes circuitry for supplying first and second operands to the first arithmetic zone (shaded \ul zone\ulnone  20a in FIG. 1) of the \ul arithmetic unit\ulnone  20 for producing a first result. This input operand circuitry includes the higher order half 26a of A \ul register\ulnone  26 for supplying a first operand to the higher order left side input of the \ul arithmetic unit\ulnone  20 and the \ul higher order half\ulnone  27a of the \ul B register\ulnone  27 for supplying a second operand to the higher order right side input of the \ul arithmetic unit\ulnone  20, this second operand being supplied by way of the higher order half 33a of the true/\ul complement gates\ulnone  33.\cb1 \
+\cb3 The data processing circuitry of FIG. 1 further includes data conveying circuitry or data transfer circuitry connected to the output of the first arithmetic zone (shaded \ul zone\ulnone  20a in FIG. 1) of the \ul arithmetic unit\ulnone  20 for immediately supplying the first result back to the input of the second arithmetic zone (\ul unshaded zone\ulnone  20b in FIG. 1) for immediately producing a second and different result. This data transfer circuitry includes a four-\ul byte data bus\ulnone  40 which is connected to the higher order output (result bytes S0-S3) of the \ul arithmetic unit\ulnone  20 and which runs to the input of the \ul lower order half\ulnone  33b of the true/\ul complement gates\ulnone  33. This data transfer circuitry also includes the \ul lower order half\ulnone  33b of the true/\ul complement gates\ulnone  33 and the data bus for operand bytes B4-B7 which runs from the lower order T/\ul C gates\ulnone  33b to the right side input for the \ul lower order half\ulnone  20b of the \ul arithmetic unit\ulnone  20. With respect to the operation to be described hereinafter, it should be noted that the data flow control gates (not shown) which control the flow of data on the data buses which run to the lower order T/\ul C gates\ulnone  33b are operated such that \ul data bus\ulnone  40 is enabled to pass data to the T/\ul C gates\ulnone  33b while the data bus from \ul B register portion\ulnone  27b is disabled or prevented from supplying data to T/\ul C gates\ulnone  33b.\cb1 \
+\cb3 The data transfer circuitry, represented by \ul data bus\ulnone  40 and the lower order T/\ul C gates\ulnone  33b, is constructed to operate in an asynchronous manner such that the first result (result bytes S0-S3) is supplied back to the input of the second arithmetic zone (\ul unshaded portion\ulnone  20b) as soon as it becomes available at the output of the first arithmetic zone (shaded \ul portion\ulnone  20a) of the \ul arithmetic unit\ulnone  20. Thus, this data transfer circuitry is free of registers, latches and other mechanisms controlled by timing signals. In this regard, the true/\ul complement gates\ulnone  33 are "flow through" type devices wherein data bits supplied to the inputs thereof flow on through to the outputs as quickly as their circuit delays will allow and without having to wait on any timing signals. The same, incidentally, is also true of the \ul arithmetic unit\ulnone  20, that is, the data circuits therein are also of the "flow through" type. By way of contrast, the \ul destination register\ulnone  25, the \ul A register\ulnone  26, the \ul B register\ulnone  27 and the \ul Z register\ulnone  34 are controlled by timing pulses from the \ul control section\ulnone  16 which control the times at which new data can be set into these registers. Once data is set into one of these registers, it remains in such register until replaced by new data during a subsequent timing pulse. This provides a synchronous or timed type of operation for these register units.\cb1 \
+\cb3 As previously indicated, the present invention is particularly useful as an upper bounds address checking mechanism for providing storage protection for selected areas within the \ul main storage\ulnone  13. When so used, the processing circuitry shown in FIG. 1 can be considered as including update circuitry for supplying both the current storage address and a requested storage access length value to the first \ul arithmetic zone\ulnone  20a of the \ul arithmetic unit\ulnone  20 for addition therein for producing a new or updated storage address representing the upper extent of the storage access request. As will be seen, the current storage address is located in the \ul higher order half\ulnone  30a of the \ul local storage register\ulnone  30. "SA" denotes "storage address." This current storage address is supplied to the left side input of the first \ul arithmetic unit zone\ulnone  20a by way of the higher order half 26a of the \ul A register\ulnone  26. The requested storage access length value, on the other hand, is initially located in the \ul instruction register\ulnone  32. Such access length value is supplied to the right side input of the higher order half of the \ul arithmetic unit\ulnone  20 by way of the higher order halves of \ul shifter\ulnone  24, \ul destination register\ulnone  25, \ul B register\ulnone  27 and T/\ul C gates\ulnone  33. The higher order \ul arithmetic unit half\ulnone  20a is set to add the current storage address to the access length value so as to cause the higher order output bytes S0-S3 to represent the new or updated storage address. In this regard, the higher order T/C gates 33a are set to supply the access length value to the right side input of \ul arithmetic unit\ulnone  20a in true form.\cb1 \
+\cb3 The upper bounds address checking mechanism also includes limit checking circuitry for supplying both the upper limit address and the new or updated address produced by the higher order \ul arithmetic unit zone\ulnone  20a to the second or lower order \ul arithmetic unit zone\ulnone  20b for producing an indication of whether the new address exceeds the upper limit address. This limit checking circuitry includes the \ul lower order half\ulnone  30b of the \ul local storage register\ulnone  30 for supplying the upper limit or upper bound address to the left side input of the lower order \ul arithmetic unit zone\ulnone  20b by way of the \ul lower order half\ulnone  26b of A \ul register\ulnone  26. "UB" denotes "upper bound." This limit checking circuitry also includes the four-\ul byte data bus\ulnone  40 and the \ul lower order half\ulnone  33b of the true/\ul complement gates\ulnone  33 for supplying the new or updated address to the right side input of the lower order \ul arithmetic unit zone\ulnone  20b. During this limit checking operation, the \ul lower order half\ulnone  27b of B register 27 is prevented from supplying data to the \ul lower order half\ulnone  33b of the T/\ul C gates\ulnone  33. In the present embodiment, the lower order T/\ul C gates\ulnone  33b are set to supply the complement of the new or updated address to the right side input of the lower order \ul arithmetic unit zone\ulnone  20b. Also, the +1 \ul circuit\ulnone  36 is operated to supply a +1 carry-in signal to the lowest order bit position in the lower order \ul arithmetic unit zone\ulnone  20b. This is accomplished by way of carry-in line CV shown in FIG. 2.\cb1 \
+\cb3 It is noted in passing that if the \ul arithmetic unit\ulnone  20 includes an odd number of polarity inverting stages such that its output is inverted or complemented relative to its input, then the lower order T/\ul C gates\ulnone  33b should instead be set to supply the new address to the \ul arithmetic zone\ulnone  20b in true form and the +1 carry-in to the 20b zone should be disabled. For the present embodiment, it is assumed that the \ul arithmetic unit\ulnone  20 does not include such an odd number of inverting stages in its input-to-output path.\cb1 \
+\cb3 The upper bounds address checking mechanism further includes circuitry responsive to the carry-out signal CY for the lower order \ul arithmetic unit zone\ulnone  20b for producing an upper bounds extent error signal when the new or updated address exceeds the upper bound address. This circuitry includes the CY carry-out line, a \ul latch circuit\ulnone  41 and a latch \ul circuit output line\ulnone  42. The \ul latch circuit\ulnone  41 provides a temporary memory for the CY carry-out signal and the extent error signal appears on the latch \ul circuit output line\ulnone  42. The extent error signal is also supplied to the \ul control section\ulnone  16 for discontinuing the normal data processing operations and instituting the proper error handling routine.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 Control section\ulnone  16 may be of either the microprogrammed type or the "all hardware" (nonmicroprogrammed) type. FIG. 3 shows in greater detail the construction of the \ul control section\ulnone  16 for the case where it is of the microprogrammed type. The \ul control section\ulnone  203 of FIG. 3 corresponds to the \ul control section\ulnone  16 of FIG. 1. Also, the \ul adder\ulnone  208 of FIG. 3 corresponds to the \ul arithmetic unit\ulnone  20 of FIG. 1. The \ul local storage register\ulnone  30 in FIG. 1 would, in the case of the FIG. 3 embodiment, take the form of one of the storage locations in the \ul local storage\ulnone  230. The embodiment of FIG. 3 is described in greater detail in the above cross-referenced related application Ser. No. 573,656.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 OPERATION OF THE PREFERRED EMBODIMENT\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 The operation of the FIG. 1 embodiment will now be described for the case of providing the upper bounds check on the address updating for the \ul main storage\ulnone  13. As previously indicated, this address checking is used to provide a flexible form of storage protection for protecting various areas in the \ul main storage\ulnone  13. To initially gain access to a protected storage area, the user submits the proper user identification code together with an identifier for the area to which access is sought and a request for access to such area. The \ul data processor\ulnone  10 then consults a storage protection table stored in the \ul main storage\ulnone  13 and determines whether the user has submitted the proper user identification code for the requested storage area. If he has, then the \ul data processor\ulnone  10 transfers from the \ul main storage\ulnone  13 and sets into the \ul local storage register\ulnone  30 the starting address and the upper boundary address for the protected storage area and thereafter honors requests for writing data into or reading data out of this protected storage area. The initial or starting address for the protected area is set into the higher order four-\ul byte half\ulnone  30a of the \ul register\ulnone  30, while the upper limit or upper bound address is set into the lower order four-\ul byte half\ulnone  30b of the \ul register\ulnone  30. The authorized user may thereafter access the protected storage area defined by these boundary limits.\cb1 \
+\cb3 Assuming that such access is to start with the initial starting address for the protected area, the accessing operation is commenced by transferring the appropriate storage read or storage write instruction to the data register 14, either from a user program stored in another area in the \ul main storage\ulnone  13 or by means of an external request by way of the I/\ul O buffer\ulnone  12. This access instruction is then transferred to the \ul instruction register\ulnone  32. Such instruction includes, among other things, an operation code, a storage area code and an access length code. The operation code indicates whether the operation is a read operation or a write operation and the access length code designates the length of data (number of bytes) to be read or written. The operation code portion of the instruction is also supplied to the \ul control section\ulnone  16. In response thereto, the \ul control section\ulnone  16 sends control signals to the \ul arithmetic unit\ulnone  20 via \ul control bus\ulnone  21 which cause the boundary mechanism inside the \ul arithmetic unit\ulnone  20 to divide the \ul arithmetic unit\ulnone  20 into the two independent four-\ul  byte arithmetic zones\ulnone  20a and 20b. The \ul control section\ulnone  16 also sends control signals to the true/\ul complement gates\ulnone  33 via \ul control bus\ulnone  35 for causing the higher order half 33a to transfer data in true form and for causing the \ul lower order half\ulnone  33b to transfer data in inverted or one's complement form.\cb1 \
+\cb3 At the next step in the storage access cycle, the storage access length value in \ul instruction register\ulnone  32 is set into the \ul higher order half\ulnone  25a of the \ul destination register\ulnone  25. Then the current storage address, in this case the starting storage area address, in the \ul higher order half\ulnone  30a of \ul local storage register\ulnone  30 is transferred to the higher order half 26a of the \ul A register\ulnone  26, the upper boundary address in \ul lower order half\ulnone  30b is transferred to the lower order \ul A register half\ulnone  26b and the access length value in the \ul higher order half\ulnone  25a of \ul destination register\ulnone  25 is transferred to the \ul higher order half\ulnone  27a of the \ul B register\ulnone  27. The current storage address in the higher order A register half 26a is immediately sent to the \ul storage address register\ulnone  15 to commence the accessing action for the \ul main storage\ulnone  13. At the same time, the current storage address in A register half 26a and the access length value in \ul B register half\ulnone  27a are sent to the \ul arithmetic unit\ulnone  20. As mentioned, the T/C gate half 33a supplies the access length value in true form. The \ul arithmetic unit\ulnone  20 adds these two input operands to produce at the higher order output half thereof (bytes S0-S3) a new or updated address value. This new address value is set into the higher order Z register half 34a.\cb1 \
+\cb3 As soon as it appears at the higher order output of the \ul arithmetic unit\ulnone  20, the new address value is immediately sent back to the input side of the lower order \ul arithmetic unit half\ulnone  20b by way of the four-\ul byte data bus\ulnone  40 and the lower order T/\ul C gate half\ulnone  33b. The lower order T/\ul C gate half\ulnone  33b is set to supply the one's complement of the new address value to the right side input of the \ul arithmetic unit half\ulnone  20b. At the same time, the upper limit or upper bound address in the lower order \ul A register half\ulnone  26b is being supplied to the left side input of the lower order \ul arithmetic unit half\ulnone  20b. The lower order \ul arithmetic unit half\ulnone  20b operates to add the one's complement of the new address value to the upper bound address value, a +1 carry-in being supplied by the +1 \ul circuit\ulnone  36 to the CV carry-in line. Because of the +1 carry-in, the \ul arithmetic unit half\ulnone  20b produces an output result (bytes S4-S7) which represents the sum of the upper bound value and the two's complement of the new address value. This result is, of course, the same as would be obtained by subtracting the new address from the upper bound address. Thus, the result from the lower order \ul arithmetic unit half\ulnone  20b represents the true subtraction or true difference of the new address value from the upper bound address value. This difference value, however, is not used in the present embodiment and hence is of no further interest. The upper limit extent checking is instead provided by looking at the carry-out signal CY for the lower order \ul arithmetic unit half\ulnone  20b. The absence of a carry-out (CY = 0) indicates an upper limit extent error (new address greater than upper bound address), while the presence of a carry-out (CY = 1) indicates that the new address is still less than the upper boundary limit.\cb1 \
+\cb3 The reason the CY carry-out status can be used to provide an extent error can be seen with the aid of the examples shown in FIGS. 4-6. For sake of simplicity, hexadecimal (base 16) notation is used in these examples in place of the actual binary values. In all three examples, it is assumed that the upper boundary limit value is "6000" in hexadecimal notation or "24,576" in decimal notation. In the first case represented in FIG. 4, the new address has a value of "5FFF" (24,575 in decimal), which is, of course, less than the upper limit. The 16's complement of 5FFF is A001. Adding this 16's complement to the upper limit value gives 0001 plus a carry-out to the next higher order digit position. In general, whenever the new address value is smaller than the upper limit, the complement of the new address value will always be big enough to produce a carry-out.\cb1 \
+\cb3 FIG. 5 represents the case where the new address is exactly equal to the upper limit address. In this case, the 16's complement is "A000" and the sum is "0000" with a carry-out to the next digit position. FIG. 6 shows the case where the new address is one greater than the upper limit address. In this case, the 16's complement is "9FFF" and the sum is "FFFF" with no carry-out. Thus, when the new address representing the upper extent of the storage access request is larger than the upper limit, the complement will be too small to produce a carry-out. Thus, the absence of a carry-out (CY = 0) indicates an upper boundary extent error.\cb1 \
+\cb3 The actual hardware shown in FIG. 1 operates, of course, with binary numbers and not hexadecimal numbers. Nevertheless, the same result occurs and for the same reasons as for the hexadecimal notation examples in FIGS. 4-6. If the new address is smaller than or equal to the upper limit, then the complement thereof is large enough to produce a carry-out. Conversely, if the new address is larger than the upper limit, then the complement is too small to produce a carry-out.\cb1 \
+\cb3 The CY carry-out status is set into the \ul latch circuit\ulnone  41. The output of \ul latch circuit\ulnone  41 provides the extent error indication. If the binary signal level on the \ul latch output line\ulnone  42 indicates the occurrence of an extent error, such occurrence is immediately sent to the \ul control section\ulnone  16. Upon receipt of same, the \ul control section\ulnone  16 immediately discontinues the storage accessing operations and discontinues the processing of the user program or the honoring of external I/O requests, as the case may be. The external user or machine operator, as the case may be, is notified of this action and the reason for same. Thus, the user is prevented from exceeding his authorized boundary limit and thus is prevented from gaining access to a neighboring storage area for which he does not have the proper authorization.\cb1 \
+\cb3 If no boundary extent error occurs, then the new address value in the higher order Z register half 34a is sent back by way of the shifter half 24a and \ul destination register half\ulnone  25a to the local \ul storage register half\ulnone  30a to replace the previous address with the new updated address. This places the \ul processing section\ulnone  17 in the proper condition to process the next storage access instruction. So long as no boundary extent error occurs, subsequent storage access instructions will be processed in the same manner as described above, with the current address in \ul register\ulnone  30a being replaced by the new updated address at the appropriate point in each storage access cycle.\cb1 \
+\cb3 It should be noted that certain storage access instructions may not specify that the current storage address in \ul register\ulnone  30a be updated. In such cases, the extent checking mechanism works in exactly the same manner as described above, except that the updated address in the higher order Z register half 34a is not sent back to the \ul SA register\ulnone  30a.\cb1 \
+\cb3 The important advantage of the foregoing operation is that two distinct operations are performed during one and the same machine control cycle. The first operation is the adding of the current storage address to the access length value to obtain the new address. The second distinct operation is the subtracting of the new address produced by the first operation from the upper boundary limit to provide the boundary extent check. In the absence of the present invention, a second machine control cycle could be required to perform the boundary extent check.\cb1 \
+\cb3 It is noted that the described two-operation function is slightly slower than a one-pass add function since the subtraction used for the extent checking must wait on the outcome of the address update addition. This delay is caused by the inherent circuit delay inside the \ul arithmetic unit\ulnone  20 in performing the address update addition. It is, however, quite small in magnitude and does not lengthen the normal storage access cycle since the accessing of data into or out of storage also takes longer than a one-pass add function.\cb1 \
+\cb3 A further advantage of the present upper bound address checking system is its flexibility in handling access lengths of different sizes. Successive storage access instructions can specify different read lengths or write lengths and the address checking feature will continue to perform in the desired manner. In other words, the address checking circuitry is not limited to use with read lengths and write lengths having the same fixed value.\cb1 \
+\cb3 While there has been described what is at present considered to be a preferred embodiment of this invention, it will be obvious to those skilled in the art that various changes and modifications may be made therein without departing from the invention, and it is, therefore, intended to cover all such changes and modifications as fall within the true spirit and scope of the invention.\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf2 \cb3 Claims (10)\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf4 \cb3 \strokec4 Hide Dependent\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf2 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 \cb3 What is claimed is:\cb1 \
+\cb3 1. A boundary address checking system for checking a storage access request against a boundary address limit and comprising:\cb1 \
+\cb3 parallel binary arithmetic circuitry having independent first and second arithmetic zones;\cb1 \
+\cb3 update circuitry for supplying both the current storage address and a requested storage access length value to the first arithmetic zone for producing a new storage address representing the extent of the storage access request;\cb1 \
+\cb3 and limit checking circuitry for supplying both the boundary limit address and the new address produced by the first arithmetic zone to the second arithmetic zone for producing an indication of whether the new address exceeds the boundary limit address.\cb1 \
+\cb3 2. A boundary address checking system for checking a storage access request against a boundary address limit and comprising:\cb1 \
+\cb3 parallel binary arithmetic circuitry having a multiple number of parallel stages;\cb1 \
+\cb3 control circuitry for subdividing the arithmetic circuitry into two zones and simultaneously operating such zones as independent first and second arithmetic units;\cb1 \
+\cb3 update circuitry for supplying both the current storage address and a requested storage access length value to the first arithmetic unit for producing a new storage address representing the extent of the storage access request;\cb1 \
+\cb3 and limit checking circuitry for supplying both the boundary limit address and the new address produced by the first arithmetic unit to the second arithmetic unit for producing an indication of whether the new address exceeds the boundary limit address.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 3. A boundary address checking system in accordance with claim 2 wherein the limit checking circuitry is operative during the same machine control cycle as the update circuitry.\cb1 \
+\cb3 4. A boundary address checking system in accordance with claim 2 wherein the portion of the limit checking circuitry which supplies the new address to the second arithmetic unit operates in an asynchronous manner such that the new address is supplied to the second arithmetic unit as soon as it becomes available at the output of the first arithmetic unit.\cb1 \
+\cb3 5. A boundary address checking system in accordance with claim 2 and further including circuitry responsive to the carry-out signal for the second arithmetic unit for producing a boundary limit extent error signal when the new address exceeds the boundary limit address.\cb1 \
+\cb3 6. A boundary address checking system in accordance with claim 2 wherein the second arithmetic unit and the limit checking circuitry include circuitry for causing the complement of the new address to be added to the boundary limit address to produce the indication of whether the new address exceeds the boundary limit address.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 7. Data processing circuitry for performing two serially related arithmetic/logic operations during one and the same machine control cycle and comprising:\cb1 \
+\cb3 parallel binary arithmetic/logic circuitry having first and second arithmetic/logic zones;\cb1 \
+\cb3 circuitry for supplying first and second operands to the first arithmetic/logic zone for producing a first result;\cb1 \
+\cb3 and data transfer circuitry connected to the output of the first arithmetic/logic zone for immediately supplying the first result back to the input of the second arithmetic/logic zone for immediately producing a second and different result.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \cb3 \strokec5 8. Data processing circuitry in accordance with claim 7 wherein the data transfer circuitry is constructed to operate in an asynchronous manner such that the first result is supplied back to the input of the second arithmetic/logic zone as soon as it becomes available at the output of the first arithmetic/logic zone.\cb1 \
+\cb3 9. Data processing circuitry in accordance with claim 7 wherein the data transfer action of the data transfer circuitry is not dependent on any timing signals.\cb1 \
+\cb3 10. Data processing circuitry in accordance with claim 7 wherein the data transfer circuitry is free of registers, latches and other mechanisms controlled by timing signals.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Patent Citations (4)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1831\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt\clvertalbase \clcbpat8 \clwWidth6536\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Assignee\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1831\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6536\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3639912A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1969-04-16\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-02-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Honeywell Inf Systems\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Management control subsystem for multiprogrammed data processing system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clcbpat8 \clwWidth1831\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clcbpat8 \clwWidth6536\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1831\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6536\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB986929A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1961-06-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1965-03-24\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Decca Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Improvements in or relating to data processing apparatus\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1831\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6536\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 DE2222195A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-05-05\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-11-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Siemens Ag\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 ARRANGEMENT FOR PROCESSING OPERANDS OF PROGRAMS\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1831\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6536\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3863061A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-08-16\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-01-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Us Navy\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Alu with end-around carry derived from auxiliary unit\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party\cb1 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Non-Patent Citations (1)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth16560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth16560\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 Enger, T. A. Range Check of an Address Counter, in IBM Tech. Disc. Bull., 16(7): Dec. 1973, pp. 2136-2137. *\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party\cb1 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Cited By (16)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt\clvertalbase \clcbpat8 \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Assignee\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4133028A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-10-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1979-01-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data General Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing system having a cpu register file and a memory address register separate therefrom\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4430711A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-05-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-02-07\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Signetics Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Central processing unit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4580214A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-03-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-04-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Hitachi, Ltd.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory control system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4592005A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-07-06\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-05-27\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Sperry Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Masked arithmetic logic unit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4627017A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-10-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-12-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Address range determination\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5101370A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1990-07-26\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1992-03-31\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Unisys Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Programmable digital accumulate and scale circuit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5623621A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1990-11-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1997-04-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Analog Devices, Inc.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus for generating target addresses within a circular buffer including a register for storing position and size of the circular buffer\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5787492A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1996-04-09\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1998-07-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Address limit check apparatus with conditional carry logic\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5949972A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1996-08-23\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1999-09-07\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Compuware Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 System for memory error checking in an executable\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US6567898B1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1999-07-07\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2003-05-20\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fujitsu Limited\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory controller and an information processing apparatus with improved efficiency\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US6583945B1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1998-10-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2003-06-24\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Iomega Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method for irreversibly write-securing a magnetic storage cartridge\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 USRE40904E1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1990-11-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2009-09-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Analog Devices, Inc.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus for generating target addresses within a circular buffer including a register for storing position and size of the circular buffer\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clcbpat8 \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clcbpat8 \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1536853A}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-05-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1978-12-20\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Plessey Co Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing read and hold facility\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 DE2842548A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1978-09-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-04-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Siemens Ag\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 PROGRAMMABLE MEMORY PROTECTION LOGIC FOR MICROPROCESSOR SYSTEMS\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB2127994B }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-09-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1987-01-21\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apple Computer\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory management unit for digital computer\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1978\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6390\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPS59125462A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-12-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-07-19\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fujitsu Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Protection system of volume control information\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party, \'87 Family to family citation\cb1 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Similar Documents
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt\clvertalbase \clcbpat8 \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication Date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3979726A}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-09-07\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus for selectively clearing a cache store in a processor having segmentation and paging\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5025370A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1991-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Circuit for preventing lock-out of high priority requests to a system controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3914747A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-10-21\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory having non-fixed relationships between addresses and storage locations\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3786432A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-01-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Push-pop memory stack having reach down mode and improved means for processing double-word items\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4149242A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1979-04-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data interface apparatus for multiple sequential processors\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3328768A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1967-06-27\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Storage protection systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0111407B1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1992-04-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Microprogrammed control unit for handling the intermixed occurences of microprogram branches and interrupts\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JP2633331B2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1997-07-23\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Microprocessor\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4037213A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1977-07-19\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processor using a four section instruction format for control of multi-operation functions by a single instruction\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4225934A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-09-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multifunctional arithmetic and logic unit in semiconductor integrated circuit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1593053A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1981-07-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing apparatus\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JPS5914770B2}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-04-06\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 data processing equipment\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 CA1083727A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-08-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Address converter in a data processing apparatus\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3706077A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-12-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multiprocessor type information processing system with control table usage indicator\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 CA1082369A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-07-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Processor circuit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0026648B1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-08-13\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Digital data transfer apparatus\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3405394A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1968-10-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Controlled register accessing\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4799186A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1989-01-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Electronic circuit constituting an improved high-speed stable memory with memory zones protect from overlap\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4999808A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1991-03-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Dual byte order data processor\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 KR100423893B1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2004-03-24\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Partial matching partial output cache for computer arithmetic operations\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4217657A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-08-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Floating point arithmetic control\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4181935A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-01-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processor with improved microprogramming\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0298418B1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1994-12-14\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Virtual computer system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4309753A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-01-05\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apparatus and method for next address generation in a data processing system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1980\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth11725\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3260840A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1966-07-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Variable mode arithmetic circuits with carry select\cb1 \cell \lastrow\row
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 \strokec2 Priority And Related Applications\cb1 \
+\cb3 Priority Applications (5)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1662\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt\clvertalbase \clcbpat8 \clwWidth10740\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Application\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Filing date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1662\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth10740\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US05/587,936}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Upper bounds address checking system for providing storage protection for a digital data processor\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1662\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth10740\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB18383/76A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-05-05\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing apparatus\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1662\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth10740\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 FR7614184A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-05-06\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 UPPER MEMORY LIMIT ADDRESS VERIFICATION SYSTEM\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1662\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth10740\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 JP51059723A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-05-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 data processing equipment\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1662\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth10740\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 DE2625113A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-06-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Memory protection device\cb1 \cell \lastrow\row
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 \strokec2 Applications Claiming Priority (1)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1824\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1465\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt\clvertalbase \clcbpat8 \clwWidth12309\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Application\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Filing date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1824\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1465\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12309\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US05/587,936}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Upper bounds address checking system for providing storage protection for a digital data processor\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 Data provided by IFI CLAIMS Patent Services\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://support.google.com/faqs/answer/6390996"}}{\fldrslt \cf6 \cb8 \strokec6 About}}\cb8  {\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3999052A/en#"}}{\fldrslt \cf6 \cb8 \strokec6 Send Feedback}} {\field{\*\fldinst{HYPERLINK "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"}}{\fldrslt \cf6 \strokec6 Public Datasets}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/policies/terms/"}}{\fldrslt \cf6 \strokec6 Terms}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/privacy/privacy-policy.html"}}{\fldrslt \cf6 \strokec6 Privacy Policy}} {\field{\*\fldinst{HYPERLINK "https://support.google.com/websearch/"}}{\fldrslt \cf6 \strokec6 Help}}\cb1 \
+}

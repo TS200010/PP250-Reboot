@@ -1,0 +1,1236 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red255\green255\blue255;\red78\green78\blue78;
+\red117\green117\blue117;\red47\green103\blue243;\red98\green98\blue98;\red249\green249\blue249;\red229\green229\blue229;
+}
+{\*\expandedcolortbl;;\cssrgb\c20000\c20000\c20000;\cssrgb\c100000\c100000\c100000;\cssrgb\c38039\c38039\c38039;
+\cssrgb\c53333\c53333\c53333;\cssrgb\c23529\c50196\c96471;\cssrgb\c45882\c45882\c45882;\cssrgb\c98039\c98039\c98039;\cssrgb\c91765\c91765\c91765;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 Description\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf2 \cb3 United States Patent Cotton et a]. [4 1 July 25, 1972 [541 DATA TRANSMISSION SYSTEMS 3.210.733 l0/l965 Terzian et al. .340/1725 3,336,582 8/1967 Beausoleil et a] ...340/l72.$ [721 3,403,382 9/1968 Frielinghaus et al .340/1725 England 3.456.242 7/l969 Lubkin et al .340/1725 [73] Assignee: Plessey BTR Limited, Taplow, England [22] Filed: April 13, 1970 Primary Examiner-Paul J. Henon Assistant ExaminerSydney R. Chirlin [21] Appl' 27531 An0rne vYoung and Thompson Related 1.5. Application Data 63 Continuation-impart of Ser. No. 638,803. May 15. [57] ABSTRACT 1967, Pat. No. 3,444,755.\cb1 \
+\cb3 A data transmission highway. in the form of a ring has a plul r ign Application Priority Data rality of data handling devices connected thereto. A different priority number is allocated to each device. When a device May 17, I966 Great Britain ..2l,829/66 wishes to transmit data it first transmits is own priority number on the highway and the device having the highest priority number of the devices which wish to transmit is allowed 581 mm of Search ..340/| 72.5\cb1 \
+\cb3 [56] References Cited 5 Claim, 12 Drawing Figures UNITED STATES PATENTS 3,425,037 1/1969 Patterson et a] ..340/l72.$\cb1 \
+\cb3 DEV/CE PATENTEll- I972 3.680.053\cb1 \
+\cb3 SHEEI 01 or 10 CON TAOL I I G- 7. Con/"ML CONTROL STA r/o/v AS74770 STAT/0N R L RL R L T I PROCESSOR I DA I DA 2 DAX [5 I K I PROCESSOR PROCESSOA TD/ R L R L R L co/v TROL ca/v TROL CONTROL .5 TA 770m I 5 TA r/o/v 1 s m r/o/v I D BI DB2 DB Y I I pizza/ 41M PER/@1054 L I P'N/PHEAA I.\cb1 \
+\cb3 DEV/C6 oav/cz TRANSMITTER T0 RECEIVER CODES CODE DECODE REF SIGNIFICANCE 0000 (A) FREE HIGHWAY 1000 (B) PRIORITY ESTABLISHMENT 0700 (C) DESTINATION CHARACTERS O I 10 (D) DATA CHARACTERS O I I 1 (E) GUEUE EMPTY IIOI (E) RESPONSE CHANGEOVER I I I I (G) FAULT 0101 (H) RESPONSE C/O PERFORMED RECEIVER T0 TRANSMITTER CODES I001 (J) DESTINATION FREE 10 I0 (K) END OF BLOCK mm (L) DESTINATION BUSY ooII (M) OUEUE FULL a 6. FIG.4a. F1641). Fl6.5a. FI6.5b.\cb1 \
+\cb3 Avravraa' F1646. F/G.4d. FIG. 5C. FIGSd. JOHNM/(Wflfl (Iowa/v ETE/x A /I/ MIA/I14 wao DATA WIRES CODE WIRES "-HIGHWAYIN IDT DATA\cb1 \
+\cb3 LAUNCH (ODE SENSE Lmll GCBIQ c: as! (005 CQ LAUNCH \ul C\ulnone  4 \ul CD\ulnone  6 510 SENSE ID 653 I zsr z STROBE \ul ass\ulnone  1 \ul LAUNEH\ulnone  1 HIGHWAY OUT JHUHL DATA WIRES c002 WIRES PATENTED \ul L I\ulnone  2 3.680.053\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 sum\ulnone  03 or 10 \ul MAR\ulnone  1 gum 00 BDR PROC DNE\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 (ON T TERM DES (TX) DATA (Tx) E08 (TX) RC/O PATENTED L I972 3.680.053 saw on or 10 PHA\{ F/a4c.\cb1 \
+\cb3 OF (TX) INT DES (RX) 622 62/ DATA (RX) TF (Rx) EOM E08 (RX) OF (RX) 05 DEVB DEVF\cb1 \
+\cb3 PATENTED 3,680,053\cb1 \
+\cb3 sum 07 [\ul 1F\ulnone  10 PATENTED L I972 3.680.053\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 sum 0s 0F\ulnone  10 FIG. 5b.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 DATA SENSE D10 STROBE GEN DATA LAUNEH 10 I II INHIBIT DATA I IROUGI II (ODE SENSE (4 CODE LAUNCH STROBE LAUNCH STROBE SENSE DATA TRANSMISSION SYSTEMS This application is a continuation-in-part of our application Ser. No. 638,803, filed May 15, I967 now US. Pat. No. 3,444,755.\cb1 \
+\cb3 The present invention relates to data transmission or similar signalling systems and is particularly concerned with arrangements involving a so-called data highway, by which is meant a common channel which is available to a number of stations under which they make use on a time-sharing basis. The devices at such stations may be computers, data-collection, data-distribution or other data manipulating devices.\cb1 \
+\cb3 In a system of the type contemplated, the useage of the highway is normally in accordance with a particular priority rating, that is to say, a message which has a high priority takes precedence over one of lower priority and if the trafi'ic is heavy, low priority messages may have to wait an appreciable time. Heretofore, it has been customary to provide a central station which controls use of the highway. Devices having messages to transmit, make application to the central station which then determines which of such devices has the highest priority. It is an object of the present invention to provide an electrical signalling system of this type which does not require the provision of a central station to control use of the highway.\cb1 \
+\cb3 According to the invention, in an electrical signalling system for transmission of data from any one to any other of a plurality of signalling stations connected by a common highway in the form of a ring, there are provided means at each station for storing a priority number for said station, means at each station for transmitting said priority number on said highway when said station desires to seize the highway and means at each station for comparing said stored priority number with any priority number received at said station on said common highway to determine whether such received priority number is greater than, less than, or equal to said stored priority number. Thus, each station wishing to transmit a message determines whether its own priority number is higher than the priority number of any other station wishing to transmit a message at the same time. Consequently, no central controlling station for the highway is required.\cb1 \
+\cb3 The priority number of any station is preferably set up on a register in the station and may be altered by either external or internal control if this becomes desirable. The priority number of a station may also be used as the address of that station for the receipt of messages.\cb1 \
+\cb3 The register for storing the priority number may also be used as a temporary store for incoming and outgoing message characters. While this is taking place, the address must be stored elsewhere. At such times, however, it may be stored in a place where it cannot be directly referred to.\cb1 \
+\cb3 According to a preferred from of the invention, during signalling, the transmission of a further signalling element is only allowed to proceed when the previous element has been transmitted completely around the ring and the received signal is found to correspond to the transmitted signal.\cb1 \
+\cb3 The highway may take the form ofa plurality of wires, some of which are allocated to the transmission of data signals while the others are used for the transmission of control signals. In this case, the signals on the individual wires may be direct voltage or current signals. An alternative approach is to use a modulated carrier on a single conductor.\cb1 \
+\cb3 The invention will be better understood from the following description at one method of carrying it into effect which should be taken in conjunction with the accompanying drawings, in which:\cb1 \
+\cb3 F IG. 1 shows, in broad outline, the type of data transmission system to which the invention relates;\cb1 \
+\cb3 FIG. 2 shows, in table logic form, the codes employed on the code wires of the highway of the system shown in FIG. I;\cb1 \
+\cb3 FIG. 3 shows, in detailed logic form the apparatus employed in the data drive and code drive units associated with a single highway drive control unit;\cb1 \
+\cb3 FIGS. 40, 4b, 4c and 4d show in detail logic form, a buffer unit ofa highway station;\cb1 \
+\cb3 FIGS. 50, 5b, 5c and 5d show in detail logic form, a single highway drive control unit; and\cb1 \
+\cb3 FIG. 6 shows how FIGS. 40, 4b, 4c, 4d, 50, 5b 5c and 5d should be assembled to form a single drawing.\cb1 \
+\cb3 FIG. 1 shows, in block schematic form, the general arrangement of a data highway in the form of a ring. Six devices DA], DAZ, DAX, DB1, DB2, and DBY are shown as connected thereto, connection in each case being made by respective control or highway station equipment RL. It will, of course, be appreciated that additional devices may be connected to the highway if desired.\cb1 \
+\cb3 The devices referred to may conveniently be the various equipments of a multiprocessor data processing system. For example devices DAI, DAZ and DAX may be processors or computers while devices DBI, DB2 and DBY may be peripheral devices for use with the processors. Each device is arranged to include a simple device highway station interface which converts the highway station signals into those produced or active upon the particular device. The data transmission system of the invention provides for the passage of messages between the various devices for use in the processing of for example telephone exchange control functions. The devices themselves may be of known construction and design and adapted to function in known manner.\cb1 \
+\cb3 As indicated, the highway consists of fifteen conductors or wires. Ten of these are used for the transmission of data and five for the transmission of control signals.\cb1 \
+\cb3 Each data character is composed of ten bits which are applied to the different data wires simultaneously so that the system operates on a parallel basis. Of the five control wires, four are used for the transmission of control signals comprising the codes indicated in FIG. 2, each digit of the code being transmitted on a respective control wire. The fifth control wire is used for transmission of strobe signals.\cb1 \
+\cb3 The actual significance of many of the codes shown in FIG. 2 will be discussed in detail with reference to FIGS. 4 and 5.\cb1 \
+\cb3 Each control equipment or highway station RL consists of a buffer unit and a highway drive control unit. The buffer unit effectively controls the highway drive control unit when a data transfer is in progress by extension of sequence signals which will be active in the highway drive control unit.\cb1 \
+\cb3 While the data transfer is in progress the buffer unit extends indication signals to the device which responds with condition signals. These condition signals are translated in the buffer unit to produce sequence signals to control the codes and data extended 0 the highway from the code drive and the data drive units associated with the selected drive control unit.\cb1 \
+\cb3 Each highway station in the system is allocatedat least one N bit hardware address, (conveniently N may be equal to the number of bits in the data wire section ofa highway i.e., 10). The system is not provided with a discrete overall communication selection and control mechanism and for selection purposes the priority level of ahighway station, and hence the device it serves, is defined by the value of it's handware ad dress.\cb1 \
+\cb3 When a device such as DAl in FIG. I wishes to communicate with another device such as DBY in FIG. 1 it first has to obtain the highway. This operation is performed by the highway drive control unit associated with the originating device DAI extending its own priority address on the data wires together with the priority establishment" code (1000) on the code wires of the highway after breaking the ring. If no other device on the highway is simultaneously attempting to seize the highway the highway station associated with device DAl will receive back its own priority address together with the priority establishment code indicating that highway is available for use on the desired data transfer.\cb1 \
+\cb3 It will be realized that other devices may be attempting simultaneous seizure of the highway and under these circumstances each highway drive control unit on that ring observes a strict set of rules, which will be discussed later with reference to FIG. 5, culminating in the fact that the demanding device having the highest priority address obtains the highway to the exclusion of all other devices.\cb1 \
+\cb3 Having obtained the highway the drive control unit informs the associated buffer unit of the fact which in turn indicates to the demanding device. The device now presents to the buffer unit the address of the required device. for example device DAX in FIG. I. This destination address" is then presented to the highway accompanied by the same "priority establishment code (I000) and a strobe pulse on the fifth code wire with the ring still "broken.\cb1 \
+\cb3 At this stage all the drive control units on the highway will be set to a highway busy" condition and the extension of the destination address on the data wires of the highway causes an interrogation process to be performed at each highway station which is intermediate the demanding device, device DAI in FIG. I, and the required destination device, device DBY in FIG. I, the direction of transmission being assumed as clockwise as indicated by arrow TD. Each device compares the destination address" with its own address or addresses and when equivalence is detected the particular highway drive control unit "breaks" the code and strobe wires and connects either the destination free" (1001) or destination busy 101 I codes to the code wires and produces a strobe pulse on the strobe wire again in a clockwise direction of transmission.\cb1 \
+\cb3 The reception of the strobe pulse at the demanding device, device DAI, allows the state of the destination device to be defined (i.e. free or busy). If the destination device is busy the transfer attempt is terminated and a second attempt will be made later. If the destination device is free further -bit characters will be circulated from device DAI to DBY accompanied by control codes on the code wires.\cb1 \
+\cb3 During the message transfer between two highway stations the data is regenerated by the destination device after accepting it. The regenerated data arrives back at the sending highway station where it is compared with the version originally sent. Thus full error checking is provided for the highway system. If the characters do not compare, one retransmission is allowed before the fault is reported.\cb1 \
+\cb3 When the last character of the message has been circulated the free highway" code (0000) is circulated allowing all the highway drive control units on the highway used to be returned to normal allowing them to initiate or receive further messages.\cb1 \
+\cb3 In the above broad outline of the system reference has been made to the "breaking of the highway loop in the data and drive units associated with a drive control unit. Fig. 3 shows typical data and control drive units DD and CD respectively. The top of FIG. 3 shows the incoming highway (HIGHWAY IN) consisting of ten DATA WIRES and five CODE WIRES, one of which is the STROBE WIRE. The DATA WIRES are connected to the associated highway drive control unit as DATA SENSE and also to ten two-input AND gates GDBI to GDBIO, only the first and last being shown for simplicity in FIG. 8. The second input to gates GDBl to GDBIO is provided by the output of inverter IA which is fed with a 1' state signal IDT (inhibit data through). Hence when this signal is activated to the 1' state gates GDBI to GDBIO are all closed effectively breaking the ring at that point. As mentioned above when the data wires are broken" the associated device may launch data onto the highway and this is performed by applying the required data to the DATA LAUNCH leads. Gates GSCI to GSCIO will be primed by the 1 state signal IDT, by the inverted output from inverter IB, allowing the data on the DATA LAUNCH leads to be applied via OR gates GDSI to GDS10, onto the DATA WIRES of the outgoing highway HIGHWAY OUT.\cb1 \
+\cb3 Similarly the code wires are applied to the associated control unit over the CODE SENSE leads and the code wire path can be broken" by the activation of the inhibit code through signal ICT and new codes may be launched by way of the CODE LAUNCH leads.\cb1 \
+\cb3 Finally the STROBE WIRE may be subjected to similar breaking" arrangements, using the inhibit strobe through signal [ST and the STROBE SENSE and STROBE LAUNCH leads.\cb1 \
+\cb3 Consideration will now be given in more detail, with reference to FIGS. 4 and 5 to the above operating procedures. These figures consist of four sections each. FIGS. 4a, 4b, 4c and 4d together with figs. 5a. 5b, 5c and 5d. and they should be arranged as shown in FIG. 6. FIG. 4 shows the logic of the buffer unit while FIG. 5 shows the highway drive control unit.\cb1 \
+\cb3 As mentioned previously each buffer unit (FIG. 4) is controlled by signals from the associated device and it provides indication signals back to the device while a transfer is in progress. Additionally the bufi'er unit produces sequence signals which are extended to the associated highway drive control unit of the highway station while this drive control unit produces condition signals which are fed back to the buffer unit. Each buffer unit includes a buffer state counter BSC in FIG. 4b which has three stages B0, B1 and B2. When the buffer unit is idle (i.e. not involved in a data transfer although highways associated therewith may be busy) the state counter remains in state B0. Each highway drive control unit (FIG. 5) includes a highway state counter HSC (FIG. Sc/FIG. 5d) which has seven states S0 to S7. When the highway is not in use all the highway drive control units connected thereto will have their highway state counters in \ul state\ulnone  0. It should be noted in FIGS. 50, 5b, 5c and 5d that certain gates have leads connected thereto which are referenced by a single number between 0 and 6. These represent connections from the highway state counter of that drive control unit and this counter is arranged to produce a I state output on one lead, while all other leads are in the 0 state, in accordance with its current state. For example while the highway is idle a I state signal will be produced from state of counter l-ISC in FIG. 5c causing a I' state condition on \ul lead\ulnone  0 thereby priming for example the input of AND gate BC26 referenced 0.\cb1 \
+\cb3 In the following description use will be made of a series of equations which will trace the path used in the logic diagram to produce a particular signal, to set a toggle or to open a gate. These equations are not to be construed as boolean statements and are only included to simplify the presentation of the description.\cb1 \
+\cb3 In FIGS. 4 and 5 various gates are shown and those which include a number I within their symbol are so-called OR gates producing a I state output when one or more inputs are in the I state. Those gates which include a number greater than 1 (e.g. 3 in gate G2 FIG. 4a) are so-called AND gates producing a I state output when all inputs are in the 1' state. Additionally various toggles are shown in FIG. 4 and these toggles are set (a l state output from the 1 side and a 0' state output from the 0 side) by a I state input to their 1 side and reset by a I state input to their 0 side. Certain toggles in FIGS. 40 and 4d are provided with two inputs on one side and the input marked indicates that it is a trailing edge activated input. FIG. 4 includes devices referenced SGI to 564 and these devices are delay and pulse generators used to produce accurately timed pulses of a specified duration from a single 0' to l'goingchange" input condition. Finally both FIGS. 4 and 5 include inverters referenced IVl etc in FIG. 4 and Il etc in FIG. 5. These devices simply invert the invoming signal producing a I state output when their input is in the 0 state and a 0 state output when the input is in the 1 state. Also included in FIGS. 4 and 5 are gate condition signals referenced by letter enclosed in a bracket. These references refer to the outputs from a Decoder in FIG. 4 and a code senser in FIG. 5. Basically these devices are the same and they produce a oneout-of-IS condition in accordance with the code currently on the code wires (i) of the highway connected to the buffer unit if any, in the case of the decoder, and (ii) of the associated highway, in the case of the senser. The significances of the various decoded codes A to M are shown in the tables of FIG. 2 referred to above.\cb1 \
+\cb3 The following description of FIGS. 4 & 5 will be split into four basic sections (i) Sending (ii) Receiving (iii) Responsechangeover (iv) Queue conditions and (v) Faults.\cb1 \
+\cb3 l. SENDING PROC-GI -SGl -SG2. TEOM. BO-GZ-TTXD SI l7 GE- m S:\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 Equation\ulnone  8 l. above indicates that signal PROC going to 1' opens OR gate G1 causing a delayed pulse out of pulse generator SG] and then a delayed pulse out of pulse generator SGZ. The occurrence of the pulse from pulse generator 8G2 together with the reset state of toggle TEOM and state B from buffer state counter BSC opens gate G2 which sets toggle TTXD. From this point no explanation will be given for each equation presented as the symbols used will be similar to those of equations S l.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 The setting of the transmit demand toggle TTXD opens gate G3 to produce signal TXSS. The extension of the transmit signal TXSS will set the highway state counter HSC in this control unit to \ul state\ulnone  1.\cb1 \
+\cb3 TXSS. GCl GC2-Sl. S3.\cb1 \
+\cb3 It should be noted that gate GCl will be closed if there is a code on the highway other than (A) (i.e. the free highway code) or if the highway state counter is not in \ul state\ulnone  0. If gate GCl is closed when signal TXSS is produced, gate GC3 will be opened to produce TXSF which terminates the production of signal TXSS.\cb1 \
+\cb3 The setting of the highway state counter HSC to \ul state\ulnone  1 causes (i) the connection of the CODE REG (FIG. 4b) and the decoder of the buffer unit to the code wires of the selected highway, equation 84 below, (ii) the breaking" of the data wires through the data drive unit equation S5 below (iii) the connection of the devices own preprogrammed priority address PPA onto the data wires of the selected highway equation S6 below (iv) the connection of the priority establishment code (B) onto the code wires of this highway from the coder (FIG. 5b) equation S7 below (v) the "breaking of the code wires through the code drive unit, Equation S8 below, and (vi) the breaking of the strobe wire through the code drive unit,\cb1 \
+\cb3 Equation S9 below.\cb1 \
+\cb3 1 \ul oc4 G05\ulnone  54.\cb1 \
+\cb3 - oce Gc7 ss.\cb1 \
+\cb3 -GDl S6.\cb1 \
+\cb3 l.E -GC8LB s7.\cb1 \
+\cb3 1 -oc9.1s. 0 0cm S8.\cb1 \
+\cb3 1-ocii.0.l5-oci2 so.\cb1 \
+\cb3 At this stage the originating device is extending its own priority address on the DATA LAUNCH wires while comparing this priority address with the code received on the DATA SENSE data wires.\cb1 \
+\cb3 Ultimately the incoming data wires (DATA SENSE) will receive a priority address. If the received priority address is larger than the extended priority address the comparator DATA COMP (FIG. 5a) in the control unit will produce a signal LNOH (larger number on highway) indicating that a higher priority device is simultaneously requesting the use of the highway. When this occurs the highway state counter HSC of the control unit associated with the lower priority device is switched to state S3.\cb1 \
+\cb3 The switching of the highway state counter HSC to \ul state\ulnone  3 effectively converts the highway drive control unit to the receive mode and the attempted transmit operation is abandoned.\cb1 \
+\cb3 When the received priority address equals that transmitted, the comparator DATA COMP (FIG. 5a) in the drive control unit produces a signal D (indicating data equivalence) which causes a signal DR to be passed to the highway buffer unit.\cb1 \
+\cb3 D-.l-GC14-DR Sll.\cb1 \
+\cb3 The reception of signal DR by the buffer unit causes (i) the production of the highway station ready signal selection start signal \ul TXSS equation\ulnone  14 below and (iii) the switching of the buffer state counter BSC to the Bl state Equation l3 below.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 DR\ulnone  5 B. B0.ANYHl G4 -T l -T2. TEOM (SS-Gfi-HSR Sl2.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 The reception of the highway station ready signal HSR by the demanding device causes a register internal to the device, whose output leads D0 are connected to the buffer data register BDR of the buffer unit, to be loaded with the required destination address. When this operation is complete the device sends the proceed signal PROC. to the bufi'er unit. The reception of the proceed signal by the highway buffer causes (i) the destination address to be gated into the highway data buffer register BDR, \ul Equation SI\ulnone  5 below, (ii) the highway station ready signal to be removed, equation S16 below and (iii) a next instruction ready signal NIR to be passed to the drive control units, Equation S17 below The production of the next instruction ready signal causes the drive control unit in state S] to launch a strobe pulse on the strobe wire from the delay and strobe generator circuit D & STROBE GEN in FIG. 5b.\cb1 \
+\cb3 This causes the destination address (from the buffer data register BDR) on the data wires with the priority establishment code (from the coder CODER in the drive control unit) on the code wires to be accompanied by a strobe pulse. This information will be examined by all the drive control units on the highway and will cause the drive control unit of the required destination device, as specified by the destination address, to "break the highway and to return the destination address plus either the destination free (1) or destination busy (L) code along with a strobe pulse to the demanding control unit.\cb1 \
+\cb3 The demanding drive control unit waits for the data and code to be returned accompanied by a strobe pulse.\cb1 \
+\cb3 When this occurs the strobe sense lead SS is activated causing a pulsed signal ST to be produced in the highway buffer as a consequence.\cb1 \
+\cb3 SS.l-GCl7-SST.SG4ST. 819. The production of pulse signal ST allows one of gates G8, G9 or G10 (FIG. 4a) to be opened in accordance with the state of the output of the buffer units decoder DECODER. At this stage the decoder is producing an output in accordance with the code on the code wires, fed to it by gates GCS which are primed by 0C4. The actual output produced will be either J (destination free), L (destination busy) or B (priority establishment). The latter code will be produced if no destination equipment exists on the highway corresponds to the destination address launched.\cb1 \
+\cb3 DEVICE FREE (\ul CODE\ulnone  1 RECEIVED) In this case the production of the pulse signal ST causes (i) destination device free DF to be signalled to the demanding device accompanied by (ii) highway station ready HSR and (iii) the switching to state B2 of counter BSC.\cb1 \
+\cb3 ST.(.I). FAULT. G8 TFR DF S20.\cb1 \
+\cb3 - G6 HSR S21.\cb1 \
+\cb3 .fi-GBZ-TBZ-TBI 522.\cb1 \
+\cb3 Device busy (code L received). In this case the production of the pulse signal ST causes (i) destination device busy DB to be signalled to the demanding device accompanied by (ii) highway station ready.\cb1 \
+\cb3 G6 HSR Device Non-Existant (code B received). In this case the production of the pulse signal ST causes the retransmission of the destination address. by activating the repeat signal R to the control unit.\cb1 \
+\cb3 by a further strobe pulse from the delay and strobe generator in the drive control unit.\cb1 \
+\cb3 R.l-GCl8-P4 S26 If the same conditions exist upon the reception of the strobe pulse consequent upon the above mentioned further launched strobe pulse the highway buffer unit signals device non-existant ONE and highway station ready HSR.\cb1 \
+\cb3 ST. (B). FAULT. Bl -GlO.T3Gl2TDNE-DNE S27 G6 HSR $28 A fourth condition may be experienced at this stage and this is when the returned destination address does not accord with the destination address launched. Under these circumstances the data comparator DATA COMP in the control unit (FlG.5b) will not produce signal D- This condition will be detected by gate G34 causing toggle TF1" to be set. The transmission fault routine will be entered at this point with the inhibition of gates G8, G9 and 010. The transmission fault routine will be considered in detail later.\cb1 \
+\cb3 From the above it can be seen that when the highway station ready signals HSR is produced it will be accompanied by either a destination free signal DF, a destination busy signal DF or a device non-existant signal DNE. If either of the latter signals occur the device will terminate the data transfer attempt by sending the terminate signal TERM. The effects of this signal will be considered later as it is the same as will occur when the data transfer is complete.\cb1 \
+\cb3 When the demanding device receives the highway station ready signal HSR accompanied by the destination device free signal DF from the buffer unit it causes the designation address to be loaded into the register which co-operates with the buffer data register BDR and then produces the proceed signal PROC and the designation character signal DES(TX The reception of the proceed signal PROC by the buffer unit causes (i) the removal of the highway station ready HSR and the destination free signals (ii) the presentation of the designation address to the data wires of the highway (iii) the production of the next instruction ready signal NIR.\cb1 \
+\cb3 At the same time the production of the designation character signal DES(TX) causes the C code (0100) to be set into the CODE REG in the highway bufi'er unit. The output of the CODE REG is presented, over gates GCZZ. to the code launch wires of the code drive unit CD and thence onto the highway code wires.\cb1 \
+\cb3 The production of the next instruction ready signal NlR causes a strobe to be launched to accompany the designation character as shown in Equation S18 above.\cb1 \
+\cb3 The designation character will be circulated around the highway to the destination device where it will be sensed and then re-transmitted back to the relevant drive control unit of the transmitting device. When the designation character arrives back at the transmitting drive control unit it is compared with that transmitted and the data comparator DATA COMP and the code comparator CODE COMP will produce equivalence signals if no transmission faults have occurred. The occurrence of the strobe pulse from the destination device causes signals continue CONT and highway station ready HSR to be produced by the buffer unit.\cb1 \
+\cb3 SST SG4 ST. CR FAULT. B2. \ul G1\ulnone  3 TCT CONT S34 G6 HSR S35 Again these signals will not be produced if the data trans mitted does not agree with that received as the fault toggle TFT would be set.\cb1 \
+\cb3 When the demanding device receives the highway station ready signal accompanied by the continue signal it causes the next designation character or the first data character of the message to be loaded into the register which co-operates with the buffer data register BDR and then produces the proceed signal PROC accompanied by the designation character DES(TX) or the data character DATA(TX) signal.\cb1 \
+\cb3 The procedure will be identical to that shown above with reference to equations $29 to S32 with the data character code (D) (0H0) launched if the data character signal DATA(TX) is present.\cb1 \
+\cb3 The operation of the system will continue using equations S18. S34 and S35 for the launching and reception of each data character of the message and equations S29 to 832 for the as sembly of the data character to be launched.\cb1 \
+\cb3 All devices in the system when acting as a receiver are conditioned to receive a data packet consisting of a defined number of data characters and when the last data character has been received the receiver device is organized to change the code accompanying that data character from code C (0l00) to code K (I010) which is defined as the endof-block code.\cb1 \
+\cb3 Hence when the last data character of the message is returned to the transmitting control unit its code comparator CODE COMP does not produce the code equivalence signal C -thereby preventing the opening of gate C13 in accordance with equation S34. However the decoder DECODER in the buffer unit will produce a (K) output which allows the production of the highway station ready signal HSR accompanied by the end-of-bloclt signal E08 by the buffer unit when the strobe accompanying the last data character is received.\cb1 \
+\cb3 SS 1 -GC17- SST-S64 ST. FAUEl.(K) -Gl5 TEOB G6 HSR S3! The reception of the end-of-block signal E08 by the device causes the device to produce the terminate signal TERM. This sion signal TT to the drive control units.\cb1 \
+\cb3 TERM-TTMGl2T EO-EUB' S38 6K Wt 539 .mGl6-Gl7SG5-1T 540 The production of signal TT, in the drive control unit which is set to state S], causes this drive control unit to be set to state S2.\cb1 \
+\cb3 TT. 1 -GC23-S2. S4] The cancellation of state S1 in the drive control unit causes the closure of gates GD] (removes BDR from highway data wires), GCS (removes the DECODER in the buffer unit from the highway code wires) and GCZZ (removes the CODE REG in the buffer unit from the highway code wires). The cancellation of state 51 also closes gate GBZR whose inverted output resets the buffer state counter BSC to B (i.e. resets toggle T32) and causes the highway station ready signal to be produced by \ul equation\ulnone  42 below and the terminate toggle TTM to be reset.\cb1 \
+\cb3 TTXD. ANYHl. ANYH4. ANYH6-Gl8-T2-G5-G6- HSR S42 ll. RECEIVING As mentioned previously when a device requires use of a highway it extends its own priority address together with a priority establishment code. The priority establishment code (B) will be decoded by all the other highway drive control units on the particular highway causing the highway state counters of all those control units to be set to state S3.\cb1 \
+\cb3 (B).0-GC26-S3 (R1) The data comparator DATA COMP has the device's own hardward address PHA connected to it as gates GPA will be opened, the buffer unit being in state B0, and gates GD3 are all primed by the I state output from inverter lD. Hence when the destination address is connected to the data wires of the highway by the drive control unit of the sending device the data comparator in the drive control unit associated with that destination address specified device will produce the data equivalence D signal. At this time the code decoder SENSE in the drive control unit will be producing an output B (i.e. priority establishment code) and therefore gate GC27 will be open.\cb1 \
+\cb3 When the strobe accompanying the destination address arrives at the particular drive control unit the highway state counter HSC in that drive control unit will be set to state S4.\cb1 \
+\cb3 SS. GC27-GC28 DBUS. B0-GC29-S4 R2 It should be noted that if the actual device is out ofservice,\cb1 \
+\cb3 due to a fault condition for example, gate GC29 would not be opened and in fact the counter would be switched to state S5.\cb1 \
+\cb3 The switching of the highway state counter HSC to state S4 causes the strobe wire to be broken at this highway drive control unit.\cb1 \
+\cb3 4 GCl l .015 GCI2 Inhibit strobe through (1ST) R3 The switching of the highway state counter in the highway drive control units associated with the bufier unit produces a signal H4 and this will cause (i) an interrupt signal INT to be passed to the device, (ii) the highway station ready signal HSR to be removed and (iii) a receiver start signal RXSS to be produced.\cb1 \
+\cb3 Equation R5 above shows the resetting of toggle TTXD, the transmit demand toggle and this operation covers the situation of a control unit being switched to the S4 state at the time when the device is starting a transmit operation but as yet has not occupied the highway. The transmit operation is therefore abandoned allowing the receive operation to take priority.\cb1 \
+\cb3 The production of the receiver start signal RXSS switches the highway drive control unit, currently standing in \ul state\ulnone  54, to state S6.\cb1 \
+\cb3 4. RXSS-(3C32-S6 R8. The setting of the highway state counter HSC to state S6 causes (i) the setting of the control units coder CODER to code J (destination free code 1001) which will, therefore, be set onto the code launch wires of the code drive unit of the highway (ii) the launching ofa strobe pulse on the strobe wire of the highway (iii), the inhibiting of gate GRSS in the buffer unit (H6) thereby terminating the receiver start signal RXSS and (iv) the termination of the interrupt signal INT to the device.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 P2 R l\ulnone  0 At this stage the data leads of the highway have not been broken hence the production of the above strobe pulse returns the destination address to the sender accompanied by the destination free code (i.e. code J).\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 After the strobe has been launched the delay and strobe generator circuit D & STROBE GEN produces a delayed strobe D8 which causes the state counter in the highway buffer to be switched to state B2.\cb1 \
+\cb3 DS.6-GC34-SRR-TB2. Rlt The switching of the buffer unit to state B2 causes (i) the data sense wires of the highway data drive unit to be connected through to a register in the associated device via the data output leads of the buffer unit, (ii) the code sense wires of the highway code drive unit to be connected to the DECODER in the buffer unit (iii) the output of the buffer data register BDR to be connected to the code launch leads of the highway code drive unit and (iv) the breaking of the data through path in the highway data drive unit (v) while maintaining the broken" condition of the code and strobe through paths.\cb1 \
+\cb3 The launched destination free code (J) together with the accompanying strobe will be received by the transmitting device which will now launch the designation address plus the designation character code (C) and an accompanying strobe.\cb1 \
+\cb3 The designation address will be fed, over gates GD2 into the register in the receiving device and the designation character code will be decoded by the SENSE circuit in the particular highway drive control unit and the DECODER in the associated buffer unit. Both these equipments will therefore produce a (C) output.\cb1 \
+\cb3 When the strobe pulse accompanying the designation information arrives the receive strobe signal SR is activated.\cb1 \
+\cb3 The production of the pulse signal SR in the buffer unit causes the production of the designation signal DES(RX) to the receive device causing that device to use the designation address, which is now in the register connected to the data output leads of the buffer unit, to select the required mode of reception.\cb1 \
+\cb3 (C)-G2l.SR-G22-T4.(C)-G23-DES. R17. When the device is organized into the required mode of reception it produces a data acceptance signal DA which (i) gates the received designation address, in its own register, into the buffer data register BDR, in the buffer unit, and hence onto the data launch wires of the data drive unit associated with the drive control unit in state S6, (ii) terminates the designation signal (DES(RX) and (iii) produces the next instruction ready signal MR and (iv) gates the designation character code into the CODE REG of the buffer unit.\cb1 \
+\cb3 The production of the next instruction ready signal causes the drive control unit to launch a strobe pulse to accompany the designation address and code on the highway back to the transmitter.\cb1 \
+\cb3 6-GCl5.NlR-GCl6-P5 R22. The transmitter device will receive the returned designation information and will respond with the first data character of the message accompanied by a strobe pulse. Hence the data character when received at the receiving highway drive control unit will be passed, over gates CD2, into the register in the device and the SENSE and DECODER equipments, in that control unit and the associated bufier unit, will produce (D) outputs.\cb1 \
+\cb3 When the accompanying strobe pulse occurs the generation of pulse SR will cause the data character signal DATA to be produced by the buffer unit.\cb1 \
+\cb3 (D) -G2l.SR-G22-T4. (D)-G24 DATA R23.\cb1 \
+\cb3 The receiver will now transfer the data character from the receiving register into one of its working registers as required and will then respond with the data accept signal DA. This has the same effects as stated above for Equations R18 to R22 except that the data character signal will be removed (i.e. Equation R19 is modified as the reset of toggle T4 closes gate G24) and the received data character information is returned to the transmitting device.\cb1 \
+\cb3 The above operations, as specified by \ul equation RI\ulnone  8 to R23, will be repeated for each data character of the message until the last data character has been received. As mentioned previously the receiving device is organized to count down the number of characters received and to send an end-of-block signal when the data transfer block is completed as far as it is concerned.\cb1 \
+\cb3 When the last character of the block has been received the receiving device signals end-of-block BOB in place of data accept DA and this causes the last data character to be relaunched back to the transmitting device accompanied by the endof-block code (K) together with an accompanying strobe pulse.\cb1 \
+\cb3 The end-of-block code when received by the transmitting device will be tested and if the block transfer is complete the end of message" operations will be organized at the transmitting device the terminate transmission operation causing the free highway code (A) to be presented to the code wires accompanied by a strobe pulse.\cb1 \
+\cb3 The reception of the free highway code (0000) produces an (A) output from both the SENSE and DECODER in the control unit and the buffer unit respectively at the receiver. When the accompanying strobe is received by the relevant control unit the highway state counter HSC of that unit is switched to state S0.\cb1 \
+\cb3 (A). l.7.GC38.SS-GC39-S0 R29 The switching to state S0 of counter HSC causes the closure of the data and code extension paths (gates GDZ and gates OD!) and the re-establishrnent of the through connection paths for the data, code and strobe wires of the highway by the removal of the data through inhibit (gate GC35 closed), the removal of the code through inhibit (gate 0C9 closed) and the strobe through inhibit (gate GCll closed).\cb1 \
+\cb3 The switching to state S0 of the counter HSC also causes the switching of the buffer state counter BSC to state and the production to the receiving device of the end of message signal EOM.\cb1 \
+\cb3 The production of the end of message signal EOM is acknowledged by the associated device by the production of the data accept signal which removes the end of message signal and restores the buffer unit and the control unit to the idle state.\cb1 \
+\cb3 DA-Gl-SGl-SGZ-TEOM-EO R32 lll. RESPONSE-CHANGEOVER In certain cases it may be that the device originating the data transfer requires to act as a receiver for the actual data transfer. In such cases the demanding device after sending the last designation character signals response-changeover RC/O to its buffer unit. it should be noted that the buffer unit associated with the demanding device will be in state B2 at this stage and the highway drive control unit associated with that buffer unit will be in state 51. The response changeover signal RC/O will be accompanied, in normal manner, by a proceed signal PROC which causes equations SIS to S]? to be performed as normal. However the production of the response changeover signal RC/O causes the response changeover code (F) to be set into the butter units CODE REG. Hence the production of signal P5, equation S18 above, causes the response changeover code to be launched accompanied by a strobe pulse.\cb1 \
+\cb3 The delayed strobe pulse DS produced by the delay and strobe generator D & STROBE GEN causes the setting of the highway state counter in the control unit of the demanding device to state S6 (i.e. the receive state) by opening gate GC41. This gate is fed with the output of gate GC40 which will be open at this stage as the highway counter HSC is in state 81 (i.e. the transmitting state) and the CODE REG in the buffer unit has been set to code (F) by the response changeover signal RC/O. The CODE REG equipment produces a signal CR(F) when \ul code\ulnone  1101 is in it and this signal opens gate GC40 when the control unit is in state 81.\cb1 \
+\cb3 At this point, therefore, both highway drive control units involved in the data transfer operation will be in state S6 and the original demanding device will have launched the response changeover code (F).\cb1 \
+\cb3 The reception of the response changeover code (F) at the destination highway drive control unit causes an (F) output from the SENSE equipment together with the DECODER in the buffer unit (gates GCS being held primed by gate GC35 through gate GC4).\cb1 \
+\cb3 The reception of the strobe pulse accompanying the response changeover code causes (i) the response changeover performed code (H) to be set into the code register CODE REG and hence onto the code wires of the highway and (ii) a strobe to be launched to accompany the above mentioned code (H).\cb1 \
+\cb3 SS. GC35 GC36 SSR 5G3 SR. (F) G30 StH) RC l. (F).6GC42-GC43. SS-Gc44-P6 RC2.\cb1 \
+\cb3 The production of the delayed strobe DS, in response to signal P6, by the D & STROBE GEN equipment of the destination highway drive control unit causes that control unit to be switched to state 51 (Le. the transmitting state) When the response changeover performed code is received back at the highway drive control unit of the destination device it is decoded by the SENSE equipment to produce an (H) output and the CODE COMP equipment of that unit produces a code equivalence signal C which causes a code register equivalence signal CR When the strobe accompanying the returned response changeover performed code is received the highway station buffer receives the continue signal CONT and the highway station ready signal HSR SS.l GCl7 SST- SG3 SR.CR I .FAULT.B2 G13 TCT- CONT RC6 G1 HSR RC7 The reception of these signals by the destination device causes the data transfer operation to be continued with that device acting as a transmitter and the demanding device acting as a receiver.\cb1 \
+\cb3 IV. QUEUE CONDITIONS IVA. OUEUE FULL In the case of a data transfer from one device to another it may happen that the destination addressed device is unable to accept the message at this time as the queue into which the message is to be placed is full. Under these circumstances the reception of the designation address or the first data character of the message will be replied to by the destination device by the production of the queue full signal QF(RX) which causes the designation or data character signal to be reset and a next instruction ready signal NlR to be sent from the highway buffer to the relevant highway drive control unit.\cb1 \
+\cb3 CRl SGI SGZ-fi- DES(RX) or DATA(RX) The production of the next instruction ready signal NlR causes a strobe launch operation to be performed, as shown in equation R22 above, causing the designation address or data character plus the queue full code (M), which has been set into the CODE REG of the buffer unit, to be sent back to the transmitting device with a strobe pulse.\cb1 \
+\cb3 The reception of the queue full code (M) in the highway drive control unit of the transmitting device is decoded in the DECODER equipment of the associated buffer unit allowing the production of a queue full signal QF(TX) and the highway station ready signal by the buffer unit when the accompanying strobe pulse occurs.\cb1 \
+\cb3 ss.| -GCI7 SST- 503 -SR. FAULT.(M) GQF TOF The demanding device acknowledges these signals with the terminate signal TERM which, as shown above equations S38 to 843, terminate the transmission attempt.\cb1 \
+\cb3 lVB QUEUE EMPTY This condition will usually occur when a response-changeover operation has been performed as a transmitting device would not initiate a transfer if it had no message to send. However in the case of a response-changeover operation the initiator of the transfer is to act as the receiver of the message, thus it may well be that the destination device which is to act as the transmitter, is not yet ready to do so as it has not yet formed a message.\cb1 \
+\cb3 Hence the first character of the message, which is meaningless, is accompanied by a queue empty code (E). The transmitting device produces the proceed signal PROC accompanied by the queue empty signal QE( TX).\cb1 \
+\cb3 The production of the next instruction ready signal NIR causes a strobe launch operation to be performed, as shown in equation S18 above, causing the first data character of the message plus the queue empty code (01]!) to be sent to the other device accompanied by a strobe pulse.\cb1 \
+\cb3 At the receiver the queue empty code (E) is decoded by the DECODER equipment in the buffer unit and when the strobe pulse occurs the queue empty signal is passed to the device.\cb1 \
+\cb3 SS.GC35 GC36 SSR SG3 SR. G21 T4.(E) GQE Q (0 This is replied to by a normal data accept signal DA which returns the data character and queue empty code (E) to the transmitter, as shown in Equation R18 to R22 above.\cb1 \
+\cb3 At the transmitter the production of the highway station ready signal HSR causes the production of the terminate signal TERM which (as shown in equations $38 to S43 above) terminates the transmission attempt.\cb1 \
+\cb3 V. FAULTS.\cb1 \
+\cb3 After the transmission of each item of information the tra nsmitting device monitors the highway, on the input to its drive control unit, and compares the transmitted information with that retransmitted.\cb1 \
+\cb3 The test for a fault condition is performed in the duration between the reception of the leading edge of the strobe sense and the leading edge of the reconstituted strobe pulse ST (ie the duration of the delay period incorporated in strobe generator SG4). Toggle T7 is set for this duration allowing one of the fault detection gates G34, G37 or G43 in the buffer unit to be activated if necessary. Gates G34 and G37 are used while the buffer unit is in state Bl. Whereas gate G43 is used while the buffer unit is in state B2.\cb1 \
+\cb3 VA FAULT DETECTED IN STATE B1 A fault occurring while the buffer unit of the transmitter is in state Bl will be in connection with the transmission of the destination address. A fault of this nature falls into one of two catagories (i) non-equivalence of destination addresses or (ii) an incompatible code returned with the correct destination address.\cb1 \
+\cb3 VAI DESTINATION ADDRESSED DO NOT EQUATE In this case gate G34 will be opened as the data comparator in the control unit will be giving a output causing the fault toggle TFT to be set.\cb1 \
+\cb3 The setting of the fault toggle TFI' causes the production of the transmission fault signal TF(TX) and the extension of the receiver not accepted signal RXNA to all associated highway drive control units.\cb1 \
+\cb3 G35 GRXNA RXNA F3 The trailing edge of the pulse from gate G36, under the control of the pulse ST, causes the reset of toggle TF'I" on its edge activated input (marked with an asterisk) to its reset side.\cb1 \
+\cb3 The reception of the transmission fault signal TF(TX) by the device causes the abandonment of the transmission attempt by the production of the terminate signal TERM causing the release of the highway as shown in section l) above in equations S38 to $43 (toggle TTF(TX) being reset by gate G12).\cb1 \
+\cb3 (VAII) CODE INCOMPATIBLE ln this case gate G37 will be opened, as the code received is other than destination free/busy or non-existant. again causing the fault toggle TFT to be set.\cb1 \
+\cb3 The setting of toggle TFT causes the same operations as above with reference to equations F2 and F3, causing the termination of the transmission attempt and the freeing of the highway.\cb1 \
+\cb3 (VB) FAULT DETECTED IN STATE B2 A fault occurring while the buffer unit of the transmitter is in state B2. will be in connection with the transmission of (i) a designation or data character or (ii) the code associated therewith.\cb1 \
+\cb3 (VB!) DESIGNATION OR DATA CHARACTERS DO NOT EQUATE In this case gate G34 will again be opened causing toggle TFT to be set as shown in equation Fl above.\cb1 \
+\cb3 The setting of toggle TFT opens gate G38 causing the trailing edge of the ST pulse to set toggle T8 which in turn generates the fault signal F to the drive control units.\cb1 \
+\cb3 The production of the fault signal F in the control unit in state S1 (i.e. that drive control unit acting as the transmitter) causes the last designation address or data character to be retransmitted accompanied by the fault status code (G) and a strobe pulsev at -ocn= LG F6.\cb1 \
+\cb3 The retransmitted designation address or data character qualified by the fault status code and accompanied by a strobe will be passed over the highway to the receiver.\cb1 \
+\cb3 At the receiver, the reception of the fault status code (G) causes the production of the character fault signal by the associated bufier unit at the trailing edge of the SR pulse.\cb1 \
+\cb3 0 SR 044 TCF.T l l G45 CF. F8.\cb1 \
+\cb3 The character fault signal CF will be recognized by the receiving device and it will prepare for the reception of the retransmission of the character in error, while signalling data accept DA to the buffer unit.\cb1 \
+\cb3 The production of the data accept signal causes (i) the toggle T10 to set, (ii) toggle TCF to be reset and (iii) the next instruction ready signal NIR, as shown in equation R to be produced.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \ul \ulc2 TCF CF F\ulnone  1 0.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 It should be noted that toggles T10 and TCF will be switched on the trailing edge of the pulse produced by pulse generator 5G2.\cb1 \
+\cb3 The generation of the next instruction ready signal NIR causes the recirculation of the received information accompanied by a strobe pulse as shown in equation R above, the accompanying code of course being the fault status code (G).\cb1 \
+\cb3 The reception of the strobe accompanying the re-circulated fault status defined data by the transmitter causes the setting of toggle T9 and thereby one generation of the repeat signal R which causes the original data and associated code which had been adjudged faulty when returned previously to be re-trans mitted. Again togles T8 and T9 are switched on the trailing edge of the ST pulse.\cb1 \
+\cb3 SG2.TIO-G47 -Tll -Tili F15.\cb1 \
+\cb3 The reception of the re-circulated repeated information will again be checked at the transmitter and if still in error toggle TF1 will again be set (see \ul Equation F\ulnone  1 above). However at this stage toggle T9 is set causing the production of the transmission fault signal TF(TX) together with the setting of toggle T8 again.\cb1 \
+\cb3 TFT.B2 G38.ST.T9 G42 'I'I'F(TX) TF(TX) F16.\cb1 \
+\cb3 The setting of toggle T8 causes the fault status code (G) accompanied by a strobe to be sent for a second time, see Equations Fl I, I2 and I3 above.\cb1 \
+\cb3 The reception of the fault status code (G) for the second time at the receiver causes the setting of toggle TCF, as shown in Equation F8 above, however the set state of toggle Tll causes the generation of the transmission fault signal TF (RX) at this stage.\cb1 \
+\cb3 The receiver will again respond with the data accept signal DA causing the fault status code to be returned to the transmitter with an accompanying strobe.\cb1 \
+\cb3 The receipt of the strobe at the transmitter causes the highway to be cleared, using the free highway code plus a strobe, provided the device has acknowledged the transmission fault signal TF(TX) with the terminate signal TERM. The transmission attempt is therefore abandoned and the originating device will be used to set up a further data transfer indicating the occurrence of a transmission fault to some overall "executive" device.\cb1 \
+\cb3 (VBII) CODE ACCOMPANYING DESIGNATION OR DATA CHARACTERS IS INCOMPATIBLE In this case gate G43 will be opened as the code comparator will not be producing C I while toggle T7 is set causing toggle TFT to be set with the same re-transmission efi'ects as shown in section (vbi) above.\cb1 \
+\cb3 RECEIVER DEVICE BUSY State S operations When a control unit is switched to state S5 by the opening of gate GCC as the device is busy the associated highway is presented with the destination busy code and an accompany ing strobe is launched.\cb1 \
+\cb3 s-ocilils-ociz-isr Pl.\cb1 \
+\cb3 -oc9.6 lS- oc10 ICT P2.\cb1 \
+\cb3 -LL P3.\cb1 \
+\cb3 GC24-P2 P4.\cb1 \
+\cb3 The reception of the destination busy code by the transmitter causes a clear-down of the highway allowing the control unit to return to state 51.\cb1 \
+\cb3 The upper section of the buffer unit, shown in FIGS. 4a and 4b, is particularly related to those devices of the system which are only allocated (a) a single address for identification and priority purposes or (b) one address each for identification and priority purposes. In the first case the identification or hardware address PHA and the priority address PPA will be identical and the coding of these addresses in the buffer unit may be provided by the connection of the groups of leads PHA and PPA to discrete voltage levels in accordance with the required address coding. In the second case separate codings are provided for each address and under certain circumstances it may be arranged that more than one device of the system is provided with the same hardware address thereby allowing the same message to be sent to more than one device concurrently.\cb1 \
+\cb3 In certain circumstances it may be necessary to provide multi-addressing facilities. Such facilities are required for example when a processor is operated in a so-called time sharing or multi-program environment. In such circumstances it is necessary for peripheral equipment or other processors to pass information to a particular program (Le. to a specific area of the processor) rather than just to the processor itself. In the case of multi-address devices where each address must be separately accessed it is necessary to provide, in addition to the hardware address PHA, one address code register for each additional addressv These addresses may, for example, be held in separate registers whose outputs are applied to discrete comparators. The other" input to these discrete comparators is provided by the DATA SENSE leads from the highway data drive unit and the data equivalence signal for each comparator would then be ored" with the D signal from the DATA COMP of FIG. 5. The output of each separate register could also be made switchable into the PPA input of the buffer unit when the particular program segment requires the use of the highway. It should be noted that provision must be made for filling the separate registers with the relevant addresses (called symbolic addresses) when allocating these addresses to the particular device. Under such circumstances the device will be "called using its hardware address PHA and the message passed will be the symbolic address codes of for example the programs to be loaded into the device. Before the device becomes "active" in the data processing system the separate registers must be filled in accordance with the sumbolic address now allocated to that device.\cb1 \
+\cb3 The system may include a number of highways and these may be arranged to be used in turn. The highways need not include the devices in the same order or precisely the same group of devices. From the point of view of reliability, however, it is preferable for the highways to be arranged in pairs, the connections to each member of a pair being identical. One subsidiary device is provided for each pair to act as a highway monitor. This normally arranges for each of the highways of a pair to be used alternately but it is also arranged to detect faults on the highway and will prevent a faulty highway from being brought into use.\cb1 \
+\cb3 We claim:\cb1 \
+\cb3 1. A data handling and transmission system comprising:\cb1 \
+\cb3 a. a common data communication highway arranged in a closed loop and having an information path for the passage of address and data information and a control path for the passage of control signals indicative of the type ofinformation on said information path; and\cb1 \
+\cb3 b. a plurality of data handling stations interconnected by said common data communication highway for communication between any one and any other thereof, each said station having i. first means connected to said common data communication highway for transmitting information and control signals thereon;\cb1 \
+\cb3 ii. second means connected to said common data communication highway for receiving information and control signals therefrom,\cb1 \
+\cb3 iii. an interconnecting path connecting said first means and said second means,\cb1 \
+\cb3 iv. third means for breaking said interconnecting path,\cb1 \
+\cb3 vv fourth means for storing an own station priority number,\cb1 \
+\cb3 vi. fifth means connected to said second means and said fourth means for comparing said own station priority number stored in said fourth means with information received from said common data communication highway by said second means,\cb1 \
+\cb3 vii. sixth means connected to said common data communication highway for determining whether said highway is free, and\cb1 \
+\cb3 viii. seventh means responsive to the station requiring to communicate with one of the other stations over said common data communication highway to connect said fourth means to said first means so as to apply said own station priority number to said first means; to operate said third means to break said interconnecting path; to activate said sixth means and responsive to an indication therefrom that said highway is free to activate said first, second and fifth means so that said own station priority number is applied to said information path, a priority number indicating code is applied to said control path and said information received is compared with said own station priority number to determine its relationship thereto; and responsive to an indication by said fifth means that said information received is greater than said own station priority number to release said third means to restore said interconnecting path and to disconnect said first and fourth means so that said own station priority number is removed from said first means.\cb1 \
+\cb3 2 A data handling and transmission system as defined in claim I wherein said seventh means in each station includes sequence control means responsive to said information received being equal to said own station priority number to remove said own station priority number from said first means and to replace it by a destination address indicative of the destination data handling station with which communication is required; and wherein said first means in each station is opera-\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf2 \cb3 Claims (3)\cb1 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf4 \cb3 \strokec4 Hide Dependent\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+
+\fs30 \cf2 \strokec2 \
+\pard\pardeftab720\partightenfactor0
+
+\fs26 \cf5 \cb3 \strokec5 1. A data handling and transmission system comprising: a. a common data communication highway arranged in a closed loop and having an information path for the passage of address and data information and a control path for the passage of control signals indicative of the type of information on said information path; and b. a plurality of data handling stations interconnected by said common data communication highway for communication between any one and any other thereof, each said station having i. first means connected to said common data communication highway for transmitting information and control signals thereon; ii. second means connected to said common data communication highway for receiving information and control signals therefrom, iii. an interconnecting path connecting said first means and said second means, iv. third means for breaking said interconnecting path, v. fourth means for storing an own station priority number, vi. fifth means connecTed to said second means and said fourth means for comparing said own station priority number stored in said fourth means with information received from said common data communication highway by said second means, vii. sixth means connected to said common data communication highway for determining whether said highway is free, and viii. seventh means responsive to the station requiring to communicate with one of the other stations over said common data communication highway to connect said fourth means to said first means so as to apply said own station priority number to said first means; to operate said third means to break said interconnecting path; to activate said sixth means and responsive to an indication therefrom that said highway is free to activate said first, second and fifth means so that said own station priority number is applied to said information path, a priority number indicating code is applied to said control path and said information received is compared with said own station priority number to determine its relationship thereto; and responsive to an indication by said fifth means that said information received is greater than said own station priority number to release said third means to restore said interconnecting path and to disconnect said first and fourth means so that said own station priority number is removed from said first means. CM,2A handling and transmission system as defined in claim 1 wherein said seventh means in each station includes sequence control means responsive to said information received being equal to said own station priority number to remove said own station priority number from said first means and to replace it by a destination address indicative of the destination data handling station with which communication is required; and wherein said first means in each station is operative to transmit said destination address on said information path and to transmit a destination character code on said control path.\cb1 \
+\cb3 3. A data handling and transmission system as defined in claim 1 wherein each data handling station includes sequence control means sensitive to the control signals on said control path and wherein means are provided for operating said third means when said control path carries a destination character code and said fifth means indicates equality between said own station priority number and said information received. 4 A data handling and transmission system as defined in claim 3 wherein, in each station, said sequence control means is operative on said first means to cause it to transmit said destination address on said information path and to transmit on said control path a control signal indicative of the busy or free state of said destination data handling station in response to the reception of a destination address indicating said destination data handling station.\cb1 \
+\cb3 5. A data handling and transmission system as defined in claim 4 wherein each data handling station includes means for conditioning said first means to transmit a response changeover code signal on said control path and responsive changeover means, said response changeover means in said destination data handling station becoming active in response to receipt of said response changeover code signal so that the subsequent direction of data transfer is from said destination data handling station to the originating station.\cb1 \
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Patent Citations (5)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt\clvertalbase \clcbpat8 \clwWidth2756\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt\clvertalbase \clcbpat8 \clwWidth5611\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Assignee\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2756\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5611\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3210733A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1958-08-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1965-10-05\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Sylvania Electric Prod\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2756\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5611\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3336582A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1964-09-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1967-08-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Ibm\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Interlocked communication system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2756\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5611\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3403382A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1965-06-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1968-09-24\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Gen Signal Corp\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Code communication system with control of remote units\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2756\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5611\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3425037A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1966-03-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1969-01-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Computing Devices Canada\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Interrupt computer system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth2756\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth5611\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3456242A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1966-01-24\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1969-07-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Digiac Corp\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data handling system and method\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clcbpat8 \clwWidth2756\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clcbpat8 \clwWidth5611\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party\cb1 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Cited By (27)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt\clvertalbase \clcbpat8 \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Assignee\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3750110A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1971-11-24\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-07-31\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Ferranti Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data transfer systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3781815A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-02-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-12-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Ibm\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Terminal interface for a serial loop communications system having store and forward capability\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3806885A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-12-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-04-23\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Ibm\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Polling mechanism for transferring control from one data processing system or subsystem to another\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3863225A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-03-03\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-01-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Nixdorf Computer Ag\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Priority controlled selection of data sets in a data processing system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3909790A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-08-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-09-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Omnus Computer Corp\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Minicomputer with selector channel input-output system and interrupt system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3958226A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-09-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1976-05-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Omron Tateisi Electronics Co.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data communication system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4047162A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-05-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1977-09-06\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 The Solartron Electronic Group Limited\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Interface circuit for communicating between two data highways\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4054949A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-03-13\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1977-10-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fuji Electric Company Ltd.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Stagnation prevention apparatus in an information transmission system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 FR2440663A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1978-10-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-05-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Hitachi Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 METHOD FOR ANALYZING THE PRIORITY OF OMNIBUS CIRCUITS IN AN OMNIBUS LOOP NETWORK SYSTEM\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4242749A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1977-12-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-12-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fuji Electric Co., Ltd.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Operating system for a data transmission system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4354229A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-03-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-10-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Loop initialization mechanism for a peer-to-peer communication system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4368358A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1979-07-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-01-11\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 L. M. Ericsson Pty. Ltd.\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Loop sharing in digital systems\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4376982A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1980-06-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-03-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Protocol for inter-processor dialog over a communication network\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4413341A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1978-06-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-11-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Markhasin Alexandr B\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method for exchange of data between central station and peripheral stations\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4466063A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1979-11-07\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-08-14\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 U.S. Philips Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 System intercommunication processor used in distributed data processing system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4489379A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-01-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-12-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Distributed data processing in ring-structured networks architected for full duplex peer-to-peer operation of processing stations and uninterruptible transfer of long data records between stations\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 WO1986003090A3 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-11-21\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1986-10-09\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 American Telephone & Telegraph\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multiphase packet switching system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5901156A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-02-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1999-05-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Robert Bosch Gmbh\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method of processing messages to be transmitted for a data processing arrangement\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clcbpat8 \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clcbpat8 \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clcbpat8 \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clcbpat8 \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 BE766650A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1970-05-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1971-10-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Apv Co Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 COMMAND AND CONTROL INSTALLATION, ESPECIALLY FOR THE TREATMENT OF DRINKABLE DELIQUIDS\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1365838A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-04-21\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-09-04\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Ibm\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data handling system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4063220A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-03-31\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1977-12-13\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Xerox Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Multipoint data communication system with collision detection\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4007450A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-06-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1977-02-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 International Business Machines Corporation\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data sharing computer network\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4319338A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1979-12-12\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-03-09\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Allen-Bradley Company\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Industrial communications network with mastership determined by need\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 SE442070B }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1981-07-10\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-11-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Ericsson Telefon Ab L M\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 SET FOR IN A TELECOMMUNICATION SYSTEM, BY TRANSFERING INFORMATION BETWEEN TERMINALS THAT ARE CONNECTED TO EACH OTHER BY A COMMON RING BUS, ASTADKOMMA A ADAPTATION BETWEEN THE RING BUS AND RESPECT\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 BE895438A }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-12-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-06-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Bell Telephone Mfg\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 COMMUNICATION SYSTEM WITH MULTIPLE RINGS\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 WO1984004437A1 }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-04-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1984-11-08\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Univ Monash\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Digital communications system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
+\clvertalt \clshdrawnil \clwWidth1387\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx3456
+\clvertalt \clshdrawnil \clwWidth1850\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5184
+\clvertalt \clshdrawnil \clwWidth1431\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
+\clvertalt \clshdrawnil \clwWidth6936\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB2180125B }}\cb3 *\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-07-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1989-09-20\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Anamartic Ltd\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Priority resolution system and video display apparatus\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+
+\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party, \'87 Family to family citation\cb1 \
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 Similar Documents
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt\clvertalbase \clcbpat8 \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt\clvertalbase \clcbpat8 \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Publication\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Publication Date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3842405A}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-10-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Communications control unit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4420806A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1983-12-13\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Interrupt coupling and monitoring system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3787818A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-01-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Mult-processor data processing system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3818447A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1974-06-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Priority data handling system and method\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3665415A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1972-05-23\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data processing system with program interrupt priority apparatus utilizing working store for multiplexing interrupt requests\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5530875A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1996-06-25\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Grouping of interrupt sources for efficiency on the fly\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4809217A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1989-02-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Remote I/O port for transfer of I/O data in a programmable controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4542380A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-09-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method and apparatus for graceful preemption on a digital communications link\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4538224A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-08-27\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Direct memory access peripheral unit controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3735357A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-05-22\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Priority system for a communication control unit\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0146293A1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-06-26\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Time-slot interchanger for fast circuit switching\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 SE450055B}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1987-06-01\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 APPLICATION TO ALLOW ACCESS TO A NEEDED PART\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3924240A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1975-12-02\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 System for controlling processing equipment\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 SE450301B}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1987-06-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 APPLICATION TO ALLOW ACCESS TO A NEEDED PART\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0146292A1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1985-06-26\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Fast circuit switching system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4322792A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1982-03-30\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Common front-end control for a peripheral controller connected to a computer\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0647082B1}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 2001-08-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Packet-at-a-time reporting in a data link controller\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3226692A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1965-12-28\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Modular computer system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3434111A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1969-03-18\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Program interrupt system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3711835A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1973-01-16\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Program-controlled data telecommunication exchange system and method for priority assignment of operating cycles\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5577255A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1996-11-19\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Method for transmitting information present at a plurality of data interfaces of a processor-controlled equipment to the processing device thereof\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4788639A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1988-11-29\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Frequency-coded multi-level interrupt control system for a multiprocessor system\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3456244A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1969-07-15\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data terminal with priority allocation for input-output devices\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5008880A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1991-04-16\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Data transmission apparatus\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3409878A}}\cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1968-11-05\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Controlling interchanges between a computer and many communications lines\cb1 \cell \lastrow\row
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 \strokec2 Priority And Related Applications\cb1 \
+\cb3 Priority Applications (1)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3085\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt\clvertalbase \clcbpat8 \clwWidth3039\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt\clvertalbase \clcbpat8 \clwWidth2931\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt\clvertalbase \clcbpat8 \clwWidth6063\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Application\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Priority date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Filing date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth3085\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
+\clvertalt \clshdrawnil \clwWidth3039\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx4320
+\clvertalt \clshdrawnil \clwWidth2931\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
+\clvertalt \clshdrawnil \clwWidth6063\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US638803A}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1967-05-16\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1967-05-16\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Remote control apparatus\cb1 \cell \lastrow\row
+\pard\pardeftab720\sa360\partightenfactor0
+
+\fs30 \cf2 \cb3 \strokec2 Applications Claiming Priority (1)
+\fs26 \cf6 \cb1 \strokec6 \
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#title"}}{\fldrslt \cf6 \strokec6 \
+}}
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt\clvertalbase \clcbpat8 \clwWidth2809\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt\clvertalbase \clcbpat8 \clwWidth2327\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt\clvertalbase \clcbpat8 \clwWidth10463\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 \strokec7 Application\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Filing date\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf7 \cb3 Title\cb1 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrb\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
+\clvertalt \clshdrawnil \clwWidth2809\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
+\clvertalt \clshdrawnil \clwWidth2327\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
+\clvertalt \clshdrawnil \clwWidth10463\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB21829/66A}}\cf2 \strokec2 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 1966-05-17\cb1 \cell 
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf2 \cb3 Improvements in or relating to data transmission systems\cb1 \cell \lastrow\row
+\pard\pardeftab720\partightenfactor0
+\cf2 \cb3 \strokec2 Data provided by IFI CLAIMS Patent Services\cb1 \
+\
+\pard\pardeftab720\partightenfactor0
+{\field{\*\fldinst{HYPERLINK "https://support.google.com/faqs/answer/6390996"}}{\fldrslt \cf6 \cb8 \strokec6 About}}\cb8  {\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3680053A/en#"}}{\fldrslt \cf6 \cb8 \strokec6 Send Feedback}} {\field{\*\fldinst{HYPERLINK "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"}}{\fldrslt \cf6 \strokec6 Public Datasets}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/policies/terms/"}}{\fldrslt \cf6 \strokec6 Terms}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/privacy/privacy-policy.html"}}{\fldrslt \cf6 \strokec6 Privacy Policy}} {\field{\*\fldinst{HYPERLINK "https://support.google.com/websearch/"}}{\fldrslt \cf6 \strokec6 Help}}\cb1 \
+}
