@@ -1,635 +1,160 @@
 United States Patent
+Edge et al.
 
 [19]
 
-Edge et al.
+l11] 3,879,712
+[45] Apr. 22, 1975
 
-[54]
-
-DATA PROCESSING SYSTEM FAULT
-
-3.787818
+[54] DATA PROCESSING SYSTEM FAULT
 
 DIAGNOSTIC ARRANGEMENTS
-{75]
 
-Inventors:
+3.787818 W/1974 9 Arnold et ali... 340/172.5
 
-.
+Primary Examiner—Gareth D. Shaw
 
-Assignee:
+{75] Inventors: Gordon Edge, Poole: George . oe, :
+. Assistant Examiner— Michael C. Sachs
+porthington. Bournemouth, both of Attorney, Agent, or Firm—Scrivener, Parker,
+& Scrivener & Clarke
+{73] Assignee: Plessey Handel und Investments
+A.G., Zug. Switzerland [57] ABSTRACT
+(22] Filed: May 31, 1973 The invention provides arrangements for diagnosing
+. faulty equipment using background job diagnostic
+[21] Appl. No.: 365,666 software running in the on-line PP250 system. Each
+processor is provided with a diagnostic imterface
+{30] Foreign Application Priority Data which is connectable toa processor-store bus, either
+June 3. 1972 United Kinedom............... 26033/72 irectly or by way of a multiplexor, and which is ad-
+ne nace meso ; dressable as part of the PP250 memory complex. Each
+[52] US. CM cece cccccssecsssceeeeecseceeeesnesees 340/172.5 diagnostic interface provides facilities for (i) forcing
+[SEP Unt, Ch cece ccceeeeceeeeeeececeeeeeeeees Go6t 11/00 — data_patterns into the microbits and the data area
+[58] Field of Search............ 340/172.5: 235/153 AK (highway HO). (ii) monitoring important points in the
+processor equipment such as highway HO, the data-
+[56] References Cited out register, the microbits and (iii) various basic func-
+tions relative to the stopping of the micro-program.
+UNITED STATES PATENTS The diagnostic interface printed circuit boards are
+Peso oes Hioso patford Ct AL ee Maorly2 8 normally removed and inserted only when a processor
+3.671.940 6/1972 Kronies et al... 340/172.5 #8 t© be diagnostically exercised.
+3.688263 8/1972 Balogh, Jr. ct abo... 340/172.5 5 Claims, 4 Drawing Figures
+—
+SM1i SM2 SM3 5
+Px PON
+SAI SA2 SA3 roy N i
+| l "7 Po
+M a P
+P A
+- HF ie
+- M
+PM
+pow] | op ry
+titi A
+PBA PBB PBC co:
+i ca
+pp
+CPUA CPUB CPUC
+DI/FA OI/FB DI/FC
 
-9 Arnold et ali... 340/172.5
+PATENTED APR 22 1975 3.879.712
 
-Assistant Examiner— Michael C. Sachs
+SHEET 1 OF 4
+SMt SM2 SM3 >
+PDN
+SAt SA2 SA3 N D
+a & aS
+wy PD
+[Pp
+P A
+‘ Aw
+M
+PM
+Pom =)
+PBA PRB PBC M |
+7 Vv y
+pp
+CPUA CPUB CPUC
+DI/FA DI/FB DI/FC
+4 4
 
-Plessey Handel und Investments
-A.G., Zug. Switzerland
-
-[57]
-
-[21]
-
-Appl. No.: 365,666
-
-[52]
-[SEP
-[58]
-
-Apr. 22, 1975
-
-Attorney, Agent, or Firm—Scrivener, Parker,
-
-Filed:
-
-{30]
-
-[45]
-
-porthington. Bournemouth, both of
-
-(22]
-
-.
+PATENTED APR 2 2 1975
 
 3,879,712
 
-Primary Examiner—Gareth D. Shaw
-.
-oe,
-:
-
-Gordon Edge, Poole: George
-
-&
-
-{73]
-
-W/1974
-
-l11]
-
-Scrivener & Clarke
-
-May 31, 1973
-
-The invention provides arrangements for diagnosing
-
-faulty
-
-nace
-
-using
-
-background job
-
-diagnostic
-
-processor
-
-meso
-
-is
-
-provided
-
-with
-
-a
-
-diagnostic
-
-imterface
-
-which is connectable toa processor-store bus, either
-
-United Kinedom............... 26033/72
-
-ne
-
-equipment
-
-software running in the on-line PP250 system. Each
-
-Foreign Application Priority Data
-
-June 3. 1972
-
-ABSTRACT
-
-irectly or
-
-;
-
-by way of a multiplexor, and which is ad-
-
-dressable as part of the PP250 memory complex. Each
-
-US. CM cece cccccssecsssceeeeecseceeeesnesees 340/172.5
-diagnostic interface provides facilities for (i) forcing
-Unt, Ch cece ccceeeeceeeeeeececeeeeeeeees Go6t 11/00 — data_patterns into the microbits and the data area
-Field of Search............ 340/172.5: 235/153 AK
-(highway HO). (ii) monitoring important points in the
-References Cited
-
-processor equipment such as highway HO, the dataout register, the microbits and (iii) various basic func-
-
-UNITED STATES PATENTS
-
-The diagnostic interface printed circuit boards are
-
-6/1972
-
-#8 t© be diagnostically exercised.
-
-[56]
-
-tions relative to the stopping of the micro-program.
-
-Peso oes
-
-Hioso
-
-patford Ct AL ee Maorly2 8
-
-3.688263
-
-8/1972
-
-Balogh, Jr. ct abo... 340/172.5
-
-3.671.940
-
-normally removed and inserted only when a processor
-
-Kronies et al... 340/172.5
-
-5 Claims, 4 Drawing Figures
-
-—
-
-SM1i
-
-SM2
-
-SM3
-
-5
-
-SAI
-
-SA2
-
-SA3
-
-Px
-roy N
-
-|
-
-l
-
-"7
-M
-
--
-
-HFP
-
--
-
-i
-
-PON
-
-a P
-
-Po
-
-ie
-
-A
-
-M
-
-pow] |
-
-opPMry
-
-titi A
-
-PBA
-
-PBB
-
-i
-
-PBC
-
-ca
-
-co:
-
-pp
-
-CPUA
-
-CPUB
-
-CPUC
-
-DI/FA
-
-OI/FB
-
-DI/FC
-
-3.879.712
-
-PATENTED APR 22 1975
-SHEET 1 OF 4
-
-SMt
-
-SM2
-
-SM3
-
-SAt
-
-SA2
-
-SA3
-
-a
-
-&
-
->
-
-N
-
-aS
-
-M
-
-Pom
-7
-
-PD
-
-wy
-
-‘P
-
-PBA
-
-D
-
-PDN
-
-PRB
-
-Vv
-
-PBC
-
-y
-
-[Pp
-
-Aw
-
-A
-
-=)
-
-PM
-
-|
-
-M
-
-pp
-
-CPUA
-
-CPUB
-
-CPUC
-
-DI/FA
-
-DI/FB
-
-DI/FC
-
-4
-
-4
-
-3,879,712
-
-2 1975
-NTED
-PATE APR 2
 SHEET 2 OF 4
-
 Y
-
 [INST REG |
-
-\
-
-r HMPROG
+r HMPROG \ et DACS
+| CCL !
 |
-
-Y
-
-|
-
-|
-|
-|
-|
-
-4
-Lf
-
-|
-
-MBM
-
-]
-|
-
-|
-
-|
-{|
-|
-
->
-\—
-Lupa | UPB} |
-
-.
-
-aan © G
-
-ML
-
-GY
-
-\VLGZ
-
-sc
-
-Y
-
-OA
-
-MS
-as
-l —~
-e
-_|
-—~
-
-Q @)
-
-;
-
-®
-
-S¥GR8
-
-¥GR7
-
-ERG
-
-BAR
-
-TAR
-
-GAR
-
-—
-
-u
-ML
-
-sé
-
-[MREG]
-
-DA
-
-|
-
-SM
-
-<GEc
-
-&
-
-!
-
-v
-
-! onanntl CLK
-
-|
-|
-
-!
-
-CCL
-
-|
-
-|
-
-et DACS
-
-Gw3 Gw2
-Ors @~ aw
-
-[sr]
-
+! onanntl CLK v ! DA
+| |
+| & <GEc SM |
+| ]
+Y |
+| MBM |
+| |
+| > {|
+| \— |
+| Lupa | UPB} | OA Y
+4 el as MS
+Lf . —~ —~ _ | ;
+GY \VLGZ S¥GR8 ¥GR7 ERG
+aan © G Q @) ®
+BAR TAR GAR
+ML sc
+u —
+ML _ >
 &)GW
-
-_
-
-¢ aws|
-
-ap
-
-——
-
-AR
-
-[Rea]
-
->
-
-Jars
-
-od
-
-GWi i +® i
-Gw4
-> BC f>
-ra (&)-—1 AW
+sé ¢ aws| ap Jars
+—— od
+[MREG] [sr] [Rea] AR
+Gw3 Gw2 Gw4 GWi i +® i
+Ors @~ aw ra (&)-—1 AW > BC f>
+AN v
 
 Fig. 2a
 
-AN
+PATENTED APR22 1975 | 3,879,712
 
-v
-
-3,879,712
-
-|
-
-PATENTED APR22 1975
 SHEET 3 OF 4
-
-——7]
-
-OUT
-
-REG
-
-Y
-
-REG
-
-/ BLOCK
-
-StR
-
 <
-
-<
-
-B
-
-PB
-a oa
-
-1/F|~
-
->
-
-]
-
-wom.
-
-Yo
-
-OM
-
-vw
-
+——7] B
+Y 1/F|~ PB
+REG OUT a oa
+/ BLOCK REG
+StR >
+< ]
+wom. OM
+Yo vw
 MILL
-
-IrHO
-
->
+> Ir HO
 Y
-
-v
-
-Y
-
-NY
-
-yv
-
-PM co
-
-ooYy
+v yv NY Y PM co ooYy
 Z
-
-&
-
-Je)
-
-¥GR2
-
-ZAR
-
-AAR
-
-GR4|
-
-&¥GR3 ®
-
-XGRS
-
-ZAR
-
-1AR +®) GRI
-;
-
-SAR
+¥GR2 GR4| ¥GR3  XGRS ;
+Je) & & ® 1AR +®) GRI
+ZAR AAR ZAR SAR
 
 DI/F
 
-3.879.712
+PATENTEDAPR 221975 3.879.712
 
-PATENTEDAPR 221975
 SHEET 4 OF 4
-
-a
-
-CONTROL
-
-Block
-
-- — - >
-
-4
-
-[77271
-
 TEST
-
-AREA
-
-COMMON
-FUNCTIONS
-
-BLOCK
-i
-
-f
-
+a AREA
+- — - > 4 COMMON
+CONTROL FUNCTIONS
+Block [77271 BLOCK
+i f
 an
-
-L/F
-
-|
-
+| L/F
 i
-
-ri
-i
-
-|
-
-ty
-
+ri |
+i ty
 Lj
 SPECIAL
-
 FUNCTIONS
-
-BLOCK
-
-ae
-
+BLOCK ae
 ft DIAGN’IC
 L/F
 
@@ -637,1189 +162,999 @@ TT CONTROL PATHS
 DATA PATHS
 
 Fig. 3
-
 3,879,712
-2
 
 1
-
-diagnose the fault. The actual facilities built into the diagnostic interface will depend upon the design of the
-processor module, however, they can be considered as
-falling within three main groups. The first group provides facilities to inject any required value, (i) onto
-some main internal data highway, (i1) onto the microprogram control store output and (iii) onto the micro-
 
 DATA PROCESSING SYSTEM FAULT
 DIAGNOSTIC ARRANGEMENTS
 
-The present invention relates to data processing systems and is more particularly concerned with the provi-
-
+The present invention relates to data processing sys-
+tems and is more particularly concerned with the provi-
 sion of fault diagnostic arrangements in such systems.
+
 With the advent of multi-processor systems for the
 real-time control of communications systems and the
 like it has become necessary to provide, within such
 multi-processor systems, fault detection and isolation
-facilities. Typical of such system facilities are those disclosed in the fault interrupt system of co-pending application Ser. No. 232,463 which culminate in a faulty
-
-program contro] store address selector. The second
-group provides facilities for monitoring vital points
-
-within the processor module whereas the third group
-provides miscellaneous control functions to allow specific processor module functional steps to be performed under diagnostic control.
-The invention will be more readily understood from
-the following description which should be read in conjunction with the drawings accompanying the provi-
-
-processor being barred from access to any of the online applications programs. The faulty processor is confined to a repetative performance of a checkout pro-
-
+facilities. Typical of such system facilities are those dis-
+closed in the fault interrupt system of co-pending appli-
+cation Ser. No. 232,463 which culminate in a faulty
+processor being barred from access to any of the on-
+line applications programs. The faulty processor is con-
+fined to a repetative performance of a checkout pro-
 gram thereby suspending the faulty equipment from the
 on-line system. When a faulty processor is contained
 within check-out an inter-processor check, running in
 another processor, will notice that the processor
-trapped in checkout is overdue and an appropriate report to a “fault handler’? process will be made. The
+trapped in checkout is overdue and an appropriate re-
+port to a “fault handler’? process will be made. The
 fault handler will then take the necessary actions to
 reschedule the work currently allocated to the faulty
 processor and produce, on a maintenance monitor, a
 message indicating the identity of the faulty processor.
-The testing and fault diagnosis routines required to
-fully check-out and isolate a particular fault in a processor module of a multi-processor system requires
-highgrade fully skilled and trained maintenance per-
 
+The testing and fault diagnosis routines required to
+fully check-out and isolate a particular fault in a pro-
+cessor module of a multi-processor system requires
+highgrade fully skilled and trained maintenance per-
 sonnel. such personnel may not readily be available in
 sufficient numbers and it has been suggested previously
-that automatic diagnostic mechanisms should be provided in such circumstances.
+that automatic diagnostic mechanisms should be pro-
+vided in such circumstances.
 
-Accordingly it is a prime object of the present invention to provide automatic diagnostic facilities in a multi-processor system which employs the processing abilities of the multi-processor system itself rather than by
+Accordingly it is a prime object of the present inven-
+tion to provide automatic diagnostic facilities in a mul-
+ti-processor system which employs the processing abili-
+ties of the multi-processor system itself rather than by
 the provision of special purpose diagnostic equipment.
+
 According to the invention there is provided a digital
-data processing system including a plurality of processor modules and a plurality of storage-modules and
+data processing system including a plurality of proces-
+sor modules and a plurality of storage-modules and
 each storage module incorporates an access unit which
 includes an identity address recognition mechanism
 and each processor module is provided with a unique
 data communication path, providing processor module
-access to all the storage modules, and processor module access to a storage location is performed by extending an address word on the processor module’s unique
-data communication path defining (i) the identity address of the access unit of the storage module in which
+access to all the storage modules, and processor mod-
+ule access to a storage location is performed by extend-
+ing an address word on the processor module’s unique
+data communication path defining (i) the identity ad-
+dress of the access unit of the storage module in which
 the required location resides and (ii) the address of the
-required location within that storage module, characterised in that each processor module incorporates a
+required location within that storage module, charac-
+terised in that each processor module incorporates a
 diagnostic access unit which is connectable to one or
 more of said unique data communication paths and
 said access unit includes (i) an identity address recog-
-
 nition arrangement (ii) an address decoder and (tii) a
-
 plurality of address-decoder selectable monitor, con-
-
 trol and data injecting points internal to the processing
-
 equipment of the processor module.
 
 By the provision of a diagnostic interface a faulty
 processor may be tested by another processor module
 performing a diagnostic program as a background job.
 The facilities provided by the diagnostic interface allow
-the diagnostic program to fully exercise the faulty processor and to monitor the results of such exercises to
-
-sional specification. Of the drawings:FIG. 1 shows a block diagram of a typical multiprocessor system incorporating the invention,
+the diagnostic program to fully exercise the faulty pro-
+cessor and to monitor the results of such exercises to
 
 20
 
-FIGS. 2a and 26 show a block diagram of a typical
-processor module incorporating a diagnostic interface
-according to the invention and should be placed sideby-side with FIG. 26 on the right, while
-FIG. 3 shows a block diagram of the diagnostic moni-
-
 25
 
+30
+
+35
+
+40
+
+45
+
+30
+
+60
+
+65
+
+2
+
+diagnose the fault. The actual facilities built into the di-
+agnostic interface will depend upon the design of the
+processor module, however, they can be considered as
+falling within three main groups. The first group pro-
+vides facilities to inject any required value, (i) onto
+some main internal data highway, (i1) onto the micro-
+program control store output and (iii) onto the micro-
+program contro] store address selector. The second
+group provides facilities for monitoring vital points
+within the processor module whereas the third group
+provides miscellaneous control functions to allow spe-
+cific processor module functional steps to be per-
+formed under diagnostic control.
+
+The invention will be more readily understood from
+the following description which should be read in con-
+junction with the drawings accompanying the provi-
+sional specification. Of the drawings:-
+
+FIG. 1 shows a block diagram of a typical multi-
+processor system incorporating the invention,
+
+FIGS. 2a and 26 show a block diagram of a typical
+processor module incorporating a diagnostic interface
+according to the invention and should be placed side-
+by-side with FIG. 26 on the right, while
+
+FIG. 3 shows a block diagram of the diagnostic moni-
 tor software.
 
 The multi-processor system to which the invention is
 more particularly, although not exclusively, suited is
 shown in FIG. 1 and this type of system is disclosed in
 our copending application Ser. No. 265,410 now US.
-30 Pat. No. 3,787,818. The system consists of a plurality
+Pat. No. 3,787,818. The system consists of a plurality
 of processor modules (CPUA, CPUB and CPUC), a
 plurality of storage modules (SM1, SM2 and SM3), a
-pair of multiplexors (MPXM and MPXN) and a plurality of peripheral equipments such as PD, PM and PP.
-35 Each processor module is provided with a unique data
-communication path or bus (PBA, PBB and PBC respectively) over which access to all storage modules
-and all peripheral equipments is obtained. Each processor bus includes a parallel information signal highway
-40
+pair of multiplexors (MPXM and MPXN) and a plural-
+ity of peripheral equipments such as PD, PM and PP.
+Each processor module is provided with a unique data
+communication path or bus (PBA, PBB and PBC re-
+spectively) over which access to all storage modules
+and all peripheral equipments is obtained. Each proces-
+sor bus includes a parallel information signal highway
 and a control signal highway in both directions. Each
-
 storage module is provided with an access unit (SAI,
-
 SA2 and SA3 respectively) upon which each processor
-
-45
-
 module bus is individually terminated. Each access unit
-includes a module address identity recognition mechanism which is arranged to detect a “storage module access demand” indicated by the application of the stor-
-
+includes a module address identity recognition mecha-
+nism which is arranged to detect a “storage module ac-
+cess demand” indicated by the application of the stor-
 age module’s identity address to a specified part of the
-information signal highway of a processor bus. The ac30
-
+information signal highway of a processor bus. The ac-
 cess units are also arranged to resolve concurrent con-
-
-flicting access demands in a predetermined priority order.
+flicting access demands in a predetermined priority or-
+der.
 
 A pair of multiplexors, MPXN and MPXM are pro-
-
 vided in the system of FIG. 1 so that the peripheral
-
 equipments are “‘buffered”’ from store module or pro-
-
-cessor module additions. Each multiplexor is functionally the same as a store access unit, multiplexing peripheral demands onto the peripheral data communication paths or busses PDM and PDN. The peripheral
+cessor module additions. Each multiplexor is function-
+ally the same as a store access unit, multiplexing pe-
+ripheral demands onto the peripheral data communica-
+tion paths or busses PDM and PDN. The peripheral
 busses, PDM and PDN are each individually connected
-60
 to separate ports on the peripheral access units such as
-PAD, PAM and PAP. The peripheral busses are similarly configured (i.e. having information and control
-65
-
+PAD, PAM and PAP. The peripheral busses are simi-
+larly configured (i.e. having information and control
 signal highways) to the processor module busses.
+
 Each peripheral access unit includes an equipment
 identity address recognition mechanism and a number
-
-of processor-module-addressable administration registers (such as data-in, data-out, status and control regis-
-
+of processor-module-addressable administration regis-
+ters (such as data-in, data-out, status and control regis-
 3,879,712
 
 3
-
-4
-
 ters). The peripheral equipments shown are typical
-only and signify a disc PD, a diagnostic monitor typewriter equipment PM and a page printer PP.
+only and signify a disc PD, a diagnostic monitor type-
+writer equipment PM and a page printer PP.
 
-Included in the accumulator register stack is the se-
-
-quence control register SCR which at all times defines
-the absolute store address of the current instruction
-
-The system is organised such that the processor modules simply perform “read” and “write” bus operations
+The system is organised such that the processor mod-
+ules simply perform “read” and “write” bus operations
 when information is to be communicated from or to a
-
-word.
-The data area, which stores and manipulates the in-
-
-formation being processed by the processor module, is
-controlled by data area manipulation control signals
-DAMS. These control signals are produced by a set of
-
 storage location or a peripheral equipment. In the case
 of the storage location the read or write operation ts
-specified by the code set onto the control signal highan address on the information signal highway of the
-
-toggles known as micro-bits (UPB). The microprogram area sets and resets these micro-bits as required together with a set of toggles known as the mi-
-
-processor bus. The address defies (i) the storage mod-
-
-cro-program address toggles (UPA).
-
+specified by the code set onto the control signal high-
 way section of the processor bus and is accompanied by
-
-10
-
+an address on the information signal highway of the
+processor bus. The address defies (i) the storage mod-
 ule in which the required location resides and (ii) the
-
-The micro-program area “PROG consists of (i) a
-
 address of the required location within the particular
-
-register having some 150 bits, for the UPA and UPB
-
 storage module. Similarly when information is to be
-
-micro-bits, (ii) a decoder DEC, (iii) a slot matrix SM,
-
 read from or written into a peripheral equipment the
-
-(iv) a micro-bit matrix MBM, (v) a block of combina-
-
 read or write operation code is accompanied by an ad-
-
-tional
-
-logic
-
-CCL
-
 dress on the information highway of the bus defining (1)
-
-DACS
-
-and
-
-(vl) a micro-program slot control clock
-
-data
-
-area
-
-conditional
-
-signals
-
-CLK. The instructions of the processor, as defined by
-
 a multiplexor, (ii) the peripheral equipment required
 and (in) the addressable administration register within
-
-for
-
-20
-
-the instruction word in the INSTREG, are implemented
-
 the peripheral equipment. This allows the processor
-
-by a series of micro-programs, each micro-program
-
 module (i) to write to the peripheral equipment’s con-
-
-consisting
-
 trol register to exercise control over the functioning of
-
-instructions or slots. The processor is advanced from
-one slot to the next by the clock CLK. The next slot
-
 the peripheral equipment including its access unit, (ii)
-
 to write to the data-out register information for pas-
-
-25
-
-of several
-
-sequentially
-
-performed
-
-micro-
-
-being selected by the UPA address operating on the
-
 sage-on and manipulation by the peripheral equipment,
-
-slot matrix. The current data area conditions signals
-
-(iit) to read from the status register to define the current functional state of the peripheral equipment im-
-
-DACS also condition the slot matric which produces
-for each slot a set of micro-bits which condition the
-processor module in the execution of the micro-
-
+(iit) to read from the status register to define the cur-
+rent functional state of the peripheral equipment im-
 cluding the access unit and (iv) to read from the data-in
 register information for passage into the control pro-
-
-30
-
-instruction, and hence micro-programs, for each machine instruction.
-
 cessing system.
 
 One of the peripheral busses, bus PDN in the case
-
-The diagnostic interface unit DI/F, shown below the
-
-shown in FIG. 1, is extended to the access path of
-a di-
-
-line Z—Z in FIGS. 2a and 2, includes a peripheral bus
-access unit which is formed by an address register AR,
-
-agnostic interface (DI/FA, DIYFB and DI/FC respectively) of each processor module. EAch diagnostic in-
-
-35
-
-and address decoder AD and a bus control signal cir-
-
-cuit BC. The diagnostic interface unit also includes ar-
-
+shown in FIG. 1, is extended to the access path of a di-
+agnostic interface (DI/FA, DIYFB and DI/FC respec-
+tively) of each processor module. EAch diagnostic in-
 terface is functionally identical to that of the peripheral
-
-rangements (gates GR1 to GR8& inclusive) for extractaccess units in that it includes an identity address recing information from the data area (gates GR1 to GR6
+access units in that it includes an identity address rec-
 ognition mechanism and a plurality of addressable
-inclusive) and the micro-program area (gates GR7 and
-monitor points and registers analagous to the adminis40
-GRS8) for passage over the peripheral bus PDN. The ditration registers.
-agnostic interface unit further mcludes arrangements
+monitor points and registers analagous to the adminis-
+tration registers.
+
 Under normal on-line system working circumstances
-
-the diagnostic interface equipment, shown in block diagram form in FIGS. 2a and 24 as DHF, is “removed” so
-that faulty processor module access, by way of the diagnostic interface, to a good processor module is prevented. When a faulty processor module has been re-
-
-(gates GW1 and GW2) allowing information patterns
-to be injected into the data area (gates GW1) and the
-45
-
-micro-program
-
-area (gates GW2) together with arrangements (the equipment associated with gates GW3
-
-to GWS
-
-inclusive)
-
-providing miscellaneous control
-
-functions. Each of the above mentioned gates, represents a block of AND gates which control the passage
-of information over parallel information paths and each
-block of AND gates is controlled by an address signal
-for the faulty processor alone.
-produced by the address decoder AD.
-Considering now FIGS. 2¢ and 26 a typical processor
-Each access over a processor bus, it will be recalled,
-module PM is shown in the upper sections of these figcomprises the application of a location address to the
-ures above the dividing line Z—Z. The processor madinformation signal highway, accompanied by a code on
-ule comprises two main areas namely the micro55
-the control signal highway indicating the type of access
-program area 4#PROG, shown in FIG. 2a within the
-required. Each address specifies the identity of the
-broken line box and the data area DA. Both areas inmodule or equipment required together with the locavolve parallel path working, however, for ease of pretion within the module or equipment (i.e. storage locasentation single paths only are shown in the drawings.
-tion, peripheral equipment administration register or
-The data area consists of (i) a block of registers
-60
-diagnostic interface facility). Consequently included in
-REGBLOCK, (ii) an instruction register INSTREG,
-the address decoder AD is a comparator which is ar(iii) an arithmetic and logic unit MILL, (iv) a processor
-
+the diagnostic interface equipment, shown in block dia-
+gram form in FIGS. 2a and 24 as DHF, is “removed” so
+that faulty processor module access, by way of the diag-
+nostic interface, to a good processor module is pre-
+vented. When a faulty processor module has been re-
 ported to the maintenance personnel by way of the
 monitor typewriter PM the diagnostic interface printed
 circuit boards are inserted in the diagnostic interface
+for the faulty processor alone.
 
-ranged to compare the processor module’s system iden-
+Considering now FIGS. 2¢ and 26 a typical processor
+module PM is shown in the upper sections of these fig-
+ures above the dividing line Z—Z. The processor mad-
+ule comprises two main areas namely the micro-
+program area 4#PROG, shown in FIG. 2a within the
+broken line box and the data area DA. Both areas in-
+volve parallel path working, however, for ease of pre-
+sentation single paths only are shown in the drawings.
 
-module bus interface logic unit BI/FL and (v) a bus interface register, referred to as the out register OUTREG. Typically the processor module corresponds to
+The data area consists of (i) a block of registers
+REGBLOCK, (ii) an instruction register INSTREG,
+(iii) an arithmetic and logic unit MILL, (iv) a processor
+module bus interface logic unit BI/FL and (v) a bus in-
+terface register, referred to as the out register OUT-
+REG. Typically the processor module corresponds to
+that shown in U.S. Pat. No. 3,787,813 in which the reg-
+ister block REGBLOCK contains an accumulator regis-
+ter stack and capability base and limit register stacks.
 
-that shown in U.S. Pat. No. 3,787,813 in which the register block REGBLOCK contains an accumulator register stack and capability base and limit register stacks.
+10
+
+20
+
+25
+
+30
+
+35
+
+40
+
+45
+
+55
+
+60
 
 65
 
+4
+
+Included in the accumulator register stack is the se-
+quence control register SCR which at all times defines
+the absolute store address of the current instruction
+word.
+
+The data area, which stores and manipulates the in-
+formation being processed by the processor module, is
+controlled by data area manipulation control signals
+DAMS. These control signals are produced by a set of
+toggles known as micro-bits (UPB). The micro-
+program area sets and resets these micro-bits as re-
+quired together with a set of toggles known as the mi-
+cro-program address toggles (UPA).
+
+The micro-program area “PROG consists of (i) a
+register having some 150 bits, for the UPA and UPB
+micro-bits, (ii) a decoder DEC, (iii) a slot matrix SM,
+(iv) a micro-bit matrix MBM, (v) a block of combina-
+tional logic CCL for data area conditional signals
+DACS and (vl) a micro-program slot control clock
+CLK. The instructions of the processor, as defined by
+the instruction word in the INSTREG, are implemented
+by a series of micro-programs, each micro-program
+consisting of several sequentially performed micro-
+instructions or slots. The processor is advanced from
+one slot to the next by the clock CLK. The next slot
+being selected by the UPA address operating on the
+slot matrix. The current data area conditions signals
+DACS also condition the slot matric which produces
+for each slot a set of micro-bits which condition the
+processor module in the execution of the micro-
+instruction, and hence micro-programs, for each ma-
+chine instruction.
+
+The diagnostic interface unit DI/F, shown below the
+line Z—Z in FIGS. 2a and 2, includes a peripheral bus
+access unit which is formed by an address register AR,
+and address decoder AD and a bus control signal cir-
+cuit BC. The diagnostic interface unit also includes ar-
+rangements (gates GR1 to GR8& inclusive) for extract-
+ing information from the data area (gates GR1 to GR6
+inclusive) and the micro-program area (gates GR7 and
+GRS8) for passage over the peripheral bus PDN. The di-
+agnostic interface unit further mcludes arrangements
+(gates GW1 and GW2) allowing information patterns
+to be injected into the data area (gates GW1) and the
+micro-program area (gates GW2) together with ar-
+rangements (the equipment associated with gates GW3
+to GWS inclusive) providing miscellaneous control
+functions. Each of the above mentioned gates, repre-
+sents a block of AND gates which control the passage
+of information over parallel information paths and each
+block of AND gates is controlled by an address signal
+produced by the address decoder AD.
+
+Each access over a processor bus, it will be recalled,
+comprises the application of a location address to the
+information signal highway, accompanied by a code on
+the control signal highway indicating the type of access
+required. Each address specifies the identity of the
+module or equipment required together with the loca-
+tion within the module or equipment (i.e. storage loca-
+tion, peripheral equipment administration register or
+diagnostic interface facility). Consequently included in
+the address decoder AD is a comparator which is ar-
+ranged to compare the processor module’s system iden-
 tity address with a predetermined part of the address
 information applied to the peripheral bus PDN. When
-coincidence is experienced the rest of the address information in the address register AR Is gated into the
-
+coincidence is experienced the rest of the address in-
+formation in the address register AR Is gated into the
 address decoder to produce a selection signal to acti-
-
 3,879,712
-
-6
 
 5
 
-perform the number of slots specified by the data
-written to the slot register SR.
-Bit 17 - Stop at fault. This bit causes the processor to
-stop when UPA equals zero, that is when it is about
-to enter the fault interrupt micro-program.
-Bit 18 - Stop at a particular slot. When the processor
-clock is enabled the processor runs until UPA
-equals the value previously written to the slot register SR. Comparator SC compares the current slot
-
 vate the required function. The selection signals fall
 into two groups shown as AWS (the write selection sig-
-
 nal) and ARS (the read selection signals). The AWS
 signals control the data pattern injecting facilities
 (gates GW1 and GW2) and the miscellaneous control
 functions (the equipment associated with gates GW3 to
 GW5) while the ARS signals control the information
 monitoring point facilities (gates GRI to GR8 inclu-
-
 sive). The control code on the control signal highway
-of the peripheral bus defines the read or write requirement of each access and consequently the address
+of the peripheral bus defines the read or write require-
+ment of each access and consequently the address
 decocer AD also inspects this control signal highway
 when generating the required address signal.
+
 The monitoring facilities provided are as follows:
+
 a. The contents of the OUTREG (gates GR1 opened
-
-10
-
-clock pulse generator which is started by the setting to
-
-15
-
 by address signal LAR)
 
 b. the current instruction address (gate GR2 opened
-
 by address signal 2AR)
 
 c. the information on highway HO (gate GR3 opened
-
 by signal 3AR)
 
-d.
-
-the
-
-information
-
-on
-
-highway
-
-MO
-
-(gate
-
-20
-
-GR4
-
+d. the information on highway MO (gate GR4
 opened by signal 4AR)
 
+e. the information on highway M1 (gate GRS opened
+by signal SAR)
+
 f. the contents of the INSTREG (gate GR6 opened by
+signal 6AR)
+
+g. the contents of the micro-bit register UPB (gate
+GR7 opened by signal 7AR)
+
+h. the contents of the micro-address register UPA
+(gate GR8 opened by signal 8AR).
+
+The forcing facilities provided are as follows:
+
+a. the writing of information onto highway HO (gate
+GW1 opened by LAW)
+
+b. the conditioning of the micro-bit registers UPA
+and UPB (gate GW2 opened by 2AW).
+
+The miscellaneous control functions are provided by
+conditioning the miscellaneous register MREG and the
+registers REG1, REG2 and the slot register SR. The
+setting to the “1” state of various bits of the miscella-
+_ neous register provides the following functions by act-
+ing upon the miscellaneous logic ML:
+
+Bit O - Enables the processor clock CLK. The num-
+ber of clock pulses produced is determined by the
+states of bits 1 to 5 and 16 to 18 of register MREG.
+
+Bit 1 - Single slot, i.e. one clock pulse.
+
+Bit 2 ~ Single instruction. When the clock is enabled
+the processor clock runs to complete the current
+instruction.
+
+Bit 3 - Stop at SCR value specified by bits 8 to 23 of
+the data written into REG2. Comparator IAC com-
+pares the SCR value (via gates GX ) with the regis-
+ter REG2 value.
+
+Bit 4 - As bit 3 but including bits 4 to 7 of SCR.
+
+Bit 5 - As bit 4 but including bits 0 to 3 of SCR.
+
+Bit 6 - Forces the data sent to REG1I on to HO if bit
+1 is also set (i.e. activates gate GW6 by producing
+signal MLS2)
+
+Bit 7 - Inhibit micro-program decode. This bit inhib-
+its the micro-program decoding for the next slot
+from the current UPA.
+
+Bits 8 to 12 - Not used.
+
+Bit 13 - Repeat. This bit inhibits the clocking of SCR
+so that the current instruction may be repeated.
+
+Bits 14 and 15 - Not used.
+
+Bit 16 - Stop after ‘‘n”’ slots. When the processor
+clock is enabled this bit causes the processor to
+
+10
+
+15
+
+20
 
 25
 
 30
 
-states of bits 1 to 5 and 16 to 18 of register MREG.
-Bit 1 - Single slot, i.e. one clock pulse.
-Bit 2 ~ Single instruction. When the clock is enabled
-the processor clock runs to complete the current
-
-45
-
-Bit 3 - Stop at SCR value specified by bits 8 to 23 of
-
-struction operation.
-
-nostic Monitor program. This program consists of a
-string of diagnostic interface transactions which apply
-a series of tests to the logic of the processor with diagnostic inspection of the results of the tests with the assistance of a fault dictionary.
+35
 
 40
 
-instruction.
+45
 
-signal which clocks the SRC (bit MR13) for repeat in-
+50
 
-scheduled, in a background mode, to perform a diag35
+55
 
-setting to the “1” state of various bits of the miscella_ neous register provides the following functions by acting upon the miscellaneous logic ML:
-Bit O - Enables the processor clock CLK. The number of clock pulses produced is determined by the
+60
 
-17 or 18). Also included in the miscellaneous logic ML
-are gating arrangements to produce the signals MLS1
+65
 
-Once the diagnostic interface boards are in place one
-of the remaining serviceable processor modules may be
+6
 
-GW1 opened by LAW)
+perform the number of slots specified by the data
+written to the slot register SR.
 
-b. the conditioning of the micro-bit registers UPA
-and UPB (gate GW2 opened by 2AW).
-The miscellaneous control functions are provided by
-conditioning the miscellaneous register MREG and the
-registers REG1, REG2 and the slot register SR. The
+Bit 17 - Stop at fault. This bit causes the processor to
+stop when UPA equals zero, that is when it is about
+to enter the fault interrupt micro-program.
 
+Bit 18 - Stop at a particular slot. When the processor
+clock is enabled the processor runs until UPA
+equals the value previously written to the slot regis-
+ter SR. Comparator SC compares the current slot
+address (via gated GY) with the register SR value.
+
+Bits 19 to 23 - Not used.
+
+Typically, the miscellaneous logic ML includes a
+clock pulse generator which is started by the setting to
+the one state of any of bits 1, 2, 3, 4, 5, 16, 17 or 18
+of register MREG and is stopped by outputs from any
 one of a number of generator control gates. Typically
 the generator control gates are activated after 1 pulse
 (bits MR1), when the select next instruction micro-bit
-occurs (bit MR2), when the instruction address comparator IAC detects equality between the SCR value
+occurs (bit MR2), when the instruction address com-
+parator IAC detects equality between the SCR value
 and the value in REG2 (bits MR3, 4 or 5) or when the
 slot comparator SC detects equality between the UPA
-
-(bits MR3, MR4 or MRS), MLS2 (bits MRI and MR6)
-and micro-bit control signals for the control of the micro-program decoding (bit MR7) and for the micro-bit
-
-signal 6AR)
-
-g. the contents of the micro-bit register UPB (gate
-GR7 opened by signal 7AR)
-h. the contents of the micro-address register UPA
-(gate GR8 opened by signal 8AR).
-The forcing facilities provided are as follows:
-a. the writing of information onto highway HO (gate
-
-the one state of any of bits 1, 2, 3, 4, 5, 16, 17 or 18
-of register MREG and is stopped by outputs from any
-
 value and the value in the slot register SR (bits MR 16,
+17 or 18). Also included in the miscellaneous logic ML
+are gating arrangements to produce the signals MLS1
+(bits MR3, MR4 or MRS), MLS2 (bits MRI and MR6)
+and micro-bit control signals for the control of the mi-
+cro-program decoding (bit MR7) and for the micro-bit
+signal which clocks the SRC (bit MR13) for repeat in-
+struction operation.
 
-e. the information on highway M1 (gate GRS opened
-by signal SAR)
-
-address (via gated GY) with the register SR value.
-Bits 19 to 23 - Not used.
-Typically, the miscellaneous logic ML includes a
+Once the diagnostic interface boards are in place one
+of the remaining serviceable processor modules may be
+scheduled, in a background mode, to perform a diag-
+nostic Monitor program. This program consists of a
+string of diagnostic interface transactions which apply
+a series of tests to the logic of the processor with diag-
+nostic inspection of the results of the tests with the as-
+sistance of a fault dictionary.
 
 The view taken of the machine while implementing
 the diagnostic monitor program is that of a model
 which consists of one large data register and a block of
 combinational logic. The outputs of the data register
 provide the inputs to the large block of combinational
-
 logic the outputs of which are fed back to inputs of the
 data register. The diagnostic interface and processor
 module registers provide the data register function
 whereas the processor module manipulative and micro-
-
 program areas provide the combinational logic func-
-
-50 tion.
-
-the data written into REG2. Comparator IAC compares the SCR value (via gates GX) with the regis-
+tion.
 
 The diagnostic tests simply consist of setting the data
 register into the required state to provide the required
-input conditions to the combinational logic. The outter REG2 value.
+input conditions to the combinational logic. The out-
 puts from the combinational logic which results will be
-Bit 4 - As bit 3 but including bits 4 to 7 of SCR.
-55
-examined by clocking the relevant part of the data regBit 5 - As bit 4 but including bits 0 to 3 of SCR.
+examined by clocking the relevant part of the data reg-
 ister and reading its contents.
-Bit 6 - Forces the data sent to REG1I on to HO if bit
+
 As mentioned previously the diagnostic monitor runs
-1 is also set (i.e. activates gate GW6 by producing
 as a low priority job on a known good processor mod-
-
-signal MLS2)
-
-Bit 7 - Inhibit micro-program decode. This bit inhibits the micro-program decoding for the next slot
-
-60
-
-from the current UPA.
-Bits 8 to 12 - Not used.
-
-Bit 13 - Repeat. This bit inhibits the clocking of SCR
-so that the current instruction may be repeated.
-Bits 14 and 15 - Not used.
-Bit 16 - Stop after ‘‘n”’ slots. When the processor
-
-clock is enabled this bit causes the processor to
-
-65
-
 ule. Transfers to and from the diagnostic interface are
-carried out just as though that interface unit was another module of store. The diagnostic monitor, as
+carried out just as though that interface unit was an-
+other module of store. The diagnostic monitor, as
 shown in FIG. 3, consists essentially of three code
-
 blocks, the CONTROL BLOCK, the COMMON
 FUNCTIONS BLOCK and the SPECIAL FUNCTIONS
 BLOCK and three data blocks the TEST AREA, the
-INTERFACE BUFFER and the DIAGNOSTIC INTERFACE.
-
+INTERFACE BUFFER and the DIAGNOSTIC IN-
+TERFACE.
 3,879,712
+
 7
 
-8
-
-The TEST AREA contains one sub-test of the diagaostics during interpretation by the diagnostic monitor.
-
-16) the ‘‘n” value is set in bits 0 to 6 of the data to be
-
-written to this address. When the CPU is required to
-
+The TEST AREA contains one sub-test of the diag-
+aostics during interpretation by the diagnostic monitor.
 The INTERFACE BUFFER acts as a buffer between
-the diagnostic tests and the DIAGNOSTIC INTERFACE which of course is part of the faulty processor
-
-stop at a particular slot (bit 18) the slot address is set
-
+the diagnostic tests and the DIAGNOSTIC INTER-
+FACE which of course is part of the faulty processor
 module itself.
 
-the current value of UPA, over gates GY, and when co-
-
-The CONTROL BLOCK provides the interface between the diagnostic monitor and its environment, Le.
+The CONTROL BLOCK provides the interface be-
+tween the diagnostic monitor and its environment, Le.
 the operating system and the maintenance engineer. It
-
-incidence occurs the processor module clock is
-stopped by the miscellaneous logic ML. A zero value
-is set into SR when bit 7 is marked as a zero condition
-
 provides input/output facilities for the monitor to the
-
-in bits 0 to 6 of the data to be written to this address;
-in both cases the slot address in SC is compared with
-
-10
-
 2ngineer running the diagnostics.
 
 The COMMON FUNCTIONS BLOCK provides the
 gasic features of the diagnostic monitor. The common
 functions provide facilities for setting up and manipu-
-
-in UPA is indicative of a fault interrupt condition.
-When a read is performed on this address the data
-gives, by way of gates GR&, the value of the address of
-the current slot (i.e. the state of UPA).
-Address 0500
-
 lating the information in the INTERFACE BUFFER.
 
 The SPECIAL FUNCTIONS BLOCK provides those
-For both write and read operations this address gives
 features of the diagnostic monitor which are specific to
-access to and from highway HO, by way of gates GW
 the type of equipment under test and in any system the
-and GR3 respectively. Having written the required
 number of versions of the SPECIAL BLOCK depends
-value of HO to this address (i.e into register REGI) to
-upon the numbers of types of equipment to be tested. 20 get that value actually on to HO gates GW6 must be acThe interface between the Diagnostic Software and
-tivated by writing to address 0401, the miscellaneous
-a faulty processor is provided by means of the diagnosregister MREG, with bit 6 set to activate signal MLS2.
-tic interface which provides access to various points
+upon the numbers of types of equipment to be tested.
 
+The interface between the Diagnostic Software and
+a faulty processor is provided by means of the diagnos-
+tic interface which provides access to various points
 within the faulty processor, some of which can only be
-read while others of which also can be forced to a required value. Access to and from the various points is
+read while others of which also can be forced to a re-
+quired value. Access to and from the various points is
 gained from the diagnosing processor by addressing a
 range of store locations whose module number (i.e. bits
-12 to 23 is
-111 L0000KXXX, where XX XX is variable
+12 to 23 is 111 L0000KXXX, where XX XX is variable
 for each particular processor in the system.
-
-Address 1004
-
-25
-
-contents of the processor highway MO by activating
-gate GR4.
-Address 1020
-30
 
 The various addresses used and the points they give
 access to are Hsted below. The addresses are given in
-
 octal and represent the bottom 12 bits of the address
 and they are decoded by the address decoder AD of the
-35
 diagnostic interface to produce GW or GR signals.
+
 Address 0401
 
 This address activates gates GW3 to provide access
 to the misceHaneous register MREG within the diag-
-
-nostic interface itself. The miscellaneous register provides the various miscellaneous control functions listed
+nostic interface itself. The miscellaneous register pro-
+vides the various miscellaneous control functions listed
 above to condition the miscellaneous logic ML in its
 control of the processor clock CLK.
 
-This address can only be read from and it gives the
-
-40
-
-This address can only be read from and gives the contents of the processor highway M1 by activating gate
-GRS.
-Address 2001
-
-This address provides access to the mocrobits and
-can be written-to by activating gate GW2 and readfrom by activating gates GR7 and GR8. This allows the
-microbits to be forced to a required pattern or their
-current pattern to be monitored. For ease of presenta-
-
-tion it has been assumed that a single 24 bit word is produced by the microbit matrix. In practice many more
-micro-bits are produced for each slot and typically a
-number of addresses will be used to ailow access to up
-
-to say 10 blocks of 20 bits each of the micro-bit pat-
-
 Address 0404
 
-tern.
-
 When reading from this address gates GRI are acti-
-
-Address 4040
-
 vated and the contents of the QUT register are read
 onto the bus PDN.
 
-This address can only be read from and gives the
-$0 value of the current setting of the instruction register
 Address 0410
-INSTREG by activating gates GR6.
-The value of the SCR at which the CPU is required
-It was mentioned above that associated with the diagto stop is written into REG2 by the activation of gates
-nostic software is a so-called Interface Buffer.
-GWS5 and this address is used on conjunction with bits
-The contents of the Interface Buffer are as shown be-
 
+The value of the SCR at which the CPU is required
+to stop is written into REG2 by the activation of gates
+GWS5 and this address is used on conjunction with bits
 3, 4 and 5 of the miscellaneous register.
-35 low:
+
 When the CPU has been stopped by some other
 mechanism the value of the sequence control register
-
 SCR can be found by reading from this address and in
 this case the address decoder AD activates gates GR2.
+
 Address 0420
 
-Writing to this address the address decoder AD activates gates GW4 to condition the slot register SR to
+Writing to this address the address decoder AD acti-
+vates gates GW4 to condition the slot register SR to
 specify either the number of slots the faulty processor
 module is required to perform or the slot it is required
-
 to stop at in conjunction with the setting of bits 16, 17
 and 18 of the miscellaneous register MREG. When the
 processor module is required to perform “‘n" slots (bit
 
-60
-
-WORD (OCTAL)
-
-USE
-
-00
-
-Spare
-
-O7
 10
-
-HO
-MO
-Mi
-SCR
-OUT
-MISC. REG (Copy Read from
-Interface)
-FUN
-REG
-
-Ol
-02
-Q3
-04
-Os
-06
-
-12
-
-13
-
-SPARE
-
-3,879,712
-
-10
-
-9
-
-with the STOP AT SCR statement. The statement
-causes bit 0 of CB to be set, the remaining bits of CB,
-
--Continued
-WORD (OCTAL)
-iS
-
-16
-7
-
-USE
-
-31
-
-3
-
-35
-
-36
-37
-
-e. MONITOR MODE- This mode is identical to the
-Own Mode except that upon entry to this mode the
-contents of words 17 to 33 of the Interface Buffer are
-dumped for later use by the Revert Statement. Words
-
-CURRENT SLOT - UPAC
-
-NEXT SLOT - UPAN, UPA
 
 20
 
-32
-
-as well as MRB being reset.
-
-LAST SLOT - UPAL
-
-Ten words for ubits
-UPB
-
-17 to 33 are then cleared and bits I and 7 or MRB and
-bits 0 and 6 of CB set. This mode will usually be used
-when in SS or SI mode and it is required to either examine or change the contents of a register which is not di-
-
-Misc. Reg. Buffer (referred to
-as MRB)
-CLOCK Buffer (referred to as CB)
-
-|
-
-SPARE
-
-15
-
-The Diagnostic Tests can only cause words 01 and 17
-to 33 to be set up but can use the information in words
-00 to 31. When transferring information to the diagnostic interface words 01 and 17 to 32 can be transferred,
-however, when transferring information from the diagnostic Test interface to the Interface Buffer words 00
-to 31 can be set-up. The transfers to and from the diagnostic interface are controlled by the CLOCK and IF
-statements of a Diagnostic Language.
-
-The Miscellaneous Register Buffer contains information which is to be written to the miscellaneous register
-MREG in the diagnostic interface. The significance of
-
-the bits within the word and their effects on the miscellaneous logic ML have already been described.
-The Clock Buffer is used by the CLOCK and IF statements to control the transfers to and from the diagnostic interface slot register SR as well as being used in
-conjunction with the Miscellaneous Register Buffer to
-control the forcing of information on to HO and enabling the CPU Clock. The use of the Clock Buffer and
-Miscellaneous Register Buffer is described more fully
-
-tor Mode. Additionally bit 23 of CB is set.
-Forcing Highway HO
-
-20
-
-The Diagnostic Tests may be specified by a series of
-statements making up a Diagnostic Language. Typical
-
-HO = VALUE
 25
 
 30
 
-Before commencing any tests the faulty processor
+35
+
+40
+
+$0
 
 35
 
-The micro-program can be forced to any required
+60
+
+8
+
+16) the ‘‘n” value is set in bits 0 to 6 of the data to be
+written to this address. When the CPU is required to
+stop at a particular slot (bit 18) the slot address is set
+in bits 0 to 6 of the data to be written to this address;
+in both cases the slot address in SC is compared with
+the current value of UPA, over gates GY, and when co-
+incidence occurs the processor module clock is
+stopped by the miscellaneous logic ML. A zero value
+is set into SR when bit 7 is marked as a zero condition
+in UPA is indicative of a fault interrupt condition.
+When a read is performed on this address the data
+gives, by way of gates GR&, the value of the address of
+the current slot (i.e. the state of UPA).
+
+Address 0500
+
+For both write and read operations this address gives
+access to and from highway HO, by way of gates GW
+and GR3 respectively. Having written the required
+value of HO to this address (i.e into register REGI) to
+get that value actually on to HO gates GW6 must be ac-
+tivated by writing to address 0401, the miscellaneous
+register MREG, with bit 6 set to activate signal MLS2.
+
+Address 1004
+
+This address can only be read from and it gives the
+contents of the processor highway MO by activating
+gate GR4.
+
+Address 1020
+
+This address can only be read from and gives the con-
+tents of the processor highway M1 by activating gate
+GRS.
+
+Address 2001
+
+This address provides access to the mocrobits and
+can be written-to by activating gate GW2 and read-
+from by activating gates GR7 and GR8. This allows the
+microbits to be forced to a required pattern or their
+current pattern to be monitored. For ease of presenta-
+tion it has been assumed that a single 24 bit word is pro-
+duced by the microbit matrix. In practice many more
+micro-bits are produced for each slot and typically a
+number of addresses will be used to ailow access to up
+to say 10 blocks of 20 bits each of the micro-bit pat-
+tern.
+
+Address 4040
+
+This address can only be read from and gives the
+value of the current setting of the instruction register
+INSTREG by activating gates GR6.
+
+It was mentioned above that associated with the diag-
+nostic software is a so-called Interface Buffer.
+
+The contents of the Interface Buffer are as shown be-
+low:
+
+WORD (OCTAL) USE
+
+00 Spare
+
+Ol HO
+
+02 MO
+
+Q3 Mi
+
+04 SCR
+
+Os OUT
+
+06 MISC. REG (Copy Read from
+
+Interface)
+O7 FUN
+10 REG
+
+12
+13 SPARE
+3,879,712
+
+9
+
+-Continued
+WORD (OCTAL) USE
+
+iS LAST SLOT - UPAL
+
+16 CURRENT SLOT - UPAC
+7 NEXT SLOT - UPAN, UPA
+20
+Ten words for ubits
+UPB
+31
+32 Misc. Reg. Buffer (referred to
+as MRB)
+3 CLOCK Buffer (referred to as CB)
+35 |
+36 SPARE
+37
+
+The Diagnostic Tests can only cause words 01 and 17
+to 33 to be set up but can use the information in words
+00 to 31. When transferring information to the diagnos-
+tic interface words 01 and 17 to 32 can be transferred,
+however, when transferring information from the diag-
+nostic Test interface to the Interface Buffer words 00
+to 31 can be set-up. The transfers to and from the diag-
+nostic interface are controlled by the CLOCK and IF
+statements of a Diagnostic Language.
+
+The Miscellaneous Register Buffer contains informa-
+tion which is to be written to the miscellaneous register
+MREG in the diagnostic interface. The significance of
+the bits within the word and their effects on the miscel-
+laneous logic ML have already been described.
+
+The Clock Buffer is used by the CLOCK and IF state-
+ments to control the transfers to and from the diagnos-
+tic interface slot register SR as well as being used in
+conjunction with the Miscellaneous Register Buffer to
+control the forcing of information on to HO and en-
+abling the CPU Clock. The use of the Clock Buffer and
+Miscellaneous Register Buffer is described more fully
+in the description of the language.
+
+The Diagnostic Language
+
+The Diagnostic Tests may be specified by a series of
+statements making up a Diagnostic Language. Typical
+suitable statements are described below.
+
+The MODE Statement
+
+Before commencing any tests the faulty processor
+and diagnostic interface must be set into the required
+mode. The possible modes are:
+
+a. OWN MODE - This mode is used when debugging
+the data area DA of the processor, Under these circum-
+stances the Diagnostic Programmer/Engineer is effec-
+tively providing his own micro-programs. While in this
+mode the microporgram decoding is inhibited. The
+statement will cause bits 1 and 7 of MRB to be set as
+well as bits 0 and 6 of CB, the remaining bits being re-
+set.
+
+b. SS MODE - Single Slot Mode. This mode is used
+when it is required to single slot the processor through
+a particular micro-program etc, The statement will
+cause bit 1 of MRB to be set as well as bits 0 and 6 of
+CB, the remaining bits being reset.
+
+c. SI MODE - Single Instruction Mode. This mode is
+used when it is required that the processor performs a
+single instruction at full speed. The statement will
+cause bit 2 of MRB to be set as well as bit 0 of CB, the
+remaining bits being reset.
+
+d. RUN MODE - This mode allows the processor to
+perform a program and is usually used in conjunction
+
+15
+
+20
+
+25
+
+30
+
+35
+
+40
+
 45
+
+50
+
+55
+
+60
+
+65
+
+10
+with the STOP AT SCR statement. The statement
+causes bit 0 of CB to be set, the remaining bits of CB,
+as well as MRB being reset.
+
+e. MONITOR MODE - This mode is identical to the
+Own Mode except that upon entry to this mode the
+contents of words 17 to 33 of the Interface Buffer are
+dumped for later use by the Revert Statement. Words
+17 to 33 are then cleared and bits I and 7 or MRB and
+bits 0 and 6 of CB set. This mode will usually be used
+when in SS or SI mode and it is required to either exam-
+ine or change the contents of a register which is not di-
+rectly accessible via the Test Interface.
+
+f. REVERT - This statement is used to terminate the
+Monitor Mode and revert back to the original mode the
+test was being performed in. It causes words 17 to 33
+to be reloaded with the contents dumped by the Moni-
+tor Mode. Additionally bit 23 of CB is set.
+
+Forcing Highway HO
+
+The main highway of the machine can be forced to
+any required value by the statement:
+
+HO = VALUE
+
+VALUE can take any of the following forms:
+
+i. A signed decimal integer
+
+it. An octal integer
+
+iii. A label, e.g. FRED whereupon the contents of the
+location referred to by FRED are forced on to HO.
+
+iv. A label enclosed in suitable brackets, e.g. (FRED)
+whereupon the absolute address of the location re-
+ferred to by FRED is forced on to HO.
+
+Forcing Microbits
+
+To force any required microbits all that is required ts
+to state the relevant microbits to be set or reset.
+
+The effect of this is to cause the relevant bit in the ten
+words of the Interface Buffer (addresses 20 to 31) to
+be set or reset as required. Additionally bit 23 of the
+CLOCK BUFFER will also be set.
+
+Forcing the Micro-program Address
+
+The micro-program can be forced to any required
+value by the statement:
 
 UPA = VALUE
 
 The effect of this statement is to place the VALUE
 in word 17 of the Interface Buffer and set bit 23 of CB.
-50
-
-55
 
 The CLOCK Statement
 
-Having set up the conditions for a test the test is actually performed in the faulty processor by the statement
-
+Having set up the conditions for a test the test is actu-
+ally performed in the faulty processor by the statement
 CLOCK, which basically enables the CPU CLOCK,
-However, the CLOCK statement is one of the statements which control the transfer of information between the Interface Buffer and the Test Interface itself.
+However, the CLOCK statement is one of the state-
+ments which control the transfer of information be-
+tween the Interface Buffer and the Test Interface itself.
 The complete list of actions to be carried out by the
 CLOCK statement are as follows:
 
-cause bit 1 of MRB to be set as well as bits 0 and 6 of 60
-CB, the remaining bits being reset.
-
 i. If bit 6 of the CLOCK Buffer is found to be set HO
-
 is transferred to the diagnostic interface.
 
 ii. If bit 23 of the CLOCK Buffer is set then words 17
-to 31 of the Interface Buffer are transferred to the diagnostic interface. These words of the Interface Buffer
-
-c. SI MODE- Single Instruction Mode. This mode is
-
-used when it is required that the processor performs a
-
-perform a program and is usually used in conjunction
-
-CLOCK BUFFER will also be set.
-
-value by the statement:
-
-b. SS MODE - Single Slot Mode. This mode is used
-when it is required to single slot the processor through
-a particular micro-program etc, The statement will
-
-d. RUN MODE- This mode allows the processor to
-
-To force any required microbits all that is required ts
-to state the relevant microbits to be set or reset.
-The effect of this is to cause the relevant bit in the ten
-words of the Interface Buffer (addresses 20 to 31) to
-
-Forcing the Micro-program Address
-
-set.
-
-remaining bits being reset.
-
-iii. A label, e.g. FRED whereupon the contents of the
-location referred to by FRED are forced on to HO.
-iv. A label enclosed in suitable brackets, e.g. (FRED)
-whereupon the absolute address of the location re-
-
-be set or reset as required. Additionally bit 23 of the
-
-40
-
-mode. The possible modes are:
-
-single instruction at full speed. The statement will
-cause bit 2 of MRB to be set as well as bit 0 of CB, the
-
-i. A signed decimal integer
-it. An octal integer
-
-Forcing Microbits
-
-and diagnostic interface must be set into the required
-
-a. OWN MODE- This mode is used when debugging
-the data area DA of the processor, Under these circumstances the Diagnostic Programmer/Engineer is effectively providing his own micro-programs. While in this
-mode the microporgram decoding is inhibited. The
-statement will cause bits 1 and 7 of MRB to be set as
-well as bits 0 and 6 of CB, the remaining bits being re-
-
-VALUE can take any of the following forms:
-
-ferred to by FRED is forced on to HO.
-
-suitable statements are described below.
-The MODE Statement
-
-The main highway of the machine can be forced to
-
-any required value by the statement:
-
-in the description of the language.
-
-The Diagnostic Language
-
-rectly accessible via the Test Interface.
-f. REVERT - This statement is used to terminate the
-Monitor Mode and revert back to the original mode the
-test was being performed in. It causes words 17 to 33
-to be reloaded with the contents dumped by the Moni-
-
-65
-
+to 31 of the Interface Buffer are transferred to the diag-
+nostic interface. These words of the Interface Buffer
 are then set to zero.
 
 iii. Bit 23 of the CLOCK Buffer ts then reset.
 
 iv. MBB is then ORed with the Clock Buffer and the
 result written to the Miscellaneous Register MREG in
-
 3,879,712
 
-12
-
 11
+
 the diagnostic interface. This action enables the CPU
-
-a. STOP AT UPA = nnn
-
 clock.
 
 v. The miscellaneous register MREG contents are
-
-This statement can only be used in the SI and RUN
-
 then repeatedly read from the diagnostic interface until
 bit 21 is found to be set. This indicates that the proces-
-
-MODES. When the clock of the processor is subsequently enabled it caused the processor to run until slot
+sor has stopped.
 
 vi. When the processor has stopped the SCAN rou-
-
-“nnn” is encountered. This is detected using the slot
-register SR set to nun and the slot comparator SC mon-
-
 tines are entered to set up the interface buffer by read-
-
-itoring, over gates GY, the current slot address in UPA
-
 ing from the relevant addresses of the diagnostic inter-
-
-as the faulty processor runs.
-
 face.
-
-This statement causes nnn to be written to address
-0420 of the Test Interface and bit 18 of MRB to be set.
-
-sor has stopped.
 
 The IF Statement
 
-b. STOP AFTER X SLOTS
-
-The IF statement is used to check the result of
-a Test.
-
-This statement can only be used in the SI and RUN
-MODES. When the clock of the processor is subsequently enabled it causes the processor to run for x
-
+The IF statement is used to check the result of a Test.
 The general form of the IF statement is as follows.
-IF
 
-(Expression)
-
-THEN
-
-(Statement)
-
-ELSE
-
-(State-
-
+IF (Expression) THEN (Statement) ELSE (State-
 ment)
 
 ELSE is optional
 
-slots.
-
 (Statement) can be either, one of the other state-
-
-This statement causes a pattern with bit x1 set to be
-
 ments described above or a series of these statements.
 
-written to address 0420 of the diagnostic interface and
-
-20 bit 16 of MRB to be set. This allows the miscellaneous
 (Expression) can take the forms described below.
-logic ML to control the number of slots performed in
 To check any of the words 01 to 17 of the Interface
-
-accordance with the SR value.
-
 Buffer
 (Expression) takes the form
 
-c. STOP AT SCR = VALUE
-
 (Register or Highway name) = VALUE
+
 To check individual bits or groups of bits of words 01
-
-to
-
-17 of the Interface
-
-25
-
-When the clock of the processor is subsequently en-
-
-Buffer (Expression) takes the
-
-abled it causes the processor to run until the SCR value
-
+to 17 of the Interface Buffer (Expression) takes the
 form
-(Register
 
-This statement can only be used in the RUN MODE.
-
-or
-
-Highway
-
-name).
-
-(Bit
-
+(Register or Highway name). (Bit Position)
 VALUE or (Register or Highway name). (Bit Position
 = VALUE (Bit Position)
-(Bit Position) takes the form of
 
-equals the required value.
-
-Position)
-
-The statement causes VALUE to be written to ad30
-
-dress
-
-0410
-
-of the Test
-
-Interface
-
-(i.e.
-
-into
-
-register
-
-REG2) and bits 3, 4 and 5 of MRB to be set. This
-
-a NAME which is as-
-
+(Bit Position) takes the form of a NAME which is as-
 Signed a value.
-
-causes gates GX to be activated and the instruction ad-
 
 To check individual microbits (Expression) takes the
 form
 
-dress comparator IAC will continuously compare the
-current SCR value with the value in REG2. Coinci-
-
 (Microbit Name) ON
-
-35
-
-dence causes the miscellaneous logic ML to inhibit the
 
 or (Microbit Name } OFF
 
-processor clock CLK.
-
 To check that all the microbits are in a certain state
-
-The above description has been of one embodiment
-of the invention only and is not intended to be limited
-
 (Expression) takes the form
+
 UPB = (List of Microbits which are set)
 
-It is possible to check the last value of the microprogram address, the current value and the next value, i.e.
-
-40
-
-thereto. Alternative features will readily be seen by
-those skilled in the art. For example only one connection to each diagnostic interface is shown in FIG. 1 and
-
+It is possible to check the last value of the micropro-
+gram address, the current value and the next value, i.e.
 the one that has been decoded from the current value
-
-it will readily be appreciated that each diagnostic inter-
-
 but not yet clocked into UPA. For these (Expression)
-
-face could be served by either or both peripheral bus-
-
 takes the form
+
 UPAL = VALUE
-
-45
-
-ses. In the case of both, priority demand resolution cir-
-
-cuitry would be accommodated in each diagnostic in-
 
 UPAC = VALUE
 
-terface. Similarly it has been stated that in the on-line
-
 UPAN = VALUE respectively
 
-non-faulty state of the system the diagnostic interface
-
-equipment is removed, however, it is possible for this
 The UPR Statement
-equipment to remain in situ and for the peripheral bus
-50
-to be broken between the last peripheral! and the first
+
 The microbits and the micro-program address can be
-diagnostic interface. Similarly the diagnostic interfaces
 reset by the statement UPR. This causes a copy of MRB
-may be driven directly from a specific processor bus or
 to be obtained, bit 22 set and the result written to the
-busses rather than by way of a multiplexor. Additionmiscellaneous register MREG in the diagnostic interally a typical diagnostic language has been disclosed
+miscellaneous register MREG in the diagnostic inter-
 face. Words 17 to 31 of the Interface Buffer are then
-$5
-however it should be realised that differing processor
 set to zero.
-modules will require differing diagnostic interfaces and
+
 The PRINT Statement
-consequently differing language statements.
 
 This statement will cause a message to be printed on
 a teletype
@@ -1827,96 +1162,157 @@ PRINT (Message)
 
 The STOP Statement
 
-What we claim is:
-60
-
-1. A digital data processing system comprising in
-combination:
-a plurality of processor modules;
-a plurality of data communication paths, one for each
-
 While writing the Diagnostic Tests it may be neces-
-
-processor module allocated on a mutually exclu-
-
 sary to allow the faulty processor to run at normal
-
-sive basis and arranged to carry processor module
-
-speed through a series of slots, or in fact through a series of instructions. These facilities will be implemented
+speed through a series of slots, or in fact through a se-
+ries of instructions. These facilities will be implemented
 by the STOP statement which may be qualified by
 
-a plurality of multi-port access units each including
-
-generated address information;
-
-a data communication path selection and termina-
-
-3,879,712
-
-14
-
-13
-tion means and an identity address recognition
-means conditioned with a unique identity code and
-responsive to said unique identity code within said
-
-combination:
-
-a plurality of processor modules;
-a plurality of data communication paths one for each
-processor module allocated on a mutually exclusive basis and arranged to carry processor module
-generated address information,
-
-address information when applied to any one of
-
-said data communication paths;
-
-a plurality of addressable memory modules each having a unique identity and incorporating one of said
-access unit;
-
-a group of addressable peripheral equipments cach
-having a unique identity and incorporating one of
-
-10
-
-said access units and
-
-a plurality of diagnostic interface units one for each
-processor module and each having a unique identity and incorporating one of said access units and
-including an address decoder and a plurality of address-decoder selectable monitor, control and data
-injection points internal to the processing equipment of the said processor module and said address
-decoder is responsive to part of said address information accompanying the unique identity code
-particular to a diagnostic interface, a processor
-module having a fault being diagnosed by another
-processor module of said digital data processing
-
-15
-
 20
-
-ual one of said first access units.
-a plurality of addressable multiplexor equipments
-each having a unique identity and incorporating
-one of said first access units and said multiplexor
-equipment is arranged to give access to a data
 
 25
 
 30
 
-a group of peripheral equipments each having a
-unique identity and incorporating one of said sec-
+35
 
-said data transfer paths,
+40
 
-ond access units;
+45
 
-3. A digital data processing system. according to
+50
+
+$5
+
+60
+
+12
+
+a. STOP AT UPA = nnn
+
+This statement can only be used in the SI and RUN
+MODES. When the clock of the processor is subse-
+quently enabled it caused the processor to run until slot
+“nnn” is encountered. This is detected using the slot
+register SR set to nun and the slot comparator SC mon-
+itoring, over gates GY, the current slot address in UPA
+as the faulty processor runs.
+
+This statement causes nnn to be written to address
+0420 of the Test Interface and bit 18 of MRB to be set.
+
+b. STOP AFTER X SLOTS
+
+This statement can only be used in the SI and RUN
+MODES. When the clock of the processor is subse-
+quently enabled it causes the processor to run for x
+slots.
+
+This statement causes a pattern with bit x1 set to be
+written to address 0420 of the diagnostic interface and
+bit 16 of MRB to be set. This allows the miscellaneous
+logic ML to control the number of slots performed in
+accordance with the SR value.
+
+c. STOP AT SCR = VALUE
+
+This statement can only be used in the RUN MODE.
+When the clock of the processor is subsequently en-
+abled it causes the processor to run until the SCR value
+equals the required value.
+
+The statement causes VALUE to be written to ad-
+dress 0410 of the Test Interface (i.e. into register
+REG2) and bits 3, 4 and 5 of MRB to be set. This
+causes gates GX to be activated and the instruction ad-
+dress comparator IAC will continuously compare the
+current SCR value with the value in REG2. Coinci-
+dence causes the miscellaneous logic ML to inhibit the
+processor clock CLK.
+
+The above description has been of one embodiment
+of the invention only and is not intended to be limited
+thereto. Alternative features will readily be seen by
+those skilled in the art. For example only one connec-
+tion to each diagnostic interface is shown in FIG. 1 and
+it will readily be appreciated that each diagnostic inter-
+face could be served by either or both peripheral bus-
+ses. In the case of both, priority demand resolution cir-
+cuitry would be accommodated in each diagnostic in-
+terface. Similarly it has been stated that in the on-line
+non-faulty state of the system the diagnostic interface
+equipment is removed, however, it is possible for this
+equipment to remain in situ and for the peripheral bus
+to be broken between the last peripheral! and the first
+diagnostic interface. Similarly the diagnostic interfaces
+may be driven directly from a specific processor bus or
+busses rather than by way of a multiplexor. Addition-
+ally a typical diagnostic language has been disclosed
+however it should be realised that differing processor
+modules will require differing diagnostic interfaces and
+consequently differing language statements.
+
+What we claim is:
+
+1. A digital data processing system comprising in
+combination:
+
+a plurality of processor modules;
+
+a plurality of data communication paths, one for each
+processor module allocated on a mutually exclu-
+sive basis and arranged to carry processor module
+generated address information;
+
+a plurality of multi-port access units each including
+a data communication path selection and termina-
+3,879,712
+
+13
+
+tion means and an identity address recognition
+means conditioned with a unique identity code and
+responsive to said unique identity code within said
+address information when applied to any one of
+said data communication paths;
+
+a plurality of addressable memory modules each hav-
+ing a unique identity and incorporating one of said
+access unit;
+
+a group of addressable peripheral equipments cach
+having a unique identity and incorporating one of
+said access units and
 
 a plurality of diagnostic interface units one for each
-processor module and each having a unique iden35
+processor module and each having a unique iden-
+tity and incorporating one of said access units and
+including an address decoder and a plurality of ad-
+dress-decoder selectable monitor, control and data
+injection points internal to the processing equip-
+ment of the said processor module and said address
+decoder is responsive to part of said address infor-
+mation accompanying the unique identity code
+particular to a diagnostic interface, a processor
+module having a fault being diagnosed by another
+processor module of said digital data processing
+system.
 
+2. A digital-data processing system according to
+claim 1 wherein each said diagnostic interface unit in-
+cludes a plurality of address-decoder selectable regis-
+ters into which processor module generated control
+and data injecting information is written by applying to
+a data communication path said information accompa-
+nied by diagnostic interface and register identity ad-
+dress information.
+
+3. A digital data processing system. according to
+claim 2 wherein each said diagnostic interface unit in-
+cludes a plurality of address-decoder selectable moni-
+tor points from which monitor information is read by
+an interrogating processor module by applying to a
+data communication path diagnostic interface and reg-
 ister identity address information.
 
 4. A digital data processing system according to
@@ -1924,42 +1320,25 @@ claim 3 wherein said processor equipment includes a
 clock control device and said diagnostic interface unit
 includes a clock control logic device and one of said
 control registers controls the functioning of said clock
+control logic.
 
-ing a unique identity and incorporating an individ-
+5. A digital data processing system comprising in
 
-transfer path;
+10
 
-dress information.
+15
 
-claim 2 wherein each said diagnostic interface unit includes a plurality of address-decoder selectable monitor points from which monitor information is read by
-an interrogating processor module by applying to a
-data communication path diagnostic interface and reg-
+20
 
-a plurality of addressable memory modules each hav-
+25
 
-A plurality of second multi-port access units each including a data transfer path selection and terminating means and an identity address recognition
-means conditioned with a unique identity code and
-responsive to said unique identity code within said
-address information when applied to any one of
+30
 
-system.
-
-2. A digital-data processing system according to
-claim 1 wherein each said diagnostic interface unit includes a plurality of address-decoder selectable registers into which processor module generated control
-and data injecting information is written by applying to
-a data communication path said information accompanied by diagnostic interface and register identity ad-
-
-a plurality of first multi-port access units each including a data communication path selection and terminating means and an identity address recognition
-means conditioned with a unique identity code and
-responsive to said unique identity code within said
-address information when applied to any one of
-said data communication paths,
+35
 
 40
 
 45
-control logic.
-5. A digital data processing system comprising in
 
 50
 
@@ -1969,23 +1348,59 @@ control logic.
 
 65
 
-tity and incorporating one of said second access
+14
 
-units and including an address decoder and a plurality of address-decoder selectable monitor, control and data injection points internal to the processing equipment of the said processor module
+combination:
+
+a plurality of processor modules;
+
+a plurality of data communication paths one for each
+processor module allocated on a mutually exclu-
+sive basis and arranged to carry processor module
+generated address information,
+
+a plurality of first multi-port access units each includ-
+ing a data communication path selection and termi-
+nating means and an identity address recognition
+means conditioned with a unique identity code and
+responsive to said unique identity code within said
+address information when applied to any one of
+said data communication paths,
+
+a plurality of addressable memory modules each hav-
+ing a unique identity and incorporating an individ-
+ual one of said first access units.
+
+a plurality of addressable multiplexor equipments
+each having a unique identity and incorporating
+one of said first access units and said multiplexor
+equipment is arranged to give access to a data
+transfer path;
+
+A plurality of second multi-port access units each in-
+cluding a data transfer path selection and terminat-
+ing means and an identity address recognition
+means conditioned with a unique identity code and
+responsive to said unique identity code within said
+address information when applied to any one of
+said data transfer paths,
+
+a group of peripheral equipments each having a
+unique identity and incorporating one of said sec-
+ond access units;
+
+a plurality of diagnostic interface units one for each
+processor module and each having a unique iden-
+tity and incorporating one of said second access
+units and including an address decoder and a plu-
+rality of address-decoder selectable monitor, con-
+trol and data injection points internal to the pro-
+cessing equipment of the said processor module
 and said address decoder is responsive to part of
 said address information accompanying the unique
 identity code particular to a diagnostic interface, a
 processor module having a fault being diagnosed
 by another processor module of said digital data
+
 processing system.
-*
-
-Ed
-
-*
-
-ca
-
-1
-
-
+* Ed * ca 1
