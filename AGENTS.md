@@ -45,6 +45,20 @@ Before discarding apparently conflicting sources, consider machine version, oper
 
 Do not create an open question merely because representations differ between generations, operating systems or capability forms. Cross-generation bit mapping, chronology or exact encoding is not an architectural requirement unless the missing detail prevents reconstruction of observed behaviour. If a genuinely new blocker is found, state the missing behaviour/mechanism precisely and update the canonical open-question index as part of the authorised research update.
 
+## Analytical protocol: prevent regression of established conclusions
+
+For substantive PP250 investigations, establish the **current repository position before reasoning from memory or isolated excerpts**. Read the relevant canonical `architecture/` subject documents, `research/pp250-open-questions.md`, applicable primary-source transcriptions and later topic research; consult `AGENTS.md` and `README.md` for project scope. Older research notes preserve their historical reasoning, not necessarily today's conclusion.
+
+- **Integrate before analysing:** identify what is already documented, necessarily inferred or established as working reconstruction; distinguish those from the precise missing operation. A missing original software listing or instruction-by-instruction historical sequence does not by itself make the architectural mechanism unknown.
+- **Internal evidence ledger:** for each material subquestion track the current conclusion, supporting source(s), evidential status, and exactly what remains to be proved. This may remain working analysis rather than a new repository file.
+- **Contradiction check:** before reopening, contradicting or downgrading an existing architectural conclusion, inspect its current canonical statement and later evidence; name the new source, inconsistency or failed deduction that warrants reconsideration. Do not infer present uncertainty solely from older notes.
+- **Generational discipline:** distinguish original PP250, mature COS/POS/ROS-era System 250 and later Andrews/Wheatley enhancements. Do not backdate later facilities without independent evidence.
+- **Sufficiency versus historical fidelity:** separately test whether documented mechanisms plus explicitly labelled reconstruction assumptions can build a minimal self-sustaining protected machine, and whether that sequence is evidenced as the one Plessey actually used. Do not conflate proof of architectural sufficiency with recovery of the original OS implementation.
+- **Challenge response:** when the owner disputes a conclusion, check the relevant repository evidence and reconcile it before proposing alternative theories. Say plainly when the source has not been checked or a proposition remains unknown. Never fill a gap with an unlabelled plausible mechanism.
+- **Report deltas, not rediscoveries:** when reviewing new patents or sources, state what they add to, confirm, contradict or leave unresolved in the *existing* reconstruction. Do not present established knowledge as a new finding merely because it appears in the newly read source.
+
+These checks are an analysis procedure, not permission to modify files or create questions outside the authorised task. Apply the existing evidence taxonomy and current-open-question gate.
+
 ## Initial reconstruction configuration
 
 The immediate reconstruction target is a minimal System 250 configuration: **one processor, one store, and peripherals**. Do not make reconstruction of the complete redundant multi-processor/multi-store system a prerequisite for initial architectural understanding or the emulator workbench.
