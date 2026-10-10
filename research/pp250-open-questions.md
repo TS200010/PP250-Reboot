@@ -31,15 +31,15 @@ The hardware/preset C(S) root accounts for primordial authority, but the exact i
 
 ### Provenance of the capability installed in C(C)
 
-**Open question:** how is the legitimate capability that is ultimately installed in C(C) made available to the transition process?
+**Open question (narrowed, 10 October 2026):** how does C(S)-rooted startup authority construct and supply a legitimate *first SCT-root capability* to the transition process, before ordinary Inform loading through the runtime SCT is possible?
 
 The present reconstruction distinguishes two cases. At genuine cold start there is no existing runtime SCT, so an empty SCT block must first be created or prepared and a legitimate capability to it supplied for installation in C(C). On processor restart/rejoin, the runtime SCT already exists in a memory module being used by the running system, so the returning processor instead needs a capability identifying that existing SCT. The transition mechanism may be the same in both cases; what remains unresolved is the provenance and delivery of the appropriate source capability.
 
 ### Bootstrap from the initial empty SCT
 
-**Open question:** after cold start has installed an initially empty SCT in C(C), how are the first SCT entries and the capability structures needed to make normal store management, process management and the rest of the runtime system available established?
+**Open question (narrowed, 10 October 2026):** can the proposed private mixed-access data-write → capability-load construction method, under C(S)-rooted bootstrap authority, establish the initial SCT entries, code capabilities and service environments after C(C) is installed, and what exact validation governs that transition?
 
-Creating an empty SCT and installing its capability in C(C) establishes the normal capability-table root but does not by itself populate the runtime capability universe. The mechanism by which that initially empty table is bootstrapped into a usable normal-system environment remains to be reconstructed.
+Creating an empty SCT and installing its capability in C(C) establishes the normal capability-table root but does not by itself populate the runtime capability universe. The service-level COS `GIV`/`ALO`/`RSP` distinction supports a candidate common construction principle, but does not prove its cold-start use. Verify whether `LC` accepts data-written representations, how the initial pre-SCT descriptor is accepted, how special-register installation works through the established One-Shot Second Group LC path, and the exact limits of C(S)-derived construction authority. COS `LOI` concerns running COS rather than virgin physical loading.
 
 ### Multiprocessor cold-start coordination
 
