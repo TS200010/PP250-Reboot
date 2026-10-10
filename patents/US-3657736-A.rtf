@@ -11,7 +11,7 @@
 \pard\pardeftab720\partightenfactor0
 
 \f0\fs30 \cf2 \cb3 \expnd0\expndtw0\kerning0
-\outl0\strokewidth0 \strokec2 Description\cb1 \
+Description\cb1 \
 \pard\pardeftab720\partightenfactor0
 
 \fs26 \cf2 \cb3 United States Patent Boom et al.\cb1 \
@@ -33,8 +33,7 @@
 \cb3 13 Sheets-\ul Sheet\ulnone  10 READ TPW TO SDA 9/1 T0 MR T [RECOVER \ul SCN\ulnone  9/4 60 T0 HSK (SERVICE INT) I SEND DEST ADD WHSR 9/8 9/16 [9/15 ,9/10 9/9 TRANS FAULT DEST NON-EX DEST BUSY 55T FREE SET TF m0 SET NE IND DEC MR 5END DE5|G WHSA so To HSK SET BUSY FOR NEXT \ul INST coum m0\ulnone  9/13 1 T SET TERM SET TERM 9M WHSA 9/12 DEC SCR 1 -7 6 soTo HSK SERVICE FAULT IN \ul DICATORS\ulnone  13 Sheets-\ul Sheet\ulnone  11 READ S/W CW T 505; TWC T0 MR II SET \ul STACK EMPTY\ulnone  10/5 10/7 READ 0cw TOSD READ \ul CL\ulnone  10 50A CL 10 AAR;sP T0 REWRITE NR \ul CP\ulnone  10 EPA,\cb1 \
 \pard\pardeftab720\partightenfactor0
 \cf2 \cb3 \ul \ulc2 REWRITE\ulnone  10/8 WHSR 9mg DATA CHAR 1011/5 WHSA; RESETII ROUTINE SEND DATA HAR READ SCW;DEC sc WHSA TO SDBQO;WRITE mc cPzDEc 1wc ADJUSTED scwro wc=o STORE; DEC 5P. /12 \ul n\ulnone  10/11 mc cuREAD \ul CL\ulnone  7 m0 SDAQO 10 SDA;REWR|TE \ul ss\ulnone  10 /01 10 15 \ul CLEAR CPA\ulnone  10 18 \ul CL\ulnone  10 me CLTOSDA 10 21 W!L... 10p DA02| 10/20 RECOVER SCR READ; 10/22 WRITE ADJUSTED FIG. 7. ocw T0 510125 1 GO TO \ul HSK\ulnone  1 METHOD OF ASSEMBLING SUBROU'I'INES The present invention relates to multi-data processing complexes and is more particularly concerned with such complexes operated on-line and in real-time for the control and supervisory of processes, intercommunication switching systems or the like.\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 Typical of the inventions application, but by no means limiting thereto, is in the fabrication of a stored programme controlled telephone switching system in which the overall functioning of the control of the switching exchange network is performed under stored program control. Ideally the entire program of logical functions of the telephone exchange control is written as a single exchange algorithm and is performed by a single data processing device. The data processing device obeys, in sequence, the logical steps necessary to process a telephone call handling a plurality of calls in parallel" with branching occurring under normal program jump methods and the external condition changes being serviced by standard priority interrupt methods. However, such an arrangement requires either a very powerful and fast data processing device, duplicated for security purposes, or a plurality of powerful data processing devices provided on a trafiic basis. Both of the above-mentioned systems tend to be costly and somewhat inflexible as far as expansion of the system to be controlled is concerned.\cb1 \
+\cb3 Typical of the inventions application, but by no means limiting thereto, is in the fabrication of a stored programme controlled telephone switching system in which the overall functioning of the control of the switching exchange network is performed under stored program control. Ideally the entire program of logical functions of the telephone exchange control is written as a single exchange algorithm and is performed by a single data processing device. The data processing device obeys, in sequence, the logical steps necessary to process a telephone call handling a plurality of calls in parallel" with branching occurring under normal program jump methods and the external condition changes being serviced by standard priority interrupt methods. However, such an arrangement requires either a very powerful and fast data processing device, duplicated for security purposes, or a plurality of powerful data processing devices provided on a trafiic basis. Both of the above-mentioned systems tend to be costly and somewhat inflexible as far as expansion of the system to be controlled is concerned.\cb1 \
 \cb3 It is, therefore, proposed to provide a system for use in stored program controlled systems which consists of a plurality of similar and relatively simple data processing devices each having responsibility for only part of the entire control system or exchange algorithm. This type of system philosophy is best implemented by breaking down the exchange algorithm into a plurality of routines and it is one of the objects of the present invention to provide arrangements allowing each routine to be internally self-contained asynchronously working upon inputted data producing processed output data without reference to other routines or external processes in the perfonnance of its task. Externally produced infonnation or the production of processed data packets being typical of the stimulus points" for such routines. The self-contained routines are distributed over the plurality of data processing devices in as even a manner as possible, each device having the responsibility for a number of routines. The routines in any one data processing device may be related, however, this may not be rigidly adhered to, dependent upon the size and repetition periods of particular routines. The data processing devices are interconnected by way of data transmission or highway systems which may conveniently be of the type disclosed in our British US. Pat. No. l, l 68,476.\cb1 \
 \cb3 According to the present invention there is provided a data processing arrangement employing a procedure which is divided into a plurality of functions each function being performed under the control of a corresponding program routine stored in a unique storage area and consisting of a sequence of program instructions arranged to appropriately control the data processing arrangement, characterized in that each said routine storage area has associated with it an input data storage area for accommodating a single input data packet and an output data storage area for accommodating a single processed data packet and said data processing arrangement is conditioned when performing in accordance with a program routine to process an input packet present in said data input area and to produce a relevant processed data packet in said output data storage area, the data processing arrangement being further characterized in that it incorporates a plurality of further storage areas each having storage capabilities for a plurality of data packets and a said input data packet is transferred under the control of a first transfer control means from a defined further data storage area to said input data storage area preparatory to commencement of a routine and said processed data packet is promptly transferred under control of a second transfer control means from said output data storage area to a defined other further storage area after the completion of the routine.\cb1 \
 \cb3 The input data storage areas, said output data storage areas and said further data storage areas may each be formed of a separate plurality of data word storage locations in the main store of a data processing device and each said input data storage area may correspond in size to the data packet relevant to said routine while said output data storage area may correspond in size to said processed data packet produced by said routine. Each said further data storage area may have associated with said data word storage locations, transfer control word locations used to store transfer control information relevant to the data packets stored in said further data storage area.\cb1 \
@@ -109,54 +108,1692 @@
 \cb3 CONTROL SlGNALS Operation performed RSAr-BAR Address stack control word READ; SDB r-STORE l/P Read stack control word to SDB CBRr-SDBQO Transfer SC to CBR REWRITE; STOREFSDB Rewrite stack control to store \ul Step\ulnone  7/2. The following table shows the control signals generated to cause the stack condition code (SC) to be compared with the stack size code (SS) in the arithmetic unit AU (FIG. 1c).\cb1 \
 \cb3 CONTROL SIGNALS Operations performed A U r-CBR Transfer SC and SS to AU .SDBQI Arithmetic unit. COMPARE Compare magnitude of data words in Arithmetic unit.\cb1 \
 \cb3 The arithmetic unit will produce one of a pair of condition signals, within the group of condition signals shown as one lead AUCS in FIG. lb, indicating (i) that the stack condition (SC) and the stack size (SS) codes are equal or (ii) that they are not equal. If SC=SS the stack is full and the load stack instruction is terminated and the data processing devices housekeeping phase is entered as a fault on the routine extracting data packets from the stack.\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 \ul \ulc2 lf SC\ulnone  7 SS the load stack instruction micro-program can proceed to step 7/3.\cb1 \
+\cb3 \ul lf SC\ulnone  7 SS the load stack instruction micro-program can proceed to step 7/3.\cb1 \
 \cb3 \ul Step\ulnone  7/3. The following table shows the control signals generated to cause the sequence control number of the next instruction to be preserved in the link register UK, the stacks incoming control word (ICW) address to be read from the store CS to register SDA, the total well count TWC to be transferred to register NR, the current location code (CL) of the stack incoming control word to be transferred to register BAR and the character position code (CF) to register CPB.\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 CONTROL SIGNA LS Operations performed L IR SCR SCR transferred to LIR HIC:=BAR; l Decrement SCW to form stack RSA:=HIC ICW address in S/CR and SC R.=I-IIC address store with ICW. READ; SUM-Store Read stack ICW from store to SDA NR r-SDBQZ Transfer TWC to NR BARr=SDAO0 Transfer CL to BAR MIL-SDAQI Transfer S! to MR CPB:-SDAQ2 Transfer CF to \ul CPB Step\ulnone  7/4. In this step the stack incoming control word character position code C? in register CPB is tested for zero. This operation will be performed by the control unit CUobserving" the control signal lead CPB=0. lf CPHO it indicates that part of the last accessed stack word for an input operation has been used to store the latter characters of the data packet previously transferred to the stack. It is necessary under such circumstances for these previously used quadrants of the current location word to be preserved and this is performed in step 715. If CP=0 it indicates that the current location defines the next completely empty location in the stack.\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 \ul \ulc2 Step\ulnone  7/5. The control signals generated in this step will be as follows:\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 CONTROL SIGNALS Operations performed RSA:-BAR Address store at CL READ; \ul SDBFSTORE\ulnone  0/! Read CL word into SDB REWRITE WRITE CL word back to store.\cb1 \
+\cb3 CONTROL SIGNA LS Operations performed L IR SCR SCR transferred to LIR HIC:=BAR; l Decrement SCW to form stack RSA:=HIC ICW address in S/CR and SC R.=I-IIC address store with ICW. READ; SUM-Store Read stack ICW from store to SDA NR r-SDBQZ Transfer TWC to NR BARr=SDAO0 Transfer CL to BAR MIL-SDAQI Transfer S! to MR CPB:-SDAQ2 Transfer CF to \ul CPB Step\ulnone  7/4. In this step the stack incoming control word character position code C? in register CPB is tested for zero. This operation will be performed by the control unit CUobserving" the control signal lead CPB=0. lf CPHO it indicates that part of the last accessed stack word for an input operation has been used to store the latter characters of the data packet previously transferred to the stack. It is necessary under such circumstances for these previously used quadrants of the current location word to be preserved and this is performed in step 715. If CP=0 it indicates that the current location defines the next completely empty location in the stack.\cb1 \
+\cb3 \ul Step\ulnone  7/5. The control signals generated in this step will be as follows:\cb1 \
+\cb3 CONTROL SIGNALS Operations performed RSA:-BAR Address store at CL READ; \ul SDBFSTORE\ulnone  0/! Read CL word into SDB REWRITE WRITE CL word back to store.\cb1 \
 \cb3 Step7/6. in this step the first well word (i.e. the first four data characters of the data packet) is read from the store into register SDA. The following table shows the control signals generated.\cb1 \
 \cb3 CONTROL SIGNALS Operations performed RSAPAAR Address store at initial READ; Location of well and read SDAr-STORE ()ll into SDA.\cb1 \
 \cb3 At this stage the first word of the data packet to be transferred resides in register SDA, the last characters of the previous data packet transferred to the stack. if any, are in register SDB, register CPA is cleared, register CPB is set to the incoming CP of the stack, register MR contains the SF of the stack, register NR contains the TWC of the stack, register BAR contains the CL of the stack and register AAR contains the initial location address of the well. The micro-program now performs the required transfer.\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 \ul \ulc2 Step\ulnone  7/7. In this step a single well data character is transferred from register SDA into the next available quadrant in register SDB and the character position codes of both well and stack are incremented by one while the stack total well count is decremented by one. The setting of registers CPA and CPB define the quadrant for SDA and SDB respectively involved in the data character transfer.\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 CONTROL SIGNALS Operations performed SDBOlr-SDAQ? Transfer next char. from SDA to SDB (quadrants defined by (CPB) (CPA) CPA 8: CPB) HLCINR; I\cb1 \
+\cb3 \ul Step\ulnone  7/7. In this step a single well data character is transferred from register SDA into the next available quadrant in register SDB and the character position codes of both well and stack are incremented by one while the stack total well count is decremented by one. The setting of registers CPA and CPB define the quadrant for SDA and SDB respectively involved in the data character transfer.\cb1 \
+\cb3 CONTROL SIGNALS Operations performed SDBOlr-SDAQ? Transfer next char. from SDA to SDB (quadrants defined by (CPB) (CPA) CPA 8: CPB) HLCINR; I\cb1 \
 \cb3 Decrement TWC NRr-l-IIC HICFCPA, +1\cb1 \
 \cb3 Increment well CP OPAr-HIC HICPCPB; +1\cb1 \
 \cb3 Increment stack CP. \ul CPBFHIC Step\ulnone  7/8.\cb1 \
 \cb3 CONTROL SIGNALS Operations performed RSA.=BAR Address store at CL of \ul stack Step\ulnone  7/9. In this step register NR is tested to see if the last character transferred was the last in the data packet (i.e. TWO=0). If TWC=0 the micro-program will step to step 7/l5 to end the transfer. \ul IfTWC t\ulnone  0 \ul step\ulnone  7!") is performed.\cb1 \
-\pard\pardeftab720\partightenfactor0
-\cf2 \cb3 \ul \ulc2 Step\ulnone  7/10. in this step register CPA is tested to see if the last character transferred to register SDB was the last of the current well word (i.e. the well CP=0). If the well CP=0 \ul step\ulnone  7/11\cb1 \
+\cb3 \ul Step\ulnone  7/10. in this step register CPA is tested to see if the last character transferred to register SDB was the last of the current well word (i.e. the well CP=0). If the well CP=0 \ul step\ulnone  7/11\cb1 \
 \
+|\
+\
+3,(\
+\
+|\
+\
+is performed to read out the next well word. if CP * 0 ste\
+7/12 is performed.\
+Step 7/11.\
+\
+CONTROL SIGNALS\
+,\
++1\
+HIC=AAR\
+\
+|\
+\
+AAR-==HIC\
+\
+RSA:=HIC\
+\
+READ/REWRITE\
+SDA=STORE O/P\
+RSA=BAR\
+\
+Operations\
+performed\
+\
+increment well\
+\
+CL by one\
+\
+Address store\
+\
+at well CL\
+\
+Read next well\
+word to SDA\
+\
+and rewrite\
+Address store\
+\
+with stack CL.\
+\
+Step 7/12. In this step register CPB is tested to see af thi\
+linking of these routines by the \'93\'91stack-to-well\'94 and \'91\'93\'91well-to\
+stack\'94 operations of the invention into the fourth quadran\
+\
+(i.e. stack CP=@). If the stack CP=0 steps 7/12 and 7/13 wil\
+\
+be performed causing the newly assembled word in registe!\
+SDB to be written into the current stack location addressed ir\
+2/8 or 7/11. Prior to this operation the stack CL in registe!\
+BAR is incremented but not used in step 7/124.\
+\
+If the stack CP \'a5 0 (i.e. register SDB is not yet full) step 7/1\
+\
+is performed for the transfer of apparatus for use with the nex!\
+well data character to register SDB.\
+Step 7/13.\
+\
+CONTROL SIGNALS\
+,\
++1\
+HIC :=BAR\
+\
+Operations\
+performed\
+\
+increment stack\
+CL by one\
+\
+BAR==HIC\
+\
+Step 7/14.\
+\
+CONTROL SIGNALS\
+READ\
+\
+WRITE.STORE 1/P=SDB\
+\
+Operations\
+performed\
+\
+Write assembled\
+\
+word to stack\
+\
+The loop formed by steps 7/7, 7/8, 7/9, 7/10, (7/11), 7/12\
+(7/13, 7/14) and 7/7 will be performed for each data\
+character in the well with the consequent store address adjustments as required. Eventually the stacks total well count will\
+be reduced to zero indicating that the last data character in\
+the data packet has been transferred to register SDB. When\
+this occurs the micro-programme will jump from step 7/9 to\
+step 7/15 to cause the store to be read at the stack location\
+defined in step 7/8.\
+Step 7/15.\
+\
+CONTROL SIGNALS\
+\
+READ; SDA=STORE O/P\
+CPA:-~CPB\
+\
+Operations\
+performed\
+\
+Read stack word\
+\
+into SDA\
+\
+Set CPA to\
+\
+stack CP\
+\
+Step 7/16. In this step the state of the stack current\
+\
+character position code (CP) is tested and if it is zero it inequal\
+dicates that the transfer is complete. However if it is nottwo\
+or\
+to zero it indicates that step 7/15 was entered with\
+three data characters in register SDB. It is therefore necessary\
+not only to transfer these remaining data characters to store\
+but also to ensure that the \'93unused\'94 data character quadrants\
+\
+of the current stack location are also transferred back into the\
+store as these quadrants may contain the first characters of\
+another data packet.\
+This latter operation is performed by the loop formed by\
+steps 7/16 and 7/17 with the data character transfer controlled\
+by the setting of CPA.\
+Step 7/17.\
+\
+\page 17,736\
+\
+14\
+Operations\
+\
+CONTROL SIGNALS\
+\
+performed\
+\
+Transfer one\
+\
+(\{IFCPA=01) SDBQ!:=SDAQi\
+\
+data character\
+\
+(IFCPA=10) SDBQ2:=SDAQ2\
+\
+5\
+\
+of other data\
+\
+packet from\
+\
+SDA to SDB.\
+\
+(IFCPA=! 1) SDBQ3:=SDAQ3\
+HiC=CPA; +1\
+\
+F\
+\
+Increment CPA\
+\
+CPA-=HIC\
+\
+When the other data packet characters have been transferred register CPA will be zero and step 7/18 will be performed causing the assembled word in register SDA to be written back into store at the location read in step 7/15. It should\
+\
+10\
+\
+be noted that step 7/18 will return the word unmodified if the\
+\
+15 first \'93\'91access\'94 of stop 7/16 found CPA=0.\
+Step 7/18.\
+\
+20\
+\
+CONTROL SIGNALS\
+\
+Operations\
+\
+WRITE\
+\
+store at lest\
+\
+atore I/P: =SDB.\
+RSA:-=SCR\
+\
+data packet.\
+Address store\
+\
+performed\
+\
+Write SDB to\
+\
+location of\
+\
+at Stack OW.\
+\
+The addressing of the stack control word in this step starts\
+\
+tS\
+\
+the writing back to store of updated stack contro! words.\
+Step 7/19.\
+\
+tO CONTROL SIGNALS\
+READ\
+SDA>store O/F\
+\
+HIiC=CBR; +1\
+:\
+\
+5\
+\
+SDAQO=HIC\
+WRITE\
+Store /P==SDA\
+\
+0\
+\
+Operations\
+performed\
+\
+Read stack\
+\
+main contro]\
+\
+word into SDA\
+\
+Increment stack\
+\
+condition $C\
+\
+by one and place\
+\
+new SC in\
+SDAQO\
+\
+Write adjusted\
+\
+stack main control\
+\
+word to store.\
+\
+Step 7/20.\
+CONTROL SIGNALS\
+\
+5 HiC==SCR; \'971\}\
+\
+RSA=HIC\
+READ; SCB:=STORE O/P\
+HIC-==MR; \'971\
+\
+Operations\
+performed\
+\
+Address store\
+\
+at stack ICWRead ICW\
+to SDB\
+\
+Decrement\
+SP by one\
+\
+0 M=HIC\
+\
+Step 7/21. In this step the stack position code SP in register\
+M is tested for zero. If it is zero this indicates that the data\
+\
+packet has been put in the last packet area in the store and,\
+\
+therefore, the current location code CL in the input control\
+S$ word ICW must be adjusted, this operation is performed in\
+\'ab~\
+\
+0\
+\
+step 7/21A. If M 3 0 step 7/22 is performed.\
+Step 7/21A\
+\
+CONTROL SIGNALS\
++1\
+HIC=SCR;\
+\
+BAR2=HiC\
+\
+HIC=BAR; +1\
+5\
+\
+SDBQO=HIC\
+\
+CPB=0\
+\
+Operations\
+\
+performed\
+\
+Form first data\
+\
+word address of\
+\
+stack in\
+\
+SDBQ 0.\
+\
+Clear CPB.\
+\
+Step 7/22. In this step the stack character position CP is\
+\
+tested for zero. If it is zero the current location code in register\
+BAR must be incremented by one, in step 7/23, before being\
+\
+) written into register SDB at quadrant Q1 in step 7/24. If CP *\
+0 step 7/24 is performed direct.\
+Step 7/23\
+\
+, CONTROL SIGNALS\
+)\
+\
+Operations\
+performed\
+\
+|\
+\
+\page 3,65\
+HiIC:=BAR; +1\
+\
+Increment stack\
+CL by one\
+\
+BAR=HIC\
+\
+Step 7/24\
+CONTROL SIGNALS\
+\
+SDEQO=BAR\
+SDBOI=MR\
+\
+Operations\
+performed\
+\
+Adjusted CL\
+\
+to SDBOQO\
+\
+Adjusted SP\
+\
+to SDBOI\
+\
+Step 7/25\
+CONTROL SIGNALS\
+\
+Operations\
+\
+SDBQ2=C PB\
+\
+Stack word CP\
+\
+WRITE\
+\
+Write adjusted\
+\
+store I/P=SDB\
+\
+control\
+\
+HIC=LIR,; +1\
+\
+SCR=HIC\
+\
+1\
+\
+performed\
+\
+to SDBQ2\
+\
+stack main\
+\
+word to SCW.\
+increment\
+\
+2\
+\
+Sequence control\
+\
+number into SCR.\
+\
+Exit from step 7/25 is to the housekeeping phase and entry 2\
+\
+into the next instruction to be handled (i.e. a new routine or\
+\
+entry into the same routine).\
+\
+In either case it will be necessary to perform an \'93\'91unioad\'94\'92\
+stack instruction before performing the actual asynchronous\
+working routine.\
+\
+3\
+\
+8. Unload Stack Instruction (FIGS. 26 and \'a7)\
+This instruction is complementary to the load stack instruc-\
+\
+tion and is used to control a stack-to-well transfer, when the\
+store locations used for the stack and well are both in the same\
+store, at the start of an asynchronous working routine. The fol- 5\
+lowing description will include tables of the control signals\
+produced to perform the actions of the steps of the micro-pro-\
+\
+gram flow diagram of FIG. 5 when those steps are self-explanatory. The execute phase of the unload stack instruction is\
+\
+entered, at 8/1 in FIG. \'a7, with the initial location address of 4\
+the well in register AAR and the stack control word address in\
+register BAR.\
+Step 8/1\
+\
+CONTROL SIGNALS\
+\
+Operations\
+performed\
+\
+4)\
+,\
+\
+Address store at\
+\
+RSA:+BAR\
+READ\
+$DB-<Store 6/P\
+\
+REWRITE\
+\
+stack main contro]\
+word and read\
+SCW into SDB.\
+Transfer stack\
+\
+CBR=SDBOQO\
+\
+to CBR\
+\
+condition SC\
+\
+5\'a2\
+\
+Step 8/2. In this step the state of the stack condition SC in\
+\
+register CBR is tested. If CBR=@ the stack will be empty indicating that there is no data packet available. The data 5:\
+processing device will exit from the unload stack instruction\
+and perform a housekeeping routine to find out why the stack\
+\
+is empty. If SC + 0 a data packet is available and step 8/3 is\
+\
+performed.\
+Step 8/3\
+\
+6\
+\
+CONTROL SIGNALS\
+\
+operations\
+\
+LIR=<SCR\
+\
+Save Sequence\
+\
+HIC-=BAR; \'971\
+\
+Transfer ICW\
+\
+SCR-=HIC\
+\
+performed\
+\
+control number\
+address to SCR\
+\
+Hic-=SCR; \'97|\
+\
+Address store\
+\
+RSA:HIC\
+READ; SDA>STORE O/P\
+\
+address\
+Read OCW\
+\
+with OCW\
+\
+7C\
+\
+into SDA\
+\
+MR-=SDAQI\
+\
+Transfer\
+\
+BAR =SDAQO\
+\
+Transfer\
+\
+NR=SDBQ2\
+\
+65\
+\
+SP to MR\
+\
+CL ta BAR\
+\
+Transfer\
+\
+TWC to NR\
+\
+4\
+\
+5\
+\
+\page 57,736\
+\
+16\
+\
+REWRITE\
+\
+rewrite OCW\
+to store\
+\
+Step 8/4\
+\
+7 CONTROL SIGNALS\
+RSA=BAR\
+10\
+\
+READ; SDB=STORE O/P\
+\
+Operations\
+performed\
+\
+Address store\
+\
+with stack CL\
+\
+Read stack word\
+\
+into SDB\
+\
+REWRITE.\
+\
+Step 8/5\
+15\
+\
+CONTROL SIGNALS\
+\
+Operations\
+\
+SDAQ?=SDBQ?\
+\
+Transfer data\
+\
+(note CPA & CPB)\
+\
+performed\
+\
+character from\
+\
+SDB to SDA\
+\
+noting stack and\
+\
+well character\
+\
+position codes.\
+\
+20\
+Step 8/6\
+\
+CONTROL SIGNALS\
+\
+Gpewiie\
+\
+CPA=HIC\
+HiC=CPB; +1\
+\
+by one\
+increment stack\
+\
+25 HIC=CPA; +1\
+CPB=HIC\
+\
+30 HiC=MR>-i\
+NR==HIC\
+\
+RSA:AAR .\
+\
+35\
+\
+ed\
+\
+character position\
+\
+Decrement total\
+\
+well count by one\
+\
+Address store at\
+\
+next well word.\
+\
+40 store.\
+\
+Step 8/8. In this step the character position code of the well\
+is tested and if it is zero the contents of register SDA are written into the current location of the well and that address code\
+in register AAR is incremented by one, step 8/11. If the well\
+\
+45 CP Ostep 8/9 is performed.\
+\
+Step 8/9. In this step the character position code of the\
+\
+stack is tested and if it is zero the store is addressed at the next\
+location in the stack and that word is read into SDB and the\
+stack current location code in register BAR is incremented by\
+\
+*0 the micro-program returns to step\
+50 one step 8/10. If CP\
+8/5.\
+\
+From the above it will be seen that successive characters are\
+transferred from the stack locations into the weil locations.\
+Ultimately the total well count (TWC) will be zero and step\
+\
+55 8/7 will exit to step 8/12.\
+Step 8/12\
+\
+CONTROL SIGNALS\
+\
+WRITE; STORE I/P=SDA\
+\
+Operations\
+performed\
+\
+Write SDA to\
+\
+CL of well\
+\
+\{address in\
+\
+step 8/6)\
+\
+The remaining steps 8/13 to 8/20 in the micro-program deal\
+65 with the updating of the stack control words and are similar to\
+those of the previous load stack instructions.\
+\
+The exit from step 8/20 is to the housekeeping phase and\
+entry into the first instruction of the asynchronous working\
+routine associated with the well.\
+\
+The above description of FIGS. 4 and 5 has been with\
+reference to the load and unload stack operations. Reference\
+has only been made to the stack control words. The well control words are not used and would therefore, not be provided\
+if the well is exclusively accessed by load and unload stack in75 structions.\
+\
+70\
+\
+\'91\
+\
+CP by one\
+\
+Step 8/7. In this step the total well count TWC is tested to\
+zero. If TWC*0 it indicates that the transfer of the data\
+packet is not yet complete and step 8/8 will be performed. If\
+TWC=9 it indicates that the transfer of the data packet is\
+complete and the adjusted control words must be restored to\
+\
+60 READ\
+\
+.\
+\
+aca weil\
+\
+,\
+\
+\page 3,65\
+\
+17\
+\
+As mentioned previously before each well-to-stack and\
+\
+stack-to-well transfer involving one of the external data\
+highways the initial highway connection is established by a "\'92-\
+\
+prepare for transfer\'94 instruction.\
+\
+9. Prepare for Transfer Instruction FOR TRANSFER IN- :\
+STRUCTION (FIG. 6)\
+\
+In the following description no reference will be made to the\
+control signals produced by the data processing device in the\
+performance of the micro-program and each step in the\
+\
+micro-program will be considered briefly from a functional |!\
+\
+point of view. At the start of the cxccute phase for this instruc-\
+\
+tion the A address register AAR will contain the attempt\
+count (AC) and the B address register BAR will contain the\
+address of the transfer parameters word (TPW).\
+\
+Step 9/1. In this step the transfer parameters word (FIG. 3 I\
+\
+section vii) is read into register SDA and the attempt count\
+into register MR.\
+\
+Step 9/2. In this step the highway station HSE is tested to\
+see if it is ready for control of the transfer. If the highway sta-\
+\
+tion is not ready, the highway station ready signal will be at 0 2\
+\
+and the micro-program \'93loops\'94 back to 9/2 after testing the\
+data processing devices interrupt toggle (1) in step 9/3.\
+\
+Step 9/3. If the interrupt toggle is set the micro-program\
+exits from the PFT instruction into the housekeeping phase\
+\
+after recovering the sequence control number, step 9/4, to ser- 2:\
+micro-program returns to step 9/2, Ultimately the highway\
+\
+vice the interrupt. If the interrupt indicator is not set the\
+station HSE will signal a ready condition.\
+\
+Step 9/S. In this step the highway station HSE is conditioned\
+with the \'93permitted highways\'94 code (PH) which is used by the 3\'a2\
+buffer unit BU (in FIG. 1c) to select a highway control circuit\
+\
+which is connected to a free highway. When the highway sta-\
+\
+tion has accepted the permitted highways code it will produce\
+the highway station accept signal, allowing the step 9/6 to be\
+\
+performed (note WHSA = wait for highway station accept 35\
+\
+signal).\
+\
+Step 9/6. In this step the highway station ready signal is\
+tested, this signal will be generated when the highway station _\
+has established connections to one of the external data\
+\
+highways. Prior to the generation of the ready signal the loop 40\
+\
+of 9/6, 9/7, 9/6 is performed allowing exit to the housekeeping\
+\
+phase if the interrupt toggle (I1) becomes set in step 9/7.\
+When the ready signal is produced step 9/8 is performed.\
+Step 9/8. In this step the destination address, in quadrant Ql\
+\
+of register SDA, is passed to the buffer unit BU in the highway 45\
+\
+station HSE and circulated to try to select the required other\
+equipment of the transfer. The destination address will be circulated around the selected highway and the destination data\
+\
+processing device will return either (i) Destination Free (step\
+\
+"\
+\
+50\
+9/9), (ii) Destination Busy (step 9/10), (iii) Destination NonIf\
+Existent (step 9/1) or (iv) Transmission Fault (step 9/16).\
+\
+the destination device is free its interrupt toggle II will be set\
+and the current process in that device will be suspended for\
+the duration of the transfer.\
+\
+Step 9/9. Destination Free. The performance of step 9/9 55\
+\
+causes the designation code (quadrant Q2 of register SDA) to\
+be transmitted around the highway and when the highway station accepts this code the micro-program exits to the\
+housekeeping to execute the next instruction which will be\
+\
+either an extract or insert instruction.\
+\
+Step 9/10. Destination Busy. The performance of this step\
+causes the attempt count (AC) in register MR to be decremented by one. The attempt count is then tested for zero (step\
+9/11) and the micro-program returns to step 9/1, by way of\
+\
+60\
+\
+step 9/12 which terminates the highway connection, to make a. 65\
+further attempt at setting up the required transfer connection\
+If the attempt count has been exhausted step 9/13 is performed to set a \'93destination busy\'94 indicator and the microprogram exits to a housekeeping routine, by way of step 9/14\
+\
+which restores the sequence control number of the PFT to re- 70\
+\
+gister SCR and terminates the highway connection.\
+Step 9/18 and 9/16 faults. The performance of either of\
+these steps causes the setting of a corresponding indicator toggle and the entry into the housekeeping phase by way of step 9/14.\
+\
+\page 17,736\
+\
+18\
+\
+The attempt count system is provided in this instruction to\
+ensure that two co-operating data processing devices do not\
+interact in such a manner that each is waiting for the other to\
+initiate a given inter-processor connection. Such a situation\
+\
+highway and\
+a\
+seizes\
+5 may occur with a PFT instruction which\
+attempts to seize the destination highway station and finding it\
+busy re-attempts until it succeeds. It could happen that the\
+other data processing device is concurrently using a PFT instruction to establish communications with the first data\
+10 processing device on another highway. The PFT instruction is\
+made interruptable, at steps 9/3 and 9/7, by a destination address, arriving on another highway, up to the time that it\
+receives the destination free condition. Thus, any destination\
+address of higher priority arriving on a highway will automati15 cally interrupt the PFT in this period.\
+The repeated attempt feature is included in this instruction\
+as it is more efficient to constantly re-apply to a busy data\
+processing device than it is to jump to another asynchronous\
+working routine setting links for a return to the PFT instruc-\
+\
+20 tion. This is due to the fact that the delay cannot be due to\
+\
+processing by the busy data processing device as the input/output system is of the autonomous data transfer type and\
+must, therefore, be due to a highway transfer and the device\
+25 will be freed as soon as the transfer is complete. The attempt\
+count is used to prevent the demanding data processing device\
+becoming tied to a faulty highway or destination device.\
+As mentioned previously the PFT instruction is followed by\
+an extract or insert instruction which co-operates with an in30 sert or extract instruction in the destination device the instructions being \'93locked together\'94 by the interacting highway\
+system. FIG. 7 shows the flow diagram of the extract instruction, which can be entered with the interrupt toggle reset (i.e.\
+following a PIT instruction) or with the interrupt toggle set\
+45 (ie. when the device is the destination device of a required\
+transfer).\
+\
+:\
+\
+=\
+\
+10. Extract Instruction (FIG. 7)\
+\
+This instruction is entered after a PFT instruction or as the\
+ea of an interrupt after the setting up of a highway transfer\
+\
+Step 10/1. In this step the stack or well control word is read\
+\
+path.\
+\
+from the store and rewritten and placed in register SDA and\
+the total well count TWC is placed in register MR.\
+Step 10/2. The interrupt toggle (II) is tested in this step and\
+45 the SCR contents are transferred to the link register LIR in\
+step 10/3 if this instruction follows a PFT (i.e. H = @). This indicates that the instruction will operate on an output well. If\
+the data processing device is the destination device of the initial transfer connection (i.e. 0) the extract order relates\
+\
+50 to a stack and steps 10/4 and 10/5 are performed to test the\
+\
+stack condition code SC to see if the stack is empty. If it is\
+empty the extract instruction will be terminated and the\
+housekeeping phase entered from step 10/5 to service this\
+condition. If the stack is not empty or the interrupt toggle is\
+\
+\'a7\'a7 not set step 10/6 will be entered.\
+\
+;\
+\
+Step 10/6. In this step the output control word OCW for the\
+well or stack is read into register SDA. The current location\
+(i.e. the store location address of the first word of the data\
+packet) is fed to register AAR, the stack position code SP is\
+60 fed to register NR and the character position code CP is fed to\
+CPA. If the output control word relates to a well the SP code\
+has no significance, as a well holds only one data packet, and\
+the CL address code will be that of the location following the\
+\
+65\
+\
+main well control word while the CP code will be zero.\
+\
+Step 10/7. In this step the first data word of the packet is\
+\
+read out of the current location into register SDA.\
+\
+Step 10/8. The micro-program halts at this point waiting for\
+a highway station ready signal. In the case of the extract instruction following a PFT instruction (ie. a WELL-TO;\
+. 70 STACK transfer FIG. 2c) the highway station will produce a\
+ready signal when the designation address has conditioned the\
+other data processing device for the performance of the coj\
+operating insert instruction. In the case of the extract instruction entered as a result of an interrupt (i.e. a STACK-TO75 WELL transfer FIG. 2d) the highway station will produce a\
+\
+\page 3,657,\
+19\
+\
+ready signal when the originating data processing device has\
+\
+|\
+\
+signalled the acceptance of the destination free code signalled\
+\
+,\
+\
+in response to the destination address.\
+\
+Step 10/9. When the highway station ready signal is\
+\
+produced the highway station will also produce a \'93continue\'94 a\
+signal, which is tested in this step, if the transmitted code\
+\
+agrees with the returned code indicating that the transfer can\
+continue. If any other code has been received by the highway\
+station step 10/9 exits to the fault routines of the house-keep-\
+\
+ing phase.\
+\
+Step 10/10. In this step the next data character, as defined\
+\
+10\
+\
+by the code of register CPA, is passed to the data buffer register BDR in the highway station from register SDA and the\
+code register CR is conditioned to the \'93data character\'92 code 1s\
+Gi.c. 0110 on the highway code wires). Thus the next\
+character is passed to the selected highway, while the\
+character position CP code (in register CPA) is increased by\
+one and the total well count TWC is reduced by one. Step\
+\
+10/11 is performed when the highway station signals the ac- 99\
+\
+ceptance of the data character.\
+\
+Step 10/11. The total well count is tested for zero in this\
+step and if it is not zero step 10/12 testing the character position for zero and, if required step 10/13, reading out the next\
+\
+data word if CP\'bb, are performed before entering step 10/18 25\
+again prior to the transmission of the next character by step\
+10/10. Step 10/8 ensures that the next character is not sent\
+until the highway system and the destination data processing\
+\
+device has handled the last data character.\
+\
+When the total well count reaches zero the data packet 30\
+transfer is complete and step 10/14 tests to see if the end of\
+block code has been sent from the destination device. If not a\
+fault has occurred and the housekeeping routine is entered. If\
+the end of block signal has been received step 10/15 is per-\
+\
+formed.\
+\
+Step 10/18. In this step the following operations are performed (i) termination of the highway connection, (ii) the\
+resetting of the interrupt indicator if set and (iii) the writing\
+\
+35\
+\
+back into store of the adjusted main stack or well control word\
+\
+after decrementing the stack condition (SP) code in register 40\
+CBR. Step 10/15 has no effect if the extract order relates to a\
+well.\
+\
+The following steps 10/16 to 10/22 are used to update the\
+output control word OCW and are somewhat self-explanatory\
+\
+ending, at step 10/22, with the writing back to store of the ad- 45\
+\
+justed well or stack output control word and the recovering of\
+\
+the sequence control number for the exit from the instruction.\
+As mentioned above each extract instruction co-operates\
+with an insert instruction. The flow diagram of the insert in- 50\
+\
+struction is shown in FIG. 8 which is formed by FIGS. $a and\
+\
+8b. The diagram is split into two parts as the insert instruction\
+can be entered with the interrupt toggle reset FIG. 8a (i.e. following a PFT instruction) for a stack-to-well transfer (FIG.\
+2d) or with the interrupt toggle set FIG. 8d (1c. as a result of 55\
+the reception of a valid designation address code) for a wellto-stack transfer (FIG. 2c).\
+\
+11. Insert Instruction (FIGS. 8a and 8d)\
+\
+The following description will be split into two sections A\
+and B corresponding to the \'93insert\'94 instruction without the in- 6(\
+\
+terrupt toggle set and the \'91insert\'92 instruction with the inter-\
+\
+rupt toggle set respectively.\
+\
+Initially the insert instruction is entered at step 11/1 which\
+reads the stack or well main control word into register SDB\
+6!\
+followed by step 11/2 which tests the interrupt indicator II.\
+11A. INSERT INSTRUCTION with I reset\
+\
+This instruction is used for a stack-to-well transfer, the well\
+being in this device, when the transfer has been originated by\
+this device. The flow diagram of FIG. 8a is used in this case\
+after the testing of the interrupt indicator II step 11A/3 will be 7\
+performed, the well main control word having been read in\
+step 11/1.\
+\
+Step 11A/3. In this step the address of the initial location of\
+the well is formed in the B address register BAR and the total\
+\
+well count TWC is placed in register MR. The exit from this 7\
+\
+\page 57,736\
+\
+20\
+step is dependent upon the highway station ready signal which\
+will be produced when the co-operating signals associated\
+with the designation address code have been compieted.\
+\
+When this occurs the highway station will produce a \'93con-\
+\
+5 tinue\'94 signal indicating that no transmission faults have occurred and step 11A/5 will be performed. If a transmission\
+fault has occurred step 11A/4 will exit to the house-keeping\
+phase.\
+\
+Step 11A/5. In this step the \'93response change-over\'94 code\
+10 (1101) is sent to the destination device to indicate that the\
+direction of data packet transfer is from the stack in that\
+destination device to the well in this device. The total well\
+count TWC is decremented by one in this step as the highway\
+15 station is waiting for the first character of the data packet.\
+When this character arrives step 11A/6 is performed testing to\
+see if a valid data character code has been received. If it has\
+not been received a test is made to see if an \'93end of message"\
+signal is present indicating a fault in the remote device and the\
+39 termination of the transfer. [If the highway station signal is\
+neither a \'91\'91data character" or an \'93\'93end-of-message"\'92 signal the\
+housekeeping phase is entered as a transmission fault has occurred.\
+\
+If the receive data is the first data packet character step\
+\
+25 11A/8 is performed.\
+\
+Step 11A/8. In this step the data character is recirculated\
+\
+with a data accept code.\
+\
+Step 11A/9. In this step the received data character is fed\
+into the quadrant define d by the current setting of the\
+30 character position code CP in register CPA. The device now\
+waits for the next character to be received and transferred to\
+register HDR.\
+\
+Step 114/10. In this step a test is made to see if the received\
+data, in step 11A/9, is a data character. If it is not a data\
+35 character step LNA/11 is performed to test for the \'93end of\
+message\'94 signal. If the highway station indicates neither a \'93data character\'94 or an \'91\'93\'91end of message\'94 signal a fault in the\
+highway system has occurred and the \'93insert\'94 instruction is\
+ended by an entry into the housekeeping phase. If the signal is\
+40 an \'93end of message\'94 signal the transfer is terminated by entry\
+into step 11A/19. If the received code is a data character step\
+11A/12 is performed.\
+\
+Step 11A/12. The total well count TWC in register MR is\
+tested for zero in this step. If the total well count is zero it in-\
+\
+45 dicates that the transfer of the data packet, as far as this data\
+\
+processor is concemed, is complete (i.e. the well is full) and\
+steps 11A/16, 11A/17 and 11A/18 are performed sending the\
+\'91end of block\'94 code (1010), testing of the consequentially\
+50 received code for \'93end of message\'94 and the incrementation of\
+the character position code CP before entry into step HIA/19\
+for the ultimate termination of the transfer.\
+\
+If the total well count is not zero, indicating that the data\
+packet transfer is not complete, step 11A/13 is performed.\
+Step 114/13. In this step the character position CP is incre55\
+mented, to define the quadrant in register SDA to which the\
+data character received in 11A/9 is to be transferred. The\
+total well count is decreased by one and the data received is\
+\
+recirculated with the \'93data character\'94 code (0110) by the\
+\
+60 signalling of data accept to the highway station equipment.\
+\
+This step is only completed when the next data character from\
+the stack has been received by the highway station equipment.\
+Step 11A/14. In this step the character position code is\
+tested for zero and, if it is zero, the assembled data word is\
+65 written into the current location of the well from register SDA\
+and the current location address incremented by one in step\
+11A/15 before re-entering step 11A/9. If CP # 0, the microprogram returns to step 11A/9 to handle the next data\
+character of the data packet by steps L1A/9 124/10, 11A/12,\
+70 12A/13, 11A/14 and if required 114/15. Ultimately the total\
+well count TWC will equal zero causing steps 11A/16, 11A/17\
+to be performed after step 11A/12.\
+and 11A/18\
+\
+Step 11A/19. In this step the last character is retransmitted\
+back to the originating device under the control of the\
+75 highway station equipment control signal \'93data accept\'94.\
+\
+\page 3,657\
+\
+21\
+\
+Step 114/20. In this step the character position code CP is\
+tested and if zero the assembled data word is written into store\
+at the current location of the well and that address is incre-\
+\
+mented in step 11A/21. If CP\
+\
+0 and after step 11A/21 the\
+\
+last data character is transferred to register SDA under the 5\
+\
+control of the character position code and the data word of\
+SDA is written into the last location of the well in step 11A/22.\
+Finally the sequence contro! number is increased allowing the\
+asynchronous working routine servicing the input well to_ be\
+\
+commenced.\
+\
+11B. INSERT INSTRUCTION with interrupt toggle set (FIG.\
+\
+it\
+\
+8b)\
+\
+This instruction is used for a well-to-stack transfer, the stack\
+being situated in this device, and the transfer has been ,,\
+originated by the device in which the well is situated. The in- ~\
+\
+terrupt toggle Il is set as the routine being processed has been\
+interrupted for the autonomous data transfer. The flow diagram of FIG. 8bis used in this case after the testing of the in-\
+\
+terrupt indicator (step 11/2). Step 11/1 reads the main stack 3,\
+\
+control word SCW into register SDB.\
+\
+Step 11B/3. The stack condition code SC is transferred to\
+\
+register CBR in this step to allow step 11B/4 to compare this\
+\
+code with the stack size code SS.\
+\
+Step 11B/4. In this step the contents of register CBR and re- 2:\
+gister SDB quadrant Q1 are passed to the arithmetic unit\
+which compares the size of these codes. If SS=SC the stack is\
+full, the insert instruction micro-programme is terminated by\
+an entry into the housekeeping phase. If SS # SC, indicating\
+that there is at least one data packet area free in the stack, step 3(\
+11B/\'a7 is performed.\
+\
+Step 11B/S. In this step the total well count is transferred\
+from register SDBQ2 to register MR; the address in register\
+BAR is decremented to form the input control word address\
+\
+which is read into register SDA; the total well-count is 3:\
+\
+decreased by one ready for the reception of the first data\
+\
+character; the current location address code CL is transferred\
+into register AAR from quadrant QO of register SDA; the\
+Stack position code SP is transferred into register NR from re-\
+\
+gister SDAQI; the stack character position CP is transferred 4\
+into register CPA from register SDAQ2 and the input control\
+Step 11B/6. In this step the character position is tested for\
+\
+word ICW is rewritten.\
+\
+7 0 step\
+zero. If CP=0 step 11B/? is performed, while if CP\
+4\
+\
+11B/6A is performed, to read out the current location word\
+\
+which will contain one, two or three data characters of the iast\
+inputted data packet, followed by step 1 IB/7.\
+Step 11B/7. The micro-program is held at this point until\
+the first data character of the packet arrives. When this occurs,\
+it is tested to see if it is a data character, in step 11B/8. If the\
+the\
+received character is not a data character the execution rofperinsert instruction is terminated and the data processo\
+forms a housekeeping routine to define what fault has occurred. If the received character is a data character step LIB/9 <5\
+is performed.\
+\
+Step 11B/9. In this step the received data character is trans-\
+\
+ferred to register HDR and the data character recirculated\
+with the data character code.\
+Step 11B/10. In this step the recently received data \'a2\
+character is written into register SDA, at a quadrant defined\
+by the state of the CP code in register CPA. The current location of the stack is also addressed in this step and the exit from\
+the step is held until the next data character has been received\
+by the highway station HSE. When the next data character is 6\
+received step 11B/11 is performed.\
+\
+Step 11B/11. In this step the highway station is tested for an\
+\'93end of message\'94 indication to see if the data packet is\
+complete. If the data character received is not the end of the\
+data packet it is tested, in step 11B/12, to see if itis a valid 7\
+data character after incrementing by one the character position code CP in step 11B/12A. if it is a valid character the\
+total well count TWC, in register MR, is tested for zero in step\
+\
+11B/13 and step 11B/14 is performed if TWC #0. If the data\
+\
+character is not valid step 11B/12, or if TWC=9 step 11B/13, ?\
+\
+\page 7,736\
+\
+22\
+is terminated\
+execution\
+instructions\
+the\
+housekeeping routine entered.\
+\
+and a fault\
+\
+Step 11B/14. The recirculation of the received data\
+character around the highway is initiated in this step and the\
+\
+one.\
+TWC is decreabysed\
+\'a7 total well count\
+\
+Step 11B/1S. A test on the character position code CP is\
+made in this step to see if the incrementation of CP in step\
+11B/11A for the last received data character will fill the last\
+quadrant of register SDA. If CP=@ step 11B/16 is performed\
+lO writing the assembled data word to the stack and incrementing\
+\
+by one that current location address. If CP #@. or when step\
+\
+11B/16 has been performed, the micro-program returns to\
+\
+step 11B/10 for the assembly of the next data character. The\
+r loop of steps 11B/10, 11B/11, 11B/11A, 11B/12, 11B/13,\
+11B/14, 11B/15, 11B/16 if required, 11B/10 for each data\
+character received. Ultimately the transfer of the data packet\
+will be complete and step 11B/11 will detect an \'93end-ofmessage\'94 signal from the highway station causing step 11B/17\
+\
+99 tobe performed.\
+\
+Step 11B/17. In this step CP is increased by one, for the last\
+\
+data character of the packet, the stack position SP is\
+decreased, for the newly received data packet, and the inter-\
+\
+rupt indicator is reset ready for re-entry into the interrupted\
+9\'a7 routine after the last character has been stored in the stack\
+\
+and the control words updated and written into their correct\
+locations at the head of the stack. These operations are performed in step 11B/27 and the prior step 11B/18 to 12B/26\
+are used to recirculate the data character step 11B/19 and to\
+\
+30 organise the updated control word parameters if the last data\
+_\
+\
+packet area of the stack has been used (steps I 1B/19, 11B/20\
+and 118/25) and adjust the current location address and store\
+the word if the last data character or characters are to be\
+placed in a stack word which is partially used (steps 11B/21,\
+\
+35 11B/22, 11B/23 and 11B/24 recirculated for each data\
+character.\
+\
+The exit from step 11B/27 is to the next instruction of the\
+\
+interrupted asynchronous working routine and the termina-\
+\
+tion of the highway interconnection is under the control of the\
+\
+40 other data processing device.\
+\
+From the above description it can be seen that the invention\
+provides a programme interface mechanism between\
+asynchronous working routines, which operate on data\
+packets in an input well producing output data packetsin an\
+45 output well, by the use of a well-to-stack and stack-to-well\
+transfer mechanism. The stacks acting as the time buffer\
+mechanism between routines and the siting of the stacks and\
+wells, in a multi-data-processing device, has no effect at all on\
+50 the asynchronous working routines themselves. This facility\
+has particular advantages in a large process control system\
+where the entire process control algorithm is broken down\
+into sub-routines which can be written individually. The assembling of the sub-routines into a system configuration\
+55 simply involves a specific set of instructions according to the\
+invention allowing different hardware systems, requiring dif-\
+\
+ferent configurations of assembled sub-routines, to be\
+produced without modification to those sub-routines.\
+The above description has been of one embodiment only\
+\
+69 and is not intended to be limited thereto. Alternative arrangements of the invention will readily be seen by those skilled in\
+\
+the art, for example the external highway system employed is\
+typical only and may be replaced by a system for example of\
+the type of British Pat. No. 1,063,296 which will cause certain\
+6\'a7 modifications to the micro-programs of the instruction of the\
+invention. Further each data processing device is not limited\
+to the type shown in FIGS. 1a, 16 and Ic this being only typical\
+of such devices.\
+\
+Additionally each transfer may be preceded by a \'93prepare\
+\
+70 for transfer\'94 operation thus making each routine \'93look\'94 the\
+same regardless of its location within the multi-processor\
+system and the location of the co-operating routines. In this\
+case the \'93prepare for transfer\'94 micro-program is modified to\
+allow a decision to be made as to the location of the co-operat-\
+\
+75 ing routine. An internal transfer will be performed, using\
+\
+\page 3,657\
+23\
+\
+\'93load stack" or \'91unload stack\'94 operations, if the prepare for\
+transfer operation detects that the co-operating routine is\
+located within the same data processing device while an exter-\
+\
+nal transfer will be performed using \'93insert\'94 or \'93extract\'94\
+\
+operations if the co-operating routine is located in another 5\
+\
+data processing device. The detection mechanism mentioned\
+above may be performed by comparing the destination code\
+\
+for a transfer with those codes which are held in the highway\
+station prior to launching on to the highway system.\
+\
+Also the stack and well parameters referred to in the specifi-\
+\
+cation may be located remote from the stack or well area in a\
+common data area for the associated routine. In this case the\
+\
+destination code is used to \'93point\'94 to the required common\
+data area while the designation code will define the address of i\
+the actual well or stack parameters allowing automatic opera- ~\
+\
+tions to be performed corresponding to the stack and well instructions.\
+\
+The latter two modifications have the advantage of buffering the stacks and wells from other routines thus giving greater 5,\
+security against mutilation of stack or well data by faulty data\
+processing devices.\
+\
+The above description of the teachings of the invention has\
+been related to a multi-processor system in which each\
+\
+processor includes its own programme and data storage ar- 2\
+\
+rangements. However, the invention is equally applicable to\
+\
+other multi-processor system configurations. For example it is\
+well known in the prior art to provide a plurality of memory\
+\
+modules which are individually connectable, by way of a\
+switching interlock, to a plurality of processor devices which 3\
+include only temporary storage facilities. In such cases each\
+program routine may for example be stored in a separate\
+memory module, together with the associated input and output wells while the co-operating stacks may be stored in that\
+3\
+or one of the other memory modules.\
+What we claim is:\
+\
+1. A method of operating a data processing system in the\
+performance of a manipulative procedure said procedure\
+being divided into a plurality of manipulative functions each\
+\
+of which is performed under the control of a corresponding 4\
+stored program routine arranged to operate on a data packet\
+said system including for each stored program routine an input\
+data storage area for the storage of a single unprocessed data\
+\
+packet, an output data storage area for the storage of a single\
+\
+processed data packet and first and second further data 4\
+\
+storage areas each of which are capable of storing a plurality\
+of unprocessed data packets and processed data packets\
+respectively, said method comprising, for the performance of\
+5\
+a particular manipulative function, the sequential steps of\
+a. extracting a single unprocessed data packet from said first\
+further data storage area,\
+\
+b. inserting said unprocessed data packet into said input\
+data storage area,\
+\
+c. performing said manipulative process by executing the in- \'a2\
+structions of the corresponding stored program routine to\
+process the data packet in said input storage area to\
+\
+produce a processed data packet in said output data\
+storage area,\
+\
+d. extracting said processed data packet from said output \'a2\
+data storage area and\
+\
+e. inserting the processed data packet into said second\
+further data storage area,\
+\
+2. A method of operating a data processing device as\
+claimed in claim 1 wherein said first further data storage area 6\
+includes transfer control information relevant to the data\
+\
+packets stored therein and said transfer control information\
+\
+includes common transfer control data defining (i) a total\
+block count, indicative of the number of data packets stored\
+in that further data storage area, (ii) a maximum state of 7\
+count, indicative of the maximum number of data packets said\
+first further data storage area is capable of storing and (il) a\
+count code indicative of the size of a single unprocessed data\
+\
+packet, and said transfer control information further includes\
+\
+output transfer control data defining (a) an output start ad- 7\
+\
+\page 7,736\
+\
+24\
+\
+dress, indicative of the address in said first further data storage\
+\
+area of an unprocessed data packet which is next in sequence\
+for extraction, and (b) an output block count, indicative of the\
+number of unprocessed data packets which have been\
+\
+5 removed from said first further data storage area, and the\
+method step of extracting a single unprocessed data packet\
+\
+from said first data storage area includes the sub-steps of\
+\
+i. extracting said output start address from said output\
+transfer control data.\
+\
+O\
+\
+ii. reading the next data packet for processing from said first\
+\
+S$\
+\
+3. A method of operating a data processing device as\
+claimed in claim 1 wherein said second further data storage\
+\
+further data storage area using said output start address\
+iii. incrementing said output block count,\
+iv. decrementing said total block count and\
+v. calculating a new value for said output start address.\
+\
+area includes transfer control information relevant to the data\
+packets stored therein and said transfer control information\
+, includes common transfer contro! data defining (i) a total\
+\'910 block count, indicative of the number of data packets stored\
+in that further data storage area, \{ii\} a maximum state of\
+count, indicative of the maximum number of data packets said\
+second further data storage area is capable of storing, and (iii)\
+\\g acount code, indicative of the size of a single processed data\
+packet, and said transfer control information further includes\
+input transfer control data defining (a) an input start address,\
+indicative of the address of a data packet area which is next in\
+sequence for the reception of a processed data packet, and (b)\
+o a input block count, indicative of the number of processed\
+data packets which have been inserted into said second\
+further data storage area, and the method step of inserting the\
+processed data packet into said second further data storage\
+5\
+\
+area includes the sub-steps of\
+\
+i. extracting said input start address from said input transfer\
+control data,\
+\
+ii. writing the processed data packet into said second further\
+data storage area using said input start address\
+\
+iii. incrementing said input block count\
+\
+\'910. ___ iv. incrementing said total block count and\
+v. calculating a new value for said input start address.\
+4. A method of operating a data processing system in the\
+\
+performance of a manipulative procedure said procedure\
+being divided into a plurality of manipulative functions each\
+45 of which is performed under the control of a corresponding\
+stored program routine operating on a data packet said system\
+\
+including a plurality of stored program controlled data\
+processing devices each having an individual memory associated therewith and being interconnected by way of a data\
+Q transfer highway system providing access from any data\
+processing device to any other data processing device and the\
+\
+stored program routines of the procedure are distributed\
+amongst said data processing devices and said system includes\
+for each stored program routine, an input data storage area for\
+\
+5 the storage of a single unprocessed data packet, an output\
+\
+data storage area for the storage of a single processed data\
+packet and first and second further data storage areas wach of\
+which are capable of storing a plurality of unprocessed data\
+packets and processed data packets respectively and the input\
+O data storage area and the output data storage area of a particular stored program routine are stored within the memory\
+associated with the particular data processing device to which\
+said particular stored program routine is allocated whereas\
+said first further data storage area and said second further data\
+5 storage area may be stored in other ones of said data\
+processing devices and said method comprises, for the performance of a particular manipulative function, the sequential\
+steps of\
+\
+0\
+\
+P\
+\
+a. establishing an intercommunication path over said data\
+transfer highway system, if said first further data storage\
+\
+area is not stored within the memory associated with said\
+particular data processing device, between said particular\
+data processing device and the data processing device in\
+the memory of which said first further data storage area\
+resides,\
+\
+|\
+\
+\page SSE\
+SN\
+SESE\
+\
+ONES\
+\
+MAE\
+\
+Ee SEY\
+\
+first further data storage area,\
+\
+MES\
+\
+PSECACL\
+\
+ITO)\
+\
+Sz\
+\
+inserting said single unprocessed data packet into ss\
+input data storage area,\
+performing said particular manipulative function by \'a2\
+\
+ecuting the instructions of said particular stored progra\
+\
+routine to process the data packet in said input da\
+\
+itorage area and to produce a processed data packet\
+\
+aid output data storage area\
+\
+establishing an intercommunication path over said da\
+\
+ransfer hishwav svstem. if said second further da\
+\
+\page 3,657;\
+\
+b. extracting a single unprocessed data packet from said\
+first further data storage area,\
+c. inserting said single unprocessed data packet into said\
+input data storage area,\
+\
+d. performing said particular manipulative function by ex- 5\
+ecuting the instructions of said particular stored program\
+\
+in said input data\
+routine to process the data apacket\
+processed data packet in\
+\
+storage area and to produce\
+\
+said autput data storage area\
+\
+data 10\
+e. establishing an intercommunication path over said data\
+transfer highway system, if said second further\
+\
+\page SSE\
+SN\
+SERA\
+\
+SOMES\
+\
+MAE\
+\
+ele\
+\
+first further data storage area,\
+\
+Meal\
+\
+PSaCAGCt\
+\
+IFO)\
+\
+Sz\
+\
+inserting said single unprocessed data packet into se\
+input data storage area,\
+\
+performing said particular manipulative function by \'a2\
+ecuting the instructions of said particular stored progra\
+\
+routine to process the data packet in said input da\
+\
+itorage area and to produce a processed data packet\
+\
+aid output data etorage area\
+\
+establishing an intercommunication path over said da\
+\
+ransfer hichwav svetem. if esid second further cle\
+\
+\page 1,736\
+\
+;\
+\
+f)\
+\
+26\
+storage area is not stored within the memory associated\
+\
+with said particular data processing device, between said\
+\
+particular data processing device and the data processing\
+device in the memory of which said second further data\
+\
+storage area resides,\
+\
+f. extracting said processed data packet from said output\
+data storage area and\
+\
+g. inserting the processed data packet into said second\
+\
+further data storage area.\
+L\
+\
+*\
+\
+*\
+\
+TM\
+\
+*\
+\
+\page \
 \pard\pardeftab720\partightenfactor0
 
 \fs30 \cf2 \cb3 Claims (4)\cb1 \
 \pard\pardeftab720\partightenfactor0
 
-\fs26 \cf4 \cb3 \strokec4 Hide Dependent\cb1 \
+\fs26 \cf4 \cb3 Hide Dependent\cb1 \
 \
 \pard\pardeftab720\partightenfactor0
 
-\fs30 \cf2 \strokec2 \
+\fs30 \cf2 \
 \pard\pardeftab720\partightenfactor0
 
 \fs26 \cf2 \cb3 1. A method of operating a data processing system in the performance of a manipulative procedure said procedure being divided into a plurality of manipulative functions each of which is performed under the control of a corresponding stored program routine arranged to operate on a data packet said system including for each stored program routine an input data storage area for the storage of a single unprocessed data packet, an output data storage area for the storage of a single processed data packet and first and second further data storage areas each of which are capable of storing a plurality of unprocessed data packets and processed data packets respectively, said method comprising, for the performance of a particular manipulative function, the sequential steps of a. extracting a single unprocessed data packet from said first further data storage area, b. inserting said unprocessed data packet into said input data storage area, c. performing said manipulative process by executing the instructions of the corresponding stored program routine to process the data packet in said input storage area to produce a processed data packet in said output data storage area, d. extracting said processed data packet from said output data storage area and e. inserting the processed data packet into said second further data storage area.\cb1 \
 \pard\pardeftab720\partightenfactor0
-\cf5 \cb3 \strokec5 2. A method of operating a data processing device as claimed in claim 1 wherein said first further data storage area includes transfer control information relevant to the data packets stored therein and said transfer control information inclUdes common transfer control data defining (i) a total block count, indicative of the number of data packets stored in that further data storage area, (ii) a maximum state of count, indicative of the maximum number of data packets said first further data storage area is capable of storing and (iii) a count code indicative of the size of a single unprocessed data packet, and said transfer control information further includes output transfer control data defining (a) an output start address, indicative of the address in said first further data storage area of an unprocessed data packet which is next in sequence for extraction, and (b) an output block count, indicative of the number of unprocessed data packets which have been removed from said first further data storage area, and the method step of extracting a single unprocessed data packet from said first data storage area includes the sub-steps of i. extracting said output start address from said output transfer control data. ii. reading the next data packet for processing from said first further data storage area using said output start address iii. incrementing said output block count, iv. decrementing said total block count and v. calculating a new value for said output start address.\cb1 \
+\cf5 \cb3 2. A method of operating a data processing device as claimed in claim 1 wherein said first further data storage area includes transfer control information relevant to the data packets stored therein and said transfer control information inclUdes common transfer control data defining (i) a total block count, indicative of the number of data packets stored in that further data storage area, (ii) a maximum state of count, indicative of the maximum number of data packets said first further data storage area is capable of storing and (iii) a count code indicative of the size of a single unprocessed data packet, and said transfer control information further includes output transfer control data defining (a) an output start address, indicative of the address in said first further data storage area of an unprocessed data packet which is next in sequence for extraction, and (b) an output block count, indicative of the number of unprocessed data packets which have been removed from said first further data storage area, and the method step of extracting a single unprocessed data packet from said first data storage area includes the sub-steps of i. extracting said output start address from said output transfer control data. ii. reading the next data packet for processing from said first further data storage area using said output start address iii. incrementing said output block count, iv. decrementing said total block count and v. calculating a new value for said output start address.\cb1 \
 \cb3 3. A method of operating a data processing device as claimed in claim 1 wherein said second further data storage area includes transfer control information relevant to the data packets stored therein and said transfer control information includes common transfer control data defining (i) a total block count, indicative of the number of data packets stored in that further data storage area, (ii) a maximum state of count, indicative of the maximum number of data packets said second further data storage area is capable of storing, and (iii) a count code, indicative of the size of a single processed data packet, and said transfer control information further includes input transfer control data defining (a) an input start address, indicative of the address of a data packet area which is next in sequence for the reception of a processed data packet, and (b) an input block count, indicative of the number of processed data packets which have been inserted into said second further data storage area, and the method step of inserting the processed data packet into said second further data storage area includes the sub-steps of i. extracting said input start address from said input transfer control data, ii. writing the processed data packet into said second further data storage area using said input start address iii. incrementing said input block count iv. incrementing said total block count and v. calculating a new value for said input start address.\cb1 \
 \pard\pardeftab720\partightenfactor0
-\cf2 \cb3 \strokec2 4. A method of operating a data processing system in the performance of a manipulative procedure said procedure being divided into a plurality of manipulative functions each of which is performed under the control of a corresponding stored program routine operating on a data packet said system including a plurality of stored program controlled data processing devices each having an individual memory associated therewith and being interconnected by way of a data transfer highway system providing access from any data processing device to any other data processing device and the stored program routines of the procedure are distributed amongst said data processing devices and said system includes for each stored program routine, an input data storage area for the storage of a single unprocessed data packet, an output data storage area for the storage of a single processed data packet and first and second further data storage areas wach of which are capable of storing a plurality of unprocessed data packets and processed data packets respectively and the input data storage area and the output data storage area of a particular stored program routine are stored within the memory associated with the particular data processing device to which said particular stored program routine is allocated whereas said first further data storage area and said second further data storage area may be stored in other ones of said data processing devices and said method comprises, for the performance of a particular manipulative function, the sequential steps of a. establishing an intercommunication path over said data transfer highway system, if said first further data storage area is not stored within the memory associated with said particular data processing device, between said particular data processing device and the data processing device in the memory of which said first further data storage area resides, b. extracting a single unprocessed data packet from said first further data storage area, c. inserting said single unprocessed data packet into said input data storage area, d. performing said particular manipulative function by executing the instructions of said particular stored program routine to process the data packet in said input data storage area and to produce a processed data packet in said output data storage area e. establishing an intercommunication path over said data transfer highway system, if said second further data storage area is not stored within the memory associated with said particular data processing device, between said particular data processing device and the data processing device in the memory of which said second further data storage area resides, f. extracting said processed data packet from said output data storage area and g. inserting the processed data packet into said second further data storage area.\cb1 \
+\cf2 \cb3 4. A method of operating a data processing system in the performance of a manipulative procedure said procedure being divided into a plurality of manipulative functions each of which is performed under the control of a corresponding stored program routine operating on a data packet said system including a plurality of stored program controlled data processing devices each having an individual memory associated therewith and being interconnected by way of a data transfer highway system providing access from any data processing device to any other data processing device and the stored program routines of the procedure are distributed amongst said data processing devices and said system includes for each stored program routine, an input data storage area for the storage of a single unprocessed data packet, an output data storage area for the storage of a single processed data packet and first and second further data storage areas wach of which are capable of storing a plurality of unprocessed data packets and processed data packets respectively and the input data storage area and the output data storage area of a particular stored program routine are stored within the memory associated with the particular data processing device to which said particular stored program routine is allocated whereas said first further data storage area and said second further data storage area may be stored in other ones of said data processing devices and said method comprises, for the performance of a particular manipulative function, the sequential steps of a. establishing an intercommunication path over said data transfer highway system, if said first further data storage area is not stored within the memory associated with said particular data processing device, between said particular data processing device and the data processing device in the memory of which said first further data storage area resides, b. extracting a single unprocessed data packet from said first further data storage area, c. inserting said single unprocessed data packet into said input data storage area, d. performing said particular manipulative function by executing the instructions of said particular stored program routine to process the data packet in said input data storage area and to produce a processed data packet in said output data storage area e. establishing an intercommunication path over said data transfer highway system, if said second further data storage area is not stored within the memory associated with said particular data processing device, between said particular data processing device and the data processing device in the memory of which said second further data storage area resides, f. extracting said processed data packet from said output data storage area and g. inserting the processed data packet into said second further data storage area.\cb1 \
 \
 \pard\pardeftab720\sa360\partightenfactor0
 
 \fs30 \cf2 \cb3 Patent Citations (2)
-\fs26 \cf6 \cb1 \strokec6 \
+\fs26 \cf6 \cb1 \
 \pard\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \strokec6 \
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \
 }}
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
 \clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
@@ -165,7 +1802,7 @@
 \clvertalt\clvertalbase \clcbpat8 \clwWidth2720\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt\clvertalbase \clcbpat8 \clwWidth5648\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\cf7 \cb3 Publication number\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf7 \cb3 Priority date\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -182,7 +1819,7 @@
 \clvertalt \clshdrawnil \clwWidth2720\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth5648\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3483524A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3483524A }}\cf2 \cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1965-05-06\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -199,7 +1836,7 @@
 \clvertalt \clshdrawnil \clwWidth2720\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth5648\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3496551A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3496551A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1967-07-13\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -216,7 +1853,7 @@
 \clvertalt \clcbpat8 \clwWidth2720\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clcbpat8 \clwWidth5648\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\cf7 \cb3 Family To Family Citations\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf7 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -227,13 +1864,13 @@
 \cf7 \cell \lastrow\row
 \pard\pardeftab720\partightenfactor0
 
-\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party\cb1 \
+\fs22 \cf2 \cb3 * Cited by examiner, \'86 Cited by third party\cb1 \
 \pard\pardeftab720\sa360\partightenfactor0
 
 \fs30 \cf2 \cb3 Cited By (14)
-\fs26 \cf6 \cb1 \strokec6 \
+\fs26 \cf6 \cb1 \
 \pard\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \strokec6 \
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \
 }}
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
 \clvertalt\clvertalbase \clcbpat8 \clwWidth3034\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx1728
@@ -242,7 +1879,7 @@
 \clvertalt\clvertalbase \clcbpat8 \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt\clvertalbase \clcbpat8 \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf7 \cb3 \strokec7 Publication number\cb1 \cell 
+\cf7 \cb3 Publication number\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf7 \cb3 Priority date\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -259,7 +1896,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3978452A }}\cf2 \cb3 \strokec2 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3978452A }}\cf2 \cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1974-02-28\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -276,7 +1913,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4130885A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4130885A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1976-08-19\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -293,7 +1930,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4145733A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4145733A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1974-03-29\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -310,7 +1947,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4149240A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4149240A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1974-03-29\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -327,7 +1964,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4153932A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4153932A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1974-03-29\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -344,7 +1981,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4257096A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4257096A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1978-10-23\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -361,7 +1998,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4369494A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4369494A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1974-12-09\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -378,7 +2015,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4374412A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4374412A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1965-05-25\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -395,7 +2032,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4395757A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4395757A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1973-11-30\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -412,7 +2049,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4574348A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4574348A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1983-06-01\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -429,7 +2066,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5214786A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US5214786A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1986-04-14\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -446,7 +2083,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5218699A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US5218699A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1989-08-24\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -463,7 +2100,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US5606666A }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US5606666A }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1994-07-19\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -480,7 +2117,7 @@
 \clvertalt \clshdrawnil \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clshdrawnil \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US20060248316A1 }}\cb3 *\cb1 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US20060248316A1 }}\cb3 *\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 2001-03-07\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -497,7 +2134,7 @@
 \clvertalt \clcbpat8 \clwWidth1734\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6912
 \clvertalt \clcbpat8 \clwWidth6634\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf7 \cb3 \strokec7 Family To Family Citations\cb1 \cell 
+\cf7 \cb3 Family To Family Citations\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf7 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -508,20 +2145,20 @@
 \cf7 \cell \lastrow\row
 \pard\pardeftab720\partightenfactor0
 
-\fs22 \cf2 \cb3 \strokec2 * Cited by examiner, \'86 Cited by third party, \'87 Family to family citation\cb1 \
+\fs22 \cf2 \cb3 * Cited by examiner, \'86 Cited by third party, \'87 Family to family citation\cb1 \
 \pard\pardeftab720\sa360\partightenfactor0
 
 \fs30 \cf2 \cb3 Similar Documents
-\fs26 \cf6 \cb1 \strokec6 \
+\fs26 \cf6 \cb1 \
 \pard\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \strokec6 \
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \
 }}
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
 \clvertalt\clvertalbase \clcbpat8 \clwWidth1677\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
 \clvertalt\clvertalbase \clcbpat8 \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt\clvertalbase \clcbpat8 \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf7 \cb3 \strokec7 Publication\cb1 \cell 
+\cf7 \cb3 Publication\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf7 \cb3 Publication Date\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -532,7 +2169,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4539637A}}\cf2 \strokec2 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4539637A}}\cf2 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1985-09-03\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -543,7 +2180,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3297994A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3297994A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1967-01-10\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -554,7 +2191,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3200380A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3200380A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1965-08-10\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -565,7 +2202,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3771146A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3771146A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1973-11-06\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -576,7 +2213,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3781810A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3781810A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1973-12-25\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -587,7 +2224,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4156903A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4156903A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1979-05-29\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -598,7 +2235,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3566358A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3566358A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1971-02-23\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -609,7 +2246,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4354232A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4354232A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1982-10-12\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -620,7 +2257,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 CA1145477A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 CA1145477A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1983-04-26\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -631,7 +2268,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3740722A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3740722A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1973-06-19\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -642,7 +2279,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3812475A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3812475A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1974-05-21\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -653,7 +2290,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4691280A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4691280A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1987-09-01\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -664,7 +2301,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3720920A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3720920A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1973-03-13\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -675,7 +2312,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3710349A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3710349A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1973-01-09\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -686,7 +2323,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3546680A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3546680A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1970-12-08\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -697,7 +2334,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3251041A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3251041A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1966-05-10\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -708,7 +2345,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4156908A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4156908A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1979-05-29\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -719,7 +2356,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 AU589047B2}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 AU589047B2}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1989-09-28\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -730,7 +2367,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3201760A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3201760A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1965-08-17\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -741,7 +2378,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 IE61307B1}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 IE61307B1}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1994-10-19\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -752,7 +2389,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3787891A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3787891A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1974-01-22\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -763,7 +2400,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US3761893A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US3761893A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1973-09-25\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -774,7 +2411,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 US4115866A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 US4115866A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1978-09-19\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -785,7 +2422,7 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 EP0319132B1}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 EP0319132B1}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1996-01-03\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -796,25 +2433,25 @@
 \clvertalt \clshdrawnil \clwWidth1893\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth12029\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB1087576A}}\cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 GB1087576A}}\cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1967-10-18\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 Communications accumulation and distribution\cb1 \cell \lastrow\row
 \pard\pardeftab720\sa360\partightenfactor0
 
-\fs30 \cf2 \cb3 \strokec2 Priority And Related Applications\cb1 \
+\fs30 \cf2 \cb3 Priority And Related Applications\cb1 \
 \cb3 Applications Claiming Priority (1)
-\fs26 \cf6 \cb1 \strokec6 \
+\fs26 \cf6 \cb1 \
 \pard\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \strokec6 \
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \
 }}
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
 \clvertalt\clvertalbase \clcbpat8 \clwWidth2669\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2880
 \clvertalt\clvertalbase \clcbpat8 \clwWidth2630\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt\clvertalbase \clcbpat8 \clwWidth10301\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf7 \cb3 \strokec7 Application\cb1 \cell 
+\cf7 \cb3 Application\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf7 \cb3 Filing date\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -825,17 +2462,17 @@
 \clvertalt \clshdrawnil \clwWidth2630\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx5760
 \clvertalt \clshdrawnil \clwWidth10301\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 \strokec6 GB093/69A}}\cf2 \strokec2 \cell 
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb3 GB093/69A}}\cf2 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 1969-01-02\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 Improvements relating to data processing systems\cb1 \cell \lastrow\row
 \pard\pardeftab720\sa360\partightenfactor0
 
-\fs30 \cf2 \cb3 \strokec2 Legal Events
-\fs26 \cf6 \cb1 \strokec6 \
+\fs30 \cf2 \cb3 Legal Events
+\fs26 \cf6 \cb1 \
 \pard\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \strokec6 \
+{\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#title"}}{\fldrslt \cf6 \
 }}
 \itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrs\brdrw20\brdrcf9 \trbrdrl\brdrs\brdrw20\brdrcf9 \trbrdrr\brdrs\brdrw20\brdrcf9 
 \clvertalt\clvertalbase \clcbpat8 \clwWidth1330\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx2160
@@ -843,7 +2480,7 @@
 \clvertalt\clvertalbase \clcbpat8 \clwWidth1358\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
 \clvertalt\clvertalbase \clcbpat8 \clwWidth11810\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf7 \cb3 \strokec7 Date\cb1 \cell 
+\cf7 \cb3 Date\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf7 \cb3 Code\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -857,7 +2494,7 @@
 \clvertalt \clshdrawnil \clwWidth1358\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx6480
 \clvertalt \clshdrawnil \clwWidth11810\clftsWidth3 \clbrdrt\brdrnil \clbrdrl\brdrnil \clbrdrb\brdrnil \clbrdrr\brdrnil \clpadt200 \clpadl240 \clpadb200 \clpadr240 \gaph\cellx8640
 \pard\intbl\itap1\pardeftab720\partightenfactor0
-\cf2 \cb3 \strokec2 1989-02-21\cb1 \cell 
+\cf2 \cb3 1989-02-21\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
 \cf2 \cb3 AS\cb1 \cell 
 \pard\intbl\itap1\pardeftab720\partightenfactor0
@@ -904,8 +2541,8 @@
 \f1\b \cb3 Effective date
 \f0\b0 : 19890917\cb1 \cell \lastrow\row
 \pard\pardeftab720\partightenfactor0
-\cf2 \cb3 \strokec2 Data provided by IFI CLAIMS Patent Services\cb1 \
+\cf2 \cb3 Data provided by IFI CLAIMS Patent Services\cb1 \
 \
 \pard\pardeftab720\partightenfactor0
-{\field{\*\fldinst{HYPERLINK "https://support.google.com/faqs/answer/6390996"}}{\fldrslt \cf6 \cb8 \strokec6 About}}\cb8  {\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 \cb8 \strokec6 Send Feedback}} {\field{\*\fldinst{HYPERLINK "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"}}{\fldrslt \cf6 \strokec6 Public Datasets}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/policies/terms/"}}{\fldrslt \cf6 \strokec6 Terms}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/privacy/privacy-policy.html"}}{\fldrslt \cf6 \strokec6 Privacy Policy}} {\field{\*\fldinst{HYPERLINK "https://support.google.com/websearch/"}}{\fldrslt \cf6 \strokec6 Help}}\cb1 \
+{\field{\*\fldinst{HYPERLINK "https://support.google.com/faqs/answer/6390996"}}{\fldrslt \cf6 \cb8 About}}\cb8  {\field{\*\fldinst{HYPERLINK "https://patents.google.com/patent/US3657736A/en#"}}{\fldrslt \cf6 Send Feedback}} {\field{\*\fldinst{HYPERLINK "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"}}{\fldrslt \cf6 Public Datasets}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/policies/terms/"}}{\fldrslt \cf6 Terms}} {\field{\*\fldinst{HYPERLINK "https://www.google.com/privacy/privacy-policy.html"}}{\fldrslt \cf6 Privacy Policy}} {\field{\*\fldinst{HYPERLINK "https://support.google.com/websearch/"}}{\fldrslt \cf6 Help}}\cb1 \
 }
