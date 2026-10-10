@@ -1162,3 +1162,16 @@ Find primary descriptions of physical module/interface admission; determine whet
 
 **CONNECTION:** COS operator-facing `ALO`, `GIV`, `RSP` and `RUN` expose distinguishable allocation, SCT-entry, capability-pointer and process-start operations ([command transcription](../transcriptions/System%20250%20Pocket%20Reference%20pg11-pg12.txt)); they are possible clues to primitives encapsulated within later protected services, not evidence of identical COS/ROS code or an exact prescribed command sequence. See [COS versus ROS/PDOS management abstraction](pp250-execution-and-process-model.md#9-october-2026--cos-operator-commands-and-protected-process-services).
 
+## 10 October 2026 — alternatives to mixed-access capability construction
+
+**Working assessment, not proof by exhaustion.** The private mixed-access construction sequence `WD [ACCESS | SCT reference] -> LC -> SC` (Section 20) remains the leading explanation for *ordinary runtime* capability manufacture. COS `GIV`, `ALO`, and `RSP` distinguish SCT-slot allocation, block allocation, and creation/deposit of a pointer with specified access; their syntax does not establish the internal instruction sequence.
+
+Three alternatives were considered:
+
+1. **Write the new pointer directly as data into its destination capability block.** Rejected as an acceptable service design: granting `WD` over the destination merely to install a capability defeats the desired separation. Normal `SC` into a destination accessible by `WC` is sufficient once the Store Allocator has a capability in a register. Direct data writing also leaves the data-to-capability acceptance question unresolved.
+2. **Dedicated capability-manufacturing instruction.** No such G2 instruction has been established. Unrestricted use would permit capability forgery; privileged-mode restriction would introduce a protection mechanism foreign to the reconstructed ordinary service model. Capability-authorised use is logically possible without a conventional privileged mode, but requires undocumented machinery and is not needed by the leading hypothesis.
+3. **Manufacture solely as an SCT-management side effect.** Insufficient as a general explanation: allocating an SCT entry does not by itself explain creation of a stored pointer. Moreover the SCT cannot supply the initial provenance of its own governing special capability, and the special C(C), C(N), and C(I) capability state belongs to the distinct startup/protected-state path rather than ordinary SCT lookup.
+
+**Surviving question:** verify against primary instruction/microprogram evidence whether `LC` accepts an Inform pointer whose bits were previously written as data to private mixed-access storage, and whether any additional check prevents this transition. The proposed software policy confines mixed-access *creation/distribution* to trusted Store Allocator services; that exclusivity and absence of an independent hardware mixed-access prohibition have not yet been proved.
+
+This section compares candidate mechanisms; it does **not** reopen the established distinction between primordial processor capability establishment and ordinary runtime resource allocation.
