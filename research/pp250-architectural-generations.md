@@ -747,7 +747,7 @@ See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-rev
 
 **WORKING RECONSTRUCTION — SIW REMOVAL BY MAY 1976:** By May 1976, the System Interrupt Word appears to have been removed from the System 250 peripheral-completion mechanism. Peripheral readiness and completion were likely handled through memory-mapped status examination rather than SIW-generated interrupts.
 
-The probable motivations included improved fault containment, reduced shared-state complexity, and avoidance of interrupt-driven process-switch overhead. The relative importance of these considerations is not documented.
+The probable motivations included improved fault containment, reduced shared-state complexity, and avoidance of interrupt-driven process-switch overhead. A shared SIW could be a common failure point affecting notification for several peripherals, whereas polling each controller's own status would retain device-local completion state. The relative importance of these considerations is not documented.
 
 **EVIDENCE BASIS:** The May 1976 Pocket Reference documents peripheral status/command/data interfaces (pp. 17–34) and `MOVE` busy/status handling (p. 4), but not the SIW, despite its detailed coverage of processor and peripheral registers. Earlier patents and Halton explicitly describe the SIW; later Andrews descriptions do not. Anthony Stanners's first-hand recollection of polled peripheral operation is supporting recollection, separate from documentary evidence. The disappearance of the SIW is an inference from this combined evidence, not an explicit statement of removal in a primary source.
 
