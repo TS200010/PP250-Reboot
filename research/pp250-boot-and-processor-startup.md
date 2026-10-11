@@ -1047,6 +1047,21 @@ Candidate initial records (all addresses and counts octal, except word counts sh
 | `000000` | `000034` (28) | Prepared Checkout Dump Stack — **hypothesised placement** |
 | `000034` | `000004` (4) | First four-instruction Checkout block — **documented code address** |
 | `077741` | `000004` (4) | Complementary Checkout block — **documented address range** `077741–077744`; its execution order is described as `077744–077741` |
-| To be determined | To be determined | Remaining Checkout program, fault/start-up block, special SCT and capability-pointer structures |
+| To be determined | `000004` (4) | **Four-word Special Fault/Start-Up Block addressed by C(S)**; layout shown below |
+| To be determined | To be determined | Remaining Checkout program, special SCT and capability-pointer structures |
 
 The first Checkout instruction addresses and the complementary four-word block are documented in [the processor self-test paper](../transcriptions/processor-self-test-program.md); the Dump Stack's placement immediately below `000034` is a **reconstruction**, not a statement from that paper. The file format does not require the tape to contain intervening unused memory words or the operator to enter physical addresses. It is a proposed commissioning-image format, separate from subsequent **normal startup by deliberately faulting a processor**, documented under `CLOSEDOWN` in the [Pocket Reference](../transcriptions/System%20250%20Pocket%20Reference%20pg15-pg16.txt).
+
+
+### C(S) target: four-word Special Fault/Start-Up Block (proposed tape record)
+
+The four physical 24-bit words loaded at the processor's hardware/preset C(S) fault-block location are, in order:
+
+| Offset | Content | Purpose |
+|---|---|---|
+| 0 | Sum-check | Validation of the special table descriptor |
+| 1 | Special SCT base address | Establishes the protected capability-table base for fault entry |
+| 2 | Special SCT limit | Completes the special table descriptor |
+| 3 | RSPC-0 | Reserved segment pointer identifying the prepared Checkout Dump Stack via the special SCT |
+
+This order is **documented in the early fault patent US3814919A** and represented in the existing startup research. The proposed tape record is `START_ADDRESS = <physical address decoded by C(S)>, WORD_COUNT = 4, DATA = [sum-check, special SCT base, special SCT limit, RSPC-0]`. The address and concrete word encodings are **not specified** here. The SSCR hard-wired within-module position described by the early patent must not be silently equated to the exact later C(S) register encoding. This record requires a separately populated special SCT with an entry describing the Checkout Dump Stack; merely placing the four words does not establish that table.
