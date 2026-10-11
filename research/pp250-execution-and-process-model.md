@@ -443,11 +443,11 @@ The following material was moved here from `pp250-normal-interrupt-and-system-di
 
 Halton's System Interrupt description must be distinguished from a conventional asynchronous peripheral-interrupt architecture.
 
-Special capability register `C(I)` defines the **System Interrupt Word (SIW)**.
+The **System Interrupt Word (SIW)** is held in shared main store. In the early interrupt patent, a dedicated Interrupt Capability Register (`ICR`) addresses it; this must not be confused with the later `C(I)`, which the 1976 Pocket Reference and Andrews/Wheatley patent identify as the **Interval Timer**.
 
 The SIW contains 24 bits, with one bit associated with each processor and I/O channel. Pending system activity is represented by setting the corresponding bit in this shared word.
 
-The processor periodically examines this state. Using `C(I)` it accesses the SIW, and using `C(N)` it obtains the associated interrupt mask information. Pending unmasked bits are correlated and one request is selected.
+The processor periodically examines the shared SIW and applies an interrupt acceptance mask to identify pending requests it may accept. The early interrupt patent identifies a processor-local mask in the Dedicated Local Start-up Area; later System 250 documentation identifies `C(N)` as the Normal Interrupt Block. Pending unmasked bits are correlated and one request is selected. The precise correspondence between the early mask arrangement and later `C(N)`-addressed structures must not be assumed.
 
 The selected SIW bit is cleared and its position is represented as a **correlation count**.
 
