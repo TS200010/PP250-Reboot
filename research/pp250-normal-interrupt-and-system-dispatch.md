@@ -33,6 +33,16 @@ catastrophic fault / startup              normal operational event
 
 The two paths are related at bootstrap — the `C(S)`-rooted startup must ultimately establish the running normal-interrupt machinery — but they are not the same operational path.
 
+### Interval Timer — C(I)
+
+Each processor has a C(I) capability register (C11), initialised during processor startup, addressing a 24-bit countdown word in memory. Hardware decrements this word every 100 µs and generates a Normal Interrupt on reaching zero. Software reloads the word without changing C(I).
+
+**Working interpretation:** Each processor has its own interval timer to ensure that, even in the absence of other interrupts, the running process can be suspended when its allocated time slice expires.
+
+The maximum countdown is 27 minutes 58 seconds. Wraparound after zero is plausible but unconfirmed.
+
+**Sources:** 1976 Pocket Reference; US 4,383,297.
+
 ## 2. Why normal interrupt entry must lead to a Dump Stack
 
 The processor's protected process-transition mechanism is `CHP` (Change Process). A process is represented by persistent architectural state in its Process Dump Stack, from which the processor can restore the incoming process context.
