@@ -88,7 +88,7 @@ Possible discovery opportunities include an idle process, periodic interval-time
 
 A new processor introduces another execution engine, not necessarily new authority.
 
-There is a project recollection that a processor could be brought online simply by **faulting it**. This fits the fault model:
+**Documented evidence:** the *System 250 Pocket Reference*, pages 15–16, `CLOSEDOWN` command, explicitly states that after both CPUs enter an idle loop, "The system can be restarted by simply faulting each CPU." This establishes deliberate processor restart by faulting, although the exact hardware/maintenance control used to cause the fault is not specified there. This fits the fault model:
 
 ```
 processor offline/new
@@ -102,7 +102,7 @@ valid System 250 process established
 processor joins existing work system
 ```
 
-The processor acquires authority from the process state it executes rather than permanent processor-specific privilege. The original wording/document still needs to be located.
+The processor acquires authority from the process state it executes rather than permanent processor-specific privilege. Source: [System 250 Pocket Reference, pages 15–16](../transcriptions/System%20250%20Pocket%20Reference%20pg15-pg16.txt), `CLOSEDOWN`.
 
 ## 6. Scheduling, watchdog and interval activity
 
@@ -290,7 +290,7 @@ There is no requirement here for a conventional permanent supervisor mode.
 8. How is a newly installed store/peripheral detected and admitted?
 9. What mechanism gives initial authority over a newly appearing module?
 10. Can primordial authority cover module addresses at which no hardware was present when the authority was created?
-11. Find the original statement that a processor is brought online by faulting it.
+11. **Resolved:** the `CLOSEDOWN` entry in the *System 250 Pocket Reference*, pages 15–16, documents restarting the CPUs by faulting them. The exact fault-triggering hardware control remains unidentified.
 12. Determine the roles of watchdog expiry, interval timer, scheduler and idle processing in configuration/recovery activity.
 13. Determine what happens at bus level when an addressed module fails to respond.
 14. Identify exactly which structures are established below the first CHP/fault-created process.
