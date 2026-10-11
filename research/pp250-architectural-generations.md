@@ -735,3 +735,16 @@ US3771146A, Description 111–121, also establishes zero-SUMCHECK temporary unav
 **DOCUMENTED OBSERVATION, Generation C:** US4486831A, Background/Summary 16–18 and Description 291–297, expressly documents procedure-associated local descriptors, automatic deallocation on return, invalidation of expired local capabilities and restrictions on storage into lower levels. This answers the earlier local-lifetime question: the evidence is now the description, not the name “Local Capability Count”. Whether compiler experience motivated these features remains **HYPOTHESIS**.
 
 See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.
+
+## Evidence update — 11 October 2026: System Interrupt Word (SIW)
+
+| Evidence date | Interrupt-related evidence |
+|---|---|
+| 1970 priority (US3757307A) | Shared SIW holds processor/I/O-module request bits; hardware interrogates, correlates and accepts an eligible request. |
+| 1972 (Halton) | SIW and correlation mechanism explicitly described. |
+| May 1976 Pocket Reference | No SIW description; C(I) is the Interval Timer, C(N) the Normal Interrupt Block, and D15 the Interrupt Accept Register. |
+| Later Andrews descriptions (US4383297A; US4486831A) | No SIW described; Interrupt Accept Register is specified for Program Trap bit 6, not SIW correlation. |
+
+**CANDIDATE ARCHITECTURAL CHANGE, NOT ESTABLISHED:** The SIW acceptance mechanism may have been omitted in later operational systems. The missing SIW correlation function in the later Interrupt Accept Register description is more significant than mere omission of SIW from an abbreviated register list. Neither silence proves removal. Anthony Stanners's first-hand recollection is of polled rather than peripheral-interrupt-driven I/O; retain this independently as recollection, not documentary proof.
+
+**Do not reconstruct an absent later SIW mechanism or assume DMA.** The working operational picture is that each peripheral has an associated resource manager which arranges transfers when its device is ready. The precise means by which the manager detects readiness and moves data remain to be established; no assertion is made that a peripheral writes status or transfers data directly into shared main memory.
