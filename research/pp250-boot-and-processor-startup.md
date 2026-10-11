@@ -1019,3 +1019,34 @@ At cold start, startup obtains storage for a new runtime SCT, initialises its en
 **Proposed SCT initial layout:** entry 0 is a self-contained free-list header; entry 1 permanently describes the SCT itself and is not free; entries 2 onward are linked free entries. Each SCT entry occupies three 24-bit words. The proposed singly linked free list uses word 0 of each unused entry to hold the next SCT-relative offset, with zero as terminator. This layout is a compact implementation hypothesis, not established historical practice. US4121286A documents an SCT-entry free list but does not specify its representation.
 
 **Unresolved bootstrap boundary:** Constructing/loading the *first* runtime SCT capability remains an authority-provenance question. The self-describing entry and startup data writes do not alone prove how the initial capability becomes a legitimate capability-register value or a source pointer accepted by SECOND GROUP LC. Nor is the historical rejoin discovery/validation procedure established. Keep these issues in bootstrap research; do not burden the normal Storage Manager design with undocumented startup machinery.
+
+
+## 11 October 2026 — proposed initial-load paper-tape format (working reconstruction)
+
+**PROPOSAL, not documented historical tape encoding.** For virgin commissioning or replacement of non-volatile plated-wire store, a simple independent maintenance loader can write a prepared bootstrap image to physical memory *without executing PP250 code or resolving capabilities*. The engineer inserts one tape and presses LOAD. The mechanism that generates bus writes, and whether this exact equipment existed historically, remain unverified.
+
+A tape is a succession of records, each comprising 24-bit words:
+
+```text
+START_ADDRESS   (physical word address)
+WORD_COUNT      (number of following 24-bit data words)
+DATA[0] ... DATA[WORD_COUNT - 1]
+
+... repeat ...
+
+START_ADDRESS   (ignored)
+WORD_COUNT = 0  (end of tape)
+```
+
+The loader assembles three 8-bit tape characters into each 24-bit word; reads the physical start address and count; writes the following words to successive physical addresses while incrementing an address counter and decrementing the count; then reads the next record. A zero count is the proposed end marker. Framing, parity/checksum, error handling, tape leader/trailer and octet order are **not yet specified**.
+
+Candidate initial records (all addresses and counts octal, except word counts shown also in decimal):
+
+| Start | Count (octal; decimal) | Content |
+|---|---|---|
+| `000000` | `000034` (28) | Prepared Checkout Dump Stack — **hypothesised placement** |
+| `000034` | `000004` (4) | First four-instruction Checkout block — **documented code address** |
+| `077741` | `000004` (4) | Complementary Checkout block — **documented address range** `077741–077744`; its execution order is described as `077744–077741` |
+| To be determined | To be determined | Remaining Checkout program, fault/start-up block, special SCT and capability-pointer structures |
+
+The first Checkout instruction addresses and the complementary four-word block are documented in [the processor self-test paper](../transcriptions/processor-self-test-program.md); the Dump Stack's placement immediately below `000034` is a **reconstruction**, not a statement from that paper. The file format does not require the tape to contain intervening unused memory words or the operator to enter physical addresses. It is a proposed commissioning-image format, separate from subsequent **normal startup by deliberately faulting a processor**, documented under `CLOSEDOWN` in the [Pocket Reference](../transcriptions/System%20250%20Pocket%20Reference%20pg15-pg16.txt).
