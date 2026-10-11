@@ -40,7 +40,11 @@ Reset-decoder wording differs between source descriptions: US4041460A describes 
 
 ## Sources
 
-- [Pocket Reference pp. 3–4](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt).\n- [Pocket Reference pp. 17–21](../transcriptions/System%20250%20Pocket%20Reference%20pg17-pg21.txt).\n- [Pocket Reference pp. 22–27](../transcriptions/System%20250%20Pocket%20Reference%20pg22-pg27.txt).\n- [Pocket Reference pp. 28–36](../transcriptions/System%20250%20Pocket%20Reference%20pg28-pg36.txt).\n- [US3787818A transcription](../transcriptions/US3787818A.rtf).
+- [Pocket Reference pp. 3–4](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt).
+- [Pocket Reference pp. 17–21](../transcriptions/System%20250%20Pocket%20Reference%20pg17-pg21.txt).
+- [Pocket Reference pp. 22–27](../transcriptions/System%20250%20Pocket%20Reference%20pg22-pg27.txt).
+- [Pocket Reference pp. 28–36](../transcriptions/System%20250%20Pocket%20Reference%20pg28-pg36.txt).
+- [US3787818A transcription](../transcriptions/US3787818A.rtf).
 - [US4050059A transcription](../transcriptions/US4050059A.rtf).
 - [US4041460A transcription](../transcriptions/US4041460A.rtf).
 - [Completed batch review and limitations](../research/pp250-patent-transcriptions-review-2026-10-02.md).
