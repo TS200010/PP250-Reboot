@@ -447,7 +447,7 @@ The **System Interrupt Word (SIW)** is held in shared main store. In the early i
 
 The SIW contains 24 bits, with one bit associated with each processor and I/O channel. Pending system activity is represented by setting the corresponding bit in this shared word.
 
-The processor periodically examines the shared SIW and applies an interrupt acceptance mask to identify pending requests it may accept. The early interrupt patent identifies a processor-local mask in the Dedicated Local Start-up Area; later System 250 documentation identifies `C(N)` as the Normal Interrupt Block. Pending unmasked bits are correlated and one request is selected. The precise correspondence between the early mask arrangement and later `C(N)`-addressed structures must not be assumed.
+The processor periodically examines the shared SIW and applies an interrupt acceptance mask to identify pending requests it may accept. The early interrupt patent identifies a processor-local mask in the Dedicated Local Start-up Area. Pending unmasked bits are correlated and one request is selected.
 
 The selected SIW bit is cleared and its position is represented as a **correlation count**.
 
