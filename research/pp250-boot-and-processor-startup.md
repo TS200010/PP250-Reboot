@@ -1071,3 +1071,14 @@ This order is **documented in the early fault patent US3814919A** and represente
 ### Special SCT placement (proposed tape record)
 
 Place the special SCT immediately after the four-word C(S) block, beginning at physical word address **octal `000044`**. Thus the base-address word in the C(S) block at `000041` is **`000044`**. The SCT uses three 24-bit words per entry (sum-check, base, limit/descriptor), but **we have not yet decided its entry count**, and hence cannot assign its ending address or C(S) limit word at `000042`. Its tape record is `START_ADDRESS = 000044, WORD_COUNT = TBD, DATA = [special SCT entries]`. RSPC-0 at `000043` must ultimately select the entry for the Checkout Dump Stack.
+
+
+## 12 October 2026 — C(C), C(I), and C(N): cold boot versus processor fault/rejoin
+
+**WORKING RECONSTRUCTION — distinct establishment requirements.** Do not conflate the SCT capability register **C(C)** with the protected fault/startup register **C(S)**.
+
+- **Stone-cold boot:** C(S) provides the hardware-established startup authority. Before normal scheduling and normal-interrupt operation, startup must establish **C(C)** (normal SCT), **C(I)** (interval timer), and **C(N)** (Normal Interrupt Block), using the previously reconstructed special-register loading mechanism.
+- **Genuine processor fault and rejoin:** the documented fault mechanism **invalidates/replaces the normal C(C) authority** and transfers control through the C(S)-rooted protected fault/startup environment. On the present reconstruction, normal rejoin need **only re-establish C(C)** to regain the existing runtime SCT.
+- **Explicit retention assumption:** this narrower rejoin sequence assumes that the pre-fault contents of **C(I) and C(N)** survive the fault and still identify valid timer and Normal Interrupt Block structures. **Their invalidation must not be inferred from C(C)'s invalidation.** If a particular fault damages their contents or referenced structures, recovery may need more work; such a case is not established by the cited fault-entry mechanism.
+
+This is a distinction between **initial creation of normal processor capability state** and **restoration of normal SCT authority following a fault**, not a proposal to rebuild the system's timer and normal-interrupt environment on every rejoin.
