@@ -1197,3 +1197,12 @@ See [processor startup](pp250-boot-and-processor-startup.md) and [current open q
 **Distinct working question — initial Store Allocator resource state.** We do **not** yet know how the Store Allocator learns which physical ranges are available or reserved. It must avoid reallocating the storage occupied by the runtime SCT and other protected structures, but that does **not** establish that it already owns a complete allocation map from which it can derive the SCT bounds. Those bounds and reservations may instead be **inputs to initialising** the Store Allocator's resource map through the startup environment. The mechanism and provenance of this initial inventory remain to be reconstructed. Do not infer capability-construction authority from mere knowledge of physical addresses.
 
 This refinement leaves the earlier unified construction hypothesis intact and does not promote the conditional self-reference, Internal Mode or stale-pointer observations into independent architectural conclusions.
+
+
+## 12 October 2026 — restricted construction of Internal Mode capabilities (Store Manager API requirement)
+
+**WORK-IN-PROGRESS API REQUIREMENT — not yet a historical API claim.** The Store Manager/Allocator's trusted capability-construction mechanism must support constructing and returning an **Internal Mode capability** for authorised processor-management services. Such a capability addresses the processor's reserved Internal Mode module (`377` octal) and is bounded to the specific internal register(s) required, with separately limited read/write data rights. For example, a normal-interrupt service may need access only to the Interrupt Accept Register (`D15`).
+
+**Authority boundary:** This must **not** be a general Store Allocator operation available to ordinary callers to request arbitrary processor-internal registers or rights. Access must be confined to specific trusted services through appropriately restricted entry capabilities; capability construction stays private to the authorised allocator. The ordinary Internal Mode rule that most capability registers are read-only, with the documented limited C(S) exception, still applies. The exact API signature and validation policy remain to be designed.
+
+**Evidence:** [US4383297A](../transcriptions/US4383297A.txt), Internal Mode paragraphs 81–94, documents the special internal module addressing, capability bounds, allowed data instructions and restrictions on modifying capability registers. This documents the *hardware mechanism*, not the proposed Store Manager API.
