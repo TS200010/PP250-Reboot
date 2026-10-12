@@ -1082,3 +1082,28 @@ Place the special SCT immediately after the four-word C(S) block, beginning at p
 - **Explicit retention assumption:** this narrower rejoin sequence assumes that the pre-fault contents of **C(I) and C(N)** survive the fault and still identify valid timer and Normal Interrupt Block structures. **Their invalidation must not be inferred from C(C)'s invalidation.** If a particular fault damages their contents or referenced structures, recovery may need more work; such a case is not established by the cited fault-entry mechanism.
 
 This is a distinction between **initial creation of normal processor capability state** and **restoration of normal SCT authority following a fault**, not a proposal to rebuild the system's timer and normal-interrupt environment on every rejoin.
+
+
+## 12 October 2026 — Apply-to-rejoin handshake and prepared admission environment
+
+**WORKING RECONSTRUCTION — cooperative processor rejoin.** This expands the existing prepared-process / SECOND GROUP transition reconstruction; it does **not** replace the prior cold-start reasoning or claim that the following software protocol is directly documented.
+
+**Primary-source anchor:** US3814919A (Repton et al., fault detection/isolation), in its Checkout and rejoin discussion, describes a satisfactorily checked-out processor **applying to re-enter the on-line system** through a rejoin process. It describes reporting Checkout status using *status words* and states that a rejoin request **may** be communicated through the normal interrupt mechanism. These statements establish the notion of an application to rejoin; they do not specify the following precise shared-memory handshake or the construction of an incoming Dump Stack by an operating processor.
+
+### Proposed cooperation between a returning CPU and the operating system
+
+1. **Restricted Checkout:** Following fault entry, C(S) roots the special SCT and prepared Checkout Dump Stack. The returning processor executes Checkout with restricted authority; the operational system's normal C(C) has been invalidated/replaced by fault entry.
+2. **Apply to rejoin:** After satisfactory Checkout, the returning processor publishes a request (provisionally `REQUEST_REJOIN`) in a **shared processor-status block**. The block must be reachable by both the restricted special-SCT environment and the operational processors. This is a candidate representation, not a discovered status-word format.
+3. **Request detection:** An already-operational CPU notices the request through its ordinary system/scheduler activity or another supported notification path. Do not require a speculative interrupt protocol; the patent allows a normal-interrupt notification but does not mandate one.
+4. **Trusted admission preparation:** The operational CPU, which already possesses valid runtime C(C)/SCT authority, prepares a **rejoin process Dump Stack** and the requisite controlled capability references for the returning CPU. The authority is prepared by the operating system, not fabricated from arbitrary base/limit data by the returning CPU.
+5. **Handoff into prepared state:** The returning CPU obtains an authorised pointer to the prepared rejoin Dump Stack through a bridge accessible within its restricted startup capability environment, then performs **CHP** into that prepared process. The exact bridging representation/authority transfer between special and runtime SCTs remains an explicitly unresolved implementation detail; neither shared physical memory alone nor a bare pointer is sufficient to prove valid capability transfer.
+6. **Establish normal SCT authority:** Prepared process state restores MIP with **SECOND GROUP** set. A one-shot `LC` installs the already existing operational SCT capability into **C(C)**, using the established prepared-process transition principle. This is **admission to the live system**, not creation of a new SCT.
+7. **Resume normal system activity:** With a valid runtime C(C), the returned CPU enters ordinary process management/scheduling and shares the existing global SCT and ready list. In the current reconstruction C(I) and C(N) retain their pre-fault valid state; rejoining therefore does not imply reinitialising either special register.
+
+### Scope and authority boundary
+
+The important design principle is **application followed by admission**: Checkout can request rejoining but does not unilaterally assign itself the operational SCT. The operating system authorises the rejoin by preparing the execution context and capability authority offered to the returning CPU. A counterfeit processor or substituted physical commissioning image remains an exceptional physical trust-boundary concern, not something this software handshake by itself authenticates.
+
+This rejoin cooperation is **distinct from stone-cold boot**: at genuine cold boot no operational processor or runtime SCT yet exists to receive a rejoin application. Startup must first commission that SCT and establish C(C), C(I) and C(N) via the already documented working reconstruction; only a returning processor joins an *existing* running system through the proposed handshake.
+
+**Still open:** the precise shared status-block format and atomic update protocol; which operational activity notices requests; and, above all, how the restricted startup-SCT environment gains a legitimate capability for the prepared incoming Dump Stack across the SCT boundary. Do not silently treat these as solved or invent additional microcode.
