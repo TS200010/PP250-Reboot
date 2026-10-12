@@ -608,3 +608,8 @@ The [COS command definitions, pp. 11–12](../transcriptions/System%20250%20Pock
 
 The existing [ROS/PDOS Process Base](#12-os-process-base-versus-hardware-process) shows a contrasting software-facing entry route with an internal `666` Dump Stack link. **PROPOSED COMMON MODEL:** a client is authorised to request *operations on a process* without being entitled to rewrite its protected execution representation. This suggests testing whether the COS operations are conceptual building blocks of the POS/PDOS/ROS Process Manager and Store Allocator; it does not prove that every ROS/PDOS operation has a COS counterpart. The potential security consequence—constraining who may construct saved MIP/SECOND GROUP—is developed in the [startup note](pp250-boot-and-processor-startup.md#9-october-2026--processor-global-capability-state-and-the-sealing-question).
 
+
+
+## 12 October 2026 — scheduler and interrupt dispatch cross-reference
+
+The consolidated **C(N) scheduler instance, Running List and Program Trap-to-Storage-Manager path** is maintained in [PP250 normal interrupt and system dispatch](pp250-normal-interrupt-and-system-dispatch.md#12-october-2026--cn-reentrant-scheduler-and-program-trap-dispatch). England's reentrant scheduler and shared Ready List and the Pocket Reference SIP status fields are evidence; the Running List and Process Base query entry are working reconstruction. Keep the scheduler's operational indexes conceptually distinct from the per-process SIP and avoid duplicating the complete dispatch algorithm here.
