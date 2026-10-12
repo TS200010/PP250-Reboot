@@ -553,3 +553,8 @@ instruction X retried
 US3757307A, Description 40, 46–48, 49–65 and 68–78, corroborates completion of the current instruction before polling, transient operand/control state at that boundary, atomic interrupt-word handling and automatic CHP restoration. It does not change the conclusions of the completed [normal-interrupt source review](../transcriptions/US3757307A-program-interrupt-facilities-source-notes.md). That record is retained unchanged.
 
 See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.
+
+
+### 12 October 2026 — scheduler interval versus timer resolution (open design consideration)
+
+**WORKING RECONSTRUCTION / TO INVESTIGATE:** The documented 100 µs decrement period is the **resolution** of the C(I) interval timer, not evidence that the operating system schedules at that frequency. A proposed 1 ms timer interrupt period would cause 1,000 scheduler entries per second per processor, potentially imposing excessive interrupt, process-dump and scheduling overhead on a 1970s PP250. The reconstructed scheduler must choose an operational interval large enough to allow useful execution between interrupts; do **not** yet assign a numerical time slice without source evidence or a measured implementation model. Look for a documented COS/POS/ROS/PDOS scheduler quantum, C(I) reload value or timer-setting policy, and assess handler/context-switch cost against it. The 300 ms interrupt-acceptance watchdog is a separate deadline and must **not** be assumed to be the scheduler quantum.
