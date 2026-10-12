@@ -594,3 +594,29 @@ Two narrow implementation details remain for modelling and testing, **not unreso
 - The historical numerical round-robin quantum and its performance implications. **100 µs is timer resolution, not a scheduling quantum**; a 1 ms scheduling period risks prohibitive overhead, and no numerical quantum is presently established.
 
 **Related authority requirement:** restricted Internal Mode capabilities needed for D15 access are tracked in [capability genesis and resource lifecycle](capability-genesis-and-resource-lifecycle.md); do not duplicate the Store Manager API design here.
+
+
+## 12 October 2026 — C(N), reentrant scheduler and Program Trap dispatch
+
+**WORKING RECONSTRUCTION — software completion of the normal-interrupt path.** Preserve the earlier reconstruction of acceptance, D15 and automatic CHP. The C(N) Normal Interrupt Block names the incoming Dump Stack, not an instruction address: restoring that prepared process loads its C7/IAR and enters ordinary capability-protected code. We reconstruct that process as a **per-CPU execution instance of England's reentrant scheduler**, incorporating an interrupt-dispatch entry. This does not claim that the scheduler and disc-handling routines are the same code.
+
+**DOCUMENTED (England, *Operating System of System 250*, paragraph 10 and figure 2):** scheduler subroutine code is reentrant, a common Scheduler Capability Block is shown, and all CPUs share **one Ready List**. **DOCUMENTED (ROS/PDOS Pocket Reference SIP):** a process records its running status and CPU number (`r`, `cccc`), and an `x` bit records Ready List membership. These per-process status fields are distinct from the scheduler's operational indexes.
+
+**MINIMUM ADDITIONAL HYPOTHESIS:** the scheduler maintains a **Running List**, alongside the documented Ready List. It gives a direct association from the local CPU to its currently assigned process, avoiding a scan through every Process Base and SIP. Its exact representation (terminated list versus small table), membership conventions while the scheduler itself executes, and atomic update protocol are not specified. We do **not** reconstruct other process-management queues here. The Running List and SIP may contain related but deliberately different state.
+
+### Accepted Program Trap
+
+1. C(N)'s prepared execution context enters the scheduler/normal-interrupt dispatch routine. D15 bit 6 identifies the accepted Program Trap.
+2. The documented MIF bits 20–23 identify the offending **capability-register number**, not the identity of the nonresident segment itself (US4383297A, paragraph 74).
+3. Using its local CPU identity and the proposed Running List, the scheduler finds the interrupted process's **Process Base Enter capability**.
+4. **PROPOSED Process Base interface:** an authorised entry operation returns the **saved capability pointer** for the specified register (for example C2), following the documented Process Base-to-Dump Stack relationship (offset 3). This must not be represented as an existing documented command, nor as unrestricted direct Dump Stack access.
+5. The scheduler passes that capability pointer, together with the suspended-process association needed for completion, to **Storage Manager** and requests residency. The exact capability-safe parameter representation and service interface remain implementation choices.
+6. The process waits while the VM/disc handler arranges residency. England paragraphs 13–14 explicitly describe the trap handler's disc queue, the disc handler and the eventual return of the process to the Ready List.
+7. When residency is established, the affected process is returned to the **Ready List**.
+8. **The scheduler is invoked.** When it subsequently selects that process, CHP restores its saved context. England explicitly states that the trapped instruction is **reattempted**. Our mechanism inference is that the saved IAR still identifies the faulting instruction rather than its successor, so the normal CHP fetch retries it; no special return-to-trap-microcode mechanism is needed.
+
+### Timer expiry and idle boundary
+
+On timer expiry, this same per-CPU scheduler instance identifies the displaced process using the Running List, updates ready/running state as appropriate, selects a successor, loads the C(I) timer word with that process's round-robin time slice, and dispatches through CHP. The quantum is not established. When no process is ready, the CPU may do ordinary background/polling work; neither its exact idle-loop implementation nor its MIP transitions are inferred here. In particular, do not confuse interrupt-entry inhibition with a claim that an idle scheduler must remain interrupt-inhibited.
+
+**Boundary:** The Running List, scheduler-as-C(N)-process interpretation, and Process Base retrieval interface are reconstructed software design, whereas the hardware C(N)/CHP path, SIP fields, shared Ready List, reentrant scheduler and instruction reattempt are supported by contemporary sources.
