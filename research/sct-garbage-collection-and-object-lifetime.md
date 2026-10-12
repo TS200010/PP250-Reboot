@@ -208,3 +208,9 @@ The historical PP250 mechanism needs to be established rather than inferred. In 
 5. At what point does a representation read from backing store acquire protected capability status, and what authority is required to make that transition?
 
 This is deliberately left as a research question. The SCT is an active-system structure and should not be assumed to be the ultimate persistent record of capability validity.
+
+## 12 October 2026 — SCT slot lifetime versus segment lifetime
+
+**Architectural inference from the documented Inform/Outform distinction:** a persistent segment does not necessarily occupy an SCT slot for its entire lifetime. In-memory (Inform) capability pointers require an SCT entry to resolve their segment identity; capabilities held wholly in disk Outform identify the disk object rather than retaining the same in-memory SCT index. Consequently, where **all** references to a surviving segment are in Outform on disk and no live in-memory pointer or other processor/root state needs its SCT entry, the SCT slot may be eligible for reclamation **without destroying the segment or releasing its backing storage**. A segment may likewise have an SCT entry even when its contents are not resident in primary store, if an Inform capability still references it.
+
+This sharpens the existing SCT-GC distinction: **reclaiming physical/main-store pages**, **destroying the persistent segment**, and **reclaiming the temporary SCT slot** are different events. SCT garbage collection decides when an SCT entry is no longer needed by the live in-memory capability graph and can safely be recycled. The precise historical eligibility/transition protocol—including roots, outstanding processor state, and disk Inform/Outform conversions—remains subject to the documented collector and storage-manager rules; do not interpret mere absence of a segment's contents from RAM as proof its SCT slot is free.
