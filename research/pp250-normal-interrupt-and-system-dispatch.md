@@ -558,3 +558,39 @@ See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-rev
 ### 12 October 2026 — scheduler interval versus timer resolution (open design consideration)
 
 **WORKING RECONSTRUCTION / TO INVESTIGATE:** The documented 100 µs decrement period is the **resolution** of the C(I) interval timer, not evidence that the operating system schedules at that frequency. A proposed 1 ms timer interrupt period would cause 1,000 scheduler entries per second per processor, potentially imposing excessive interrupt, process-dump and scheduling overhead on a 1970s PP250. The reconstructed scheduler must choose an operational interval large enough to allow useful execution between interrupts; do **not** yet assign a numerical time slice without source evidence or a measured implementation model. Look for a documented COS/POS/ROS/PDOS scheduler quantum, C(I) reload value or timer-setting policy, and assess handler/context-switch cost against it. The 300 ms interrupt-acceptance watchdog is a separate deadline and must **not** be assumed to be the scheduler quantum.
+
+
+## 12 October 2026 — Normal Interrupt Acceptance and Dispatch
+
+**WORKING RECONSTRUCTION — normal interrupt mechanism reconstructed.** This is a consolidated model derived from the available evidence and engineering reasoning, not a claim that every microinstruction has been recovered. The documentary facts and proposed implementation choices are distinguished below.
+
+### Documented architectural constraints
+
+- The interval timer word addressed through C(I) is decremented every 100 µs; reaching zero generates a Normal Interrupt.
+- Program Trap and interval-timer expiry are Normal Interrupt sources. The Interrupt Accept Register (D15) has bit 6 set **when a Program Trap is accepted** (US4383297A, para. 13).
+- MIP bit 8 inhibits timer interrupts. A Program Trap while MIP bit 8 is set produces a Trap Fault (MIF bit 15).
+- The interrupt-acceptance timeout tests whether the Interrupt Accept Register has been accessed within 300 ms following timer expiry **when interrupts are not inhibited** (US4383297A, para. 62).
+- C(N) supplies the protected Normal Interrupt entry structure. Normal interrupt entry invokes the process-change/Dump Stack mechanism.
+- A nonresident block is detected by hardware; the trap handler queues the affected process and required block, the disc handler arranges residency, and the trapped instruction is retried on rescheduling (England, *Operating System of System 250*, paras. 13–14).
+
+### Reconstructed acceptance and dispatch sequence
+
+1. At an eligible interrupt boundary, hardware selects the Normal Interrupt to accept. If timer expiry and Program Trap coincide, **timer expiry has priority**.
+2. **At acceptance**, the microcode immediately sets MIP bit 8 (INHIBIT INTERRUPTS). This belongs to interrupt acceptance, **not** to the general CHP instruction.
+3. The accepted interrupt's identity is represented in D15 bit 6: set for an accepted Program Trap, not set for an accepted timer interrupt. This is an indication of **acceptance**, not merely detection.
+4. The processor automatically enters the handler through the C(N)-addressed Normal Interrupt Block and Dump Stack/CHP path.
+5. The handler reads D15 to distinguish the accepted Program Trap from timer expiry. The access also meets the documented Interrupt Accept Register access requirement for the timeout watchdog; **reading does not need a special read-to-clear effect**.
+6. For an accepted Program Trap, the handler **explicitly clears D15 bit 6** with a permitted Internal Mode data-store operation, then follows the trap/storage-management handling path. This is a working software protocol, not a proven register-specific historical instruction sequence.
+7. For timer expiry, scheduling machinery chooses the next runnable process. Immediately before dispatch, the scheduler **reloads the timer word addressed by C(I)** with that process's round-robin time-slice count, then dispatches it through CHP.
+8. Interrupt inhibition remains in force during protected handling until the next process's suitable indicator state is established. The scheduler, trap-handler and disc-handler **need not be the same software routine**; this model describes the protected entry and dispatch path.
+
+### Timer inhibition and remaining implementation considerations
+
+MIP bit 8 inhibits **acceptance of timer interrupts** while set; therefore expiry during protected handling does not interrupt that handler. The timer still counts down. The 300 ms interrupt-acceptance timeout expressly excludes timer expiry while interrupts are inhibited.
+
+Two narrow implementation details remain for modelling and testing, **not unresolved architectural mechanisms**:
+
+- What occurs if the timer reaches zero with interrupts inhibited and they are subsequently re-enabled (deferred delivery versus another explicitly programmed timer event).
+- The historical numerical round-robin quantum and its performance implications. **100 µs is timer resolution, not a scheduling quantum**; a 1 ms scheduling period risks prohibitive overhead, and no numerical quantum is presently established.
+
+**Related authority requirement:** restricted Internal Mode capabilities needed for D15 access are tracked in [capability genesis and resource lifecycle](capability-genesis-and-resource-lifecycle.md); do not duplicate the Store Manager API design here.
