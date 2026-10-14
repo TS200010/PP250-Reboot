@@ -59,6 +59,18 @@ For substantive PP250 investigations, establish the **current repository positio
 
 These checks are an analysis procedure, not permission to modify files or create questions outside the authorised task. Apply the existing evidence taxonomy and current-open-question gate.
 
+### Mandatory corpus-first checkpoint
+
+Before answering a substantive PP250 architectural question, proposing a mechanism, or declaring a gap, **first retrieve and reconcile the existing repository account of that exact mechanism**. This applies equally during an ongoing conversation: do not rely on recollection of earlier chats, a single newly found patent paragraph, or the most recent hypothesis.
+
+1. Locate the canonical `architecture/` treatment and relevant current `research/` synthesis, including `research/pp250-open-questions.md` when claiming something unresolved. Follow their links to applicable primary sources and later amendments. Search adjacent subsystems when the mechanism crosses boundaries (for example, VM, Program Trap, normal interrupt dispatch, CHP, Dump Stack and process scheduling).
+2. State the **existing working explanation and its evidence status first**. Identify precisely which step is still unsupported before exploring alternatives; do not describe an existing reconstruction as a new discovery or revert to an older uncertainty.
+3. Test the specific question against the existing explanation and the primary source text. If it fits, use that explanation; if it conflicts, identify the precise contradiction before revising it. Prefer the fewest additional structures or operations.
+4. Do not invent hardware hand-offs, software managers, table lookups, special states or privileged paths just to fill a perceived gap. Separate what must work from what the sources document about *how* it works.
+5. If corpus access is unavailable or incomplete, say so explicitly and qualify the answer; do not compensate with confident speculation.
+
+**Response discipline:** report the corpus-established mechanism, the narrow remaining gap and only then any evidence-constrained alternative. The owner should not have to remind the agent of research the repository already contains. This checkpoint is mandatory even for short conversational follow-ups.
+
 ## Initial reconstruction configuration
 
 The immediate reconstruction target is a minimal System 250 configuration: **one processor, one store, and peripherals**. Do not make reconstruction of the complete redundant multi-processor/multi-store system a prerequisite for initial architectural understanding or the emulator workbench.
