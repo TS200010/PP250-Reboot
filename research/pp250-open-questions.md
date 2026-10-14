@@ -123,6 +123,12 @@ The *System 250 Pocket Reference*, pp. 11–12, lists `LOI` (“load assembler o
 
 This may be relevant to historical software loading or initial installation, but **no bootstrap role for `LOP` has been established**. Seek an independent command description or contemporary operational documentation. This is a documentary gap, not a blocker to the architectural startup reconstruction.
 
+### Capability-genesis and Program Trap status reconciliation (14 October 2026)
+
+The **current preferred runtime genesis reconstruction** is M-governed initial authority creation confined to **virgin, newly allocated objects**, requested through the protected Store Allocator. The older mixed-access `WD → LC → SC` data-written Inform construction is **secondary**, not the current leading explanation; neither sequence is proven historical microcode. This is **not** a newly admitted ordinary-runtime architectural open question. Retain the distinct existing C(S)-rooted first-SCT/bootstrap questions above; references there to mixed-access construction are candidate tests of a **secondary** implementation path, not endorsements of it as the preferred mechanism.
+
+For **Program Trap**, US3771146A paragraph 84 documents recovery of the offending saved capability pointer from the **suspended process's Dump Stack**, using the offending capability-register number retained by the hardware. The existing C(N)/scheduler reconstruction supplies a *proposed* per-CPU running-process → Process Base → outgoing Dump Stack lookup; its precise historical software implementation is not documented. The identity/slot distinction is recorded in `pp250-normal-interrupt-and-system-dispatch.md`. This detail does not reopen the already reconstructed VM trap-and-restart architecture.
+
 ## Resolved, demoted or deliberately parked issues
 
 The following must **not** be resurfaced as current architectural unknowns merely because older research records contain unresolved wording:
