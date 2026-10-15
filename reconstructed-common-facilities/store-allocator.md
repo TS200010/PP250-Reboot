@@ -12,8 +12,11 @@
 
 No facility-specific calling convention, complete operation set or internal implementation is asserted here yet. Consolidate the relevant existing repository findings before specifying them; distinguish documented behaviour from working reconstruction.
 
-## Existing material to reconcile
+## Existing research to reconcile
 
-- [Capability genesis and resource lifecycle](../research/capability-genesis-and-resource-lifecycle.md)
-- [SCT garbage collection and object lifetime](../research/sct-garbage-collection-and-object-lifetime.md)
-- [COS commands](../transcriptions/System%20250%20Pocket%20Reference%20pg11-pg12.txt)
+- [Capability genesis and resource lifecycle](../research/capability-genesis-and-resource-lifecycle.md) — existing Store Allocator, SCT-management and capability-construction proposals.
+- [COS operator commands and process model](../research/pp250-execution-and-process-model.md) — COS-derived interface reconstruction premise.
+- [Boot and processor startup](../research/pp250-boot-and-processor-startup.md) — bootstrap versus ordinary runtime responsibilities.
+- [SCT garbage collection and object lifetime](../research/sct-garbage-collection-and-object-lifetime.md) — reference lifetime, explicit release and collection.
+- [COS command definitions](../transcriptions/System%20250%20Pocket%20Reference%20pg11-pg12.txt) — primary command contracts.
+
