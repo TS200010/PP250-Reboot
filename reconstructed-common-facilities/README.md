@@ -28,6 +28,3 @@ The following documents are **planned**, not yet created. Their names follow Eng
 - [SCT garbage collection and object lifetime](../research/sct-garbage-collection-and-object-lifetime.md) — reference lifetime, explicit release and collection.
 - [COS command definitions](../transcriptions/System%20250%20Pocket%20Reference%20pg11-pg12.txt) — primary command contracts.
 
-## Editorial rules
-
-Each facility is to be reconstructed independently, with documented behaviour distinguished from working reconstruction and unresolved detail. Reference existing research rather than copying or rewriting its historical reasoning. Internal mechanisms (for example SCT free-list management) must not be invented as additional Common Facilities Block entries. No facility implementation or API is asserted by this navigator beyond the cited source.
