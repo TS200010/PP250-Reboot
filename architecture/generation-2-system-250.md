@@ -736,6 +736,8 @@ System resource-allocation services are themselves reached through capability-pr
 
 An allocator creates the appropriate resource and returns a capability giving the caller the permitted authority over it.
 
+**Architectural distinction:** capability creation is the issuance of the first capability for a newly created object. Further capabilities to an existing object are copied or derived from existing authority; they are not independently manufactured for that object. This is inherent in the resource-creation model, not a separate capability-provenance problem.
+
 Thus new authority enters an ordinary process through an already-authorised protected operation rather than by constructing an arbitrary capability bit pattern.
 
 ### 7.15 Resource lifetime and garbage collection
