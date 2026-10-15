@@ -91,6 +91,8 @@ The working hypothesis that `SC` may attenuate rights during storage must remain
 
 **Current assessment:** potentially fundamental surface; reconstruction incomplete.
 
+**15 October 2026 — virgin-object creation boundary (focused attack-surface question).** The architectural rule is that capability creation accompanies a *new* object; further capabilities to an existing object are transferred or derived from existing authority. This is not an unresolved capability-provenance requirement. The relevant security investigation is whether an implementation can be induced to misclassify an *existing* object as new, or allow first-capability issuance more than once. Review the Store Allocator's backing-store allocation and identity assignment, SCT free-slot assignment and safe reuse, first issuance, and Inform/Outform reconstitution as distinct transitions. In particular, test for stale or recycled backing-store identities, stale SCT references, duplicate live bindings for one persistent object, interrupted or concurrent allocation, and treating a reconstituted Outform capability as an opportunity to choose arbitrary new rights. Establish which component maintains atomicity/uniqueness and which checks are evidenced; do not invent a virgin flag or assume such an attack succeeds. This is an **implementation attack-surface investigation**, not an additional architectural genesis mechanism. See [capability genesis](capability-genesis-and-resource-lifecycle.md), [SCT lifetime](sct-garbage-collection-and-object-lifetime.md), and [virtual-storage identity](sct-failure-process-ephemerality-and-system-recovery.md).
+
 ---
 
 ## 5. Pointer registers and LDP
