@@ -8,17 +8,17 @@ This directory is the navigation point for reconstruction of the System 250 **Co
 
 ## Facilities — Figure 11
 
-The following documents are **planned**, not yet created. Their names follow England's Figure 11.
+The following facility documents follow England's Figure 11. They are initial reconstruction files; their detailed interfaces have not yet been consolidated.
 
 | Document | Documented facility | Status |
 |---|---|---|
-| `store-allocator.md` | Store Allocator | Reconstruction to be consolidated |
-| `process-allocator.md` | Process Allocator | Not yet consolidated here |
-| `flag-allocator.md` | Flag Allocator | Not yet consolidated here |
-| `stream-allocator.md` | Stream Allocator | Not yet consolidated here |
-| `textfile-allocator.md` | Textfile Allocator | Not yet consolidated here |
-| `directory-allocator.md` | Directory Allocator | Not yet consolidated here |
-| `job-allocator.md` | Job Allocator | Not yet consolidated here |
+| [store-allocator.md](store-allocator.md) | Store Allocator | Created; reconstruction to be consolidated |
+| [process-allocator.md](process-allocator.md) | Process Allocator | Created; reconstruction not yet consolidated |
+| [flag-allocator.md](flag-allocator.md) | Flag Allocator | Created; reconstruction not yet consolidated |
+| [stream-allocator.md](stream-allocator.md) | Stream Allocator | Created; reconstruction not yet consolidated |
+| [textfile-allocator.md](textfile-allocator.md) | Textfile Allocator | Created; reconstruction not yet consolidated |
+| [directory-allocator.md](directory-allocator.md) | Directory Allocator | Created; reconstruction not yet consolidated |
+| [job-allocator.md](job-allocator.md) | Job Allocator | Created; reconstruction not yet consolidated |
 
 ## Existing research to reconcile
 
