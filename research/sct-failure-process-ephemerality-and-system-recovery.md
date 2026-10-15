@@ -126,6 +126,8 @@ Most importantly, the paper describes capability blocks as being held on disk an
 
 Thus the logical object/capability world is not synonymous with the current SCT/main-store manifestation.
 
+**Resident-segment backing-store mapping — outstanding implementation question (15 October 2026).** A segment retains its persistent backing-store identity while its SCT entry describes its current main-store residence. The virtual-store machinery must recover the backing-store identity from an active SCT reference when evicting a resident segment (including deciding whether a disk write is needed), and when converting an Inform capability into Outform for storage on disk. Conversely, Outform-to-Inform conversion needs to resolve the persistent identity to an existing active SCT entry or allocate an appropriate new entry. The three-word SCT descriptor documented in `architecture/system-capability-table.md` does not establish where this mapping is held. A Store Manager mapping/directory is possible, but its historical location, representation and lookup algorithm remain unknown. This is a **virtual-memory implementation question**, not evidence for a new capability-genesis mechanism or a requirement to preserve old SCT numbering across recovery.
+
 ---
 
 ## 6. Program and process are fundamentally different objects
