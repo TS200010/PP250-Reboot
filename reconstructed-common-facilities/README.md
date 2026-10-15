@@ -20,11 +20,3 @@ The following facility documents follow England's Figure 11. They are initial re
 | [directory-allocator.md](directory-allocator.md) | Directory Allocator | Created; reconstruction not yet consolidated |
 | [job-allocator.md](job-allocator.md) | Job Allocator | Created; reconstruction not yet consolidated |
 
-## Existing research to reconcile
-
-- [Capability genesis and resource lifecycle](../research/capability-genesis-and-resource-lifecycle.md) — existing Store Allocator, SCT-management and capability-construction proposals.
-- [COS operator commands and process model](../research/pp250-execution-and-process-model.md) — COS-derived interface reconstruction premise.
-- [Boot and processor startup](../research/pp250-boot-and-processor-startup.md) — bootstrap versus ordinary runtime responsibilities.
-- [SCT garbage collection and object lifetime](../research/sct-garbage-collection-and-object-lifetime.md) — reference lifetime, explicit release and collection.
-- [COS command definitions](../transcriptions/System%20250%20Pocket%20Reference%20pg11-pg12.txt) — primary command contracts.
-
