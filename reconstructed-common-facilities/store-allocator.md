@@ -8,12 +8,30 @@ The Store Allocator is one of the seven Common Facilities Block resources docume
 
 Accessible to ordinary authorised callers through the Store Allocator's protected interface.
 
-| Operation | Inputs | Result | Behaviour |
-|---|---|---|---|
-| `ALLOCATE` | `D: size` (requested access is also part of England's allocator description) | `C: segment capability` | Create a new storage segment and return authority to it. |
-| `COPY` | `C: source`; `D: size` if enlargement requested | `C: new segment capability` | Allocate a separate segment containing a copy of the source. |
-| `RESIZE` | `C: segment`; `D: new size` | Existing segment identity retained | Adjust segment size without changing its SCT identity. |
-| `FREE_SPACE` | No settled argument convention | `D: free-space information` | Report free space in the store modules. |
+### ALLOCATE
+
+**Inputs:** `D: size` (requested access is also part of England's allocator description). **Result:** `C: segment capability`.
+
+Create a new storage segment and return authority to it.
+
+### COPY
+
+**Inputs:** `C: source`; `D: size` if enlargement requested. **Result:** `C: new segment capability`.
+
+Allocate a separate segment containing a copy of the source.
+
+### RESIZE
+
+**Inputs:** `C: segment`; `D: new size`. **Result:** Existing segment identity retained.
+
+Adjust segment size without changing its SCT identity.
+
+### FREE_SPACE
+
+**Inputs:** No settled argument convention. **Result:** `D: free-space information`.
+
+Report free space in the store modules.
+
 
 A caller relinquishes a reference by discarding or replacing its capability. **Garbage collection is automatic**, not an operation exposed by this interface.
 
@@ -21,20 +39,41 @@ A caller relinquishes a reference by discarding or replacing its capability. **G
 
 **Not externally callable.** These functions belong to the Store Allocator's implementation.
 
-| Function | Inputs | Result | Behaviour |
-|---|---|---|---|
-| `GIVE` | `base, limit` | SCT entry index | Obtain and populate an available SCT entry for a new segment. |
-| `TAKE` | SCT entry index | — | Return an SCT entry to the free list once safe reuse has been established. |
+### GIVE
+
+**Inputs:** `base, limit`. **Result:** SCT entry index.
+
+Obtain and populate an available SCT entry for a new segment.
+
+### TAKE
+
+**Inputs:** SCT entry index. **Result:** —.
+
+Return an SCT entry to the free list once safe reuse has been established.
+
 
 ## 3. Restricted services
 
 Protected entry points available only to specifically authorised system components; **not part of the public interface**.
 
-| Service | Authorised consumer | Result / function |
-|---|---|---|
-| `Create Dump Stack` | Process Manager | Construct the protected Dump Stack resource needed for process creation. |
-| `Get SCT Capability` | Authorised SCT-management / garbage-collection code | Return a rights-limited capability to the current SCT. |
-| Restricted Internal Mode capability construction | Authorised processor-management services | Create appropriately bounded and rights-limited Internal Mode capabilities. |
+### Create Dump Stack
+
+**Authorised consumer:** Process Manager.
+
+Construct the protected Dump Stack resource needed for process creation.
+
+### Get SCT Capability
+
+**Authorised consumer:** Authorised SCT-management / garbage-collection code.
+
+Return a rights-limited capability to the current SCT.
+
+### Restricted Internal Mode capability construction
+
+**Authorised consumer:** Authorised processor-management services.
+
+Create appropriately bounded and rights-limited Internal Mode capabilities.
+
 
 Specific call parameters for these restricted services have not been fixed in the existing proposals.
 
