@@ -12,6 +12,23 @@
 
 **WORKING RECONSTRUCTION — record of proposals already developed, not a newly completed historical API.** The [COS-derived interface premise](../research/pp250-execution-and-process-model.md) treats COS commands as CLI expressions of underlying resource operations. The command interpreter's symbolic names, directory lookups and terminal presentation are omitted from the proposed machine-level interface. Capabilities are supplied and returned in capability registers; numerical inputs and outputs use data registers. No specific register assignments or error convention has been established.
 
+### Original callable API proposal (preserved in full)
+
+The following is the **initial proposed interface**, recorded before the subsequent discussion of garbage collection and explicit release. It is a **WORKING RECONSTRUCTION**, not a verified historical calling convention. Capability operands/results use capability registers (`C`); numerical operands/results use data registers (`D`). The names below designate proposed calls, not demonstrated software entry-point names.
+
+| Proposed call | Inputs | Outputs / proposed effect | Later status |
+|---|---|---|---|
+| `ALLOCATE` | `D: size`; access requirements were also considered | `C: new segment capability` | Retained candidate. COS `ALO` documents size, not an access argument; England separately describes requested access. |
+| `COPY` | `C: source segment`; `D: new size` when requested | `C: capability to separately allocated copy` | Retained candidate; COS optional size applies when enlarging. |
+| `RESIZE` | `C: existing segment`; `D: new size` | Same segment identity / SCT offset after size adjustment | Retained candidate; no detailed movement/coherence mechanism selected. |
+| `DELETE` | `C: segment` | Initially proposed to delete the block and return status (`D`) | **Revised**: ordinary reference discard need not call an allocator; do not interpret this as automatic destruction or immediate SCT reuse. |
+| `FREE_SPACE` | Initially considered `D: store module number` | `D: available space` | Signature **undecided**: COS `FST` actually takes no operands and reports all store modules. |
+| `ADDRESS` | `C: segment`, `D: offset` | `D: absolute physical address` | Considered from COS `ADR`; not accepted as an ordinary public operation. |
+| `FIND_BLOCK` | `D: absolute physical address` | `C: corresponding segment capability`, `D: offset` | Considered from reverse COS `ADR`/`NAM`; authority to return a capability was **not established**. |
+| `GIV` / explicit SCT entry creation | `D: base`, `D: size` | Initially contemplated creation/return of an SCT-backed capability or entry | Treated as potentially restricted/internal, not adopted as an ordinary allocator operation. Distinct from the existing internal `GIVE(base, limit)` proposal. |
+
+These are the operations *actually considered*, including the ones subsequently questioned. `ADDRESS` and `FIND_BLOCK` expose a physical-address diagnostic/management concern; reverse lookup must not be presumed to authorise arbitrary capability creation. The initial `DELETE` proposal was reconsidered in favour of reference relinquishment plus independent garbage collection; England's **explicit object release**, which invalidates all extant capabilities, remains distinct and was not assigned a settled public API signature.
+
 ### COS-derived operations discussed
 
 | Proposed operation | COS evidence | Recorded proposal / boundary |
