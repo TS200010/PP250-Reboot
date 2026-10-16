@@ -36,6 +36,12 @@ Therefore an SCT entry cannot safely be recycled merely because the physical bac
 
 The system has to establish that the SCT identity is no longer reachable through live capabilities.
 
+## COS `DEL`, explicit release and automatic collection — current interpretation
+
+**DOCUMENTED OBSERVATION:** The COS Pocket Reference describes `DEL <Block Name>` as "Delete a block" and gives no further object-lifetime semantics. England, *Architectural Features of System 250*, §30(4), separately describes explicit release invalidating all capabilities to a block via disk-sector sequence numbers, and a background garbage collector reclaiming invalid capabilities and unreachable blocks.
+
+**WORKING RECONSTRUCTION:** The COS `DEL` command may remove the named capability reference from COS's directory, leaving object reclamation to independent garbage collection. This is **not established historical COS behaviour**. Discarding one reference does not itself invalidate other copies; explicit release does. Ordinary reference discard does not trigger, control or manually invoke the collector. The current [Store Allocator API reference](../reconstructed-common-facilities/store-allocator.md) therefore has no ordinary `DELETE` or garbage-collection call, and does not yet specify a public explicit-release call. The exact implementation of England's sequence-number revocation is not reconstructed.
+
 ## This is the SCT garbage-collection problem
 
 This is now supported by direct documentary evidence rather than reconstruction alone.
