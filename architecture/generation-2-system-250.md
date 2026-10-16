@@ -116,6 +116,29 @@ This construction is deliberately general. Such protected objects can represent 
 
 *_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
+### 2.4 Other capabilities
+
+As we have seen, a capability determines the type of access its holder has to a segment.
+
+We began with **Enter Capability**, which permits the holder to invoke functions within a protected object's space, without giving direct access to the code, data or capabilities from which that object is constructed.
+
+System 250 provides other forms of capability that permit different operations on segments. These include reading, writing and executing data, and reading or writing capabilities stored within a segment.
+
+![Read, Write and Read-Write Data capabilities controlling access to stored data](images/capability-data-access.svg)
+
+![Execute Data capability controlling access to protected code](images/capability-execute-data.svg)
+
+![Read, Write and Read-Write Capability controlling access to stored capabilities](images/capability-stored-capabilities.svg)
+
+Each capability specifies what its holder is permitted to do with the segment it addresses. These restrictions are enforced by the processor hardware.
+
+**The first five access rights permit operations on a segment. Enter Capability is fundamentally more sophisticated:** it permits controlled invocation of functions *through* a segment, without exposing the capabilities contained within it.
+
+![Enter Capability providing controlled access to the callable functions of a protected object](images/capability-enter-protected-object.svg)
+
+Together, these capabilities provide the basic forms of authority from which the protected structures of System 250 are constructed.
+
+
 ## 3. Creation and propagation of access
 
 ### 3.1 Enduring tokens
