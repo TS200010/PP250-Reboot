@@ -1210,6 +1210,9 @@ This refinement leaves the earlier unified construction hypothesis intact and do
 
 ## 12 October 2026 — SCT Manager interface and free-list reconstruction
 
+**Current status clarification (16 October 2026):** The proposed external enter-capability SCT Manager interface below, including offsets 1 and 2 for `GIVE` and `TAKE`, is **superseded as an interface design**. The current [Store Allocator API reference](../reconstructed-common-facilities/store-allocator.md) places `GIVE` and `TAKE` exclusively among the Store Allocator's **private, unexposed implementation functions**. The original proposal and its reasoning are preserved below as research history, not current callable API.
+
+
 **WORKING RECONSTRUCTION, not a documented software listing.** The normal SCT Manager operates on an SCT already commissioned by startup; SCT creation/initialisation is not a normal SCT Manager operation. The allocation/deallocation patent US4121286A explicitly mentions an **SCT-entry free list** (collector step B8), without prescribing the list representation. For a compact implementation, reserve SCT entry **0** as the free-list header: its first word holds the SCT-relative offset of the first free entry. Each free entry uses its first word for the next offset, with **zero** terminating the list. The remaining words of a free entry are unused. Entry **1** is provisionally reserved as the SCT's permanent self-descriptor, never allocated or reclaimed; subsequent entries constitute the initial free list. These reservations and link encoding are our implementation choices, not primary evidence.
 
 **Proposed internal API:**
