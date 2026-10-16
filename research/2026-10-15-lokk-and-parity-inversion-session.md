@@ -147,6 +147,8 @@ A processor hardware fault does NOT invalidate its capability registers:
 
 ### The Quarantine Model
 
+**The transition depends on overlapping protection mechanisms.** Inverting the internal parity indicator makes the processor's existing capability registers unusable, preventing the faulty processor from exercising its former authority while C(S) runs. C(S) can establish the special SCT and replacement context through its fault-handling mechanism without using those invalidated capabilities. Only after the restricted authority environment has been established can normal parity be restored and ordinary Checkout code run. Thus parity inversion protects the transition, while the special SCT protects subsequent execution; there is no interval in which normal execution resumes with the original system authority.
+
 #### Two-Layer Isolation
 
 1. **Parity Inversion (transient)**
@@ -191,7 +193,7 @@ OUTCOMES:
 
 #### The Two-CHP Cold Start Hypothesis
 
-**Cold start uses the same mechanism as fault recovery:**
+**Working hypothesis, not established startup behaviour:** Cold start may use the same fault-handling mechanism as recovery. The following proposed two-CHP sequence has not been demonstrated from the cited microprogram evidence:
 
 1. **Reset: Direct/internal CHP 0**
    - Restores primordial Dump Stack at absolute zero
@@ -206,7 +208,7 @@ OUTCOMES:
    - Parity restored
    - Checkout resumes with special SCT now in place
 
-**Result:** Single Checkout code, single Dump Stack, entered twice via different paths (direct CHP vs. fault-driven CHP).
+**Hypothesised result:** Single Checkout code, single Dump Stack, entered twice via different paths (direct CHP vs. fault-driven CHP). This remains to be verified.
 
 ---
 
