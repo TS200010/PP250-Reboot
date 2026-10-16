@@ -12,7 +12,7 @@ Accessible to ordinary authorised callers through the Store Allocator's protecte
 
 **Inputs:** `D: size` (requested access is also part of England's allocator description). **Result:** `C: segment capability`.
 
-Create a new storage segment and return authority to it.
+Create a new storage segment and return its first legitimate capability. In the current working reconstruction, the protected allocation mechanism establishes initial authority **only for a newly created, virgin object**; it does not permit arbitrary manufacture of authority over existing objects. This is a reconstruction of the service-level contract, not a claim about the original microcode sequence.
 
 ### COPY
 
@@ -33,7 +33,7 @@ Adjust segment size without changing its SCT identity.
 Report free space in the store modules.
 
 
-A caller relinquishes a reference by discarding or replacing its capability. **Garbage collection is automatic**, not an operation exposed by this interface.
+A caller relinquishes a reference by discarding or replacing its capability. **Garbage collection is automatic**, not an operation exposed by this interface. COS `DEL <Block Name>` is provisionally interpreted as discarding COS's named reference, not necessarily destroying the referenced segment. This is a **working interpretation**, not documented `DEL` semantics: the Pocket Reference says "Delete a block". England separately documents **explicit object release** that invalidates *all* outstanding capabilities using a disk-sector sequence-number mechanism; that operation is distinct from both reference discard and background garbage collection. No public release call is specified here.
 
 ## 2. Private Store Allocator functions
 
@@ -43,7 +43,7 @@ A caller relinquishes a reference by discarding or replacing its capability. **G
 
 **Inputs:** `base, limit`. **Result:** SCT entry index.
 
-Obtain and populate an available SCT entry for a new segment.
+Take an entry from the SCT free list; initialise its BASE/LIMIT, garbage-collection state and SUMCHECK; return the SCT index. These are private Store Allocator implementation functions, not exposed entry points.
 
 ### TAKE
 
@@ -60,19 +60,19 @@ Protected entry points available only to specifically authorised system componen
 
 **Authorised consumer:** Process Manager.
 
-Construct the protected Dump Stack resource needed for process creation.
+Construct the protected Dump Stack and provide the special capability needed for process creation. This restricted service is invoked by the Process Manager, not ordinary allocation callers; the detailed construction mechanism remains unspecified.
 
 ### Get SCT Capability
 
 **Authorised consumer:** Authorised SCT-management / garbage-collection code.
 
-Return a rights-limited capability to the current SCT.
+Return a rights-limited capability to the current SCT **in a capability register, on demand**, to a caller authorised through this special protected entry. This grants no general capability-manufacturing authority.
 
 ### Restricted Internal Mode capability construction
 
 **Authorised consumer:** Authorised processor-management services.
 
-Create appropriately bounded and rights-limited Internal Mode capabilities.
+Create a capability addressing Internal Mode module `377` (octal), bounded to the specific processor register(s) required and with separately limited read/write data rights. Only designated processor-management services can request these restricted capabilities.
 
 
 Specific call parameters for these restricted services have not been fixed in the existing proposals.
