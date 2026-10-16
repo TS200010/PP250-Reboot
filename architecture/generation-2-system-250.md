@@ -92,18 +92,7 @@ A protected object is defined by a **protected-token segment** containing unforg
 
 The segments accessible through those tokens constitute the object's **protected space**.
 
-```mermaid
-flowchart TB
-    P["Protected-token segment<br/>Unforgeable tokens"]
-    F["Code / functions"]
-    D["Private data"]
-    P --> F
-    P --> D
-    subgraph S["Protected space"]
-        F
-        D
-    end
-```
+![Protected-token segment referring to code functions and private data](images/protected-object-construction.svg)
 
 *Conceptual view of the segments making up a protected object.*
 
@@ -113,20 +102,7 @@ flowchart TB
 
 **A further unforgeable token provides controlled access through the protected-token segment.** It does not expose the tokens contained within that segment. Instead, it permits invocation of the functions made available through the object.
 
-```mermaid
-flowchart LR
-    X["External caller"]
-    E["Enter Capability"]
-    X --> E
-    subgraph S["Protected object"]
-        P["Protected-token segment"]
-        F["Exposed functions"]
-        D["Private data"]
-        P --> F
-        P --> D
-    end
-    E -->|"Controlled invocation"| F
-```
+![An external caller invoking F1, F2 and F3 through an Enter Capability, with internal functions and data protected](images/protected-object-entry.svg)
 
 *The Enter Capability permits invocation of exposed functions; the arrow denotes invocation, not direct access to executable code or private data.*
 
@@ -140,7 +116,15 @@ This construction is deliberately general. Such protected objects can represent 
 
 ### 2.4 Different access to the same object
 
-**A protected object need not have a single form of access.** Different unforgeable tokens may refer to the same object while granting different access to it. The object and its protected space remain the same; what differs is the access permitted through each token.
+**Different Enter Capabilities may provide different access to the same protected object.**
+
+![Two external callers accessing the same protected object: Enter Cap 1 permits F1, F2 and F3, while Enter Cap 2 permits F3](images/protected-object-differentiated-access.svg)
+
+In the diagram, External Caller 1 possesses an Enter Capability permitting it to invoke functions F1, F2 and F3. External Caller 2 possesses a more restricted Enter Capability permitting it to invoke only F3.
+
+Both callers access the same protected object, but neither can directly access its internal functions, data or capabilities. The restrictions imposed by their respective Enter Capabilities are enforced by the processor hardware.
+
+The protected object therefore determines what operations it makes available, while the Enter Capability determines which of those operations a particular caller may invoke.
 
 *_(PP250 implementation: Store; C0–C7.)_*
 
