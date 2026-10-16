@@ -108,25 +108,13 @@ The segments accessible through those tokens constitute the object's **protected
 
 **Possession of this token permits its holder only to invoke the functions made available through it.** The implementation of those functions, and the data upon which they operate, remain within the object's protected space. The holder cannot use that token to obtain direct access to the underlying code, data or other tokens. That restriction is enforced by the hardware.
 
+An attempt to use this Enter Capability to access the protected object's internal data directly is an access violation. The processor hardware detects the attempted unauthorised access and raises a process fault.
+
 **At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of unforgeable tokens: tokens giving access to the functions that implement its operations and to the data upon which those functions operate. A further unforgeable token provides controlled access to the object without exposing the tokens from which its protected space is constructed.
 
 This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
 
 *_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
-
-### 2.4 Different access to the same object
-
-**Different Enter Capabilities may provide different access to the same protected object.**
-
-![Two external callers accessing the same protected object: Enter Cap 1 permits F1, F2 and F3, while Enter Cap 2 permits F3](images/protected-object-differentiated-access.svg)
-
-In the diagram, External Caller 1 possesses an Enter Capability permitting it to invoke functions F1, F2 and F3. External Caller 2 possesses a more restricted Enter Capability permitting it to invoke only F3.
-
-Both callers access the same protected object, but neither can directly access its internal functions, data or capabilities. The restrictions imposed by their respective Enter Capabilities are enforced by the processor hardware.
-
-The protected object therefore determines what operations it makes available, while the Enter Capability determines which of those operations a particular caller may invoke.
-
-*_(PP250 implementation: Store; C0–C7.)_*
 
 ## 3. Creation and propagation of access
 
@@ -872,3 +860,24 @@ On the current repository evidence, PP250-G2 forms an internally consistent arch
 The processor has documented protected roots for ordinary capability resolution, process state, normal interrupt handling and fault/start-up. Stored capability identity, SCT-mediated expansion, C6/C7 protected invocation, Process Dump Stack state, CHP process transitions, virtual storage, resource allocation and capability-aware object lifetime fit together without requiring an additional undocumented privilege mechanism.
 
 There are currently **no identified unresolved architectural blockers** meeting the repository's open-question admission rule. Further source work may refine encodings, microsequences and operating-system policy without changing that conclusion.
+
+## Deferred topic — Access reduction (placeholder)
+
+*This material is retained for introduction when the architecture's access-reduction mechanism is explained. It is not part of the preceding introductory argument.*
+
+### 2.4 Different access to the same object
+
+**Different Enter Capabilities may provide different access to the same protected object.**
+
+![Two external callers accessing the same protected object: Enter Cap 1 permits F1, F2 and F3, while Enter Cap 2 permits F3](images/protected-object-differentiated-access.svg)
+
+In the diagram, External Caller 1 possesses an Enter Capability permitting it to invoke functions F1, F2 and F3. External Caller 2 possesses a more restricted Enter Capability permitting it to invoke only F3.
+
+Both callers access the same protected object, but neither can directly access its internal functions, data or capabilities. The restrictions imposed by their respective Enter Capabilities are enforced by the processor hardware.
+
+The protected object therefore determines what operations it makes available, while the Enter Capability determines which of those operations a particular caller may invoke.
+
+*_(PP250 implementation: Store; C0–C7.)_*
+
+External Caller 2 possesses an Enter Capability that provides access only to F3. Unlike Caller 1, it has no authority to invoke F1 or F2. Those functions are not available through its Enter Capability, so the caller cannot use it to attempt their invocation. The restriction is inherent in the capability itself, rather than a permission check performed by the protected object's software.
+
