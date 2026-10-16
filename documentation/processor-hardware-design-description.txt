@@ -1,0 +1,896 @@
+PP250 PROCESSOR HARDWARE DESIGN DESCRIPTION
+First draft - 16 October 2026
+==========================================
+
+1. PURPOSE, SCOPE AND EVIDENCE
+----------------------------
+
+This document describes the processor circuits recovered so far, so that a
+reader can understand the components, connectivity, controls and documented
+operations without reconstructing them from separate conversations.
+
+The detailed circuit baseline is US 3,814,919 A, Figures 2a and 2b, read as
+one drawing with 2b to the right of 2a. It is an early processor embodiment,
+with a 1971 priority date and 1974 publication. Later System 250 state is
+recorded separately in section 14. It is not silently wired into this early
+circuit. This draft covers the circuit evidence examined so far, not every
+processor circuit that may exist in the repository or historical machine.
+
+Document role:
+  This is a readable hardware-description companion, not a second canonical
+  architectural specification. architecture/processor-control.md owns the
+  functional naming and source aliases. Other architecture documents own
+  process state and fault/interrupt semantics. If these change, reconcile
+  this description with them rather than establishing competing definitions.
+
+Sources:
+  [D] patents/US-3814919-A.pdf, PDF pages 3-4, printed sheets 2-3, Fig. 2a/2b.
+  [T] transcriptions/US3814919A.rtf, Description:
+      "PROCESSOR MODULE DESCRIPTION", "FAULT INTERRUPT OPERATION",
+      and "SECOND FAULTS".
+  [F] transcriptions/figures/US-3814919-A-fig-2a-2b.md.
+  [A] architecture/processor-control.md, naming and manually checked corrections
+      added in commit 7cb72ad40482455c3ea36ec1aa88cc998dd5d818.
+  [P] architecture/process-model.md.
+  [G] architecture/generation-2-system-250.md, especially machine inventory.
+  [I] architecture/faults-interrupts-startup.md.
+  [O] Owner's manual checks recorded in [A].
+
+Repository: https://github.com/TS200010/PP250-Reboot
+
+Evidence notation:
+  D = directly visible drawing evidence, as captured in [F].
+  T = explicit patent prose.
+  O = owner-confirmed manual reading or agreed editorial label.
+  R = working reconstruction resolving a printed discrepancy.
+  N = detail not yet established in this hardware description.
+
+D, T and O support DOCUMENTED OBSERVATION, but retain their distinct provenance.
+R is WORKING RECONSTRUCTION, not silently corrected primary evidence.
+N describes the limits of this circuit description; it does not reopen
+architectural questions already resolved elsewhere in the repository.
+
+The paragraph numbers sometimes used in the transcription are editorial.
+The printed patent is located by column, operation heading and opening words.
+
+2. NAMING, WIDTHS AND DRAWING CONVENTIONS
+---------------------------------------
+
+Use functional names when comparing patents. A label such as G6 is local to
+one source and figure: US3814919A/Fig2/G6. Equal numbers in another patent do
+not establish equal circuits. Add aliases only when function and connectivity
+support the match; otherwise keep separate entries or label the match R.
+
+G?1-G?4 are agreed local identifiers for AND gates with no printed G-number.
+They are not patent labels and do not express an uncertain gate function.
+
+D/T: Circles containing 2 denote AND gating under micro-program control.
+     Circles containing 1 denote OR isolation.
+T:   Wide data-path gates represent parallel gating, typically one gate per
+     bit of a 24-bit highway. This does not make single parity paths 24 bits.
+D:   Grouped arrows/braces do not specify a bus width by their arrow count.
+
+T: MHW, SIH and SOH are typically 24-bit parallel highways.
+T: RES REG and OPREG are 24-bit registers.
+T: HIS STK has sixteen 24-bit entries and a four-bit selector.
+N: Exact storage technology, clock edges, propagation delays, electrical
+   interfaces, enable polarities and microinstruction encoding.
+
+The labels MILL input A and MILL input B below are editorial shorthand:
+  A = left top input in the drawing.
+  B = right top input in the drawing.
+They are not documented physical port names.
+
+3. PROCESSOR ORGANIZATION AND COMPONENT DICTIONARY
+--------------------------------------------------
+
+D/T: One micro-program-controlled datapath serves arithmetic, address
+generation, capability loading, checking, history recording and recovery.
+
+  Selected accumulator/base/special/result data -> MILL input A
+  Selected operand/limit/history data            -> MILL input B
+  MILL result -> main highway -> destination registers
+  Incoming memory data -> store-data gates -> selected destinations
+  Address/data and capability fields -> checking circuits
+  Checking conditions and indicators -> micro-program control
+
+Components and source aliases:
+
+  Accumulator stack             ACC STK
+    Working accumulators, masks/modifiers, sequence state and fault save.
+    Selected by SELA, the accumulator-stack selection circuit.
+
+  Capability base stack         BASE STK
+    Base-address halves of capability registers.
+    Selected by SELB, the base-stack selection circuit.
+
+  Capability type/limit stack   TC/LMT STK
+    TC = type code; LMT = limit address.
+    Corresponding halves of the same selected capability registers.
+    Selected by SELL, the limit-stack selection circuit.
+
+  Special fault-block register  SSCR
+    Patent description: special block capability register.
+    Supplies the fault-block starting address.
+    SF = hard-wired strapping field supplying its fixed address portion.
+
+  Result register               RES REG
+    Temporary arithmetic result or retained access address.
+
+  Operand register              OP REG / OPREG
+    Incoming word, intermediate operand or address-related value.
+
+  Instruction register          IR
+    Instruction control fields presented to micro-program control.
+
+  Arithmetic unit               MILL
+    Parallel arithmetic unit with two input ports. MILL is a name.
+
+  Address/access comparator     COMP
+    Bounds, permitted-access and capability-parity checking.
+
+  Store-interface output reg.   SDIREG
+    Patent description: memory data input register.
+    "Input" means input to memory: this register sends CPU address/write data.
+
+  Parity generation/checking    PGC
+    Parity generation and comparison/checking circuit.
+    PCG is a printed text variant; it does not identify a second circuit.
+
+  Store-parity inverter         IP
+    Switchable incoming-parity inversion circuit.
+
+  Primary indicators            MIP
+    Primary machine indicator register in this patent arrangement.
+
+  Secondary indicators          MIS
+    Secondary machine indicator register/internal micro-program state.
+
+  Historic register stack       HIS STK
+    Recent execution and fault history.
+    SELH = historic-stack selection/address circuit.
+
+  Micro-program control         μPROG
+    Timed sequencing, selection, arithmetic/checking controls and interface
+    control; branches on conditions and indicators.
+
+CPU denotes the processor module / central processing unit.
+
+4. REGISTER STORAGE, FIELDS AND SELECTION
+----------------------------------------
+
+4.1 Accumulator and working state [T]
+
+ACC STK includes ACC0-ACC7, usable as accumulators, masks or modifiers;
+SCR, the sequence control register; ACC(I), the indicator-save accumulator;
+and additional registers not exhaustively described in the prose.
+
+RSEL drives SELA. Working-register selection may derive from micro-program
+control or instruction control fields. ACC(I) preserves MIP on fault entry.
+
+D: Input is MHW through G2.
+D: Output is through G16 to MILL input A.
+N: Complete stack depth and physical line allocation.
+
+4.2 Capability storage [T]
+
+BASE STK and TC/LMT STK hold corresponding halves of each capability.
+The described set includes WCR0-WCR7 (workspace capability registers) and
+hidden registers, including:
+  DCR = dump-area / Dump Stack capability register.
+  MCR = master capability register, identifying the master capability table.
+
+WCR7 conventionally identifies the current program's main reserved segment
+pointer table in this patent. Do not assign this early convention to the
+later C7 execution-code capability without generation-specific evidence.
+
+Workspace entries can be selected by instruction fields or micro-program
+control. Hidden entries require special instruction codes or micro-program
+selection. CRSEL controls SELB and SELL.
+
+A base contains a memory-module identity plus the segment's base address,
+with an appended parity bit for the complete base address. The prose gives
+the most significant eight bits as an example module-number allocation.
+
+The other half holds limit address and type code. Limit is the last address
+of the segment. Its parity covers the limit address, not the type code.
+The prose says the type code has no parity bit of its own.
+
+Early type-code assignments in the most significant eight bits:
+  bit 16 read data;       bit 17 write data;     bit 18 execute data;
+  bit 19 read capability; bit 20 write capability;
+  bit 21 enter capability; bits 22-23 spare.
+
+These are early-patent assignments, not a universal System 250 encoding.
+
+D/O: BPB is the stored base parity connection to COMP.
+D/O: LBP is the owner's confirmed stored limit parity label; [F] originally
+     read this as LPB. Both strings are retained for source searching.
+
+4.3 Special fault-block address [D/T]
+
+SSCR has a fixed portion set by SF and an alterable memory-module portion.
+The fixed part identifies this processor's area within the fault block.
+The prose describes resetting the alterable portion to zero for the initial
+selected module, and incrementing that module field on repeat attempts.
+This is an operation-specific reset, not evidence for every power-on value.
+
+  SF -> fixed SSCR portion
+  MHW -> G19 -> alterable SSCR input
+  SSCR -> G3 -> MILL input A
+
+N: Complete bit layout, reset circuit and overflow/wrap implementation.
+
+4.4 Temporary, interface and instruction state [D/T]
+
+RES REG:
+  MHW -> G13 -> RES REG -> G14 -> MILL input A.
+  Holds local sums and retained dump-area addresses.
+
+OPREG:
+  SOH -> GS -> G6 -> operand OR -> OPREG.
+  MHW -> G17 -> operand OR -> OPREG.
+  OPREG -> G15 -> MILL input B.
+  OPREG also feeds PGC and, through G18, the history-input OR.
+
+SDIREG:
+  MHW -> G4 -> SDIREG -> G5 -> SIH.
+  +1S increments its contents by one.
+  Output also feeds COMP and the parity-checking arrangement.
+  Address and write data use this same outgoing register at different
+  stages; do not assume separate address/data ports.
+
+IR:
+  SOH -> G?1 -> IR -> μPROG instruction-control input.
+  The patent does not give a complete instruction decoder or IR bit layout.
+
+4.5 History storage [D/T]
+
+HIS STK is sixteen 24-bit entries, addressed by four-bit SELH as a circular
+history queue. The text identifies records of absolute sequence address,
+instruction word, and absolute operand address for store-access instructions.
+Saved fault indicators are added during recovery.
+
+  INC -> SELH advancement
+  OPREG -> G18 -> history OR -> selected HIS STK entry
+  PGC -> G?3 -> history OR -> selected HIS STK entry
+  HIS STK -> G?4 -> MILL input B
+
+D: The PGC-side history path is drawn.
+N: Its complete payload formation and every normal record-write sequence.
+T: The prose describes some stack hardware as scratch-pad units; this is
+   not evidence for a specific commercial memory device or clock scheme.
+
+5. COMPLETE RECOVERED GATE AND JUNCTION LIST
+-------------------------------------------
+
+All references here belong to US3814919A/Fig2.
+Each row describes connectivity, not a claim that every gate is open at once.
+
+  G1   MIP -> MHW
+  G2   MHW -> ACC STK
+  G3   SSCR -> arithmetic input-A OR
+  G4   MHW -> SDIREG
+  G5   SDIREG -> SIH
+  G6   store-data distribution after GS -> operand-input OR
+  G7   store-data distribution after GS -> BASE STK
+  G8   SPB -> BASE STK parity input
+  G9   store-data distribution after GS -> TC/LMT STK
+  G10  SPB -> limit-stack parity input
+  G11  BASE STK -> arithmetic input-A OR; branch to COMP
+  G12  TC/LMT STK -> arithmetic input-B OR; branches to COMP
+  G13  MHW -> RES REG
+  G14  RES REG -> arithmetic input-A OR
+  G15  OPREG -> arithmetic input-B OR
+  G16  ACC STK -> arithmetic input-A OR
+  G17  MHW -> operand-input OR
+  G18  OPREG -> history-input OR
+  G19  MHW -> SSCR
+  GS   SOH -> common incoming-data distribution for G6/G7/G9
+  G?1  SOH -> IR
+  G?2  MIS -> MHW
+  G?3  PGC -> history-input OR
+  G?4  HIS STK -> arithmetic input-B OR
+
+O: G?1-G?4 are the agreed names of the four unnumbered AND gates.
+O: G12's output is shown entering COMP twice. These are two drawn entries
+   from one G12 output, not two separate G12 gates.
+
+Four OR junctions:
+  Arithmetic input A = OR of gated SSCR, BASE STK, RES REG, ACC STK.
+  Arithmetic input B = OR of gated TC/LMT STK, OPREG, HIS STK.
+  Operand input     = OR of outputs of G6 and G17.
+  History input     = OR of outputs of G18 and G?3.
+
+R: Correct ordinary data selection requires micro-program enables to avoid
+unintended OR combinations. The OR symbols themselves do not prove hardware
+mutual exclusion. No separate arbitration circuit is established.
+
+The MHW loop crosses both drawing halves twice. The upper MHW feeds G2,
+G13, G17 and G19; its right vertical part feeds G4. MILL's bottom output,
+G1 and G?2 join the main-highway return. The figure capture [F] contains
+the full sheet-join ledger, including CRSEL, SPB, incoming store data,
+base/parity-to-COMP paths, arithmetic return paths and indicator connections.
+
+6. ARITHMETIC AND REGISTER-TRANSFER CIRCUITS
+------------------------------------------
+
+6.1 Arithmetic [D/T]
+
+MILL receives two selected parallel words. AUμS selects the arithmetic
+operation. The result appears on MHW; destination gates load it into
+ACC STK, RES REG, OPREG, SSCR or SDIREG.
+
+AUCS reports arithmetic conditions to μPROG; arithmetic indications also
+feed MIP. Documented operations include addition, subtraction, increment
+and routing of a selected value through MILL in transfer sequences.
+
+N: Full arithmetic function table, carry/overflow implementation, explicit
+pass-through encoding, all logical/shift functions and arithmetic latency.
+
+6.2 Direct indicator transfers [D/T]
+
+MIP -> G1 -> MHW -> G2 -> selected ACC STK entry.
+MIS -> G?2 -> MHW -> a selected main-highway destination.
+
+T: The MIP-to-ACC(I) transfer is used to preserve the fault indication.
+D: The MIS output route is present, but its complete operation repertoire
+   is not supplied by the examined prose.
+
+6.3 Address retention [T]
+
+A capability base may be routed through MILL onto MHW and loaded into both
+SDIREG through G4 and RES REG through G13 during the described dump sequence.
+The retained address can then return through G14 to MILL, be incremented,
+and be rewritten through G13/G4 for subsequent accesses.
+
+This records patent sequencing; it does not specify one universal cycle.
+
+7. MEMORY INTERFACE AND PROTECTION CIRCUITS
+-------------------------------------------
+
+7.1 Interface [D/T]
+
+SIH = store input highway: CPU -> memory.
+SOH = store output highway: memory -> CPU.
+SIHCS = outgoing store-input-highway control signals.
+SOHCS = incoming store-output-highway control signals/response information.
+
+Outgoing:
+  selected source -> MILL -> MHW -> G4 -> SDIREG -> G5 -> SIH.
+  μPROG -> SIHCS -> requested memory operation.
+
+Incoming:
+  memory -> SOH -> GS -> G6/G7/G9 -> selected register.
+  memory -> SOH -> G?1 -> IR.
+  memory -> SOHCS -> μPROG response and checking inputs.
+
+T: The described three-wire operation coding is:
+  001 read; 010 read-and-hold; 100 write; 111 reset.
+The prose explains invalid-code detection, including one-bit changes from
+these legal code patterns. Do not generalize to a complete interface protocol.
+
+N: All response-code values, arbitration, handshake pulse shapes and detailed
+read-and-hold release timing beyond the described reset operation.
+
+7.2 Capability bounds, rights and parity [D/T/O]
+
+COMP receives:
+  - selected base through G11;
+  - stored base parity BPB;
+  - selected limit/type stack output through G12, drawn entering twice;
+  - stored limit parity LBP;
+  - current outgoing address from SDIREG;
+  - relevant access-control information;
+  - PS, the internal parity state;
+  - CμS, comparator micro-program controls.
+
+COMP checks the absolute address against the selected base and limit,
+the requested access against the type code, and the used base/limit values
+against their stored parity. The type code itself is not included in the
+limit-address parity calculation described by the patent.
+
+Results feed condition indications CIS and primary indicator logic.
+The exact assignment of every adjacent drawn input to individual bit fields
+is not established. Two G12 entries are retained as drawn without inventing
+two independently enabled data sources.
+
+N: Complete comparator Boolean equations, complete per-pin allocation and
+the precise electrical point at which an invalid access is suppressed.
+The documented architectural checking is not an excuse to invent an
+additional unshown interlock gate.
+
+8. PARITY GENERATION, COMPARISON AND INVERSION
+----------------------------------------------
+
+8.1 Incoming word checks [D/T]
+
+PGC observes incoming SOH data and the received word placed in OPREG.
+It compares generated parity with the store parity accompanying the word.
+
+  SOHCS parity -> IP -> SPB -> PGC
+  SOH data ------------------> PGC
+  OPREG ---------------------> PGC
+
+SPB also supplies G8 and G10 to retain capability-address parity.
+
+8.2 Outgoing word checks [D/T]
+
+PGC generates parity for address/write data held in SDIREG.
+Memory returns parity generated from what it received on PCW, a parity
+check wire carried in SOHCS. PGC compares local and returned parity.
+PCS conveys parity-check results to μPROG.
+
+8.3 Switchable internal parity convention [T]
+
+MIS contains an internal parity indicator. Its PS output controls IP and
+informs both PGC and COMP of the current internal parity convention.
+
+On the first fault attempt, the micro-program changes this convention.
+Previously retained words, especially capability addresses with stored
+parity, then fail checking if reused under the changed convention.
+Fresh incoming parity is adjusted through IP to the current convention.
+
+This is a checking-state change, not evidence that every resident data
+register is physically overwritten or that every parity bit is rewritten.
+
+Repeated fault attempts do not repeat the first-entry inversion step.
+N: Power-on convention, complete inverter implementation, every register's
+parity coverage and the detailed gating exception permitting outgoing
+process-state dumping after capability parity has been invalidated.
+T: The prose explicitly says dump sequencing accommodates that last case.
+
+8.4 History connection [D]
+
+PGC's lower connection branches through G?3 into the history-input OR.
+The route is preserved; this draft does not infer its complete record format.
+
+9. INDICATOR AND FAULT-DETECTION CIRCUITS: EARLY PATENT
+------------------------------------------------------
+
+9.1 Primary indicators MIP [T]
+
+The prose describes these MIP positions; do not substitute later MIF numbers:
+
+  bit 5   Access field/type violation: COMP.
+  bit 6   Capability parity fault: COMP.
+  bit 7   Capability base/limit violation: COMP.
+  bit 8   Capability sum-check fault: arithmetic test, μPROG/FIS.
+  bit 9   Store interface timeout: μPROG/FIS.
+  bit 10  Outgoing/returned parity comparison fault: PGC, μPROG/FIS.
+  bit 11  Read data parity fault: PGC, μPROG/FIS.
+  bit 12  Invalid operation: instruction function rejected by μPROG.
+  bit 13  Power failure: supply margins exceeded.
+  bit 14  Invalid store control code: memory indication via SOHCS.
+  bits 20-23 Capability-register identity associated with faults 5-8.
+
+MILL supplies arithmetic indicators. Their complete early-patent bit
+allocation is not recovered here: the transcription has a missing table
+marker (##SPC1##), and later-machine MIP assignments must not fill it.
+
+The prose calls bits 20-23 a "one-out-of-16" identity. Four bits ordinarily
+encode sixteen alternatives; record the wording without claiming a
+sixteen-wire one-hot interface. Exact encoding is not established here.
+
+For bit 8 the prose names a "MILL greater than zero" condition in describing
+a failed equality check. The documented subtraction/equality test is
+retained; no complete signed/nonzero condition decoder is inferred.
+
+9.2 Common fault route [D/T]
+
+  MIP fault bits 5-14 -> F -> MIS common fault indicator CFI
+  MIS CFI -> ICS -> μPROG -> fault-interrupt micro-program
+
+The prose says activation takes precedence regardless of other conditions.
+The gate-level priority network is not drawn.
+
+9.3 Secondary indicators MIS [T]
+
+The prose identifies:
+  F.A.T. = first attempt indicator.
+  F1T / FIT = fault administration indicator/toggle.
+  FIIT = second fault indicator.
+  CFI = common fault indicator.
+  Internal parity indicator = source of PS.
+  Additional secondary state tests whether SCR has already advanced.
+
+SIμCS changes internal indicator state; ICS makes it testable by μPROG.
+Exact bit positions are not given in the examined Figure 2 description.
+
+F.A.T. inhibits the normal interrupt mechanism during checkout.
+F1T protects the first saved fault record against premature overwrite.
+FIIT selects repeated-fault handling and the later change-process entry.
+The checkout program eventually resets F.A.T. on successful completion.
+
+9.4 Timeout and power circuits [T]
+
+The patent gives an example interface timeout counter within μPROG:
+start when SDIREG address/data is presented to SIH; stop on the response
+over SOHCS; set the timeout indicator if the limit expires first.
+Twenty microseconds is an example, not a demonstrated fixed timing value.
+
+Power-failure detection is described by exceeded supply margins.
+N: Detector topology, thresholds, actual timeout hardware and clock source.
+
+10. MICRO-PROGRAM CONTROL AND COMPLETE SIGNAL DICTIONARY
+-------------------------------------------------------
+
+D/T: μPROG receives instruction fields from IR and conditions AUCS, ICS,
+PCS and CIS. It sequences gates, selectors, MILL, COMP, indicators,
+SDIREG incrementing, history advancement and memory operations.
+A self-addressed read-only-memory implementation is offered as an example;
+it is not proof of an exact ROM organization.
+
+Signals (function names followed by source aliases):
+
+  Gate/sequencing controls              μPGCS
+    Micro-program control signals. The label spans the sheet join.
+
+  Accumulator-register selection        RSEL
+    Register selection; μPROG -> SELA.
+
+  Capability-register selection         CRSEL
+    Capability-register selection; μPROG -> SELB and SELL.
+
+  Arithmetic operation controls         AUμS
+    Arithmetic-unit micro-program signals; μPROG -> MILL.
+
+  Arithmetic conditions                 AUCS
+    Arithmetic-unit condition signals; MILL -> μPROG.
+
+  Comparator controls                   CμS
+    Comparator micro-program signals; μPROG -> COMP.
+
+  Comparator conditions                 CIS
+    Comparator condition-indicating signals; COMP -> μPROG.
+    Comparator indications also enter primary-indicator logic.
+
+  Primary fault-indicator controls      FIS
+    μPROG -> MIP fault indicators.
+
+  Machine-indicator conditions          ICS
+    Indicator condition signals; MIP/MIS -> μPROG.
+
+  Primary-to-secondary fault indication F
+    MIP -> MIS common fault logic.
+
+  Secondary-indicator controls          SIμCS
+    Secondary-indicator micro-program control; μPROG -> MIS.
+
+  Parity-check conditions               PCS
+    PGC -> μPROG.
+
+  Internal parity state                 PS
+    MIS -> IP, PGC and COMP.
+
+  Incoming store parity                 SPB
+    Store parity bit; incoming SOHCS through IP -> checking and G8/G10.
+
+  Stored base parity                    BPB
+    BASE STK -> COMP.
+
+  Stored limit parity                   LBP
+    Limit stack -> COMP; older capture spelling LPB retained as alias.
+
+  Returned memory parity                PCW
+    Parity check wire within SOHCS; memory -> PGC.
+
+  Historic-selector increment           INC
+    μPROG -> SELH.
+
+  Store-output-register increment        +1S
+    μPROG -> SDIREG increment by one.
+
+  Main data highway                     MHW
+    MILL and gated indicators -> register-loading destinations.
+
+  Incoming store-data highway           SOH
+    Memory -> CPU; instruction/data and parity-observation routes.
+
+  Outgoing store-address/data highway   SIH
+    CPU SDIREG/G5 -> memory.
+
+  Incoming store-control signals        SOHCS
+    Memory responses/control/parity information -> CPU.
+
+  Outgoing store-control signals        SIHCS
+    μPROG -> memory requests/control codes.
+
+N: Individual gate-enable signal names, polarity, pulse duration, setup/
+hold timing, microinstruction fields and full next-address selection logic.
+
+11. DOCUMENTED TRANSFER AND CHECK SEQUENCES
+-------------------------------------------
+
+These are functional operations, not a fabricated clock-by-clock schedule.
+"Enable" means the patent describes opening the relevant gates during
+the operation; it does not assert one simultaneous edge for all stages.
+
+11.1 Receive an operand [D/T; source-error resolution R]
+
+  Await response information on SOHCS.
+  Enable GS and G6.
+  SOH -> GS -> G6 -> operand OR -> OPREG.
+  PGC checks received/retained data against the incoming parity.
+  μPROG examines checking indications.
+
+S16 prints G17 instead of G6; see section 15.
+
+11.2 Load a capability base [T]
+
+  Select the target entry with CRSEL.
+  Enable GS/G7 and G8.
+  Incoming base word -> selected BASE STK entry.
+  Adjusted store parity SPB -> retained base parity.
+
+11.3 Load a capability limit [T]
+
+  Select the corresponding target entry with CRSEL.
+  Enable GS/G9 and G10.
+  Incoming limit/type word -> selected TC/LMT STK entry.
+  SPB -> retained limit-address parity.
+
+11.4 Check the loaded descriptor [T]
+
+  Retain the table-provided sum-check word in OPREG.
+  Select the loaded capability.
+  G11/G12 -> MILL; command addition.
+  MILL -> MHW -> G13 -> RES REG.
+  Concurrently check base and limit parity through COMP.
+  G14/G15 -> MILL; command subtraction.
+  Test arithmetic indications through MIP/ICS to establish equality.
+  A mismatch sets the capability sum-check fault.
+
+The master-table entry is described as three words:
+sum-check, base, limit. The sum-check is the computed sum of the latter two.
+N: Complete overflow/truncation rules for that stored sum.
+
+11.5 Preserve and record primary indicators [T]
+
+  Select ACC(I) with RSEL.
+  MIP -> G1 -> MHW -> G2 -> ACC(I).
+  Later select ACC(I), route G16 -> MILL -> MHW -> G17 -> OPREG.
+  OPREG -> G18 -> history OR -> selected HIS STK entry.
+  Advance SELH using INC as described by the recovery sequence.
+
+11.6 Issue and advance a fault-block read [T/R]
+
+  SSCR -> G3 -> MILL -> MHW -> G4 -> SDIREG.
+  SDIREG -> G5 -> SIH; SIHCS specifies read.
+  +1S increments SDIREG to the next word; G5 issues that address.
+  Repeat for sum-check, base, limit and checkout-pointer words as required.
+
+The opening gate list in the prose includes G6; the drawn address route
+uses G3/G4, followed by G5 for transmission. See section 15.
+
+11.7 Dump outgoing process data [T]
+
+  Select DCR through CRSEL.
+  Its base -> G11 -> MILL -> MHW -> G4 -> SDIREG.
+  Also retain the address through G13 in RES REG.
+  Select each required ACC STK entry through RSEL.
+  G16 -> MILL -> MHW -> G4 -> SDIREG -> G5 -> memory write.
+  Return the saved address through G14, increment through MILL, and
+  retain/update it through G13/G4 for the next access.
+  Repeat according to the dump microsequence.
+
+The patent describes preserving SCR and primary indicators along with
+working state. Capability-pointer slots already preserve the corresponding
+reserved segment pointers. This is not a dump of every expanded capability
+register as an ordinary data word.
+
+11.8 Select another fault-recovery memory module [T]
+
+  SSCR -> G3 -> MILL.
+  Increment the memory-module field.
+  MILL -> MHW -> G19 -> SSCR.
+  Retry the fault-block/checkout entry using that module.
+
+12. FAULT ENTRY, CONTAINMENT AND PROCESS TRANSITION
+---------------------------------------------------
+
+The following sequence is supplied by patent prose, not a new visual
+capture of Figure 5 or Figure 6. Operation names are used because printed
+and transcribed step cross-references contain inconsistencies.
+
+First entry:
+  1. A primary fault sets CFI in MIS; μPROG enters recovery.
+  2. Test F.A.T.; on the first attempt change internal parity state.
+  3. Set F.A.T., inhibiting ordinary interruption.
+  4. Advance the history selector and copy MIP to ACC(I).
+  5. Set the fault-administration indicator protecting that saved record.
+  6. Clear the relevant fault/common-fault indication as described.
+  7. Release/reset an outstanding memory operation where required.
+  8. Use SSCR to read this processor's four-word area in the fault block.
+  9. Receive sum-check; load the special-table descriptor into MCR;
+     check its base/limit parity and sum-check.
+ 10. Put the saved fault indicators into history; advance the selector;
+     clear the administration indicator.
+ 11. If SCR already advanced past the failed instruction, back it up as
+     described so the saved sequence state refers to the proper instruction.
+ 12. Read RSPC-O, the reserved segment pointer for the checkout Dump Stack.
+ 13. Enter automatic change process: dump outgoing state where appropriate,
+     obtain the checkout Dump Stack descriptor through the special table,
+     and restore checkout process state.
+
+Memory structures described by the prose:
+  SFB: special fault block, one four-word area per processor:
+       sum-check, base, limit, RSPC-O.
+  SCT: special capability tables for checkout, one per processor.
+       Here SCT means SPECIAL capability table, not silently the later
+       ordinary SYSTEM Capability Table with the same abbreviation.
+  C-ODS: checkout process Dump Stacks.
+  C-ORSPT: checkout reserved segment pointer tables.
+  C-OPROG: checkout program segments.
+
+The new MCR table restricts subsequent workspace capability loading to
+checkout-related segments. This is the containment mechanism described
+by the patent, coupled with parity invalidation and interrupt inhibition.
+
+Repeat fault:
+  F.A.T. is already set, so skip the first-entry parity inversion.
+  Set FIIT; preserve/append fault history while respecting F1T protection.
+  Advance SSCR's module field.
+  Re-read the alternative fault block and special-table descriptor.
+  Clear FIIT and enter the later automatic-change-process path, avoiding
+  a second dump of the original suspended process.
+
+Successful checkout:
+  Software completes the checks, resets F.A.T. and may request rejoining
+  the online system. Persistent faults keep re-entering checkout.
+  A memory-module fault can be escaped by trying another module.
+  This is a recovery capability, not a requirement to reconstruct the
+  full redundant system before understanding one processor and one store.
+
+N: The complete microinstruction listing and all parity-check exceptions
+during outgoing-state preservation. The architectural process-transition
+mechanism is documented; the missing fine timing is not a new mechanism.
+
+13. FIXED STATE, INITIALIZATION AND TIMING BOUNDARIES
+----------------------------------------------------
+
+Established for the described operations:
+  - SF provides a fixed fault-block address portion.
+  - The selected module field can be reset and incremented.
+  - SELH is advanced by INC and addresses sixteen history entries.
+  - SDIREG supports +1S.
+  - Internal parity convention changes on first fault entry.
+  - F.A.T. inhibits normal interrupts until checkout software clears it.
+  - Repeated entry avoids dumping the same suspended state a second time.
+
+Not established here:
+  - Complete cold power-on values for all registers and flags.
+  - Clock frequency, phases, edge sense and cycle counts.
+  - Every selector and stack read/write timing constraint.
+  - Complete reset distribution and power-failure timing.
+  - Gate enable overlap rules and full micro-program store contents.
+
+These are source-description limits. Consult the canonical open-question
+index before treating any one of them as a current architectural blocker.
+
+14. LATER SYSTEM 250 STATE: CONTEXT WITHOUT INVENTED WIRING
+-----------------------------------------------------------
+
+[G], [P] and [I] describe mature c. 1975-76 System 250 state:
+  D0-D7: eight 24-bit data registers.
+  C0-C7: eight expanded 48-bit capability registers.
+  D10: absolute Dump Stack pushdown pointer.
+  D11: watchdog timer.
+  D12: first-fault MIF copy.
+  D15: interrupt accept register.
+  D17: instruction address register, IAR.
+  C10/C(D): Dump Stack capability.
+  C11/C(I): interval-timer transition capability.
+  C12/C(C): System Capability Table capability.
+  C13/C(N): Normal Interrupt Block capability.
+  C(S): separate hardware-rooted fault/start-up capability.
+  MIS: internal micro-program execution state.
+  Sixteen 24-bit Historic Registers.
+  Internal Mode: capability-controlled access to internal processor state.
+  One-Shot Second Group LC: special-register establishment mechanism.
+  CHP: Change Process; also an internal automatic transition mechanism.
+
+Unassigned entries D13/D14/D16 and C14-C17 are not given invented functions.
+
+Mature MIP assignments [G]:
+  00 =0; 01 <0; 02 overflow; 03 spare; 04 Second Group;
+  05 Inhibit Interface Faults; 06 Odd Data Parity; 07 First Attempt;
+  08 Inhibit Interrupts; 09-23 unassigned in the Pocket Reference.
+
+Mature MIF assignments [G]:
+  00 Bus Corrupt; 01 unassigned; 02 Interrupt Timeout; 03 unassigned;
+  04 spare; 05 Slave Timeout; 06 Capability Parity Fault;
+  07 Sumcheck Fault; 08 Base/Limit Fault; 09 Interface Timeout;
+  10 Parity Comparison; 11 Read Data Parity; 12 Invalid Operation;
+  13 Power Failure; 14 Invalid Control Code; 15 Trap with MIP08;
+  16 Hardware Fault 1; 17 Watchdog Timer Expired;
+  18 Access Violation; 19 Hardware Fault 2;
+  20-23 capability-register identity, least-significant bit at 20.
+
+These assignments differ from the early MIP/MIS account. Do not merge them.
+
+Architectural transition context [P/I]:
+  Normal interrupt/trap -> C(N) -> Normal Interrupt Block ->
+  incoming Dump Stack reference -> automatic CHP.
+
+  Fault/start-up uses the distinct C(S)-rooted recovery path.
+
+  CHP saves outgoing state and restores incoming state. D-register values
+  are saved directly. Fixed slots for C0-C5 hold 24-bit capability pointers,
+  not copies of expanded 48-bit register contents. Those pointers allow
+  capability state to be reconstructed through the System Capability Table.
+  C6/C7/IAR execution state is preserved separately in the protected
+  CALL/RETURN structure. MIP is at Dump Stack offset octal 20.
+
+The mature inventory also describes C(S)[23:12] as a twelve-bit field
+alterable through Internal Mode; the remainder is readable but not altered
+that way. It calls this C(S) Start-Up Location Control without establishing
+its complete purpose. Do not identify it with the early SSCR module field
+solely because both participate in startup/recovery.
+
+These entries supply architectural requirements and generation context.
+They do not establish Figure 2 gate numbers for interval/watchdog timers,
+Internal Mode, C(N), later MIF or the complete mature capability datapath.
+
+15. SOURCE DISCREPANCIES AND MANUAL RESOLUTIONS
+----------------------------------------------
+
+15.1 Gate labels absent in the print [O]
+  Assign G?1 SOH-to-IR; G?2 MIS-to-MHW; G?3 PGC-to-history;
+  G?4 history-to-MILL. These are editorial aliases local to this figure.
+
+15.2 Comparator inputs [O]
+  BPB and G11 output enter COMP.
+  LBP and G12 output enter COMP; G12 output is drawn entering twice.
+  Retain LBP as owner-confirmed; retain LPB as the earlier capture reading.
+
+15.3 Incoming operand gate [D/T/O/R]
+  The S16 text beginning "When the memory produces the word RSPC-O"
+  prints GS and G17. Drawing: G6 receives incoming store data;
+  G17 receives MHW. The earlier received-word description also says G6.
+  R: G6 is the intended incoming-data gate.
+  Printed location: PDF page 16, column 18, above "S17 - FIIT Set?".
+
+15.4 Address-forming gate list [T/O/R]
+  The address-forming passage prints G3, G4 and G6.
+  R: G6 appears extraneous to SSCR -> MILL -> SDIREG;
+  G3/G4 provide that transfer and G5 supplies the outgoing SIH path.
+  This is the passage beginning "This operation is performed by activating
+  gates", within the detailed fault-block access description. Its surrounding
+  step references vary between prose and transcription.
+
+15.5 Parity-circuit spelling [D/T/O]
+  Text prints PCG in the S16 passage. Drawing prints PGC.
+  Both identify the parity generation/checking circuit in this account.
+
+15.6 Micro-program control annotation [D/O]
+  The split annotation beneath μPROG reads μPGCS.
+
+15.7 Further prose/transcription cautions [T]
+  Some history-selector passages name lead INT while the drawing and
+  micro-program description name INC. This draft uses the drawn INC alias,
+  without claiming a separately established INT signal.
+  Step references in prose do not always match their nearby headings.
+  Use operation descriptions, not those inconsistent cross-references,
+  when recovering the sequence.
+  The primary-indicator summary table is absent from the transcription
+  at ##SPC1##. It has not been reconstructed from later-machine bit numbers.
+  Do not treat a garbled spelling or numeric reference as a new component.
+
+16. HOW TO EXTEND THIS DESCRIPTION
+----------------------------------
+
+For each new patent or drawing:
+  1. Record its identity, generation context and exact figure references.
+  2. Capture the source drawing separately before changing the circuit account.
+  3. Map components and paths by function and connectivity, not gate number.
+  4. Add source aliases while retaining existing source-qualified labels.
+  5. Add newly evidenced fields, control conditions and operation sequences.
+  6. State whether evidence confirms, refines or conflicts with this account.
+  7. Keep competing arrangements separate until their relationship is supported.
+  8. Mark missing timing/encoding detail N rather than fabricating it.
+  9. Reconcile changes with canonical architecture; preserve source originals.
+ 10. Assess new proposals separately from this published historical evidence.
+
+This first draft describes published prior-art circuits and existing
+repository reconstruction. It proposes no new processor mechanism.
