@@ -16,7 +16,7 @@ This note records a second, better hardware-grounded candidate for parity/fault 
 
 **WORKING RECONSTRUCTION.** A first fault toggles the processor's internal parity convention. Previously loaded capability-register base/limit parity bits remain unchanged and therefore fail comparison under the new convention. The memory-resident normal SCT itself is **not** rewritten or invalidated by this toggle. Recovery microcode independently reaches the SFB via SSCR and replaces MCR with the restricted special SCT descriptor. Incoming descriptor parity is conditioned through IP before being stored in the newly loaded capability registers, so those newly loaded capabilities can be valid under the selected internal convention. Checkout can thus execute **without first restoring** the former parity convention. Automatic CHANGE PROCESS remains part of establishing the new process state; it does not independently explain the parity transition.
 
-After successful checkout and authorised rejoin, this reconstruction proposes that the processor **may retain** its toggled parity state during normal execution. After First Attempt has been reset, a later independent fault would toggle parity again, invalidating the then-current capability-register generation. This is consistent with the explicit conditional toggling in paragraph 70; it is **not yet verified** that parity is never normalised during rejoin.
+After successful checkout and authorised rejoin, normal execution can proceed under the currently selected internal parity convention. The mechanism does not require restoring the former convention: that requirement was introduced by our earlier hypothesis, not by the parity circuit. With First Attempt reset, a later independent fault toggles the convention again, invalidating that generation of loaded capabilities. No separate research task to prove parity restoration or permanent non-restoration is required for this reconstruction.
 
 The pre-fault normal SCT remains an intact memory structure but is no longer selected by the replacement MCR. An authorised rejoin path must supply access to the running system's normal SCT and restore legitimate process authority under the current internal parity convention. **UNKNOWN:** the exact authority transfer, register load and rejoin sequence; the passages examined do not establish it.
 
@@ -27,7 +27,7 @@ The earlier account correctly recognised C(S)/SSCR, restricted SCT, Dump Stack a
 ## Discriminating checks
 
 1. Reinspect the original scan of Fig. 2a/2b to verify exact routing and signal labels (`SPB`, `IP`, `PS`, `G8`, `G10`, `BPB`, and corresponding limit parity signal), keeping diagram observation separate from textual description.
-2. Check whether any rejoin/processor-state instructions explicitly reset or set the internal parity indicator; absence of such wording in paragraphs 70, 127 and 134 is not proof of permanence.
+2. Do not introduce an unsupported parity-restoration step into checkout or rejoin. The selected internal parity convention already supports newly loaded capabilities.
 3. Reconcile the normal-SCT restoration route with version-specific special-register/One-Shot Second Group LC evidence. Do not invent an additional privileged path.
 4. Distinguish the independent read-and-hold bus parity inversion in US 4,050,059 from the internal capability-parity convention switched by US 3,814,919.
 
