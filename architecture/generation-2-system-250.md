@@ -10,17 +10,17 @@ Detailed provenance and the reasoning trail remain in the repository's research 
 
 ## The proposition
 
-**System 250 was not just a capability machine ... it was a PURE fault tolerant capability machine with a persistent object store. No machine like it existed at the time, and none has been created since.**
+**System 250 was not merely a capability machine. It was a PURE, fault-tolerant capability machine with a persistent object store.** Its distinctive architecture integrated hardware-enforced protection, fault containment and recovery into a single system.
 
 System 250 has usually been understood and described through its most visible architectural feature: capabilities. That description is correct, but incomplete. It obscures a deeper structure which appears never to have been fully understood outside the relatively small community that designed, implemented and programmed the machine. This reconstruction attempts to recover that structure.
 
 We will begin with the architecture as it appeared to the programmer and, in particular, with the unusual mechanism at its heart: the **Enter Capability**. Understanding what an Enter Capability actually does provides the key to understanding System 250. From there we can ask the questions that naturally follow: where do capabilities come from, what establishes and protects a process, and what lies beneath the capability architecture itself? Following those questions down into the processor reveals a structure considerably more interesting than the conventional description of System 250 as an early capability machine suggests.
 
-Aside from Enter Capability, the System250 was designed to be fault tolerant in the face of hardware and software failures - deliberate or accidental. The capability mechanism was central to implementing this fault tolerance.
+Fault tolerance was a fundamental architectural objective of System 250. Its capability mechanisms provided the protection and containment upon which software and hardware fault-recovery mechanisms were constructed.
 
 ## PP250 and System 250
 
-PP250 is simply Plessey Processor 250. It is the CPU. System 250 is a collection of PP250 processors, store modules and peripherals. There is a tendency for these terms to be used interchangably.
+**PP250** denotes the Plessey Processor 250, the central processing unit. **System 250** denotes the complete system comprising PP250 processors, shared store modules and peripheral equipment. Although the terms are sometimes used interchangeably, this distinction matters when separating processor mechanisms from system-level architecture.
 
 ## Method of reconstruction
 
@@ -40,17 +40,17 @@ The descent therefore establishes **what the architecture is**; the inventory es
 
 **PP250 provides an unforgeable authority substrate from which software can construct and enforce arbitrary programmer-defined authorities.** 
 
-**Authorities protect anything that can be mapped to a store address... and in System 250 everything is so mapped.**
+**Authority governs access to addressable resources. System 250 extends this principle throughout its hardware and software architecture.**
 
-**Authorities contains faults and support recovery from them.**
+**Authority provides the foundation for fault containment and supports the protected mechanisms required for recovery.**
 
-**The Authority mechanisms that manage, protect and recover the system are themselves governed by Authorities from that very same substrate.**
+**The mechanisms that manage, protect and recover the system are themselves governed by authority derived from that same substrate.**
 
 *_(PP250 implementation: Store; C0–C7; Microprogrammed execution.)_*
 
 ### 1.2 No privileged operating system
 
-**System 250 has no conventional operating system.** Software may provide services conventionally associated with an operating system—storage management, filing, communications, process scheduling, device access and so forth — but those services do not collectively constitute a privileged software layer standing between applications and the machine. They are protected software structures constructed within the same Authority architecture as everything else.
+**System 250 has no conventional operating system.** Software may provide services conventionally associated with an operating system—storage management, filing, communications, process scheduling, device access and so forth — but those services do not collectively constitute a privileged software layer standing between applications and the machine. They are protected software structures constructed within the same authority architecture as everything else.
 
 *_(PP250 implementation: C0–C7; Internal Mode; Microprogrammed execution.)_*
 
@@ -64,7 +64,11 @@ PP250 enforces a software-defined protected structure in hardware: once authorit
 
 A protected structure and its semantics are defined by software. It may represent a file, process, device, directory, storage allocator, system service or application object. Such structures can themselves hold and expose authority, allowing them to be composed recursively into complete software systems.
 
-**THIS IS KEY: Conceptually, a protected structure combines state with a defined set of operations upon that state. It is readily recognisable as the encapsulated abstraction represented in modern programming languages by objects, classes and other structured types.** But on PP250 this protected structure is enforced by the hardware not the complier. In C++ once the compiler is finished we get von Neumann machine instructions with all the problems that that exposes. Not so in PP250 as you will learn.
+**A protected structure combines state with a defined set of operations upon that state.** This resembles the encapsulated objects and classes familiar from modern programming languages, but there is a fundamental difference.
+
+In a conventional C++ implementation, the language's access restrictions are principally enforced by the compiler. Once compiled into conventional machine instructions, those restrictions do not themselves constitute hardware-enforced protection boundaries.
+
+**In PP250, the boundary of the protected object is enforced by the processor itself.** Even at machine-instruction level, code cannot exercise authority that has not been made available to it. The integrity of the boundary does not depend upon the compiler or the continued cooperation of the executing software.
 
 *_(PP250 implementation: EC; C0–C7; Microprogrammed execution.)_*
 
@@ -84,11 +88,24 @@ Before going any further, it is useful to introduce a few definitions and import
 
 ### 2.2 Constructing a protected object
 
-A protected object is defined by a **protected-token segment** - a block of store containing unforgeable tokens. Those tokens give access to the code and data segments from which the object is constructed.
+A protected object is defined by a **protected-token segment** containing unforgeable tokens. These tokens provide access to the code and data segments from which the object is constructed.
 
 The segments accessible through those tokens constitute the object's **protected space**.
 
-[Need a little diagram here of a block with functions and private data]
+```mermaid
+flowchart TB
+    P["Protected-token segment<br/>Unforgeable tokens"]
+    F["Code / functions"]
+    D["Private data"]
+    P --> F
+    P --> D
+    subgraph S["Protected space"]
+        F
+        D
+    end
+```
+
+*Conceptual view of the segments making up a protected object.*
 
 *_(PP250 implementation: Store; C0–C7.)_*
 
@@ -96,9 +113,24 @@ The segments accessible through those tokens constitute the object's **protected
 
 **A further unforgeable token provides controlled access through the protected-token segment.** It does not expose the tokens contained within that segment. Instead, it permits invocation of the functions made available through the object.
 
-[Build on the diagram with a box pointing to the block]
+```mermaid
+flowchart LR
+    X["External caller"]
+    E["Enter Capability"]
+    X --> E
+    subgraph S["Protected object"]
+        P["Protected-token segment"]
+        F["Exposed functions"]
+        D["Private data"]
+        P --> F
+        P --> D
+    end
+    E -->|"Controlled invocation"| F
+```
 
-**Possession of this token permits its holder only to invoke the functions made available through it.** The implementation of those functions, the data upon which they operate, remain within the protected space. The holder cannot bypass this token to obtain access to the underlying code, data or other tokens. That restriction is enforced by the hardware.
+*The Enter Capability permits invocation of exposed functions; the arrow denotes invocation, not direct access to executable code or private data.*
+
+**Possession of this token permits its holder only to invoke the functions made available through it.** The implementation of those functions, and the data upon which they operate, remain within the object's protected space. The holder cannot use that token to obtain direct access to the underlying code, data or other tokens. That restriction is enforced by the hardware.
 
 **At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of unforgeable tokens: tokens giving access to the functions that implement its operations and to the data upon which those functions operate. A further unforgeable token provides controlled access to the object without exposing the tokens from which its protected space is constructed.
 
