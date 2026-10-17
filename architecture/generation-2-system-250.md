@@ -84,6 +84,8 @@ Protected objects interact through controlled interfaces, without exposing their
 
 The diagram illustrates this fundamental organisation. The objects are deliberately unnamed because the same protection mechanism applies throughout the system, regardless of an object's function.
 
+This network of protected objects runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The protected-object architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store.
+
 **To understand how this architecture is achieved, we must examine how protected objects are constructed and how access between them is controlled.**
 
 ### 2.1 Segment, access and unforgeable token
