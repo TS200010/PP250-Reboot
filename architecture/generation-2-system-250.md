@@ -86,6 +86,8 @@ The diagram illustrates this fundamental organisation. The objects are deliberat
 
 This network of protected objects runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The protected-object architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store.
 
+![The protected-object network realised on redundant processor, store and I/O modules](images/pp250_protected_objects_and_hardware.svg)
+
 **To understand how this architecture is achieved, we must examine how protected objects are constructed and how access between them is controlled.**
 
 ### 2.1 Segment, access and unforgeable token
