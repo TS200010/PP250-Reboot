@@ -84,25 +84,27 @@ Protected objects interact through controlled interfaces, without exposing their
 
 The diagram illustrates this fundamental organisation. The objects are deliberately unnamed because the same protection mechanism applies throughout the system, regardless of an object's function.
 
-This network of protected objects runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The protected-object architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store.
+This network of protected objects runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The protected-object architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store. 
+
+Further, Protected Objects are persistent - stored on backing store managed by a virtual memory system. 
 
 ![The protected-object network realised on redundant processor, store and I/O modules](images/pp250_protected_objects_and_hardware.svg)
 
 **To understand how this architecture is achieved, we must examine how protected objects are constructed and how access between them is controlled.**
 
-### 2.1 Segment, access and unforgeable token
+### 2.1 Definitions
 
 Before going any further, it is useful to introduce a few definitions and important concepts:
 
 - **Segment** or **Block** — a block of storage with defined bounds.
   
-- **Access** — Authority: the operations permitted upon that segment.
+- **Access** — the operations permitted upon that Segment or Block (authority).
   
-- **Unforgeable Token** — a reference to a segment PLUS the access permitted through that reference.
-      Different Unforgeable Tokens may refer to the same Segment while granting different Access to it.
+- **Capability** — a reference to a Segment PLUS the Access permitted through that reference.
+      Different Capabilities may refer to the same Segment while granting different Access to it.
   
-- **Protected Object** - a segment containing only Unforegable Tokens.
-      These tokens provide access to the code, data and capability Segments from which the object is constructed.
+- **Protected Object** - a Segment containing only Capabilities.
+      These Capabilities provide access to the code Segments, data Segments and Capability Segments from which the object is constructed.
 
 ![Protected-token segment referring to code functions and private data](images/protected-object-construction.svg)
 
@@ -110,70 +112,80 @@ Before going any further, it is useful to introduce a few definitions and import
 
 *_(PP250 implementation: Store; C0–C7.)_*
 
-### 2.3 Controlled access to an object
+### 2.3 Controlled access to a Protected Object
 
-**A further unforgeable token provides controlled access through the protected-token segment.** It does not expose the tokens contained within that segment. Instead, it permits invocation of the functions made available through the object.
+**A Capability (called an Enter Capability) can also provide controlled access to the Protected Object itself.** It does not expose the Capabilities contained within the Protected Object. Instead, it permits only invocation of the functions made available (exposed) by the Protected Object .
 
 ![An external caller invoking F1, F2 and F3 through an Enter Capability, with internal functions and data protected](images/protected-object-entry.svg)
 
-*The Enter Capability permits invocation of exposed functions; the arrow denotes invocation, not direct access to executable code or private data.*
+*Capability permits invocation of exposed functions; the arrow denotes invocation, not direct access to executable code or internal data.*
 
-**Possession of this token permits its holder only to invoke the functions made available through it.** The implementation of those functions, and the data upon which they operate, remain within the object's protected space. The holder cannot use that token to obtain direct access to the underlying code, data or other tokens. That restriction is enforced by the hardware.
+**Possession of this Capability permits its holder only to invoke the functions made available to it.** The implementation of those functions, and the data upon which they operate, remain within the object's protected space. The holder cannot use that Capability to obtain direct access to the underlying code, data or other Capabilities. This restriction is enforced by the hardware.
 
-An attempt to use this Enter Capability to access the protected object's internal data directly is an access violation. The processor hardware detects the attempted unauthorised access and raises a process fault.
+Any attempt to use this Capability to access the protected object's internal data directly is an access violation. The processor hardware detects the attempted unauthorised access and raises a process fault.
 
-**At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of unforgeable tokens: tokens giving access to the functions that implement its operations and to the data upon which those functions operate. A further unforgeable token provides controlled access to the object without exposing the tokens from which its protected space is constructed.
+**At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of Capabilities: Capabilities giving access to the functions that implement its operations and to the data upon which those functions operate. A further Capability provides controlled access to the object without exposing the Capabilities from which its protected space is constructed.
 
-This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold tokens giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing access and enforcing the bounds of each object's protected space.**
+This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold Capabilities giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and enforcing bounds of each object's Segments.**
 
 *_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
 ### 2.4 Other capabilities
 
-As we have seen, a capability determines the type of access its holder has to a segment.
+As we have seen, a capability determines the type of access its holder has to a Segment.
 
-We began with **Enter Capability**, which permits the holder to invoke functions within a protected object's space, without giving direct access to the code, data or capabilities from which that object is constructed.
+We began with **Enter Capability**, which permits the holder to invoke functions within a protected object's space, without giving direct access to the code, data or Capabilities from which that object is constructed.
 
-System 250 provides other forms of capability that permit different operations on segments. These include reading, writing and executing data, and reading or writing capabilities stored within a segment.
+PP250 provides other forms of Capability that permit different operations on Segments. These include reading, writing and executing data, and reading or writing capabilities stored within a Segment.
 
-![Read, Write and Read-Write Data capabilities controlling access to stored data](images/capability-data-access.svg)
+![Read, Write and Read-Write Data Capabilities controlling access to stored data](images/capability-data-access.svg)
 
-![Execute Data capability controlling access to protected code](images/capability-execute-data.svg)
+![Execute Data Capability controlling access to protected code](images/capability-execute-data.svg)
 
-![Read, Write and Read-Write Capability controlling access to stored capabilities](images/capability-stored-capabilities.svg)
+![Read, Write and Read-Write Capabilities controlling access to stored Capabilities](images/capability-stored-capabilities.svg)
 
-Each capability specifies what its holder is permitted to do with the segment it addresses. These restrictions are enforced by the processor hardware.
+Each Capability specifies what its holder is permitted to do with the Segment it addresses. These restrictions are enforced by the processor hardware.
 
-**The first five access rights permit operations on a segment. Enter Capability is fundamentally more sophisticated:** it permits controlled invocation of functions *through* a segment, without exposing the capabilities contained within it.
+**The first five Access rights permit operations on a segment. Enter Capability is fundamentally more sophisticated:** it permits controlled invocation of functions *through* a Capability, without exposing the Capabilities contained within it.
+
+A function function of a Protected Object is called by supplying the processor with the Enter Capability of the object to operate on and an identifier to the function being invoked. Parameters may be passed and values returned. Returned values may have any valid Access including an Enter Capability.
 
 ![Enter Capability providing controlled access to the callable functions of a protected object](images/capability-enter-protected-object.svg)
 
-Together, these capabilities provide the basic forms of authority from which the protected structures of System 250 are constructed.
+Access to data Segments may only have Read Data, Write Data and Execute Data and combinations thereof. 
+
+Access to Capability Segments may only have Read Capability, Write Capability and Enter Capability and combinations thereof.
+
+TEASER: A segment with say Write Data Access and Read Capability Access is almost always illegal and therefore cannot normally be constructed (it would permit the forging of Capabilities for example). However, some "illegal combinations" are constructible in special circumstances that will become clear later. The hardware enforces whatever Access a Capability has embedded. It is the code that generates Capabilities that enforces the legality of the combinations.   
+
+Together, these Capabilities provide the fundamental forms of authority from which the protected structures of System 250 are constructed.
 
 
 ## 3. Creation and propagation of access
 
-### 3.1 Enduring tokens
+### 3.1 Enduring Capabilities
 
-An unforgeable token has an enduring existence independent of its immediate use by a processor. The segment it identifies, its bounds and the access it grants remain unchanged while the token is stored and when it is subsequently used in computation.
+A Capability has an enduring existence independent of its immediate use by a processor. The Segment it identifies, its bounds and the Access it grants remain unchanged while the Capability is stored and when it is subsequently used in computation.
 
 *_(PP250 implementation: Store; C0–C7; C(C).)_*
 
-### 3.2 Creation of unforgeable tokens
+### 3.2 Creation of unforgeable Capabilities
 
-Unforgeable tokens are created only by **identically protected mechanisms of the system** (described later). Users and programs may request the creation of new unforgeable tokens, but such a token cannot be created by ordinary computation.
+Unforgeable Capabilities are created only by **identically protected mechanisms of the system** (described later). Users and programs may request the creation of new Capabilities, but such a Capability cannot be created by ordinary computation.
 
 *_(PP250 implementation: Store; C0–C7; C(C); Microprogrammed execution.)_*
 
 ### 3.3 Transfer of access
 
-An unforgeable token may be passed to another protected object, thereby giving that object the access represented by the token.
+A Capability may be passed from one protected object to another, thereby giving that object the access represented by the Capability.
 
-Different tokens may give different access to the same protected object.
+Different Capabilities may afford different Access to different protected objects.
+
+When a Capability with different Access is created to be passed to another Protected Object, the Access rights can only be attenuated. IE a Protected Object cannot grant Access rights to another Protected Object that it does not possess itself.
 
 *_(PP250 implementation: Store; C0–C7.)_*
 
-### 3.4 The protected system as a graph of access
+### 3.4 The protected object system as a graph of access
 
 Protected spaces form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. An object has no access outside its own protected space except through unforgeable tokens.
 
