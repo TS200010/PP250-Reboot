@@ -94,19 +94,15 @@ This network of protected objects runs on a **fault-tolerant hardware system com
 
 Before going any further, it is useful to introduce a few definitions and important concepts:
 
-- **Segment** — a block of storage with defined bounds.
-- **Access (authority)** — the operations permitted upon that segment.
-- **Unforgeable token** — a reference to a segment together with the access permitted through that reference.
-- **Protected-token segment** — a segment containing unforgeable tokens.
-- Different unforgeable tokens may refer to the same segment while granting different access to it.
-
-*_(PP250 implementation: Store; C0–C7.)_*
-
-### 2.2 Constructing a protected object
-
-A protected object is defined by a **protected-token segment** containing unforgeable tokens. These tokens provide access to the code and data segments from which the object is constructed.
-
-The segments accessible through those tokens constitute the object's **protected space**.
+- **Segment** or **Block** — a block of storage with defined bounds.
+  
+- **Access** — Authority: the operations permitted upon that segment.
+  
+- **Unforgeable Token** — a reference to a segment PLUS the access permitted through that reference.
+      Different Unforgeable Tokens may refer to the same Segment while granting different Access to it.
+  
+- **Protected Object** - a segment containing only Unforegable Tokens.
+      These tokens provide access to the code, data and capability Segments from which the object is constructed.
 
 ![Protected-token segment referring to code functions and private data](images/protected-object-construction.svg)
 
