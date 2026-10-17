@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="740" height="730" viewBox="0 0 370 365">
+<g fill="none" stroke="#B78035" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M94 68 L142 112"/><path d="M133.31 109.67 L142 112 L138.92 103.54"/>
+<path d="M284 68 L247 111"/><path d="M249.06 102.24 L247 111 L255.36 107.66"/>
+<path d="M150 139 L180 163"/><path d="M171.17 161.26 L180 163 L176.36 154.77"/>
+<path d="M229 139 L210 163"/><path d="M211.70 154.16 L210 163 L218.21 159.32"/>
+<path d="M180 189 L109 217"/><path d="M114.90 210.21 L109 217 L117.95 217.94"/>
+<path d="M209 189 L269 218"/><path d="M260.00 218.27 L269 218 L263.62 210.78"/>
+<path d="M83 142 L81 183"/><path d="M77.24 174.82 L81 183 L85.54 175.23"/>
+<path d="M287 144 L288 183"/><path d="M283.64 175.13 L288 183 L291.95 174.91"/>
+<path d="M269 245 L225 268"/><path d="M230.15 260.62 L225 268 L234.00 267.99"/>
+<path d="M195 190 L188 252"/><path d="M184.77 243.60 L188 252 L193.03 244.53"/>
+<path d="M161 114 L185 85"/><path d="M183.11 93.80 L185 85 L176.71 88.50"/>
+<path d="M216 85 L239 111"/><path d="M230.60 107.77 L239 111 L236.82 102.27"/>
+<path d="M112 220 L163 190"/><path d="M158.23 197.63 L163 190 L154.01 190.47"/>
+</g>
+<g>
+<rect x="35" y="54" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="57" y="73" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="164" y="48" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="186" y="67" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="261" y="54" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="283" y="73" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="61" y="113" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="83" y="132" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="129" y="112" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="151" y="131" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="217" y="112" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="239" y="131" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="266" y="113" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="288" y="132" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="59" y="184" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="81" y="203" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="173" y="163" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="195" y="182" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="266" y="184" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="288" y="203" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="87" y="218" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="109" y="237" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="164" y="253" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="186" y="272" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="247" y="218" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="269" y="237" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+<rect x="213" y="273" width="44" height="29" rx="6" fill="#E2F0E7" stroke="#52886A" stroke-width="1.7"/><text x="235" y="292" font-size="12" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle" fill="#275D42">PO</text>
+</g>
+<g fill="none" stroke="#537FA9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<path d="M57 24 V53 M52 44 L57 53 L62 44"/>
+<path d="M283 24 V53 M278 44 L283 53 L288 44"/>
+<path d="M186 282 V331 M181 322 L186 331 L191 322"/>
+<path d="M235 302 V331 M230 322 L235 331 L240 322"/>
+</g>
+<g font-size="11" font-family="Arial, sans-serif" fill="#25342d" text-anchor="middle">
+<text x="57" y="13">First instruction</text>
+<text x="283" y="13">Interrupt</text>
+<text x="210" y="351">Output</text>
+</g>
+</svg>
