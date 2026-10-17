@@ -74,6 +74,18 @@ In a conventional C++ implementation, the language's access restrictions are pri
 
 ## 2. The protected-object model
 
+The System 250 architecture consists of a collection of interconnected protected objects. **Every instruction executes within the protected space of an object. Nothing executes outside this structure.**
+
+This is true from the first instruction executed when the machine starts, through normal application execution, operating-system services and interrupt handling. All execution takes place within protected objects, with the hardware enforcing their boundaries.
+
+Protected objects interact through controlled interfaces, without exposing their internal functions, data or capabilities. The architecture also provides controlled interaction with the outside world through input and output operations.
+
+![Interconnected protected objects with first-instruction and interrupt entry, and output](images/interconnected-protected-objects.svg)
+
+The diagram illustrates this fundamental organisation. The objects are deliberately unnamed because the same protection mechanism applies throughout the system, regardless of an object's function.
+
+**To understand how this architecture is achieved, we must examine how protected objects are constructed and how access between them is controlled.**
+
 ### 2.1 Segment, access and unforgeable token
 
 Before going any further, it is useful to introduce a few definitions and important concepts:
