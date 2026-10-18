@@ -400,6 +400,50 @@ the precise electrical point at which an invalid access is suppressed.
 The documented architectural checking is not an excuse to invent an
 additional unshown interlock gate.
 
+7.3 Memory-reference address formation and checking [T/D/N]
+
+T: US4383297A, Description paragraphs (95)-(114), describes the LOAD
+instruction using four functional steps: S1 fetches the instruction using
+C7 and the instruction address register; S2 forms the required operand
+address; S3 reads from that address; S4 transfers the received data into
+the destination D register. The instruction contains an ADDRESS offset,
+a C(N) capability register selection, an M data-register address-modifier
+selection, a destination D(N), function code and store-mode flag.
+
+T: During S1, the formed instruction address is supplied to MAR; capability
+comparators ACC and BCC test whether the access is permitted before the
+address is passed to the bus interface. During S2, the described ALU path
+selects the instruction offset and the C(N) capability base, adds them and
+loads MAR. BCC performs the capability bounds check before the resulting
+address is passed to bus sequence/control. The cited passage does not fully
+specify how M participates in the indexed address arithmetic; do not infer
+an additional ALU operation or cycle from the mere existence of the M field.
+
+D/T: The earlier US3814919A circuit documents a separate COMP receiving the
+selected base, limit/type and outgoing address, checking bounds, permitted
+access and base/limit parity. The ALU (MILL) generates addresses, whereas
+COMP provides dedicated protection-checking circuitry. These are separate
+functional units; the drawing does not establish their full combinational
+logic, clock overlap or comparator propagation delays. Likewise ACC/BCC in
+US4383297A should not be silently equated pin-for-pin with early COMP.
+
+INTERPRETATION: This architecture integrates checking into the ordinary
+memory-reference sequence. No separately executed software permission test
+or fresh SCT lookup is described for each access through an already-loaded
+capability register. Dedicated comparators permit protection evaluation
+without using the arithmetic unit for a separate software check. This alone
+does not prove a zero-cycle overhead or simultaneous completion of all checks.
+
+N: Neither these passages nor the recovered drawing establishes a precise
+number of microprogram slots or clock cycles attributable to bounds,
+permission and parity checks. The documented prose places validation before
+bus issue; it does not justify assuming speculative unauthorised bus reads
+with fault-only cancellation. The exact timing/overlap of arithmetic,
+comparators and memory-interface gating remains to be established.
+
+Sources: transcriptions/US4383297A.txt (95)-(114); US3814919A Fig. 2a/2b
+and processor-module description, as analysed in sections 6-7 above.
+
 8. PARITY GENERATION, COMPARISON AND INVERSION
 ----------------------------------------------
 
