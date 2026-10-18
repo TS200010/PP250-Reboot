@@ -159,3 +159,13 @@ When a current open question is resolved:
 4. leave completed source reviews historically intact unless they contain an actual error.
 
 When proposing a new open question, state exactly what historical behaviour cannot presently be reconstructed and why existing evidence does not already answer it.
+
+## Documentary research lead — Plessey archives and Ptarmigan (18 October 2026)
+
+Locate surviving original Plessey System 250 / PP250 engineering records, especially logic and circuit drawings, wiring and datapath diagrams, processor control/microprogramming material, maintenance manuals and software.
+
+- **MoD / The National Archives:** Search Ptarmigan project files and RAE Farnborough equipment inventories, contracts, technical reports and acceptance records. Investigate the suggestion that RAE Farnborough had a PP250; **the installation is not confirmed**. Establish whether relevant files survive within MoD custody or at The National Archives. Start with [Discovery](https://discovery.nationalarchives.gov.uk/) and [MoD enquiries](https://www.gov.uk/guidance/contact-the-ministry-of-defence).
+- **Plessey archive custody:** Enquire with the IET Archives (reported Plessey collection **NAEST 238**), Science Museum Group (including Peter J. W. Noble material), Liverpool Record Office (reported Plessey accession **5998**), Rochester Avionic Archives / BAE Systems Heritage, Lewisham Archives and Plessey successor-company heritage contacts. Check collection scope and references; **none is yet confirmed as holding original PP250 engineering drawings**.
+- **Research objective:** Identify who holds the original Plessey computer engineering archive, if it survives; obtain catalogue references, access conditions and provenance. An unsuccessful catalogue search does not establish that documents were destroyed.
+
+This is a historical source-recovery lead, not an additional unresolved architectural mechanism.
