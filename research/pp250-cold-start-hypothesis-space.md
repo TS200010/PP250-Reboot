@@ -167,6 +167,14 @@ External loading or maintenance equipment prepares memory and possibly other sta
 
 This may participate in whole-system initial loading, but the required mechanism has not yet been established from the corpus.
 
+**New documentary clue (18 October 2026; later-generation evidence only):** Andrews and Wheatley, US 4,383,297, describes a special-purpose capability register **C(P)** as used by the **Programmer Interface when accessing store**. Related later patent descriptions reportedly repeat this register designation. This establishes a documented connection between the Programmer Interface and capability-mediated store access in the patented design; it does **not** establish that the interface loaded the first program, how C(P) was initialised, or whether it was operational before normal startup state existed.
+
+**Generation boundary:** C(P) is encountered in later patent material. It must **not** be assumed present in the original PP250 or earlier hardware generations absent contemporary corroboration. Nor should the existence of a maintenance/store-access interface in one generation be equated with a particular primordial loading technique in another.
+
+**Questions for primary-source follow-up:** (1) Could the Programmer Interface write initial instruction and capability structures to otherwise uninitialised store? (2) What established C(P)'s base, limit, rights and validity, and at what stage? (3) Was its store path mediated by ordinary capability/processor hardware or a separate controlled path? (4) Which generations physically implemented it? (5) Did initial system loading instead use preloaded/retained memory, peripheral transfer or other means?
+
+**Disposition:** evidence strengthens L as a research lead about the **provenance of the first program in memory**, not as an explanation of the separate C(S)-rooted processor authority transition. Hypothesis L remains set aside for the processor-sequencing reconstruction, not rejected.
+
 ### M. Retained/preloaded memory makes start-up a reconnection problem
 
 For processor restart or rejoin, valid capability tables, Dump Stacks and start-up structures already exist. The processor reconnects to previously constructed authority rather than creating it from nothing.
