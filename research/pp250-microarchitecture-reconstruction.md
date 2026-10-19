@@ -560,3 +560,73 @@ The aim is eventually to recover enough of the internal machine to explain *how*
 US4050059A, Description 13 and 16–21, gives the whole-access-unit READ-AND-HOLD, same-bus WRITE/RESET release, 10-microsecond timeout and parity-based hold-integrity check. US4041460A, Description 17–19, adds received-address/inverse monitoring for bus diagnosis. These observations constrain atomic-transfer and diagnostic microsequences; they do not establish a lock covering a whole software relocation transaction. Reset-code wording differs between sources and must remain version-sensitive.
 
 See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.
+
+
+## Investigation update — 19 October 2026: instruction entry and clocked slot control
+
+**Status: working reconstruction, not recovered gate wiring.** This section preserves the reasoning behind the current candidate, including rejected alternatives, tests and exceptions. Established processor hardware and its documented signals remain canonically inventoried in [processor control](../architecture/processor-control.md), including the US3771146A μPROG interface cross-check; instruction formats and semantics belong to the existing instruction-set account. Do not treat the proposed slot numbers below as measured PP250 slot assignments.
+
+### A. Evidence and constraints
+
+**DOCUMENTED OBSERVATION:** PP250 instruction execution and single-slot stepping are distinct. The self-test description identifies a clocked, parallel control/data machine, with state and next-slot conditions prepared in relation to clock transitions. US3879712 describes the slot matrix (SM), micro-bit matrix (MBM), combinational control logic (CCL), slot address (UPA), microbits and diagnostic control of slot decode. The engineering display identifies UPAL (previous), UPAC (current) and UPAN (next) slot-address positions; these labels are correlated with the patent mechanism, without a claimed full electrical assignment. The patent also describes a *select next instruction* micro-bit. The microprogram is **hardware control**, not software execution of slot instructions.
+
+**CONSTRAINT:** a completed machine instruction must eventually cause another instruction fetch, with ordinary clocked selection of the next control state. No separate software instruction-fetch loop is implied. A provisional FETCH slot at octal `000` is an attractive working choice, **not documented as slot zero**. The evidence identifies at least 83 slots, so at least seven bits of slot address are required; it does not establish that exactly 128 slots were implemented.
+
+**DOCUMENTED OBSERVATION:** the Pocket Reference gives a 24-bit instruction, with six FUNCTION bits, three REG bits and three MOD bits. The high FUNCTION bit distinguishes Store (0) from Direct (1); the lower five bits identify the base function. Store uses `CAP(3)|ADDRESS(9)`, with optional D[MOD] modification and a capability-relative store access. Direct uses a signed 12-bit literal with optional D[MOD] modification, normally without fetching the operand from store. Store and Direct function codes for the same base operation differ by octal `40`. The Pocket Reference opcode table is transcribed at [pages 3–4](../transcriptions/System%20250%20Pocket%20Reference%20pg3-pg4%20transcription.txt); preserve its source-verification qualifications.
+
+### B. How the instruction-operation entry might be selected
+
+The investigation considered several simple mappings from opcode to the first operation-specific slot:
+
+- Directly use five function bits for slots `000–037`: clashes with the proposed FETCH=`000`, since EOR has base function `00`.
+- Use base function plus one: separates EOR from FETCH but introduces an increment/translation operation.
+- Use a fixed high address bit/prefix: for example octal `040–077` or `100–137`, allowing five opcode bits to be routed directly into the low slot-address bits.
+- Give Store and Direct their own 64 entry slots: straightforward, but duplicates entry addressing where both variants can share an operation.
+- Use an arbitrary opcode-to-slot decoder: possible, but unnecessary to the simplest candidate; neither a decoder nor its absence is historically established.
+
+**WORKING RECONSTRUCTION:** reserve `000` provisionally for FETCH and select an operation entry by `UPA_operation = 040₈ OR FUNCTION[4:0]`. This covers `040–077` (octal). Examples: EOR `00→040`; LD `03→043`; ADD `06→046`; CALL `10→050`; CHP `11→051`; SC/MOVE base `34→074`; conditional/unconditional jump family base `36→076`. The leading `040` is a **proposed fixed address prefix**, not a recovered microinstruction or proven gate signal.
+
+**CONSTRAINT / PREDICTION:** if this arrangement approximates the original hardware, operation-entry slot selection can use the low five function bits, while Store/Direct remains available as a separate condition. Six base codes are unassigned in the Pocket Reference: octal `14, 20, 21, 25, 27, 37`, mapping under this proposal to `054, 060, 061, 065, 067, 077`. These are *logically unused operation entries*, not independently verified free physical slots or proven expansion provisions. Thirty-two entry addresses need not imply thirty-two different implemented operations or fully independent slot logic.
+
+### C. Why operand preparation was moved ahead of function selection
+
+An earlier candidate decoded the function immediately after FETCH and let each instruction's Store/Direct path acquire its own operand. The improved working candidate factors out the shared addressing-mode work:
+
+```text
+FETCH (provisionally slot 000)
+  -> interpret Store/Direct mode
+      Store:  address modification, capability selection, checks,
+              and any required memory transaction
+      Direct: form signed-literal operand and optional modifier
+  -> select operation entry from the low five FUNCTION bits
+  -> execute operation-specific clocked states
+  -> final state selects FETCH again
+```
+
+This is a **functional sequencing hypothesis**, not a claim of one physical slot per box, a universal fixed-length cycle, or software performing the flowchart. A current slot asserts hardware controls; relevant registered/combinational conditions and the slot-selection mechanism prepare the next state for a clock transition. Micro-bit selection and slot sequencing must respect the self-test paper's timing distinction between data produced in one slot and conditions used in a subsequent selection.
+
+**NECESSARY QUALIFICATION:** “prepare the operand” does **not** universally mean “fetch the operand word”. Store Data and Store Capability require a destination effective address and write controls; control/process operations may need capability/process state and multiple transactions. A better formulation is *prepare the addressing-mode-dependent inputs required by the operation*. Whether the historical machine did this **before** dispatch for every instruction remains unverified. Where a read is needed, its response and checking may extend across multiple slots; write-only instructions should not acquire a gratuitous data read.
+
+### D. Mode dependence, exceptions and the SC/MOVE collision
+
+Ordinary arithmetic/logical instructions provide the strongest reason to share Store/Direct operand preparation before common function execution. For special instructions — SD, SC, CALL, CHP, RET, MOVE and jumps — additional and sometimes fundamentally different control sequences are required. Their required operation and privilege/access effects remain defined by the ISA and capability/process reconstruction, not by this slot hypothesis.
+
+**DOCUMENTED TABLE READING:** Store SC is opcode `34`, while Direct MOVE is opcode `74`: both have base function `34` and would select provisional operation slot `074`. They are not the same operation. A suspected table error and the idea of moving MOVE to an unassigned code were considered, but there is no evidence to justify silently correcting the original entry. Retain the printed codes and test the candidate control model against this collision. This requires either mode-conditioned control **at/after** the common operation entry, or different earlier paths that carry enough state to distinguish the operations. Merely preparing a uniform operand does not explain the collision.
+
+**ALTERNATIVE / UNKNOWN:** Store/Direct might qualify micro-bit matrix outputs, participate in combinational next-slot selection, enter the slot matrix as a condition, or act in more than one of those places. The simplest candidate primarily uses mode to choose operand-preparation states, but exceptions establish that mode may remain relevant after preparation. No actual MBM, CCL or SM input pins, Boolean equations or next-slot address encoding have been recovered for this decision.
+
+### E. Patent condition/control interface and its implications
+
+The independent US3771146A patent description distinguishes comparator **COMP** from microprogram control **μPROG**: COMP performs checks and reports **CIS**; μPROG receives conditions and issues register, store and gate-control signals. The current [processor-control signal table](../architecture/processor-control.md#μprog-condition-inputs-and-control-outputs--cross-check-against-us3771146a) records the evidence for inputs **OP=0, AC, SOHCS, FICS, ICS, AUCS, CIS, TI** and outputs **RSEL, CRSEL, SIHCS, GOS**. It distinguishes direct patent expansions from qualified interpretations: notably **TI** is not expanded, and **AC** is access-code information monitored by trap-detection circuitry, without a proven per-wire route into μPROG.
+
+**DOCUMENTED OBSERVATION:** AUCS carries arithmetic conditions, CIS comparator conditions, ICS indicator conditions, FICS fault conditions, OP=0 the operand-zero condition and SOHCS store-interface responses/controls; RSEL and CRSEL select working and capability registers; SIHCS commands store operations; GOS supplies a microprogram-generated offset in documented Dump Stack address formation. These groups explain how conditioned clocked control could respond to memory, comparison, arithmetic and fault results. **WORKING RECONSTRUCTION:** their information can qualify transitions and datapath actions. Exactly which conditions connect to SM, MBM, CCL or other μPROG subcircuits remains unestablished; do not relabel COMP as a control-decision block.
+
+### F. Remaining tests and limitations
+
+1. Reconcile the explicit select-next-instruction micro-bit, UPAL/UPAC/UPAN transitions and self-test timing with the proposed FETCH entry; do **not** claim slot `000` is observed.
+2. Determine whether operand formation and capability checks can always precede operation selection, particularly for store writes, jumps, CALL/CHP/RET and fault/interrupt entry; test for instructions that must branch on function **before** operand acquisition.
+3. Test the common `040–077` operation-entry assumption against any documented slot references. Do not treat illustrative Load Data `3,17,27` or Store Data `12,24,16,22` sequences from earlier conversation as verified original mappings.
+4. Distinguish the mode-bit influence on operand formation, micro-bit enables and slot transitions using only corroborated conditions; preserve SC/MOVE `34/74` as a discriminating test.
+5. Resolve, if possible within existing evidence, the precise meaning of TI and the per-signal AC/memory-response connections; do not invent expansions or circuitry.
+
+The reconstructed hardware has **clocked slots and conditioned selection**, not a software microprogram interpreter. The compact operand-first/common-function-entry design is a **candidate explanation** of that hardware, not evidence that the historical PP250 used precisely these addresses or this factorisation.
