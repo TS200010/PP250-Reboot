@@ -161,15 +161,17 @@ SF, SELA, SELB, SELL and SELH denote the strapping field and selection circuitry
 | ICS | Input | Indicator condition signals from primary/secondary indicators PIR/SIR |
 | AUCS | Input | Arithmetic-unit condition signals from MILL, including overflow |
 | CIS | Input | Comparator condition/indication signals from COMP |
-| TI | Listed input; meaning unknown | No source-supported expansion or specific function established in the passages reviewed |
+| TI | Input from trap detector TD | Trap-condition indication; **Trap Indicator** is a plausible expansion, not an explicit source expansion. US3771146A steps SX/SY and the trap microsequence show its role in control decisions |
 | RSEL | Output | Accumulator/working-register selection (SELA) |
 | CRSEL | Output | Capability-register stack selection (SELB/SELL) |
 | SIHCS | Output | Store Input Highway Control Signals: outgoing store-operation control and timing |
 | GOS | Output | Micro-program-generated offset value for internal address calculations; documented, for example, when addressing a Dump Stack word |
 
-**Supporting descriptions:** US3771146A's “Micro-Program Control Unit” explicitly identifies AUCS, CIS, ICS, FICS and OP=0 as incoming conditions and RSEL/CRSEL/SIHCS as controlled outputs; its “Step S7 — Dump RCP” describes GOS providing a generated Dump Stack offset. The store-highway description establishes SOHCS/SIHCS direction. Access-code monitoring by TD is described separately. This table preserves the observed AC and TI labels without asserting undocumented individual connections.
+**Supporting descriptions:** US3771146A's “Micro-Program Control Unit” explicitly identifies AUCS, CIS, ICS, FICS and OP=0 as incoming conditions and RSEL/CRSEL/SIHCS as controlled outputs; its “Step S7 — Dump RCP” describes GOS providing a generated Dump Stack offset. The store-highway description establishes SOHCS/SIHCS direction. Access-code monitoring by TD is described separately. The patent's steps SX/SY explicitly identify TI as the trap-detector output; the conventional expansion **Trap Indicator** remains inferred. No undocumented individual AC routing is asserted.
 
 **WORKING RECONSTRUCTION:** these input conditions can qualify clocked slot selection as well as the generated datapath controls. The existence and broad roles of the signal groups are evidenced; their exact routing into the slot matrix, micro-bit matrix and other μPROG circuitry, and the Boolean equations or individual micro-bit assignments, remain **UNKNOWN**. This inventory does not assume that COMP is the next-slot decision unit or that the mode bit is routed through COMP.
+
+**Trap and instruction restart:** US3771146A describes TI being produced by TD, microprogram testing of TI, entry into the trap sequence, recording a trap-accepted condition and saving the suspended process context. The Pocket Reference independently names **MIS09 “IAR Decrement”** and **MIS11 “Trap”**. In the reconstructed retry path, the saved instruction address must identify the trapping instruction rather than its successor so that resumption reattempts it; address preservation or correction may be required before saving process state. **No source yet proves TI directly asserts IAR decrement, that every trap requires a decrement, or the precise gate/slot route.** The documented program-trap/VM retry semantics and process-resumption context are treated in [normal interrupt and system dispatch](../research/pp250-normal-interrupt-and-system-dispatch.md).
 
 ## Clocked slot sequencing and instruction entry — working reconstruction
 
