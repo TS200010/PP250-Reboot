@@ -148,6 +148,29 @@ The stable names describe function. Expansions/meanings combine drawing labels w
 
 SF, SELA, SELB, SELL and SELH denote the strapping field and selection circuitry listed above, rather than additional data highways.
 
+## μPROG condition inputs and control outputs — cross-check against US3771146A
+
+**DOCUMENTED OBSERVATION:** [US3771146A](../transcriptions/US3771146A.rtf), “Processor Module Description”, distinguishes the comparator **COMP** from the micro-program control unit **μPROG**. COMP performs comparisons/checks and returns condition signals **CIS**; μPROG receives those and other processor conditions and issues timed control outputs. The following labels belong to the **μPROG interface**; they are not eight inputs and four outputs of COMP.
+
+| Signal | Direction relative to μPROG | Source-supported meaning |
+|---|---|---|
+| OP=0 (printed also as OP=O) | Input | Operand-register zero indication from detector ZD |
+| AC | Input / protection information | Access code monitored by the trap-detection circuitry TD; precise connection and bit-level interpretation at μPROG not established by this inventory |
+| SOHCS | Input | Store Output Highway Control Signals from the memory interface, including timing/response information |
+| FICS | Input | Fault-indicator condition signals from fault register FIR |
+| ICS | Input | Indicator condition signals from primary/secondary indicators PIR/SIR |
+| AUCS | Input | Arithmetic-unit condition signals from MILL, including overflow |
+| CIS | Input | Comparator condition/indication signals from COMP |
+| TI | Listed input; meaning unknown | No source-supported expansion or specific function established in the passages reviewed |
+| RSEL | Output | Accumulator/working-register selection (SELA) |
+| CRSEL | Output | Capability-register stack selection (SELB/SELL) |
+| SIHCS | Output | Store Input Highway Control Signals: outgoing store-operation control and timing |
+| GOS | Output | Micro-program-generated offset value for internal address calculations; documented, for example, when addressing a Dump Stack word |
+
+**Supporting descriptions:** US3771146A's “Micro-Program Control Unit” explicitly identifies AUCS, CIS, ICS, FICS and OP=0 as incoming conditions and RSEL/CRSEL/SIHCS as controlled outputs; its “Step S7 — Dump RCP” describes GOS providing a generated Dump Stack offset. The store-highway description establishes SOHCS/SIHCS direction. Access-code monitoring by TD is described separately. This table preserves the observed AC and TI labels without asserting undocumented individual connections.
+
+**WORKING RECONSTRUCTION:** these input conditions can qualify clocked slot selection as well as the generated datapath controls. The existence and broad roles of the signal groups are evidenced; their exact routing into the slot matrix, micro-bit matrix and other μPROG circuitry, and the Boolean equations or individual micro-bit assignments, remain **UNKNOWN**. This inventory does not assume that COMP is the next-slot decision unit or that the mode bit is routed through COMP.
+
 ## Source discrepancies and limits of this inventory
 
 The owner manually checked the following against the drawing/text during review of the combined capture:
