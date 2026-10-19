@@ -171,6 +171,18 @@ SF, SELA, SELB, SELL and SELH denote the strapping field and selection circuitry
 
 **WORKING RECONSTRUCTION:** these input conditions can qualify clocked slot selection as well as the generated datapath controls. The existence and broad roles of the signal groups are evidenced; their exact routing into the slot matrix, micro-bit matrix and other μPROG circuitry, and the Boolean equations or individual micro-bit assignments, remain **UNKNOWN**. This inventory does not assume that COMP is the next-slot decision unit or that the mode bit is routed through COMP.
 
+## Clocked slot sequencing and instruction entry — working reconstruction
+
+The detailed reasoning, alternatives, exceptions and falsification tests are retained in [the 19 October 2026 microarchitecture investigation](../research/pp250-microarchitecture-reconstruction.md#investigation-update--19-october-2026-instruction-entry-and-clocked-slot-control). This section is a concise **WORKING RECONSTRUCTION**, not a recovered slot map or circuit diagram.
+
+The processor uses clocked hardware control states: the current selected slot activates micro-bit/datapath controls, conditional hardware prepares the next slot, and the clock advances the slot-address state. The documented *select next instruction* control can return sequencing to instruction fetch at instruction completion. **FETCH = octal `000` is provisional**, not verified.
+
+A candidate economy is to separate addressing-mode-dependent preparation from operation selection: FETCH → Store/Direct operand or effective-address preparation → operation-entry selection using five base-function bits → subsequent operation states → FETCH. This is a functional sequence, **not** an assertion that each stage is exactly one physical slot or that every instruction fetches a data operand before dispatch. Store writes, control transfers, CALL/CHP/RET and MOVE may require function-specific branching and multiple states.
+
+One **unverified** operation-entry mapping is `UPA_operation = 040₈ OR FUNCTION[4:0]`, giving octal `040–077`. This is a minimal-wiring candidate, not the documented historical decoder. The Store/Direct bit may qualify operand preparation, micro-bit controls, next-slot logic or more than one of these. The Pocket Reference lists Store SC `34` and Direct MOVE `74` with the same five-bit base function: their distinct behaviour requires mode-dependent treatment even if a common operation entry is used. Do not silently correct the table.
+
+The μPROG conditions and outputs recorded above constrain possible clocked next-state decisions but do not identify the internal SM/MBM/CCL wiring. Documented slot-control names, self-test clock timing and the diagnostic patent are the evidence base; the proposed allocation is a testable reconstruction. Do not use illustrative, unverified per-instruction slot sequences as source data.
+
 ## Source discrepancies and limits of this inventory
 
 The owner manually checked the following against the drawing/text during review of the combined capture:
