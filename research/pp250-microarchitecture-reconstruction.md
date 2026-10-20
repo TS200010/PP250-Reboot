@@ -638,3 +638,10 @@ The independent US3771146A patent description distinguishes comparator **COMP** 
 5. Establish TI-to-slot-decision and IAR-correction wiring and the per-signal AC/memory-response connections; TI's trap-detector function is known, but its exact expanded name and physical routes are not.
 
 The reconstructed hardware has **clocked slots and conditioned selection**, not a software microprogram interpreter. The compact operand-first/common-function-entry design is a **candidate explanation** of that hardware, not evidence that the historical PP250 used precisely these addresses or this factorisation.
+
+
+## Historical context — Wilkes and microprogram sequencing
+
+Wilkes and Stringer's 1953 paper, *Microprogramming and the Design of the Control Circuits in an Electronic Digital Computer* (Proceedings of the Cambridge Philosophical Society, 49(2), 230–238), describes a decoding tree and two diode matrices: one generates micro-operation control signals; the other provides successor microinstruction addresses, including conditional selection. This is a useful period engineering example of clocked microprogram sequencing without a software interpreter. Original paper: https://doi.org/10.1017/S0305004100028325
+
+**HISTORICAL PARALLEL, NOT PP250 IMPLEMENTATION EVIDENCE:** the two functions resemble those documented for the PP250 Microbit Matrix (MBM) and Slot Matrix (SM). Wilkes' later connection with the development of capability-system ideas provides overlapping intellectual history, but does not establish that he designed the PP250 control unit or that Plessey adopted his 1953 diode-matrix wiring. The PP250 matrix dimensions, physical medium, successor-address encoding and exact conditional-selection circuitry remain to be established independently from PP250 sources. This reference is retained for comparison only; it does not modify the working PP250 reconstruction.
