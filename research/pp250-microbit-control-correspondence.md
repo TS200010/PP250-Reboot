@@ -99,6 +99,8 @@ Reconcile the **83 clocked slots × 150 individual control-signal columns** desc
 
 In particular **SOHCS is not missing from the model**: it is a major **input** group, not evidence of additional outgoing microbits. The exact amount of response conditioning and the code-wire topology remain unknown.
 
+**New source-qualified control evidence:** [US3771146A Figure 6b](../transcriptions/figures/US-3771146-A-fig-6b.md) expands one named **TSS** gate-enable function across four **G8/20–23** bit paths capturing CRSEL in MIF20–23; the four paths are not four proven independent UPB outputs. [Figure 6a](../transcriptions/figures/US-3771146-A-fig-6a.md) separates combinational **TI** from clocked **MIS11**, then the **µTS**-qualified interrupt path to **MIS14**: neither state bit is automatically an independently assigned UPB column. In the later [US4408274A Figure 2](../transcriptions/figures/US-4408274-A-fig-2.md), comparator outputs **LSA/LSB** signal load-on-use to microprogram control; they are condition inputs, not by themselves additional generated microbit columns. The 24-gate count above remains specifically **US3814919A**.
+
 ## E. Quantitative reconciliation: what can be counted without manufacturing precision?
 
 | Measure | Value | Valid interpretation |
