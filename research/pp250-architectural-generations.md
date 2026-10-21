@@ -665,6 +665,8 @@ The special-register genealogy should therefore be used as an additional discrim
 
 **CAUTION:** register names and functions must be quoted with source/version provenance. In particular, `C(I)` demonstrably changes description between the 1972 Halton material and the 1976 Pocket Reference, so later meanings must not be projected backwards.
 
+The later [US4383297A processor capture](../transcriptions/figures/US-4383297-A-fig-2.md) depicts duplicated A/B register-file arrangements and an internal-access datapath, while [US4408274A Figure 2](../transcriptions/figures/US-4408274-A-fig-2.md) documents **LSA/LSB** deferred-capability-loading signals. These later implementations must not be read back into the earlier [US3771146A Figure 2](../transcriptions/figures/US-3771146-A-fig-2a-2b.md) stack-and-highway implementation. Physical gate inventories remain source-qualified in [processor-control](../architecture/processor-control.md).
+
 ## 10. Current research questions
 
 1. What exact mechanism detects ordinary non-residence in Generation A?
