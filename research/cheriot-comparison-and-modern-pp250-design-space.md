@@ -126,6 +126,54 @@ In particular, the proposed PP250-derived machine must account for:
 
 Only after those are specified can a gate-count comparison with CHERIoT be meaningful.
 
+## Comparative evaluation: objectives and protection layers (22 October 2026)
+
+This section records the conclusions and open issues from the PP250–CHERIoT–CLOOMC discussion. It is **not** a claim that the three systems have equivalent security guarantees, or that PP250 has already proved cheaper. The historical evidence and technical hypotheses must remain distinct.
+
+### What problem is solved at which level?
+
+| Concern | PP250 / proposed descendant | CHERIoT | CLOOMC |
+| --- | --- | --- | --- |
+| Fundamental authority | Hardware capabilities, segment access rights and protected transitions; system services distribute authority | Hardware capabilities with bounds, permissions, tags and compartments | Church Machine / Golden Token and Namespace concepts; inspect implementation before assigning identical hardware guarantees |
+| Protected service or object interface | Enter capabilities, C6/C7-related execution environment, CALL/RETURN; complete process change via CHP | Compartment entry and sealed references; trusted switcher mediates protected transitions | Object/capability construction is central to the programming model; precise entry and switching cost requires implementation review |
+| Ordinary language-level bounds and lifetime errors | Can be handled by compiler/runtime inside authorised segments; per-allocation segments are an optional design choice | Capability-bearing C/C++ pointers provide additional hardware-enforced spatial bounds; allocator and revocation contribute temporal safety | No equivalence of pointer-safety guarantees established |
+| Storage and process management | Store Manager and Process Manager are indispensable privileged services built upon machine primitives, not assumed to be wholly hardwired | Capability-aware allocator, loader, scheduler and switcher; compartment/thread construction constraints differ | Map specific allocator/thread-creation facilities from CLOOMC sources before asserting correspondence |
+| Malicious or injected machine code | Must not exceed its hardware-delegated authority, although it can harm other objects *within* that authority | Cannot forge capabilities or escape compartment authority; may misuse broader capabilities legitimately available within its compartment | Threat model and enforcement boundaries still require source-level verification |
+
+**Key distinction:** Hardware authority enforcement is not the same objective as preventing every C/C++ pointer mistake. A safe-language compiler can check indexes, ownership and object lifetimes, but injected assembly, unsafe code or faulty compilation can bypass compiler-only rules. Hardware-enforced domain boundaries should remain effective even then. Conversely, bounding only the domain does **not** stop malicious code or a buffer error from corrupting another allocation *inside* that domain. CHERIoT deliberately offers additional per-pointer/per-allocation protection where capability bounds are sufficiently narrow; that is a real additional property rather than redundant protection. It does not mean every pointer is necessarily bounded to the smallest C subobject.
+
+The proposed PP250 division of labour (hardware protecting authority; language and runtime preventing ordinary internal errors) is therefore a **design hypothesis with an explicit security-granularity trade-off**, not evidence that fine-grained CHERIoT pointer protection is unnecessary.
+
+### SCT indirection is not per-reference descriptor lookup
+
+The historically recovered PP250 mechanism loads/expands stored capabilities into C registers holding the information for subsequent access checks. An ordinary reference through an expanded capability does **not** imply another SCT fetch. Later Andrews–Wheatley US4408274A describes P-register/C-register *Load on Use*: pointer movement may defer expansion until first use. Do not project this later feature into the original PP250 generation. See [the modern relevance note](2026-10-18-pp250-modern-relevance-and-memory-safety.md), [capability representation](../architecture/capability-representation.md), and [LC/LDP evolution](lc-ldp-direct-mode-evolution.md).
+
+CHERIoT's public explanation of table-based capabilities argues that lookup can cost extra accesses and descriptor caching incurs hardware/power cost. **That general objection is insufficient by itself to evaluate PP250's already-expanded C registers.** It does *not* establish that CHERIoT's designers misunderstood PP250 or had evaluated that architecture specifically. The real comparison is *first-use expansion frequency, cache/register residency, coherent revocation and total cost*, not a fictional SCT access for every PP250 data transfer. Primary CHERIoT reference: [CHERIoT Programmer's Guide](https://cheriot.org/book/concepts.html); exact wording and context should be checked against a fixed edition before quoting.
+
+### Mixed pointers and data; C/C++ compatibility
+
+An SCT need not keep all stored capability *references* apart from ordinary data: descriptors live in the SCT, whereas capability references can be fields of structures, arrays and linked data. A proposed PP250 C ABI could represent data pointers, pointers to pointers, function pointers, and arrays of function pointers by stored capability references plus necessary offsets, loading an active reference into a C register when used. More C registers in a successor might reduce turnover. **This is not yet an implemented or historically established general C ABI.**
+
+Open details include pointer arithmetic and interior pointers; storage of offsets; mixed-layout alignment; ordinary memcpy, unions and bytewise overwrite; validity/non-forgeability when data are interpreted as stored capabilities; and distinctions between executable/enter authority and ordinary data authority. Neither interleaving nor a large capability-register file alone settles those questions. Compare the draft [PP250 ABI](PP250-ABI.md) and historical [ISA notes](../architecture/instruction-set.md).
+
+### Hardware economics and modern ISA
+
+The historical three-word SCT entry is 3 × 24 = 72 bits. It therefore **cannot fit unchanged into one 64-bit transfer**. A redesigned 64-bit descriptor would require field-budget choices; an unchanged historical entry on a 64-bit interface takes at least two transfers, absent a suitable different physical layout. A 128-bit memory interface could fetch 72 bits in one transfer, but is not automatically economical for a low-cost board, especially with off-chip pins/routing. Transfer count is **not** clock-cycle latency: memory timing, arbitration, caching and descriptor coherence remain unknown.
+
+The 24-bit PP250 ISA already includes integer arithmetic, direct/store operand modes, capability registers and protected call/process mechanisms. Possible 32/64-bit successors with more data and capability registers, a changed encoding, LLVM support and contemporary byte/atomic/numerical facilities are proposals, not historical facts or completed designs. They should be judged against RV32/RV64 and CHERIoT on code density, throughput, gates, energy, memory footprint and full trusted software. Store allocation and process management must be counted in total-system cost.
+
+### Competitive and commercial position
+
+CHERIoT already provides real hardware and a C/C++ toolchain, RTOS and ecosystem. The potential niche for a PP250-derived embedded board or licensable processor IP is **unproven**. The relevant possible differentiators to test are compact SCT-backed stored references; reduced descriptor overhead from expanded C registers and Load on Use; dynamic protected execution construction; and protected-object invocation with native architectural support. CLOOMC offers an additional capability/object-oriented comparison, but is not interchangeable with either hardware ISA. A credible comparison must use matched security properties, real workloads, compiler maturity, protection transitions, object allocation/reclamation and cost data. Do not infer superiority or prospective sales from the size of the Raspberry Pi market.
+
+### Questions requiring measurement or primary-source checking
+
+- How do PP250's expanded capability register loads, descriptor invalidation and multiprocessor SCT coherence behave in each historical generation?
+- What are CHERIoT's exact documented pointer/subobject and temporal guarantees, trusted-switcher costs and restrictions on dynamic protected construction, versus the semantics we would require?
+- Which capabilities does CLOOMC actually enforce in hardware versus software, and what are its concrete object and process-management interfaces?
+- Can a specified modern PP250 ABI handle arbitrary C pointer nesting, mutation and function-pointer dispatch without opening a capability-forgery path?
+- For equivalent security boundaries, what are gate area, memory transfers, first-use expansion cost, compiler-generated code size, execution time and energy?
+
 ## Current working conclusion
 
 CHERIoT should be treated as a primary modern reference architecture for PP250-Reboot.
