@@ -631,6 +631,70 @@ The independent US3771146A patent description distinguishes comparator **COMP** 
 
 **Figure-level evidence refinement:** [US3771146A Figure 6a](../transcriptions/figures/US-3771146-A-fig-6a.md) separates combinational **TI**, clocked **MIS11** and the gated request path to **MIS14**; [Figure 6b](../transcriptions/figures/US-3771146-A-fig-6b.md) documents **TSS**-controlled capture of CRSEL in MIF20–23. Neither capture resolves MIS17 or the trap-retry slot sequence. [US4383297A Figures 2, 3 and 6](../transcriptions/figures/US-4383297-A-fig-3.md) support the existing Internal Mode account with bus-interface recognition of an internal module address and an **IDM** loopback through the normal data path; see also [Figure 2](../transcriptions/figures/US-4383297-A-fig-2.md) and [Figure 6](../transcriptions/figures/US-4383297-A-fig-6.md). For the later deferred-loading embodiment, [US4408274A Figure 2](../transcriptions/figures/US-4408274-A-fig-2.md) identifies comparator outputs **LSA/LSB** as the load-on-use trigger. These do not establish exact microprogram slots or prove that the earlier and later processors use identical circuitry.
 
+### G. Instruction fetch: functional sequence and slot-boundary investigation — 22 October 2026
+
+**Status: working reconstruction, not recovered slot assignments.**
+
+US4383297A, paragraphs (95)–(99), describes instruction fetch (S1) as follows:
+
+1. C7 and the Instruction Address Register (IAR) form the instruction address, which is loaded into MAR.
+2. Capability comparators ACC and BCC validate the proposed access before the address is passed to the bus interface.
+3. The addressed store module returns the instruction word and status information.
+4. The instruction word enters the Instruction Buffer (IBL) under clock control.
+5. FUNCTION (FC) is supplied to microprogram control, ADDRESS is placed in IREG, and the other instruction fields condition execution.
+
+These are functional operations, not individually identified microprogram slots.
+
+#### Provisional FETCH control states
+
+| Symbol | Function | Proposed successor |
+|---|---|---|
+| F0 | Form instruction address and load MAR | F1 |
+| F1 | Validate access and initiate memory read | F2, or fault handling |
+| F2 | Await and receive instruction word | F3 when available |
+| F3 | Decode instruction fields and select execution path | Address preparation or operation entry |
+
+This is an **illustrative four-state decomposition**, not evidence that FETCH requires four slots or four clock cycles. The symbolic names F0–F3 are not historical identifiers. The previously proposed numeric FETCH address `000` remains unverified.
+
+#### Clocked sequencing constraint
+
+The Processor Self-Test Program paper describes control signals applied during the clock-high interval and data becoming fixed in storage elements at the negative-going edge. Its description of next-slot selection also requires careful treatment of conditions derived from preceding data states.
+
+The reconstruction must therefore distinguish:
+
+- The current slot's asserted microbits and register transfers.
+- The data state available for evaluating conditional control.
+- The conditions used to prepare the next slot.
+- The clock edge at which the prepared control state becomes effective.
+
+The model must not assume that a condition generated during a slot can immediately determine that slot's successor without checking the documented timing relationship.
+
+#### Slot-boundary uncertainties
+
+Dedicated capability comparators may allow protection checking to overlap address formation or other activity. A separate check slot is not established.
+
+Memory-response timing may require waiting, repeating or additional control states. No specific mechanism or slot number has yet been established.
+
+Instruction decoding may overlap instruction receipt or require a subsequent clocked state. The exact relationship between instruction-field availability, Slot Matrix selection and the Microbit Matrix is unknown.
+
+Consequently, F0–F3 identify functional control requirements, not four confirmed physical slots.
+
+#### Processor-generation distinction
+
+US4383297A describes the later MAR, IBL/IREG, ACC/BCC and bus-interface arrangement. US3814919A describes the earlier MILL, COMP, SDIREG, IR and G1–G19 datapaths.
+
+These sources support related functions but do not establish identical circuitry or gate-level equivalence. A reconstruction must retain their generation-specific component identities.
+
+#### Next investigation
+
+Recover the successor-selection relationship between the Slot Matrix (SM), Microbit Matrix (MBM), Combinational Control Logic (CCL), UPAL, UPAC and UPAN.
+
+Use the documented clock timing and instruction-fetch dependencies to test whether the proposed states can be combined, must be separated, or require additional intermediate states.
+
+Do not assign physical slot numbers or microbit columns without supporting evidence.
+
+**Sources:** US4383297A, paragraphs (95)–(99); US3814919A, Figures 2a–2b; Processor Self-Test Program; US3879712A; existing processor-control and hardware-description inventories.
+
 ### F. Remaining tests and limitations
 
 1. Reconcile the explicit select-next-instruction micro-bit, UPAL/UPAC/UPAN transitions and self-test timing with the proposed FETCH entry; do **not** claim slot `000` is observed.
