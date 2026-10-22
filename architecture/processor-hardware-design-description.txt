@@ -444,6 +444,24 @@ comparators and memory-interface gating remains to be established.
 Sources: transcriptions/US4383297A.txt (95)-(114); US3814919A Fig. 2a/2b
 and processor-module description, as analysed in sections 6-7 above.
 
+7.4 Instruction fetch and microprogram slot boundaries
+------------------------------------------------------
+
+US4383297A (95)-(99) provides the functional sequence for instruction fetch
+using C7, IAR, MAR, ACC/BCC, the bus interface and IBL/IREG.
+
+This sequence does not establish the number or identity of physical
+microprogram slots. In particular, capability validation may overlap other
+operations, while memory-response and instruction-decoding timing may require
+additional clocked control states.
+
+The candidate FETCH control states and their outstanding timing and
+successor-selection questions are recorded in
+research/pp250-microarchitecture-reconstruction.md, section G.
+
+Do not equate the later processor's datapath components with the earlier
+US3814919A gate network without independent evidence.
+
 8. PARITY GENERATION, COMPARISON AND INVERSION
 ----------------------------------------------
 
