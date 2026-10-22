@@ -17,6 +17,8 @@ Reconstruct and document the Plessey System 250 architecture, with experimental 
 
 Never reverse this dependency or project later theory or implementation backwards as historical evidence.
 
+**Before assessing progress or proposing next steps for PP250-Reboot, read the relevant repository documents in full, establish precisely what has been completed, what is underway and what remains, and base every conclusion on that evidence—not memory, assumptions or generic reasoning.**
+
 ## Reconstruction and evidence
 
 Sources are fragmentary, partial observations of one machine; no single document is necessarily complete or definitive. Reconstruct the simplest architecture explaining all credible observations, contradicting none of the reliable evidence, with the fewest unsupported mechanisms:
