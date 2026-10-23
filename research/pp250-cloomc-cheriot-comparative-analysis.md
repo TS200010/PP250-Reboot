@@ -146,7 +146,7 @@ The proposed PP250 division of labour (hardware protecting authority; language a
 
 ### SCT indirection is not per-reference descriptor lookup
 
-The historically recovered PP250 mechanism loads/expands stored capabilities into C registers holding the information for subsequent access checks. An ordinary reference through an expanded capability does **not** imply another SCT fetch. Later Andrews–Wheatley US4408274A describes P-register/C-register *Load on Use*: pointer movement may defer expansion until first use. Do not project this later feature into the original PP250 generation. See [the modern relevance note](2026-10-18-pp250-modern-relevance-and-memory-safety.md), [capability representation](../architecture/capability-representation.md), and [LC/LDP evolution](lc-ldp-direct-mode-evolution.md).
+The historically recovered PP250 mechanism loads/expands stored capabilities into C registers holding the information for subsequent access checks. An ordinary reference through an expanded capability does **not** imply another SCT fetch. Later Andrews–Wheatley US4408274A describes P-register/C-register *Load on Use*: pointer movement may defer expansion until first use. Do not project this later feature into the original PP250 generation. See [the consolidated memory-safety analysis](#architectural-protection-versus-fine-grained-memory-safety--consolidated-investigation-18-october-2026), [capability representation](../architecture/capability-representation.md), and [LC/LDP evolution](lc-ldp-direct-mode-evolution.md).
 
 CHERIoT's public explanation of table-based capabilities argues that lookup can cost extra accesses and descriptor caching incurs hardware/power cost. **That general objection is insufficient by itself to evaluate PP250's already-expanded C registers.** It does *not* establish that CHERIoT's designers misunderstood PP250 or had evaluated that architecture specifically. The real comparison is *first-use expansion frequency, cache/register residency, coherent revocation and total cost*, not a fictional SCT access for every PP250 data transfer. Primary CHERIoT reference: [CHERIoT Programmer's Guide](https://cheriot.org/book/concepts.html); exact wording and context should be checked against a fixed edition before quoting.
 
@@ -173,6 +173,58 @@ CHERIoT already provides real hardware and a C/C++ toolchain, RTOS and ecosystem
 - Which capabilities does CLOOMC actually enforce in hardware versus software, and what are its concrete object and process-management interfaces?
 - Can a specified modern PP250 ABI handle arbitrary C pointer nesting, mutation and function-pointer dispatch without opening a capability-forgery path?
 - For equivalent security boundaries, what are gate area, memory transfers, first-use expansion cost, compiler-generated code size, execution time and energy?
+
+## Architectural protection versus fine-grained memory safety — consolidated investigation (18 October 2026)
+
+**Status:** This incorporates the distinct evidence, reasoning, proposed engineering work and unresolved questions previously in `2026-10-18-pp250-modern-relevance-and-memory-safety.md`. It is a research discussion, not a historical specification or a commitment to a modern ISA. The other sections of this comparison supply the broader context.
+
+### The original question and the discarded premise
+
+The investigation asked whether an SCT-based machine could compete on pointer-rich workloads **if every C/C++ pointer were required to designate a separately protected allocation**. That would create many descriptors and perhaps frequent capability expansion. But this premise mistakenly equates four different things: a language-level pointer, a stored capability reference, an expanded capability in a C register, and a protected segment. PP250 never required every linked-list node or individual allocation to occupy its own segment.
+
+For scale, a historical three-word, 24-bit-per-word SCT descriptor contains **72 bits (9 bytes)** of raw descriptor data. One million individually protected allocations would therefore consume roughly **9 MB of descriptor contents alone**, before allocator, coherence or alignment costs. This is a *conditional illustration*, not an observed workload, mandatory PP250 configuration or measured modern design.
+
+A million-node list could instead be placed within one permitted segment and traversed using ordinary internal addressing. This reduces descriptor count and expansion frequency but **does not protect one object in that segment from a faulty or malicious internal pointer reaching another**. Segment granularity therefore trades internal spatial isolation against resource and execution costs. It must follow the required protection boundary, not an assumption that the source language maps every pointer onto one capability.
+
+### Historical processor evidence: checking, address formation and expansion
+
+The processor hardware reconstruction documents **dedicated comparator and address-generation logic**. Store-mode address formation combines the instruction's address field and any D-register index into an offset interpreted through the selected expanded C-register capability. The comparators enforce bounds and rights; the early circuit evidence includes base/limit parity. Hardware checking is part of the reference mechanism, **not a separate software check**. It does *not* establish that these checks have zero latency: their exact overlap with address arithmetic and the number of required microprogram slots remain unmeasured. Later US4383297A describes validation before transmitting an address into the bus-control path; speculative unauthorised accesses followed by cancellation should not be introduced as established PP250 behaviour.
+
+Once a capability is expanded in a C register, ordinary accesses using it do **not** require an SCT descriptor fetch for every memory reference. The relevant costs are initial expansion, register residency/turnover, invalidation and coherence on change or revocation. A generic criticism of table-based capabilities based on per-reference table lookup is therefore not by itself a valid performance comparison with this PP250 mechanism.
+
+A later, **generation-specific** Andrews–Wheatley development (US4408274A) pairs P-register pointers with C-register expansion and permits **Load on Use**: moving an unreferenced compact capability pointer need not force immediate expansion. It does not eliminate expansion when first needed, shrink the SCT or demonstrate performance superiority. This later scheme must not be back-projected into the earliest PP250 machine. See [processor hardware evidence](../architecture/processor-hardware-design-description.txt), [ISA and address formation](../architecture/instruction-set.md), [architectural generations](pp250-architectural-generations.md) and [LC/LDP evolution](lc-ldp-direct-mode-evolution.md).
+
+### Three architectures and their different safety granularity
+
+**PP250** naturally protects segments, authority-bearing resources and executable/protected domains. Within a broad data segment, ordinary software accesses can still interfere with neighbouring language-level objects. A proposed successor might optionally give individual allocations separate protected segments, but that is not cost-free.
+
+**CHERIoT** uses capability-bearing C/C++ pointers, supported by tags, bounds, permissions, compartments and revocation. It offers additional *fine-grained spatial* protection where capability bounds are narrow enough, and temporal safety mechanisms associated with reuse. Its per-reference capability model does not imply an SCT lookup for every distinct object, nor must each capability be bounded to the smallest C subobject. It is the practical embedded comparator, rather than generic 128-bit CHERI or an unrelated operating-system message-dispatch path.
+
+**CLOOMC** documents compact Golden Tokens, Namespace entries and expanded cached capability information on LOAD. That invites comparison to PP250 stored references and expanded C registers, but correspondence of representation, hardware behaviour and real costs has not been demonstrated. This is a meaningful additional comparator, not an interchangeable implementation of either PP250 or CHERIoT.
+
+### A possible successor's division of responsibility
+
+The resulting architectural hypothesis is that a **protected domain or object need not coincide with every programming-language allocation**. An experimental successor could assign:
+
+| Layer | Possible responsibility |
+|---|---|
+| Processor / capability authority | Enforce protected segments, resource rights, domain entry and machine transitions |
+| Protected execution | Manage C6/C7-like execution environments, CALL/RETURN and full process changes |
+| Language | Safe array access, pointer use, ownership and object lifetimes *within* a domain |
+| Runtime and allocator | Allocate and reclaim objects, and enforce optional intra-domain invariants |
+| SCT | Segment identity, sharing, location indirection, rights and defined revocation/coherence |
+
+Memory-safe Rust or Swift code could help with intra-domain mistakes, but safe-language rules alone do not contain unsafe code, foreign-language code, injected machine code or faulty compilation. Hardware confines authority across protected boundaries; language/runtime techniques handle additional **within-domain** risks. The two approaches are complementary rather than substitutable for every threat model. The proposed division of labour is **not** an assertion that CHERIoT's finer protection is unnecessary.
+
+### Architectural engineering questions retained from the earlier analysis
+
+A proposed modern implementation could investigate extra resident C registers, deferred expansion, an on-chip descriptor cache or bounded SRAM SCT, and explicit invalidation of expanded and cached descriptors when relocation, rights changes, revocation or multiprocessor updates occur. A descriptor cache can still miss continually on one-way traversal of many distinct objects; no measured benefit has yet been established.
+
+Cost comparisons must include *equivalent guarantees and the complete software path*: descriptor footprint, first-use expansion, pointer traversals, domain calls, allocation/reclamation, cache hit rates, coherence, fault handling, code size, worst-case latency, energy, gate count and trusted services. Protected CALL/RETURN may be favourable compared with a whole secure service path, but no substantial instruction-count or throughput advantage over CHERIoT has been demonstrated. Historical three-word descriptors do not fit unchanged in one 64-bit transfer. A successor may alter its representation, but doing so creates a new design choice rather than a historical fact.
+
+**Working decision:** Continue faithful PP250 reconstruction. Do not redesign the historical ISA or SCT merely to imitate fine-grained CHERIoT pointers. Test any combined domain-capability / modern memory-safe-language approach as a **separate successor hypothesis**, using real workloads and explicit protection requirements. The possibility of reduced descriptor cost or hardware footprint remains to be measured.
+
+**Relevant sources:** US3814919A, US4383297A and US4408274A in the repository's patent corpus; [capability representation](../architecture/capability-representation.md), [microarchitecture reconstruction](pp250-microarchitecture-reconstruction.md), and the processor, ISA and generational notes linked above.
 
 ## Constrained by construction — comparison of PP250, CLOOMC and CHERIoT
 
