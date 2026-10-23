@@ -580,3 +580,26 @@ This proposition should be preserved as a reconstruction to be tested, not promo
 For the existing M⟨H,T⟩ investigation this supplies a further concrete observation of machinery acting on combined process and capability state. It supports testing the abstraction against restoration and relocation. It does not establish M as historical terminology, a third peer machine, or a particular mathematical formulation. No new mechanism is proposed here; the addition is historical evidence constraining the existing theory.
 
 See [2 October 2026 patent-transcription review](pp250-patent-transcriptions-review-2026-10-02.md) for the complete evidence record and textual limitations.
+
+## Investigation update — 23 October 2026: constrained by construction and the positronic-brain analogy
+
+**Status: architectural interpretation / working reconstruction, not historical terminology or demonstrated novelty.** This develops the existing M⟨H,T⟩ investigation rather than replacing the established descriptions of capability protection and processor fault handling.
+
+### How the argument developed
+
+A discussion of reproducing the 300 ns PP250 clock in a Swift simulator brought the processor's synchronous operation into focus. The documented 83-slot/150-control-signal microprogram matrix and its conditional next-slot circuitry do not merely *check* operations chosen by an otherwise independent instruction executor: together with registers, datapaths, comparators and fault machinery they constitute the paths through which operations occur. Incoming store responses (SOHCS), arithmetic/comparator indications and fault conditions influence the next clocked state. A stalled store access consumes processor clocks until the required response is recognised; a bad or absent response can lead to recorded fault/timeout paths. The specific historical wait-slot wiring is not recovered, and a physical store interface may handshake independently; neither point implies asynchronous processor instruction execution.
+
+This prompted a distinction between **constrained by authority** and **constrained by construction**. A capability determines which resources a process is authorised to use, but the microarchitecture determines how *any* machine operation can come about. The construction embodies mechanisms making ordinary execution unable to bypass prescribed access checks, state transfers and fault handling. These are not rules applied by a separate supervisory decision-maker *after* an operation has been chosen. They participate in generating the operation itself.
+
+The more precise thesis is **not** simply that M is a security monitor or that capability is the essence of the machine. The machine's mechanisms constrain the formation and propagation of computation, authority and errors. Capability enforcement is one instantiation; externally malformed responses, parity faults, microprogram sequencing faults, controlled process changes, timeouts, checkout and recovery exhibit other aspects. **Containment by construction** is a central consequence, extending beyond access control, but even containment is not the entire principle: the permitted behaviour is constituted by the constructed execution network.
+
+### Asimov analogy — structural, not a security-filter metaphor
+
+In Asimov's fictional positronic brain, the Three Laws are inherent in the brain's construction and shape how the robot arrives at actions; they are not a detachable filter judging decisions already made. By analogy, the PP250's control structure shapes how machine actions arise, rather than inspecting operations emitted by some separate unconstrained processor. The parallel concerns **intrinsic formation of behaviour**, not the ethical content of the Three Laws, nor any literal guarantee that a flawed machine cannot misbehave.
+
+### Implications for M⟨H,T⟩ and limits
+
+The candidate interpretation is: **M constitutes the operational machinery within which H (capability-based authority/binding) and T (ordinary computation) can function.** M is an architectural abstraction, **not identical to the physical microprogram**; the microprogram is one central implementation mechanism shared by H and T operations. The next-state function includes both the microprogram's control patterns and conditional sequencing, so the 83 × 150 table alone is not an exhaustive independent definition of machine behaviour.
+
+This is not a claim that every actual physical fault or software defect is prevented, or that all valid transitions guarantee desirable results. Detection and containment have finite coverage. Nor is the general principle that hardware embodies constraints novel by itself: finite-state machines, tagged architectures, reference-monitor designs, correct-by-construction methods and capability machines provide substantial precedents. What remains a **research hypothesis** is whether the integrated PP250 construction and this M⟨H,T⟩ reading expose an underappreciated organising principle more explanatory than treating capability, computation and fault tolerance as separate features. Test it against the processor-control diagrams, source descriptions, fault/recovery sequences and historical prior art.
+
