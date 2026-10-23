@@ -14,9 +14,27 @@ The first implementation target is the bare machine.
 
 The processor model should contain the complete PP250 processor state required by the reconstructed machine, including state that is accessible only internally by the microcode and is not directly exposed by machine opcodes. There is no need to classify that state separately before implementation: the machine instructions themselves determine which portions of the state they expose or manipulate.
 
-The machine instruction set is implemented directly against this state. Instructions such as CHP are therefore processor mechanisms, not simulations of historical operating-system policy.
+The preferred implementation is now a **clocked hardware-state simulation**, not an instruction-by-instruction interpreter. The processor's current clocked state and incoming condition signals determine the next state through a reconstructed combinational control network. Instructions such as CHP emerge from that network's microprogram sequences rather than from special Swift handlers. Historical operating-system policy is not embedded in the machine.
 
 The initial implementation should remain close to the reconstructed hardware rather than introducing unnecessary modern virtual-machine abstractions.
+
+### Clocked microprogram simulation — current design direction (23 October 2026)
+
+**Documented:** The processor self-test paper describes a synchronous PP250 with a 300 ns basic clock period, typical instruction time 0.9 μs, and a control-unit matrix of 83 microinstructions (slots) by 150 control signals. It explains that results are captured at the end of the clock pulse and that conditional inputs for a succeeding slot are established using the appropriate preceding state. The processor diagrams identify incoming conditional groups including SOHCS (store response), AUCS, CIS, ICS and FICS. The 150 columns are microprogram *control signals*, not a demonstrated count of external input lines or of individual physical gates.
+
+**Implementation direction:** A tight, non-suspending Swift loop invokes `evaluateLogic()` once per simulated processor clock. Within that one invocation, successive layers of combinational logic settle against the current clocked state; the resulting register, indicator and microprogram-sequencer state is then committed together for the next invocation. No separate instruction dispatcher, per-instruction CHP routine, clock function or compulsory cycle counter is required in the outer loop:
+
+```swift
+while running {
+    evaluateLogic()
+}
+```
+
+Pack control-bit patterns in machine words: the full 150-bit microprogram row occupies three `UInt64` values (83 rows = 1,992 bytes before container overhead), while any verified subset of at most 64 independently controlled gate enables can fit in one. Gate-count estimates of about 30–40 remain **unverified working estimates** and must not be confused with the 150 control-signal count. Swift/LLVM can evaluate many Boolean conditions with word-wide AND/OR/XOR operations, but correct dependencies still require successive combinational stages and datapath/register work. Real-time execution at 3.33 million simulated cycles per second on a circa-2020 MacBook Pro is a **benchmark target, not an established result**.
+
+**Store interaction:** The processor remains a clocked state machine. Its outgoing store request and incoming SOHCS status participate in the same control network; while a required response is absent, processor clock cycles are consumed without advancing past the dependent operation. A separate store access unit can arbitrate and handshake independently of the processor clock, but it does not asynchronously execute or resume processor instructions. The exact historical next-slot/hold circuitry is not yet recovered, so the detailed waiting-state implementation remains a reconstruction question. Store modules and the interconnect retain their own simulated hardware state, without assumed instantaneous read/write semantics.
+
+**Boundary:** This is a hardware-oriented implementation hypothesis constrained by documented timing and interfaces, not a claim that all 83 slot contents, 150 microbit assignments or internal Boolean equations have been recovered. Preserve historical gaps rather than inserting generic CPU semantics.
 
 ## 2. Component model
 
@@ -50,15 +68,15 @@ Its purpose is to translate actual PP250 assembly language into the machine inst
 
 The assembler also provides an important consistency test: an instruction-set reconstruction that cannot be represented accurately by the assembler is probably incomplete or misunderstood.
 
-The current implementation sequence is therefore:
+The current implementation direction is therefore:
 
-1. implement the complete PP250 machine state;
-2. implement the PP250 machine instructions;
-3. implement the PP250 assembler;
-4. execute bare-metal PP250 programs; and
-5. build ABI and higher-level toolchain work on the resulting executable machine when appropriate.
+1. model complete processor state and the evidenced microprogram control/condition interface;
+2. implement clocked state transitions and reconstruct the microprogram slot-selection network;
+3. connect processor, bus and store modules through their documented control and response signals;
+4. develop the native assembler and test bare-machine instruction behaviour as a consequence of the hardware network; and
+5. extend the executable baseline with software environments and toolchain facilities when justified.
 
-The assembler may be developed alongside instruction implementation where that is useful for tests; the ordering above describes architectural dependency rather than requiring an unnecessarily rigid development schedule.
+The assembler may be developed alongside processor reconstruction. **Instruction-level emulation is not the preferred approach at present**; it remains a possible reference/testing technique, not the architecture of the faithful simulator.
 
 ## 5. Bare machine versus operating system
 
