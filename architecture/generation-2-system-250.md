@@ -105,6 +105,8 @@ Before going any further, it is useful to introduce a few definitions and import
   
 - **Protected Object** - a Segment containing only Capabilities.
       These Capabilities provide access to the code Segments, data Segments and Capability Segments from which the object is constructed.
+  
+- **Protected Space** - the entire collection of accessible Segments of a Protected Object.
 
 ![Protected-token segment referring to code functions and private data](images/protected-object-construction.svg)
 
@@ -148,7 +150,7 @@ Each Capability specifies what its holder is permitted to do with the Segment it
 
 **The first five Access rights permit operations on a segment. Enter Capability is fundamentally more sophisticated:** it permits controlled invocation of functions *through* a Capability, without exposing the Capabilities contained within it.
 
-A function function of a Protected Object is called by supplying the processor with the Enter Capability of the object to operate on and an identifier to the function being invoked. Parameters may be passed and values returned. Returned values may have any valid Access including an Enter Capability.
+A function of a Protected Object is called by supplying the processor with the Enter Capability of the object to operate on and an identifier to the function being invoked. Parameters may be passed and values returned. Returned values may have any valid Access including an Enter Capability.
 
 ![Enter Capability providing controlled access to the callable functions of a protected object](images/capability-enter-protected-object.svg)
 
@@ -187,9 +189,9 @@ When a Capability with different Access is created to be passed to another Prote
 
 ### 3.4 The protected object system as a graph of access
 
-Protected spaces form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. An object has no access outside its own protected space except through unforgeable tokens.
+Protected spaces form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. An object has no access outside its own protected space except through Capabilities.
 
-The islands and the tokens connecting them therefore form a **directed graph of access**.
+The islands and the Capabilities connecting them therefore form a **directed graph of access**.
 
 *_(PP250 implementation: Store; C0–C7; Microprogrammed execution.)_*
 
@@ -197,21 +199,23 @@ The islands and the tokens connecting them therefore form a **directed graph of 
 
 ### 4.1 The process
 
-A process is an executing computation defined by its protected space.
+A **Process** is an executing computation defined by a Protected Space. 
+
+When executing, the Protected Space is the entire universe of the computation. The processor itself enforces the bounds of the Segments and the Access permitted on them. The Process knows nothing outside of this universe. Any attempt to stray out of this Protected Space results in a process fault.
 
 *_(PP250 implementation: D0–D7; C0–C7; D17; C(D); Change Process.)_*
 
-### 4.2 Process state
+### 4.2 Process State
 
-A process has computational state sufficient for its execution to be suspended and subsequently resumed. That state includes its working state, its current protected environment, and its point of execution.
+A Process has a computational state sufficient for its execution. Such **Process State** includes everything it needs to run on a processor including registers, timers, the code it is executing and its point of execution.
 
-The state exists independently of whether the process is currently executing on a processor.
+When a Process is not running on a processor the Process State can to be independently saved and subsequently resumed on a processor.
 
 *_(PP250 implementation: D0–D7; C0–C7; D10; D11; D17; C(D); MIP; Change Process.)_*
 
-### 4.3 The process's protected space
+### 4.3 Processes and Protected Objects
 
-The protected space defines the code that a process may execute and the data and other objects it may access. The process cannot operate outside that space except through another unforgeable token.
+A Process runs within the Protected Space of a single Protected Object instance. The Capabilities contained within that object determine the code, data, capabilities and other Protected Objects accessible during execution.
 
 *_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
