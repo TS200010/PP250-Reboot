@@ -74,11 +74,11 @@ In a conventional C++ implementation, the language's access restrictions are pri
 
 ## 2. The protected-object model
 
-The System 250 architecture consists of a collection of interconnected protected objects. **Every instruction executes within the protected space of an object. Nothing executes outside this structure.**
+The entire System 250 architecture consists of a collection of such interconnected protected objects. **Every instruction executes within the protected space of an object. Nothing executes outside this structure. Nothing.**
 
 This is true from the first instruction executed when the machine starts, through normal application execution, operating-system services and interrupt handling. All execution takes place within protected objects, with the hardware enforcing their boundaries.
 
-Protected objects interact through controlled interfaces, without exposing their internal functions, data or capabilities. The architecture also provides controlled interaction with the outside world through input and output operations.
+Protected objects interact through controlled interfaces, without exposing their internal functions or data. The architecture also provides controlled interaction with the outside world through input and output operations.
 
 ![Interconnected protected objects with first-instruction and interrupt entry, and output](images/interconnected-protected-objects.svg)
 
@@ -116,17 +116,15 @@ Before going any further, it is useful to introduce a few definitions and import
 
 ### 2.3 Controlled access to a Protected Object
 
-**A Capability (called an Enter Capability) can also provide controlled access to the Protected Object itself.** It does not expose the Capabilities contained within the Protected Object. Instead, it permits only invocation of the functions made available (exposed) by the Protected Object .
-
-![An external caller invoking F1, F2 and F3 through an Enter Capability, with internal functions and data protected](images/protected-object-entry.svg)
-
-*Capability permits invocation of exposed functions; the arrow denotes invocation, not direct access to executable code or internal data.*
-
-**Possession of this Capability permits its holder only to invoke the functions made available to it.** The implementation of those functions, and the data upon which they operate, remain within the object's protected space. The holder cannot use that Capability to obtain direct access to the underlying code, data or other Capabilities. This restriction is enforced by the hardware.
+**A Capability (called an Enter Capability) allows invocation of the Protected Object itself.** It does not expose the Capabilities contained within the Protected Object. Instead, it permits only invocation of the functions made available (exposed) by the Protected Object. The holder cannot use that Capability to obtain direct access to the underlying code, data or other Capabilities. This restriction is enforced by the hardware.
 
 Any attempt to use this Capability to access the protected object's internal data directly is an access violation. The processor hardware detects the attempted unauthorised access and raises a process fault.
 
-**At this point the primary architectural concept can be stated simply.** An object's protected space is defined by a collection of Capabilities: Capabilities giving access to the functions that implement its operations and to the data upon which those functions operate. A further Capability provides controlled access to the object without exposing the Capabilities from which its protected space is constructed.
+![An external caller invoking F1, F2 and F3 through an Enter Capability, with internal functions and data protected](images/protected-object-entry.svg)
+
+*Enter Capability permits invocation of exposed functions; the arrow denotes invocation, not direct access to executable code or internal data.*
+
+**At this point the primary architectural concept can be stated simply.** A protected object's protected space is defined by a collection of Capabilities: Capabilities giving access to the functions that implement its operations and to the data upon which those functions operate. A further Capability provides controlled access to the object without exposing the Capabilities from which its protected space is constructed.
 
 This construction is deliberately general. Such protected objects can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected objects may themselves hold Capabilities giving controlled access to other protected objects, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and enforcing bounds of each object's Segments.**
 
@@ -199,9 +197,9 @@ The islands and the Capabilities connecting them therefore form a **directed gra
 
 ### 4.1 The process
 
-A **Process** is an executing computation defined by a Protected Space. 
+A **Process** is an executing computation - itself defined by a Protected Space. 
 
-When executing, the Protected Space is the entire universe of the computation. The processor itself enforces the bounds of the Segments and the Access permitted on them. The Process knows nothing outside of this universe. Any attempt to stray out of this Protected Space results in a process fault.
+When executing, that Protected Space is the entire universe of the computation. The processor itself enforces the bounds of the Segments and the Access permitted on them. The Process knows nothing outside of this universe. Any attempt to stray out of this Protected Space results in a process fault.
 
 *_(PP250 implementation: D0–D7; C0–C7; D17; C(D); Change Process.)_*
 
@@ -212,6 +210,8 @@ A Process has a computational state sufficient for its execution. Such **Process
 When a Process is not running on a processor the Process State can to be independently saved and subsequently resumed on a processor.
 
 *_(PP250 implementation: D0–D7; C0–C7; D10; D11; D17; C(D); MIP; Change Process.)_*
+
+[Not sure what 4.3 4.4 and 4.5 add to the narrative - broadly repititous]
 
 ### 4.3 Processes and Protected Objects
 
@@ -235,7 +235,7 @@ A process may invoke another protected object through an unforgeable token posse
 
 ### 5.1 Multiple processes
 
-Multiple processes may exist independently, each defined by its own protected space.
+Multiple processes may exist independently, each defined by its own protected space. Only one process may run on a processor at any given time. There may however be multiple processors each running a process.
 
 *_(PP250 implementation: C(D); Change Process.)_*
 
@@ -249,25 +249,25 @@ Execution of a process may be interrupted by an event. The event may cause anoth
 
 The protected structure of the system confines software faults within protected spaces. Hardware faults that could compromise those boundaries are detected and the faulty hardware isolated, preserving the protected structure of the remaining system.
 
+After a fault the current state of the affected process becomes unusable.
+
 *_(PP250 implementation: MIP; MIF; Watchdog timer; Microprogrammed execution.)_*
 
 ### 5.4 Recovery
 
-Exceptional conditions are distinguished according to their severity. Some permit the affected computation to be suspended, the condition handled, and computation subsequently resumed. More serious faults render the affected computational state unviable and invoke the system's fault-recovery mechanisms.
+Recovery begins from a protected state established independently of the affected process. This permits the faulty process or hardware to be isolated and execution to be re-established without depending upon the state that has failed.
 
-A condition that would normally be recoverable may itself become a fault when safe recovery cannot be performed.
+[We have mixed exceptions and faults through here and its confusing now]
 
-*_(PP250 implementation: D12; D15; C(N); C(S); MIP; MIF; Internal Mode; Change Process.)_*
+Exceptional conditions are distinguished according to their severity. Some permit the affected computation to be suspended, the condition handled, and computation subsequently resumed. More serious faults render the affected computational state unviable and invoke fault-recovery mechanisms.
 
-### 5.5 Fault recovery
-
-When a fault makes the current computational state unusable, recovery begins from protected state established independently of the affected computation. This permits the faulty computation or hardware to be isolated and execution to be re-established without depending upon the state that has failed.
+A condition that would normally be recoverable may itself become a fault when safe recovery cannot be performed
 
 *_(PP250 implementation: C(D); C(S); MIP; MIF; Internal Mode; C(S) Start-Up Location Control (possibly); One-Shot Second Group LC; Change Process.)_*
 
 ### 5.6 Cold bootstrap
 
-At initial start-up there is no existing process from which the protected system can be entered. The processor therefore begins with a protected root established by the hardware itself. From this root the initial protected execution environment is constructed and the first process entered.
+At initial start-up there is no existing process the processor begins with a protected root established by the hardware itself. From this root the initial protected execution environment is constructed and a first process entered.
 
 *_(PP250 implementation: C(D); C(S); Internal Mode; C(S) Start-Up Location Control (possibly); One-Shot Second Group LC; Change Process.)_*
 
@@ -281,13 +281,15 @@ When an object is no longer required, the resources from which it was constructe
 
 ### 5.8 Peripheral devices and device control
 
-Peripheral devices are part of the same protected system. Access to a device does not require escape into a privileged I/O mechanism or operating system.
+Peripheral devices are part of the same protected system. Access to a device does not require escape into a privileged I/O mechanism or operating system mode.
 
-Software controlling a device is itself a protected software structure. It may possess the access necessary to operate that device and expose selected operations to other parts of the system without exposing the device itself.
+Software controlling a device is itself a protected space. It may possess the access necessary to operate that device and expose selected operations to other parts of the system without exposing the device itself.
 
-Device control can therefore be structured in exactly the same way as other protected services. A program may be given access to a service that uses a device without thereby acquiring access to the device, its controller, or the other operations that controller can perform.
+Device control can therefore be structured in exactly the same way as other protected spaces. A program may be given access to a service that uses a device without thereby acquiring access to the device, its controller, or the other operations that controller can perform.
 
 *_(PP250 implementation: Store; C0–C7; MIP; MIF; Microprogrammed execution.)_*
+
+[That was all a bit of a ramble too many unstructured subsections]
 
 ### 5.9 What we have established
 
@@ -301,7 +303,7 @@ Hardware enforces the boundaries, but **software defines what those boundaries m
 
 That is already substantially different from simply adding protected pointers to a conventional computer. But it leaves an awkward question.
 
-**If there is no privileged operating system underneath all this, what is underneath it?**
+**If there is no privileged operating system underneath all this, what is underneath it? Is it really 'capabilities all the way to the bottom'?**
 
 ## 6. Raw machine resources
 
