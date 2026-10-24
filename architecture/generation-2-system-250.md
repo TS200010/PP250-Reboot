@@ -211,37 +211,22 @@ When a Process is not running on a processor the Process State can to be indepen
 
 *_(PP250 implementation: D0–D7; C0–C7; D10; D11; D17; C(D); MIP; Change Process.)_*
 
-[Not sure what 4.3 4.4 and 4.5 add to the narrative - broadly repititous]
-
-### 4.3 Processes and Protected Objects
-
-A Process runs within the Protected Space of a single Protected Object instance. The Capabilities contained within that object determine the code, data, capabilities and other Protected Objects accessible during execution.
-
-*_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
-
-### 4.4 Execution within a protected object
-
-A process executes code within its protected space. That code can operate only upon the data and objects accessible within that space.
-
-*_(PP250 implementation: C0–C7; D17; MIF; Microprogrammed execution.)_*
-
-### 4.5 Invocation of another protected object
-
-A process may invoke another protected object through an unforgeable token possessed by the invoking object. The invoked code then executes within the protected space of the invoked object.
-
-*_(PP250 implementation: C0–C7; D17; Microprogrammed execution.)_*
-
-## 5. System activity and change
-
-### 5.1 Multiple processes
+### 4.3 Multiple processes
 
 Multiple processes may exist independently, each defined by its own protected space. Only one process may run on a processor at any given time. There may however be multiple processors each running a process.
 
 *_(PP250 implementation: C(D); Change Process.)_*
 
-### 5.2 Events and interruption
+## 5. System activity and change
+
+### 5.1 Events and process interruption
 
 Execution of a process may be interrupted by an event. The event may cause another process to execute.
+
+[At this point introduce the kinds of events ... some of which may be faults. 
+An exceptional condition that can be handled and execution resumed.
+A fault from which recovery requires abandoning the affected state.
+A hardware failure requiring isolation of the failed component.]
 
 *_(PP250 implementation: D15; C(I); C(N); MIP; Interval timer; Change Process.)_*
 
