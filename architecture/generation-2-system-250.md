@@ -96,7 +96,7 @@ Further, Protected Structures are persistent - stored on backing store managed b
 
 Before going any further, it is useful to introduce a few definitions and important concepts:
 
-- **Segment** or **Block** — a Block of storage with defined bounds.
+- **Segment** or **Block** — a block of storage with defined bounds.
   
 - **Access** — the operations permitted upon that Segment or Block (authority).
   
@@ -123,7 +123,7 @@ Any attempt to use this Capability to access the Protected Structure's internal 
 
 **At this point the primary architectural concept can be stated simply.** A Protected Structure contains Capabilities giving access to the functions that implement its operations and to the data upon which those functions operate. An Enter Capability provides controlled invocation of the structure without exposing those internal Capabilities.
 
-This construction is deliberately general. Such Protected Structures can represent structures at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected Structures may themselves hold Capabilities giving controlled access to other Protected Structures, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and enforcing bounds of each object's Segments.**
+This construction is deliberately general. Such Protected Structures can represent facilities at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected Structures may themselves hold Capabilities giving controlled access to other Protected Structures, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and the bounds of each referenced Segment.**
 
 *_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
@@ -145,7 +145,7 @@ Each Capability specifies what its holder is permitted to do with the Segment it
 
 **The first five Access rights permit operations on a Segment. Enter Capability is fundamentally more sophisticated:** it permits controlled invocation of functions *through* a Capability, without exposing the Capabilities contained within it.
 
-A function of a Protected Structure is called by supplying the processor with the Enter Capability of the object to operate on and an identifier to the function being invoked. Parameters may be passed and values returned. Returned values may have any valid Access including an Enter Capability.
+A function of a Protected Structure is called by supplying the processor with the Enter Capability of the Protected Structure to invoke and an identifier to the function being invoked. Parameters may be passed and values returned. Returned values may have any valid Access including an Enter Capability.
 
 ![Enter Capability providing controlled access to the callable functions of a Protected Structure](images/Capability-enter-protected-object.svg)
 
@@ -174,7 +174,7 @@ Unforgeable Capabilities are created only by **identically protected mechanisms 
 
 ### 3.3 Transfer of access
 
-A Capability may be passed from one Protected Structure to another, thereby giving that object the Access represented by the Capability.
+A Capability may be passed from one Protected Structure to another, thereby giving the receiving structure the Access represented by the Capability.
 
 Different Capabilities may afford different Access to different Protected Structures.
 
@@ -239,9 +239,9 @@ Recovery from faults begins from independently established protected state, with
 
 Protected Structures may be created dynamically from Segments together with the Capabilities that provide access to them. The creation and allocation of these resources are themselves operations performed by protected services within the system.
 
-A Protected Structure may possess Capabilities to other objects and may pass selected Capabilities to other objects, allowing the protected system to grow and change without compromising its protection boundaries.
+A Protected Structure may possess Capabilities to other Protected Structures and may pass selected Capabilities to them, allowing the protected system to grow and change without compromising its protection boundaries.
 
-Protected Structures have lifetimes independent of the Processes that use them. When an object is no longer required, its resources may be recovered and made available for reuse.
+Protected Structures have lifetimes independent of the Processes that use them. When a Protected Structure is no longer required, its resources may be recovered and made available for reuse.
 
 (PP250 implementation: Store; C0–C7; C(C); Store Management.)
 
@@ -268,15 +268,15 @@ Thereafter, the protected system can extend itself through the creation and tran
 
 ### 5.6 What we have established
 
-We can now return to the claim made at the beginning: **System 250 was not just a Capability machine; it was a pure Capability machine.**
+We can now return to the claim made at the beginning: **System 250 was not just a capability machine; it was a pure capability machine.**
 
 There is no privileged operating system sitting between applications and the hardware. There is no supervisor mode into which trusted software escapes to perform operations unavailable to ordinary software. Instead, the entire software system is constructed from mutually protected structures, each exercising only the authority provided by its Capabilities.
 
-Applications, Process management, storage management, device control and recovery services all operate within this same protected architecture. The hardware enforces protection, while software determines how authority is organised, delegated and exercised.
+Applications, process management, storage management, device control and recovery services all operate within this same protected architecture. The hardware enforces protection, while software determines how authority is organised, delegated and exercised.
 
 Even the creation of new Protected Structures and Processes takes place within this system, once the initial authority has been established.
 
-But where does that initial authority come from? Is it really **Capabilities all the way to the bottom?**
+But where does that initial authority come from? Is it really **capabilities all the way to the bottom?**
 To answer this, we must descend beneath the protected-structure architecture to the hardware and microprogrammed mechanisms upon which it is constructed.
 
 ## 6. Raw machine resources
@@ -560,7 +560,7 @@ A capability identifies a segment and specifies what operations may be performed
 **WC — Write Capability** permits a capability to be stored into the segment.  
 **EC — Enter Capability** permits the segment to be entered as a protected capability block rather than exposing its contained capabilities to the caller.
 
-These distinctions are fundamental. **RD does not provide RC**: being able to read the data in a segment does not allow a program to obtain capabilities stored there. Similarly, the ability to invoke a Protected Structure through **EC** does not expose the capabilities from which that object is constructed.
+These distinctions are fundamental. **RD does not provide RC**: being able to read the data in a segment does not allow a program to obtain capabilities stored there. Similarly, the ability to invoke a Protected Structure through **EC** does not expose the capabilities contained within that structure.
 
 **M enforces these access rights in hardware whenever a capability is used.** This is the primitive hardware protection mechanism from which the protected structures described on the architectural descent are constructed.
 
