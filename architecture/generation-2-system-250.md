@@ -56,17 +56,15 @@ The descent therefore establishes **what the architecture is**; the inventory es
 
 ### 1.3 Hardware-enforced software structure
 
-authority is not confined to hardware-defined operations such as reading, writing or executing in store. The architectural authority primitives in PP250 provide a foundation from which software constructs higher-level authorities with arbitrary software-defined semantics.
+The authority provided by PP250 is not limited to hardware-defined operations such as reading, writing or executing in store. The architectural authority primitives (Capability and Access) provide the foundation from which software constructs higher-level authorities with arbitrary software-defined semantics.
 
-The architecture is described below at machine-instruction level, not because authority is defined at that level, but because this exposes where its enforcement ultimately resides. Higher-level software—languages, compilers and system structures—can create richer semantics and impose additional constraints. Where those structures express authority through the PP250 authority mechanisms, that authority survives their translation into machine code: its enforcement does not depend on the correctness or continued cooperation of the higher-level abstraction, but ultimately rests on mechanisms enforced by the processor itself.
+The architecture is described below at machine-instruction level, not because authority is defined at that level, but because this exposes where its enforcement ultimately resides. Higher-level software—languages, compilers and system structures—can create richer semantics and impose additional constraints. Where those structures express authority through the PP250 authority primitives, that authority survives their translation into machine code: its enforcement does not depend on the correctness or continued cooperation of the higher-level abstraction, but ultimately rests on mechanisms enforced by the processor itself.
 
-PP250 enforces a software-defined protected structure in hardware: once authority has been restricted to that defined structure, there is no path around it. A program can exercise only that defined authority. The authority restriction survives all the way down to machine code; it does not depend on programming convention, the compiler, or a privileged operating system. Enforcement of it is baked into the very wiring of the processor.
+PP250 enforces software-defined Protected Structures in hardware. A program can exercise only the authority made available through its Capabilities. These restrictions survive all the way down to machine code; they do not depend on programming convention, the compiler, or a privileged operating system. Enforcement of it is baked into the very wiring of the processor.
 
-A protected structure and its semantics are defined by software. It may represent a file, Process, device, directory, storage allocator, system service or application object. Such structures can themselves hold and expose authority, allowing them to be composed recursively into complete software systems.
+A Protected Structure and its semantics are defined by software. It may represent a file, Process, device, directory, storage allocator, system service or application object. Such structures can themselves hold and expose authority, allowing them to be composed recursively into complete software systems.
 
-**A protected structure combines state with a defined set of operations upon that state.** This resembles the encapsulated objects and classes familiar from modern programming languages, but there is a fundamental difference.
-
-In a conventional C++ implementation, the language's access restrictions are principally enforced by the compiler. Once compiled into conventional machine instructions, those restrictions do not themselves constitute hardware-enforced protection boundaries.
+**A Protected Structure combines state with a defined set of operations upon that state.** This resembles the encapsulated objects and classes familiar from modern programming languages, but there is a fundamental difference. In a conventional C++ implementation, the language's access restrictions are principally enforced by the compiler. Once compiled into conventional machine instructions, those restrictions do not themselves constitute hardware-enforced protection boundaries.
 
 **In PP250, the boundary of the Protected Structure is enforced by the processor itself.** Even at machine-instruction level, code cannot exercise authority that has not been made available to it. The integrity of the boundary does not depend upon the compiler or the continued cooperation of the executing software.
 
@@ -231,11 +229,11 @@ Process interruption and switching are implemented by the hardware, preserving t
 
 ### 5.2 Exception conditions and recovery
 
-During execution, exception conditions may arise from software operations, external events or hardware failures. The system distinguishes between conditions from which a Process can safely resume and faults that render its current Process State unusable.
+During execution, exceptional conditions may arise from software operations, external events or hardware failures. The system distinguishes between conditions from which a Process can safely resume (recoverable exceptions) and faults that render its current Process State unusable.
 
-Recoverable exceptions permit the affected Process to be suspended, the condition handled and execution subsequently resumed. Faults require the affected Process or hardware component to be isolated.
+Recoverable exceptions permit the affected Process to be suspended, the condition handled and execution subsequently resumed.
 
-Recovery from faults begins from independently established protected state, without relying upon the computational state of the affected Process. In this way, failures are contained while preserving the protection and continued operation of unaffected Processes.
+Faults require the affected Process or hardware component to be isolated. Recovery from faults begins from an independently established Protected Structure, without relying upon the computational state of the affected Process. In this way, failures are contained while preserving the protection and continued operation of unaffected Processes.
 
 (PP250 implementation: MIP; MIF; Watchdog timer; C(D); C(S); C(I); C(N); D12; D15; Internal Mode; Change Process.)
 
@@ -262,11 +260,9 @@ Device control is therefore organised in the same way as any other protected ser
 
 ### 5.5 Cold bootstrap
 
-At initial start-up, no Processes or Protected Structures yet exist. The processor must therefore establish the first protected execution environment from which the remainder of the system can be constructed.
+At initial start-up, the processor has an initial Protected Structure established by the hardware itself. This provides the authority from which the first Process can be entered and the system constructed.
 
-This requires an initial source of authority, provided by the hardware itself, from which the first Capabilities and Protected Structures can be created. Once established, these provide the means to construct and enter the first Process.
-
-Thereafter, the protected system can extend itself through the creation and transfer of Capabilities, using the same mechanisms that govern its normal operation.
+Thereafter, the system can extend itself through the creation and transfer of Capabilities, using the mechanisms that govern its normal operation.
 
 (PP250 implementation: C(S); Internal Mode; One-Shot Second Group LC; Change Process.)
 
