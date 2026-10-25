@@ -105,6 +105,10 @@ Before going any further, it is useful to introduce a few definitions and import
   
 - **Protected Structure** — a Segment containing only Capabilities. These Capabilities define the code, data and other resources accessible to computations entered through that Segment.
 
+- **Process** — an executing computation operating under the authority defined by a Protected Structure.
+
+- **Process State** — the computational state needed to resume a Process, including its registers, timers, the code it is executing and its current point of execution.
+
 ![Protected-token Segment referring to code functions and private data](images/protected-object-construction.svg)
 
 *Conceptual view of the Segments making up a Protected Structure.*
