@@ -107,7 +107,7 @@ Before going any further, it is useful to introduce a few definitions and import
 
 - **Process** — an executing computation operating under the authority defined by a Protected Structure.
 
-- **Process State** — the computational state needed to resume a Process, including its registers, timers, the code it is executing and its current point of execution.
+- **Process State** — the computational state needed to resume a Process, including its registers, timers, what code it is executing and its current point of execution.
 
 ![Protected-token Segment referring to code functions and private data](images/protected-object-construction.svg)
 
