@@ -53,24 +53,6 @@ Such Hardware-enforced protection provides the **foundation for fault containmen
 
 ## 2. The Protected Structure model
 
-The entire System 250 architecture consists of a collection of such interconnected Protected Structures. **Every instruction executes under the authority defined by a Protected Structure. Nothing executes outside this structure. Nothing.**
-
-This is true from the first instruction executed when the machine starts, through normal application execution, operating-system services and interrupt handling. All execution takes place within Protected Structures, with the hardware enforcing their boundaries.
-
-Protected Structures interact through controlled interfaces, without exposing their internal functions or data. The architecture also provides controlled interaction with the outside world through input and output operations.
-
-![Interconnected Protected Structures with first-instruction and interrupt entry, and output](images/interconnected-protected-objects.svg)
-
-The diagram illustrates this fundamental organisation. The objects are deliberately unnamed because the same protection mechanism applies throughout the system, regardless of an object's function.
-
-This network of Protected Structures runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The protected-structure architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store. 
-
-Further, Protected Structures are persistent - stored on backing store managed by a virtual memory system. 
-
-![The protected-structure network realised on redundant processor, store and I/O modules](images/pp250_protected_objects_and_hardware.svg)
-
-**To understand how this architecture is achieved, we must examine how Protected Structures are constructed and how access between them is controlled.**
-
 ### 2.1 Definitions
 
 Before going any further, it is useful to introduce a few definitions and important concepts:
@@ -93,6 +75,26 @@ Before going any further, it is useful to introduce a few definitions and import
 *Conceptual view of the Segments making up a Protected Structure.*
 
 *_(PP250 implementation: Store; C0–C7.)_*
+
+### 2.2 Protected Structures
+
+The entire System 250 architecture consists of a collection of interconnected Protected Structures. **Every instruction executes under the authority defined by a Protected Structure. Nothing executes outside this structure. Nothing.**
+
+This is true from the first instruction executed when the machine starts, through normal application execution, operating-system services and interrupt handling. All execution takes place within Protected Structures, with the hardware enforcing their boundaries.
+
+Protected Structures interact through controlled interfaces, without exposing their internal functions or data. The architecture also provides controlled interaction with the outside world through input and output operations.
+
+![Interconnected Protected Structures with first-instruction and interrupt entry, and output](images/interconnected-protected-objects.svg)
+
+The diagram illustrates this fundamental organisation. The objects are deliberately unnamed because the same protection mechanism applies throughout the system, regardless of an object's function.
+
+This network of Protected Structures runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The protected-structure architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store. 
+
+Further, Protected Structures are persistent - stored on backing store managed by a virtual memory system. 
+
+![The protected-structure network realised on redundant processor, store and I/O modules](images/pp250_protected_objects_and_hardware.svg)
+
+**To understand how this architecture is achieved, we must examine how Protected Structures are constructed and how access between them is controlled.**
 
 ### 2.3 Controlled access to a Protected Structure
 
