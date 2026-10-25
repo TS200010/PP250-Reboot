@@ -170,7 +170,7 @@ A Capability has an enduring existence independent of its immediate use by a pro
 
 ### 3.2 Creation of unforgeable Capabilities
 
-Unforgeable Capabilities are created only by **identically protected mechanisms of the system** (described later). Users and programs may request the creation of new Capabilities, but such a Capability cannot be created by ordinary computation.
+Unforgeable Capabilities are created only by mechanisms operating under the authority of Protected Structures (described later). Users and programs may request the creation of new Capabilities, but such a Capability cannot be created by ordinary computation.
 
 *_(PP250 implementation: Store; C0–C7; C(C); Microprogrammed execution.)_*
 
@@ -239,7 +239,7 @@ Faults require the affected Process or hardware component to be isolated. Recove
 
 ### 5.3 Creation and management of Protected Structures
 
-Protected Structures may be created dynamically from Segments together with the Capabilities that provide access to them. The creation and allocation of these resources are themselves operations performed by protected services within the system.
+Protected Structures may be created dynamically by allocating Segments and creating the Capabilities that define them. These operations are performed by services operating within the protected system.
 
 A Protected Structure may possess Capabilities to other Protected Structures and may pass selected Capabilities to them, allowing the protected system to grow and change without compromising its protection boundaries.
 
