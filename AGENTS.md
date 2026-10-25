@@ -154,3 +154,7 @@ Use **proportionate provenance** in architecture documents. The architecture is 
 - Architecture documents are working reconstruction, not primary evidence. Apply proportionate provenance rather than requiring every statement to carry a source reference.
 - When reviewing architecture, distinguish between material the document canonically owns and architectural material that belongs in another subject document. Report proposed moves before making them unless editing has explicitly been authorised.
 - `transcriptions/` contains source transcriptions. Never silently correct technical content; identify suspected transcription errors separately.
+
+## PDF generation
+
+When asked to create a PDF from a Markdown document, follow the defaults and conversion procedure in the repository-root `PDF.md`, unless the user gives different formatting requirements. Preserve the original Markdown and diagram sources.
