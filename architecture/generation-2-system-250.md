@@ -205,7 +205,7 @@ When executing, that Protected Space is the entire universe of the computation. 
 
 ### 4.2 Process State
 
-A Process has a computational state sufficient for its execution. Such **Process State** includes everything it needs to run on a processor including registers, timers, the code it is executing and its point of execution.
+A Process has a computational state sufficient for its execution. Such **Process State** includes everything it needs to run on a processor including registers, timers, what code it is executing and its current point of execution.
 
 When a Process is not running on a processor the Process State can to be independently saved and subsequently resumed on a processor.
 
@@ -219,76 +219,68 @@ Multiple processes may exist independently, each defined by its own protected sp
 
 ## 5. System activity and change
 
-### 5.1 Events and process interruption
+### 5.1 Process execution and interruption
+Multiple processes may exist within the protected system, each executing within its own Protected Space. A processor executes only one process at a time, but the system may contain multiple processors executing different processes concurrently.
 
-Execution of a process may be interrupted by an event. The event may cause another process to execute.
+Execution of a process may be interrupted by an event, allowing another process to execute. The interrupted process may subsequently resume from its saved Process State.
 
-[At this point introduce the kinds of events ... some of which may be faults. 
-An exceptional condition that can be handled and execution resumed.
-A fault from which recovery requires abandoning the affected state.
-A hardware failure requiring isolation of the failed component.]
+Process interruption and switching are implemented by the hardware, preserving the protection boundaries of each process.
 
-*_(PP250 implementation: D15; C(I); C(N); MIP; Interval timer; Change Process.)_*
+(PP250 implementation: C(D); C(I); C(N); D15; MIP; Interval timer; Change Process.)
 
-### 5.3 Fault containment
+### 5.2 Exception conditions and recovery
 
-The protected structure of the system confines software faults within protected spaces. Hardware faults that could compromise those boundaries are detected and the faulty hardware isolated, preserving the protected structure of the remaining system.
+During execution, exception conditions may arise from software operations, external events or hardware failures. The system distinguishes between conditions from which a process can safely resume and faults that render its current Process State unusable.
 
-After a fault the current state of the affected process becomes unusable.
+Recoverable exceptions permit the affected process to be suspended, the condition handled and execution subsequently resumed. Faults require the affected process or hardware component to be isolated.
 
-*_(PP250 implementation: MIP; MIF; Watchdog timer; Microprogrammed execution.)_*
+Recovery from faults begins from independently established protected state, without relying upon the computational state of the affected process. In this way, failures are contained while preserving the protection and continued operation of unaffected processes.
 
-### 5.4 Recovery
+(PP250 implementation: MIP; MIF; Watchdog timer; C(D); C(S); C(I); C(N); D12; D15; Internal Mode; Change Process.)
 
-Recovery begins from a protected state established independently of the affected process. This permits the faulty process or hardware to be isolated and execution to be re-established without depending upon the state that has failed.
+### 5.3 Creation and management of Protected Objects
 
-[We have mixed exceptions and faults through here and its confusing now]
+Protected Objects may be created dynamically from Segments together with the Capabilities that provide access to them. The creation and allocation of these resources are themselves operations performed by protected services within the system.
 
-Exceptional conditions are distinguished according to their severity. Some permit the affected computation to be suspended, the condition handled, and computation subsequently resumed. More serious faults render the affected computational state unviable and invoke fault-recovery mechanisms.
+A Protected Object may possess Capabilities to other objects and may pass selected Capabilities to other objects, allowing the protected system to grow and change without compromising its protection boundaries.
 
-A condition that would normally be recoverable may itself become a fault when safe recovery cannot be performed
+Protected Objects have lifetimes independent of the processes that use them. When an object is no longer required, its resources may be recovered and made available for reuse.
 
-*_(PP250 implementation: C(D); C(S); MIP; MIF; Internal Mode; C(S) Start-Up Location Control (possibly); One-Shot Second Group LC; Change Process.)_*
+(PP250 implementation: Store; C0–C7; C(C); Store Management.)
 
-### 5.6 Cold bootstrap
+### 5.4 Peripheral devices and external interaction
 
-At initial start-up there is no existing process the processor begins with a protected root established by the hardware itself. From this root the initial protected execution environment is constructed and a first process entered.
+Peripheral devices are part of the same protected system. Access to a device is controlled through Capabilities, without requiring a privileged operating system mode.
 
-*_(PP250 implementation: C(D); C(S); Internal Mode; C(S) Start-Up Location Control (possibly); One-Shot Second Group LC; Change Process.)_*
+Software controlling a device operates within a Protected Space, possessing the Capabilities necessary to operate that device. It may expose selected operations to other Protected Objects without exposing the device or its other capabilities.
 
-### 5.7 Resource lifetime
+Device control is therefore organised in the same way as any other protected service. A process may invoke a service that uses a device without acquiring direct access to the device itself.
 
-Protected objects may be created and may cease to exist. Their lifetime is independent of the lifetime of any particular process using them.
+(PP250 implementation: Store; C0–C7; MIP; MIF; Microprogrammed execution.)
 
-When an object is no longer required, the resources from which it was constructed may be recovered for reuse.
 
-*_(PP250 implementation: Store; C0–C7; C(C).)_*
+### 5.5 Cold bootstrap
 
-### 5.8 Peripheral devices and device control
+At initial start-up, no processes or Protected Objects yet exist. The processor must therefore establish the first protected execution environment from which the remainder of the system can be constructed.
 
-Peripheral devices are part of the same protected system. Access to a device does not require escape into a privileged I/O mechanism or operating system mode.
+This requires an initial source of authority, provided by the hardware itself, from which the first Capabilities and Protected Objects can be created. Once established, these provide the means to construct and enter the first process.
 
-Software controlling a device is itself a protected space. It may possess the access necessary to operate that device and expose selected operations to other parts of the system without exposing the device itself.
+Thereafter, the protected system can extend itself through the creation and transfer of Capabilities, using the same mechanisms that govern its normal operation.
 
-Device control can therefore be structured in exactly the same way as other protected spaces. A program may be given access to a service that uses a device without thereby acquiring access to the device, its controller, or the other operations that controller can perform.
+(PP250 implementation: C(S); Internal Mode; One-Shot Second Group LC; Change Process.)
 
-*_(PP250 implementation: Store; C0–C7; MIP; MIF; Microprogrammed execution.)_*
-
-[That was all a bit of a ramble too many unstructured subsections]
-
-### 5.9 What we have established
+### 5.6 What we have established
 
 We can now return to the claim made at the beginning: **System 250 was not just a capability machine; it was a pure capability machine.**
 
-There is no privileged operating system sitting above the applications and below the hardware. There is no supervisor mode into which trusted software escapes when it needs to do something that ordinary software cannot do. Instead, the entire software system is constructed from mutually protected pieces, each able to do only what the access it has been given allows it to do.
+There is no privileged operating system sitting between applications and the hardware. There is no supervisor mode into which trusted software escapes to perform operations unavailable to ordinary software. Instead, the entire software system is constructed from mutually protected objects, each exercising only the authority provided by its Capabilities.
 
-Some of those pieces provide application functions. Others provide filing, storage management, communications, device control, scheduling or other services that would conventionally be regarded as parts of an operating system. Architecturally there is no distinction. They are all software protected in the same way, and they interact through the same mechanisms.
+Applications, process management, storage management, device control and recovery services all operate within this same protected architecture. The hardware enforces protection, while software determines how authority is organised, delegated and exercised.
 
-Hardware enforces the boundaries, but **software defines what those boundaries mean**. A protected structure might represent a file, a device, a process manager, an application or an entire subsystem. The hardware neither knows nor needs to know which.
+Even the creation of new Protected Objects and Processes takes place within this system, once the initial authority has been established.
 
-That is already substantially different from simply adding protected pointers to a conventional computer. But it leaves an awkward question.
-
-**If there is no privileged operating system underneath all this, what is underneath it? Is it really 'capabilities all the way to the bottom'?**
+But where does that initial authority come from? Is it really **capabilities all the way to the bottom?**
+To answer this, we must descend beneath the protected-object architecture to the hardware and microprogrammed mechanisms upon which it is constructed.
 
 ## 6. Raw machine resources
 
