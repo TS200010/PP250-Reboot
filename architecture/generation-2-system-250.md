@@ -81,7 +81,7 @@ Before going any further, it is useful to introduce a few definitions and import
 
 *_(PP250 implementation: Store; C0–C7.)_*
 
-### 2.2 C6 Block (Protected Structures)
+### 2.2 C6 Blocks
 
 The entire System 250 architecture consists of a collection of interconnected C6 Blocks. **Every instruction executes under the authority defined by a C6 Block. Nothing executes outside this structure. Nothing.**
 
@@ -93,7 +93,7 @@ C6 Blocks interact through controlled interfaces, without exposing their interna
 
 The diagram illustrates this fundamental organisation. The objects are deliberately unnamed because the same protection mechanism applies throughout the system, regardless of an object's function.
 
-This network of C6 Blocks runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The C6 Blocks architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store. 
+This network of C6 Blocks runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The C6 Block architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store. 
 
 Further, C6 Blocks are persistent - stored on backing store managed by a virtual memory system. 
 
@@ -101,9 +101,9 @@ Further, C6 Blocks are persistent - stored on backing store managed by a virtual
 
 **To understand how this architecture is achieved, we must examine how C6 Blocks are constructed and how access between them is controlled.**
 
-### 2.3 Controlled access to a C6 Blocks
+### 2.3 Controlled access to C6 Blocks
 
-**A Capability (called an Enter Capability) allows invocation of the C6 Blocks itself.** A C6 Block does not expose the Capabilities contained within the C6 Block. Instead, it permits only invocation of the functions made available (exposed) by the C6 Block. The holder cannot use that Capability to obtain direct access to the underlying code, data or other Capabilities. This restriction is enforced by the hardware.
+**A Capability (called an Enter Capability) allows invocation of the C6 Block itself.** An Enter Capability does not expose the Capabilities contained within the block. Instead, it permits only invocation of the functions made available (exposed) by the C6 Block. The holder cannot use that Capability to obtain direct access to the underlying code, data or other Capabilities. This restriction is enforced by the hardware.
 
 Any attempt to use this Capability to access the C6 Block's internal data directly is an access violation. The processor hardware detects the attempted unauthorised access and raises a Process fault.
 
@@ -113,7 +113,7 @@ Any attempt to use this Capability to access the C6 Block's internal data direct
 
 **At this point the primary architectural concept can be stated simply.** A C6 Block contains Capabilities giving access to the functions that implement its operations and to the data upon which those functions operate. An Enter Capability provides controlled invocation of the structure without exposing those internal Capabilities.
 
-This construction is deliberately general. Such C6 Blocks can represent facilities at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected Structures may themselves hold Capabilities giving controlled access to other C6 Blocks, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and the bounds of each referenced Segment.**
+This construction is deliberately general. Such C6 Blocks can represent facilities at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. C6 Blocks may themselves hold Capabilities giving controlled access to other C6 Blocks, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and the bounds of each referenced Segment.**
 
 *_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
@@ -156,7 +156,7 @@ A Capability has an enduring existence independent of its immediate use by a pro
 
 *_(PP250 implementation: Store; C0–C7; C(C).)_*
 
-### 3.2 Creation of unforgeable Capabilities
+### 3.2 Unforgability of Capabilities
 
 Capabilities cannot be forged by ordinary computation. 
 
@@ -184,7 +184,7 @@ The islands and the Capabilities connecting them therefore form a **directed gra
 
 ### 4.1 The Process
 
-A **Process** is an executing computation defined by a C6 Block. 
+A **Process** is an executing computation operating solely within the computational space defined by a C6 Block. 
 
 When executing, the resources accessible through that C6 Block are the entire universe of the computation. The processor itself enforces the bounds of the Segments and the Access permitted on them. The Process knows nothing outside of this universe. Any attempt to exceed that authority results in a Process fault.
 
@@ -194,7 +194,7 @@ When executing, the resources accessible through that C6 Block are the entire un
 
 A Process has a computational state sufficient for its execution. Such **Process State** includes everything it needs to run on a processor including registers, timers, what code it is executing and its current point of execution.
 
-When a Process is not running on a processor the Process State can to be independently saved to its Dump Stack and subsequently resumed on a processor.
+When a Process is not running on a processor the Process State can be independently saved to its Dump Stack and subsequently resumed on a processor.
 
 *_(PP250 implementation: D0–D7; C0–C7; D10; D11; D17; C(D); MIP; Change Process.)_*
 
