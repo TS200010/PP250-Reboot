@@ -55,20 +55,25 @@ Such Hardware-enforced protection provides the **foundation for fault containmen
 
 ### 2.1 Definitions
 
-Before going any further, it is useful to introduce a few definitions and important concepts:
+Before going any further, it is useful to introduce a few definitions and important concepts - these will be explained in detail:
 
 - **Segment** or **Block** — a block of storage with defined bounds.
   
-- **Access** — the operations permitted upon that Segment or Block (authority).
+- **Access** — the operations permitted upon that Segment or Block.
   
-- **Capability** — a reference to a Segment PLUS the Access permitted through that reference.
-      Different Capabilities may refer to the same Segment while granting different Access to it.
+- **Capability** — a reference to a Segment PLUS the Access permitted through that reference. Different Capabilities may refer to the same Segment while granting different Access to it.
   
-- **Protected Structure** — a Segment containing only Capabilities. These Capabilities define the code, data and other resources accessible to computations entered through that Segment.
+- **C6 Block (Protected Structure)** — a Segment containing only Capabilities defining the code, data and other resources accessible to computations invoced (entered) through that Segment.
 
-- **Process** — an executing computation operating under the authority defined by a Protected Structure.
+- **Enter Capability** — A Capability that permits the invocation of functions within a C6 Block, without granting direct access to the Capabilities contained within that block. 
 
-- **Process State** — the computational state needed to resume a Process, including its registers, timers, what code it is executing and its current point of execution.
+- **Process** — an executing computation operating solely within the computational space defined by a C6 Block.
+  
+- **Process State** — The computational state required to suspend and subsequently resume a Process, including its registers, timers, executable code context and current point of execution.
+
+- **Dump Stack** — The structure that preserves a Process State, allowing a Process to be suspended and subsequently resumed.
+
+- **Sandbox** — A secure execution environment established by the machine, within which Processes execute. Its boundaries are sealed, preventing computation within the Sandbox from altering the conditions under which it was established and is executing.
 
 ![Protected-token Segment referring to code functions and private data](images/protected-object-construction.svg)
 
@@ -76,39 +81,39 @@ Before going any further, it is useful to introduce a few definitions and import
 
 *_(PP250 implementation: Store; C0–C7.)_*
 
-### 2.2 Protected Structures
+### 2.2 C6 Block (Protected Structures)
 
-The entire System 250 architecture consists of a collection of interconnected Protected Structures. **Every instruction executes under the authority defined by a Protected Structure. Nothing executes outside this structure. Nothing.**
+The entire System 250 architecture consists of a collection of interconnected C6 Blocks. **Every instruction executes under the authority defined by a C6 Block. Nothing executes outside this structure. Nothing.**
 
-This is true from the first instruction executed when the machine starts, through normal application execution, operating-system services and interrupt handling. All execution takes place within Protected Structures, with the hardware enforcing their boundaries.
+This is true from the first instruction executed when the machine starts, through normal application execution, operating-system services and interrupt handling. All execution takes place within C6 Blocks, with the hardware enforcing their boundaries.
 
-Protected Structures interact through controlled interfaces, without exposing their internal functions or data. The architecture also provides controlled interaction with the outside world through input and output operations.
+C6 Blocks interact through controlled interfaces, without exposing their internal functions or data. The architecture also provides controlled interaction with the outside world through input and output operations.
 
 ![Interconnected Protected Structures with first-instruction and interrupt entry, and output](images/interconnected-protected-objects.svg)
 
 The diagram illustrates this fundamental organisation. The objects are deliberately unnamed because the same protection mechanism applies throughout the system, regardless of an object's function.
 
-This network of Protected Structures runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The protected-structure architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store. 
+This network of C6 Blocks runs on a **fault-tolerant hardware system comprising multiple processors, multiple store modules and multiple input/output devices, with redundancy**. The C6 Blocks architecture is therefore realised across a redundant multiprocessor, multi-store and multi-I/O system, rather than on a single processor and store. 
 
-Further, Protected Structures are persistent - stored on backing store managed by a virtual memory system. 
+Further, C6 Blocks are persistent - stored on backing store managed by a virtual memory system. 
 
 ![The protected-structure network realised on redundant processor, store and I/O modules](images/pp250_protected_objects_and_hardware.svg)
 
-**To understand how this architecture is achieved, we must examine how Protected Structures are constructed and how access between them is controlled.**
+**To understand how this architecture is achieved, we must examine how C6 Blocks are constructed and how access between them is controlled.**
 
-### 2.3 Controlled access to a Protected Structure
+### 2.3 Controlled access to a C6 Blocks
 
-**A Capability (called an Enter Capability) allows invocation of the Protected Structure itself.** It does not expose the Capabilities contained within the Protected Structure. Instead, it permits only invocation of the functions made available (exposed) by the Protected Structure. The holder cannot use that Capability to obtain direct access to the underlying code, data or other Capabilities. This restriction is enforced by the hardware.
+**A Capability (called an Enter Capability) allows invocation of the C6 Blocks itself.** A C6 Block does not expose the Capabilities contained within the C6 Block. Instead, it permits only invocation of the functions made available (exposed) by the C6 Block. The holder cannot use that Capability to obtain direct access to the underlying code, data or other Capabilities. This restriction is enforced by the hardware.
 
-Any attempt to use this Capability to access the Protected Structure's internal data directly is an access violation. The processor hardware detects the attempted unauthorised access and raises a Process fault.
+Any attempt to use this Capability to access the C6 Block's internal data directly is an access violation. The processor hardware detects the attempted unauthorised access and raises a Process fault.
 
 ![An external caller invoking F1, F2 and F3 through an Enter Capability, with internal functions and data protected](images/protected-object-entry.svg)
 
 *Enter Capability permits invocation of exposed functions; the arrow denotes invocation, not direct access to executable code or internal data.*
 
-**At this point the primary architectural concept can be stated simply.** A Protected Structure contains Capabilities giving access to the functions that implement its operations and to the data upon which those functions operate. An Enter Capability provides controlled invocation of the structure without exposing those internal Capabilities.
+**At this point the primary architectural concept can be stated simply.** A C6 Block contains Capabilities giving access to the functions that implement its operations and to the data upon which those functions operate. An Enter Capability provides controlled invocation of the structure without exposing those internal Capabilities.
 
-This construction is deliberately general. Such Protected Structures can represent facilities at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected Structures may themselves hold Capabilities giving controlled access to other Protected Structures, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and the bounds of each referenced Segment.**
+This construction is deliberately general. Such C6 Blocks can represent facilities at essentially any level of a computing system: application objects and complete applications, files and filing systems, memory and resource managers, devices and communications services, network access, or system services themselves. Protected Structures may themselves hold Capabilities giving controlled access to other C6 Blocks, allowing larger structures to be composed recursively from the same architectural primitive, **with the hardware enforcing Access and the bounds of each referenced Segment.**
 
 *_(PP250 implementation: C0–C7; Microprogrammed execution.)_*
 
@@ -116,7 +121,7 @@ This construction is deliberately general. Such Protected Structures can represe
 
 As we have seen, a Capability determines the type of access its holder has to a Segment.
 
-We began with **Enter Capability**, which permits the holder to invoke functions through a Protected Structure, without giving direct access to its code, data or internal Capabilities.
+We began with **Enter Capability**, which permits the holder to invoke functions through a C6 Block, without giving direct access to its code, data or internal Capabilities.
 
 PP250 provides other forms of Capability that permit different operations on Segments. These include reading, writing and executing data, and reading or writing Capabilities stored within a Segment.
 
@@ -130,7 +135,7 @@ Each Capability specifies what its holder is permitted to do with the Segment it
 
 **The first five Access rights permit operations on a Segment. Enter Capability is fundamentally more sophisticated:** it permits controlled invocation of functions *through* a Capability, without exposing the Capabilities contained within it.
 
-A function of a Protected Structure is called by supplying the processor with the Enter Capability of the Protected Structure to invoke and an identifier to the function being invoked. Parameters may be passed and values returned. Returned values may have any valid Access including an Enter Capability.
+A function of a C6 Block is called by supplying the processor with the Enter Capability of the C6 Block to invoke and an identifier to the function being invoked. Parameters may be passed and values returned. Returned values may have any valid Access including an Enter Capability.
 
 ![Enter Capability providing controlled access to the callable functions of a Protected Structure](images/Capability-enter-protected-object.svg)
 
@@ -143,7 +148,7 @@ TEASER: A Segment with say Write Data Access and Read Capability Access is almos
 Together, these Capabilities provide the fundamental forms of authority from which the protected structures of System 250 are constructed.
 
 
-## 3. Creation and propagation of access
+## 3. Creation and propagation of Access
 
 ### 3.1 Enduring Capabilities
 
@@ -153,23 +158,23 @@ A Capability has an enduring existence independent of its immediate use by a pro
 
 ### 3.2 Creation of unforgeable Capabilities
 
-Unforgeable Capabilities are created only by mechanisms operating under the authority of Protected Structures (described later). Users and programs may request the creation of new Capabilities, but such a Capability cannot be created by ordinary computation.
+Capabilities cannot be forged by ordinary computation. 
 
 *_(PP250 implementation: Store; C0–C7; C(C); Microprogrammed execution.)_*
 
 ### 3.3 Transfer of access
 
-A Capability may be passed from one Protected Structure to another, thereby giving the receiving structure the Access represented by the Capability.
+A Capability may be passed from one C6 Block to another, thereby giving the receiving structure the Access represented by the Capability.
 
-Different Capabilities may afford different Access to different Protected Structures.
+Different Capabilities may afford different Access to different C6 Blocks.
 
-When a Capability with different Access is created to be passed to another Protected Structure, the Access rights can only be attenuated. IE a Protected Structure cannot grant Access rights to another Protected Structure that it does not possess itself.
+When a Capability with different Access is created to be passed to another C6 Block, the Access rights can only be attenuated. IE a C6 Block cannot grant Access rights to another C6 Block that it does not possess itself.
 
 *_(PP250 implementation: Store; C0–C7.)_*
 
-### 3.4 The Protected Structure system as a graph of access
+### 3.4 The C6 Block system as a graph of access
 
-Protected Structures form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. Computation entered through a Protected Structure cannot access resources beyond its granted authority except through Capabilities.
+C6 Blocks form **impenetrable islands**, isolated from one another by hardware-enforced boundaries. Computation entered through a C6 Block cannot access resources beyond its granted authority except through Capabilities.
 
 The islands and the Capabilities connecting them therefore form a **directed graph of access**.
 
@@ -179,9 +184,9 @@ The islands and the Capabilities connecting them therefore form a **directed gra
 
 ### 4.1 The Process
 
-A **Process** is an executing computation operating under the authority defined by a Protected Structure. 
+A **Process** is an executing computation defined by a C6 Block. 
 
-When executing, the resources accessible through that Protected Structure are the entire universe of the computation. The processor itself enforces the bounds of the Segments and the Access permitted on them. The Process knows nothing outside of this universe. Any attempt to exceed that authority results in a Process fault.
+When executing, the resources accessible through that C6 Block are the entire universe of the computation. The processor itself enforces the bounds of the Segments and the Access permitted on them. The Process knows nothing outside of this universe. Any attempt to exceed that authority results in a Process fault.
 
 *_(PP250 implementation: D0–D7; C0–C7; D17; C(D); Change Process.)_*
 
@@ -189,13 +194,13 @@ When executing, the resources accessible through that Protected Structure are th
 
 A Process has a computational state sufficient for its execution. Such **Process State** includes everything it needs to run on a processor including registers, timers, what code it is executing and its current point of execution.
 
-When a Process is not running on a processor the Process State can to be independently saved and subsequently resumed on a processor.
+When a Process is not running on a processor the Process State can to be independently saved to its Dump Stack and subsequently resumed on a processor.
 
 *_(PP250 implementation: D0–D7; C0–C7; D10; D11; D17; C(D); MIP; Change Process.)_*
 
 ### 4.3 Multiple Processes
 
-Multiple Processes may exist independently, each executing under the authority defined by a Protected Structure. Only one Process may run on a processor at any given time. There may however be multiple processors each running a Process.
+Multiple Processes may exist independently, each executing under the authority defined by a C6 Block. Only one Process may run on a processor at any given time. There may however be multiple processors each running a Process.
 
 *_(PP250 implementation: C(D); Change Process.)_*
 
